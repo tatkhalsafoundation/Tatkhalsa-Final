@@ -51,7 +51,7 @@
           <div>
             <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 15px;">
               <img
-                src="<?php echo esc_url( get_template_directory_uri() . '/logo.jpg' ); ?>"
+                src="<?php echo esc_url( get_template_directory_uri() . '/Logo.jpg' ); ?>"
                 alt="Tatkhalsa Foundation Logo"
                 style="height: 60px; width: 60px; border-radius: 50%; object-fit: cover;"
               />

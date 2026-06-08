@@ -103,7 +103,7 @@ get_header();
 <section id="about" style="background-color: var(--bg-shade-3); position: relative;">
   <div class="container scroll-reveal">
     <div class="about-grid">
-      <div class="about-image" style="background-image: url('<?php echo esc_url( get_template_directory_uri() . '/logo.jpg' ); ?>'); background-size: cover; background-position: center;"></div>
+      <div class="about-image" style="background-image: url('<?php echo esc_url( get_template_directory_uri() . '/Logo.jpg' ); ?>'); background-size: cover; background-position: center;"></div>
       <div>
         <h2 style="font-size: 2.5rem; margin-bottom: 20px;">
           About Tatkhalsa Foundation

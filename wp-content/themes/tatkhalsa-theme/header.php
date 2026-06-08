@@ -2,7 +2,7 @@
 <html <?php language_attributes(); ?>>
   <head>
     <meta charset="<?php bloginfo( 'charset' ); ?>" />
-    <link rel="icon" type="image/jpeg" href="<?php echo esc_url( get_template_directory_uri() . '/logo.jpg' ); ?>" />
+    <link rel="icon" type="image/jpeg" href="<?php echo esc_url( get_template_directory_uri() . '/Logo.jpg' ); ?>" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="format-detection" content="telephone=no, date=no, email=no, address=no" />
     
@@ -16,8 +16,8 @@
     <?php wp_body_open(); ?>
 
     <!-- Side Background Graphics utilizing dynamic WP asset pathing -->
-    <div class="side-graphic side-graphic-left" style="background-image: url('<?php echo esc_url( get_template_directory_uri() . '/logo.jpg' ); ?>');"></div>
-    <div class="side-graphic side-graphic-right" style="background-image: url('<?php echo esc_url( get_template_directory_uri() . '/logo.jpg' ); ?>');"></div>
+    <div class="side-graphic side-graphic-left" style="background-image: url('<?php echo esc_url( get_template_directory_uri() . '/Logo.jpg' ); ?>');"></div>
+    <div class="side-graphic side-graphic-right" style="background-image: url('<?php echo esc_url( get_template_directory_uri() . '/Logo.jpg' ); ?>');"></div>
 
     <!-- Top Announcement Bar -->
     <div class="top-bar">
@@ -104,7 +104,7 @@
     <div class="scrolling-logo-wrapper" id="scrollingLogoWrapper">
       <a href="<?php echo esc_url( home_url( '/' ) ); ?>" style="display: block;">
         <img
-          src="<?php echo esc_url( get_template_directory_uri() . '/logo.jpg' ); ?>"
+          src="<?php echo esc_url( get_template_directory_uri() . '/Logo.jpg' ); ?>"
           alt="Tatkhalsa Foundation Logo"
           class="scrolling-logo"
           id="scrolling-logo"
