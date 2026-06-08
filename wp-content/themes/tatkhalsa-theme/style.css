@@ -244,7 +244,7 @@ h6 {
 }
 .scrolling-logo-wrapper {
   position: fixed;
-  top: 85px;
+  top: 90px;
   left: 50%;
   transform: translateX(-50%);
   z-index: 1005;
@@ -252,8 +252,8 @@ h6 {
   will-change: top, transform;
 }
 .scrolling-logo {
-  width: 220px;
-  height: 220px;
+  width: 320px;
+  height: 320px;
   border-radius: 50%;
   border: none;
   background-color: transparent;

@@ -203,10 +203,10 @@
         
         // Base sizes for desktop vs mobile
         const isMobile = window.innerWidth <= 900;
-        const startSize = isMobile ? 120 : 220;
-        const endSize = isMobile ? 42 : 55;
-        const startTop = isMobile ? 65 : 80;
-        const endTop = isMobile ? 12 : 12;
+        const startSize = isMobile ? 160 : 320;
+        const endSize = isMobile ? 48 : 64;
+        const startTop = isMobile ? 75 : 90;
+        const endTop = isMobile ? 13.5 : 5.5;
         
         let pct = sY / maxScroll;
         if (pct < 0) pct = 0;
