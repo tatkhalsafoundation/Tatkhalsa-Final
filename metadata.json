@@ -1,0 +1,8 @@
+{
+  "name": "Remix: Tatkhalsa Foundation",
+  "description": "Premium landing page for Tatkhalsa Foundation NGO.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
