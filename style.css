@@ -270,11 +270,11 @@ h6 {
 }
 @media (max-width: 900px) {
   .scrolling-logo-wrapper {
-    top: 60px;
+    top: 135px;
   }
   .scrolling-logo {
-    width: 90px;
-    height: 90px;
+    width: 110px;
+    height: 110px;
   }
   .logo-text {
     font-size: 1.1rem;
@@ -309,17 +309,28 @@ h6 {
 }
 .hamburger {
   display: none;
-  background: none;
-  border: none;
-  color: var(--primary);
+  background: transparent !important;
+  border: none !important;
+  color: var(--primary) !important;
   cursor: pointer;
-  padding: 0;
+  padding: 0 !important;
   align-items: center;
   justify-content: center;
+  outline: none !important;
+  box-shadow: none !important;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+.hamburger:hover {
+  opacity: 0.8;
+  transform: scale(1.05);
+}
+.hamburger:active {
+  transform: scale(0.95);
 }
 .hamburger svg {
   width: 28px;
   height: 28px;
+  display: block;
 }
 
 /* Hero Section */
@@ -383,6 +394,12 @@ h6 {
   margin-bottom: 40px;
   flex-wrap: wrap;
 }
+.badge-container {
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
+  z-index: 10;
+}
 .badge {
   background: rgba(255, 255, 255, 0.1);
   padding: 8px 16px;
@@ -391,6 +408,90 @@ h6 {
   align-items: center;
   gap: 8px;
   backdrop-filter: blur(5px);
+  transition: all 0.3s ease;
+  user-select: none;
+}
+.badge-container:hover .badge,
+.badge-container.active .badge {
+  transform: translateY(-3px);
+  box-shadow: 0 4px 15px rgba(212, 175, 55, 0.4);
+  background: rgba(212, 175, 55, 0.25) !important;
+  border-color: var(--secondary) !important;
+}
+.badge-popup {
+  position: absolute;
+  bottom: calc(100% + 15px);
+  left: 50%;
+  transform: translateX(-50%) translateY(10px);
+  width: 290px;
+  background: rgba(25, 25, 25, 0.95);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 12px;
+  padding: 16px 20px;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(15px);
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  pointer-events: none;
+  z-index: 1000;
+  text-align: left;
+}
+.badge-popup::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border-width: 8px;
+  border-style: solid;
+  border-color: rgba(25, 25, 25, 0.95) transparent transparent transparent;
+}
+.badge-popup::before {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border-width: 9px;
+  border-style: solid;
+  border-color: rgba(255, 255, 255, 0.15) transparent transparent transparent;
+  z-index: -1;
+}
+.badge-container:hover .badge-popup,
+.badge-container.active .badge-popup {
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(-50%) translateY(0);
+  pointer-events: auto;
+}
+.badge-popup-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding-bottom: 8px;
+  margin-bottom: 10px;
+}
+.popup-icon {
+  font-size: 1.3rem;
+}
+.badge-popup-header h4 {
+  margin: 0;
+  font-size: 1.1rem;
+  font-family: var(--font-sans);
+  font-weight: 700;
+  color: var(--white);
+}
+.badge-popup p {
+  margin: 0;
+  font-size: 0.85rem;
+  line-height: 1.45;
+  color: var(--text-light) !important;
+}
+@media (max-width: 600px) {
+  .badge-popup {
+    width: 250px;
+  }
 }
 .hero-buttons {
   display: flex;
@@ -1152,7 +1253,7 @@ footer .container {
 }
 
 /* Mobile Responsive Hooks */
-@media (max-width: 768px) {
+@media (max-width: 900px) {
   .logo {
     font-size: 1.1rem;
     display: block !important;
@@ -1183,8 +1284,9 @@ footer .container {
     transition: right 0.3s ease;
     z-index: 999;
   }
-  .nav-links.active {
-    right: 0;
+  .nav-links.active,
+  .nav-menu-container.active .nav-links {
+    right: 0px;
   }
   .nav-links ul {
     flex-direction: column;
@@ -1195,6 +1297,9 @@ footer .container {
     display: flex;
     z-index: 1001;
     position: relative;
+  }
+  .hero {
+    padding-top: 195px !important;
   }
   .hero h1 {
     font-size: 2.2rem;

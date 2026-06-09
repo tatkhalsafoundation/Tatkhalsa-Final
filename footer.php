@@ -205,9 +205,9 @@
         
         // Base sizes for desktop vs mobile
         const isMobile = window.innerWidth <= 900;
-        const startSize = isMobile ? 90 : 320;
+        const startSize = isMobile ? 110 : 320;
         const endSize = isMobile ? 45 : 64;
-        const startTop = isMobile ? 60 : 90;
+        const startTop = isMobile ? 135 : 90;
         const endTop = isMobile ? 15 : 5.5;
         
         let pct = sY / maxScroll;
@@ -215,7 +215,21 @@
         if (pct > 1) pct = 1;
         
         const currentSize = startSize - pct * (startSize - endSize);
-        const currentTop = startTop - pct * (startTop - endTop);
+        
+        let currentTop;
+        if (isMobile) {
+          const headerEl = document.querySelector(".header");
+          const headerRect = headerEl ? headerEl.getBoundingClientRect() : null;
+          const hTop = headerRect ? headerRect.top : 36;
+          const hHeight = headerRect ? headerRect.height : 75;
+          // Vertically center the logo relative to the header when fully compressed
+          const headerCenterTop = hTop + (hHeight - currentSize) / 2;
+          // When sY = 0, start at 135px relative to viewport, but moving up proportionally as we scroll
+          const startTopMobile = 135 - sY;
+          currentTop = startTopMobile + pct * (headerCenterTop - startTopMobile);
+        } else {
+          currentTop = startTop - pct * (startTop - endTop);
+        }
         
         scrollingLogo.style.width = currentSize + "px";
         scrollingLogo.style.height = currentSize + "px";
@@ -377,8 +391,29 @@
       if (hamburger) {
         hamburger.addEventListener("click", () => {
           navLinks.classList.toggle("active");
+          const innerNav = navLinks.querySelector(".nav-links");
+          if (innerNav) {
+            innerNav.classList.toggle("active");
+          }
         });
       }
+
+      // Interactive badges hover and touch popup logic
+      const badgeContainers = document.querySelectorAll(".badge-container");
+      badgeContainers.forEach(container => {
+        container.addEventListener("click", (e) => {
+          e.stopPropagation();
+          const alreadyActive = container.classList.contains("active");
+          badgeContainers.forEach(c => c.classList.remove("active"));
+          if (!alreadyActive) {
+            container.classList.add("active");
+          }
+        });
+      });
+
+      document.addEventListener("click", () => {
+        badgeContainers.forEach(c => c.classList.remove("active"));
+      });
 
       // Form submission fallback
       const vForm = document.getElementById("volunteerForm");
