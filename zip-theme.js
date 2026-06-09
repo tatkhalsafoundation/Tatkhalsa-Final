@@ -1,15 +1,17 @@
 import AdmZip from 'adm-zip';
 import path from 'path';
+import fs from 'fs';
 
 try {
   const zip = new AdmZip();
-  const outputPath = path.join(process.cwd(), 'tatkhalsa-theme.zip');
-  const destFolder = 'tatkhalsa-theme';
+  const outputPath = path.join(process.cwd(), 'tatkhalsa.zip');
+  const destFolder = 'tatkhalsa';
 
   // Add the root level WordPress theme files directly
   const filesToZip = [
     'style.css',
     'Logo.png',
+    'Logo.jpg',
     'functions.php',
     'header.php',
     'footer.php',
@@ -20,10 +22,27 @@ try {
     'template-volunteer.php'
   ];
 
-  const themeDir = path.join(process.cwd(), 'wp-content', 'themes');
+  const themeDir = path.join(process.cwd(), 'wp-content', 'themes', 'tatkhalsa');
 
   filesToZip.forEach(file => {
-    const filePath = path.join(themeDir, file);
+    let filePath = path.join(themeDir, file);
+    
+    // Fallback if Logo.png is not present but Logo.jpg exists
+    if (!fs.existsSync(filePath)) {
+      if (file === 'Logo.png') {
+        const jpgPath = path.join(themeDir, 'Logo.jpg');
+        if (fs.existsSync(jpgPath)) {
+          filePath = jpgPath;
+        } else {
+          console.warn(`WARNING: File not found at ${filePath}`);
+          return;
+        }
+      } else {
+        console.warn(`WARNING: File not found at ${filePath}`);
+        return;
+      }
+    }
+    
     zip.addLocalFile(filePath, destFolder);
   });
   
@@ -32,7 +51,7 @@ try {
   
   console.log('------------------------------------------------------');
   console.log('SUCCESS: WordPress Theme packaged successfully!');
-  console.log('File created at the workspace root: tatkhalsa-theme.zip');
+  console.log('File created at the workspace root: tatkhalsa.zip');
   console.log('------------------------------------------------------');
 } catch (error) {
   console.error('An error occurred while zipping the theme:', error);

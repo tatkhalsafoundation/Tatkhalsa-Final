@@ -51,7 +51,7 @@
           <div>
             <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 15px;">
               <img
-                src="<?php echo esc_url( get_template_directory_uri() . '/Logo.jpg' ); ?>"
+                src="<?php echo esc_url( get_template_directory_uri() . '/Logo.png' ); ?>"
                 alt="Tatkhalsa Foundation Logo"
                 style="height: 60px; width: 60px; border-radius: 50%; object-fit: cover;"
               />
@@ -244,6 +244,13 @@
         scrollingLogoWrapper.style.left = currentLeft + "px";
         scrollingLogoWrapper.style.transform = "translateX(-50%)";
 
+        // Set higher z-index only when scrolled, keeping it behind hero text when unscrolled
+        if (pct < 0.15) {
+          scrollingLogoWrapper.style.zIndex = "1";
+        } else {
+          scrollingLogoWrapper.style.zIndex = "1005";
+        }
+
         // Simultaneously slide logo text from left to center
         const logoEl = document.querySelector(".header .logo");
         if (logoEl) {
@@ -384,6 +391,29 @@
           statsAnimated = true;
         }
       });
+
+      // Sync Mobile Dropdown Select Option with Active Page URL
+      const mobileNavSelect = document.getElementById("mobileNavSelect");
+      if (mobileNavSelect) {
+        const currentPath = window.location.pathname;
+        for (let i = 0; i < mobileNavSelect.options.length; i++) {
+          const opt = mobileNavSelect.options[i];
+          if (opt.value) {
+            try {
+              const optPath = new URL(opt.value, window.location.origin).pathname;
+              if (currentPath === optPath || (currentPath === "/" && optPath === "/index.php") || (currentPath === "/index.php" && optPath === "/")) {
+                opt.selected = true;
+                break;
+              }
+            } catch (e) {
+              if (currentPath.includes(opt.value)) {
+                opt.selected = true;
+                break;
+              }
+            }
+          }
+        }
+      }
 
       // Mobile Hamburg setup
       const hamburger = document.getElementById("hamburger");

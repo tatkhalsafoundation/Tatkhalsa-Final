@@ -7,7 +7,7 @@ async function startServer() {
   const app = express();
   const PORT = 3000;
 
-  const THEME_PATH = path.join(process.cwd(), "wp-content", "themes");
+  const THEME_PATH = path.join(process.cwd(), "wp-content", "themes", "tatkhalsa");
 
   // Render processed PHP theme content
   function renderPHP(filePath: string): string {
@@ -41,6 +41,7 @@ async function startServer() {
     content = content.replace(/<\?php\s*wp_footer\(\);\s*\?>/g, '');
 
     // Resolve template directory and logo or home URLs
+    content = content.replace(/<\?php\s*echo\s*esc_url\(\s*get_template_directory_uri\(\)\s*\.\s*['"]\/Logo\.(jpg|png)['"]\s*\)\s*;\s*\?>/g, '/Logo.png');
     content = content.replace(/<\?php\s*echo\s*esc_url\(\s*get_template_directory_uri\(\)\s*\.\s*['"]\/Logo\.(jpg|png)['"]\s*\);\s*\?>/g, '/Logo.png');
     content = content.replace(/<\?php\s*echo\s*esc_url\(\s*home_url\(\s*['"]\/['"]\s*\)\s*\);\s*\?>/g, '/');
     
@@ -71,13 +72,27 @@ async function startServer() {
     return content;
   }
 
-  // Support direct static serving of style.css and Logo.jpg from theme path
+  // Support direct static serving of style.css and Logo.jpg/Logo.png from theme path
   app.get("/style.css", (req, res) => {
     res.sendFile(path.join(THEME_PATH, "style.css"));
   });
 
   app.get("/Logo.png", (req, res) => {
-    res.sendFile(path.join(THEME_PATH, "Logo.png"));
+    const pngPath = path.join(THEME_PATH, "Logo.png");
+    if (fs.existsSync(pngPath)) {
+      res.sendFile(pngPath);
+    } else {
+      res.sendFile(path.join(THEME_PATH, "Logo.jpg"));
+    }
+  });
+
+  app.get("/Logo.jpg", (req, res) => {
+    const jpgPath = path.join(THEME_PATH, "Logo.jpg");
+    if (fs.existsSync(jpgPath)) {
+      res.sendFile(jpgPath);
+    } else {
+      res.sendFile(path.join(THEME_PATH, "Logo.png"));
+    }
   });
 
   // Intercept requests to / or index.php
