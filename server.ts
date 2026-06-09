@@ -7,7 +7,7 @@ async function startServer() {
   const app = express();
   const PORT = 3000;
 
-  const THEME_PATH = path.join(process.cwd(), "wp-content", "themes", "tatkhalsa-theme");
+  const THEME_PATH = path.join(process.cwd(), "wp-content", "themes");
 
   // Render processed PHP theme content
   function renderPHP(filePath: string): string {

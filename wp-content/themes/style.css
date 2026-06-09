@@ -316,6 +316,7 @@ h6 {
   object-fit: cover;
   pointer-events: auto;
   cursor: pointer;
+  mix-blend-mode: screen;
   transition: 
     width 0.2s cubic-bezier(0.165, 0.84, 0.44, 1), 
     height 0.2s cubic-bezier(0.165, 0.84, 0.44, 1), 

@@ -20,7 +20,7 @@ try {
     'template-volunteer.php'
   ];
 
-  const themeDir = path.join(process.cwd(), 'wp-content', 'themes', 'tatkhalsa-theme');
+  const themeDir = path.join(process.cwd(), 'wp-content', 'themes');
 
   filesToZip.forEach(file => {
     const filePath = path.join(themeDir, file);

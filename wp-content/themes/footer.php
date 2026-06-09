@@ -244,6 +244,13 @@
         scrollingLogoWrapper.style.left = currentLeft + "px";
         scrollingLogoWrapper.style.transform = "translateX(-50%)";
 
+        // Set higher z-index only when scrolled, keeping it behind hero text when unscrolled
+        if (pct < 0.15) {
+          scrollingLogoWrapper.style.zIndex = "1";
+        } else {
+          scrollingLogoWrapper.style.zIndex = "1005";
+        }
+
         // Simultaneously slide logo text from left to center
         const logoEl = document.querySelector(".header .logo");
         if (logoEl) {
