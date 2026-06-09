@@ -6,8 +6,8 @@ try {
   const themeDir = path.join(process.cwd(), 'wp-content', 'themes', 'tatkhalsa-theme');
   const outputPath = path.join(process.cwd(), 'tatkhalsa-theme.zip');
 
-  // Add the local folder files at the root of the zip file so WP handles it natively.
-  zip.addLocalFolder(themeDir);
+  // Add the local folder under the folder 'tatkhalsa-theme' inside the zip so WordPress installs it in its own folder
+  zip.addLocalFolder(themeDir, 'tatkhalsa-theme');
   
   // Write the zip file
   zip.writeZip(outputPath);
