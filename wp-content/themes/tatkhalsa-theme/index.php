@@ -141,6 +141,25 @@ get_header();
   </div>
 </section>
 
+<!-- Urgent Appeal: Cancer Support Nimrat Kaur -->
+<section class="sos-banner" style="background: linear-gradient(135deg, #180911, #330d17); border-top: 1px solid var(--accent-red); margin-top: 0;">
+  <div class="sos-banner-container scroll-reveal">
+    <div class="sos-indicator" style="background: rgba(209, 61, 82, 0.2); color: var(--accent-red); border-color: rgba(209, 61, 82, 0.4);">
+      <span class="sos-dot" style="background-color: var(--accent-red); box-shadow: 0 0 6px var(--accent-red);"></span>
+      Urgent Medical Appeal
+    </div>
+    <h2 class="sos-banner-title" style="color: var(--cream);">
+      Save 2-Year-Old Nimrat Fight Cancer
+    </h2>
+    <p class="sos-banner-desc" style="color: var(--text-light);">
+      Diagnosed with aggressive Blood Cancer. Help her humble Gursikh family raise ₹7,00,000 for her oncology treatment & life-saving pediatric sessions.
+    </p>
+    <a href="<?php echo esc_url( home_url( '/nimrat-kaur-blood-cancer-fundraiser/' ) ); ?>" class="sos-banner-btn" style="background-color: var(--accent-red); box-shadow: 0 4px 12px rgba(209,61,82,0.3);">
+      Donate Now
+    </a>
+  </div>
+</section>
+
 <!-- What We Do Services Section -->
 <section id="what-we-do" style="background-color: var(--bg-shade-4); position: relative; z-index: 2;">
   <div class="container scroll-reveal">

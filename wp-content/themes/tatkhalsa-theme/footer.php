@@ -95,6 +95,7 @@
               <li><a href="<?php echo esc_url( home_url( '/projects/' ) ); ?>">Projects</a></li>
               <li><a href="<?php echo esc_url( home_url( '/volunteer/' ) ); ?>">Volunteer</a></li>
               <li><a href="<?php echo esc_url( home_url( '/punjab-flood-relief/' ) ); ?>">Punjab Flood Relief</a></li>
+              <li><a href="<?php echo esc_url( home_url( '/nimrat-kaur-blood-cancer-fundraiser/' ) ); ?>" style="color:var(--accent-red); font-weight:bold;">Cancer Appeal</a></li>
               <li><a href="#" onclick="openModal(); return false;">Contribute Now</a></li>
             </ul>
           </div>

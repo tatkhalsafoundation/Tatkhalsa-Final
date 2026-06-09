@@ -20,7 +20,8 @@ export default defineConfig(() => {
           main: path.resolve(__dirname, 'index.html'),
           about: path.resolve(__dirname, 'about.html'),
           projects: path.resolve(__dirname, 'projects.html'),
-          volunteer: path.resolve(__dirname, 'volunteer.html')
+          volunteer: path.resolve(__dirname, 'volunteer.html'),
+          'nimrat-kaur-blood-cancer-fundraiser': path.resolve(__dirname, 'nimrat-kaur-blood-cancer-fundraiser.html')
         }
       }
     },

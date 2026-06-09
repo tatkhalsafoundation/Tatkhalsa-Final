@@ -79,6 +79,7 @@
                 <a href="<?php echo esc_url( home_url( '/about/' ) ); ?>">About</a>
                 <a href="<?php echo esc_url( home_url( '/projects/' ) ); ?>">Projects</a>
                 <a href="<?php echo esc_url( home_url( '/volunteer/' ) ); ?>">Volunteer</a>
+                <a href="<?php echo esc_url( home_url( '/nimrat-kaur-blood-cancer-fundraiser/' ) ); ?>" style="color:var(--accent-red); font-weight:600;">Cancer Appeal</a>
               </div>
               <?php
           }
