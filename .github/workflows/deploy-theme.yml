@@ -20,6 +20,6 @@ jobs:
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
           server-dir: public_html/wp-content/themes/tatkhalsa-theme/
-          local-dir: ./wp-content/themes/tatkhalsa-theme/
+          local-dir: wp-content/themes/tatkhalsa-theme/
           # This ensures only your theme files are updated on Hostinger,
           # leaving WordPress core, plugins, and configuration files untouched.

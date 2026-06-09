@@ -63,23 +63,22 @@
         </a>
 
         <!-- Dynamic Menu Setup -->
-        <nav class="nav-links" id="nav-links">
+        <nav class="nav-menu-container" id="nav-links">
           <?php
           if ( has_nav_menu( 'primary' ) ) {
               wp_nav_menu( array(
                   'theme_location' => 'primary',
                   'container'      => false,
-                  'items_wrap'     => '<ul>%3$s</ul>',
+                  'items_wrap'     => '<ul class="nav-links">%3$s</ul>',
               ) );
           } else {
               // Custom default semantic layout
               ?>
-              <div>
+              <div class="nav-links">
                 <a href="<?php echo esc_url( home_url( '/' ) ); ?>">Home</a>
                 <a href="<?php echo esc_url( home_url( '/about/' ) ); ?>">About</a>
                 <a href="<?php echo esc_url( home_url( '/projects/' ) ); ?>">Projects</a>
                 <a href="<?php echo esc_url( home_url( '/volunteer/' ) ); ?>">Volunteer</a>
-                <a href="<?php echo esc_url( home_url( '/nimrat-kaur-blood-cancer-fundraiser/' ) ); ?>" style="color:var(--accent-red); font-weight:600;">Cancer Appeal</a>
               </div>
               <?php
           }

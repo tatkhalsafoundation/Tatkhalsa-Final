@@ -285,41 +285,16 @@ h6 {
 }
 .nav-links {
   display: flex;
-  position: fixed;
-  top: 0;
-  right: -280px; /* Hidden offscreen by default across all devices */
-  left: auto;
-  width: 280px;
-  height: 100vh;
-  background: var(--white);
-  flex-direction: column;
-  justify-content: flex-start;
-  align-items: flex-start;
-  padding: 80px 30px 30px 30px;
-  box-shadow: -5px 0 20px rgba(0, 0, 0, 0.155);
-  transition: right 0.3s ease;
-  z-index: 1005; /* Keeps drawer on top of other header components */
-  gap: 20px;
-}
-.nav-links.active {
-  right: 0;
-}
-.nav-links div {
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
+  gap: 30px;
+  align-items: center;
+  flex: 1;
+  justify-content: center;
 }
 .nav-links a, .nav-links li a {
   text-decoration: none;
   color: var(--text-dark);
   font-weight: 500;
-  font-size: 1.15rem;
   transition: color 0.3s ease;
-  padding: 10px 0;
-  width: 100%;
-  display: block;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
 }
 .nav-links a:hover, .nav-links li a:hover {
   color: var(--secondary);
@@ -328,18 +303,12 @@ h6 {
 .nav-links ul {
   list-style: none;
   display: flex;
-  flex-direction: column;
-  gap: 20px;
-  align-items: flex-start;
+  gap: 30px;
   padding: 0;
   margin: 0;
-  width: 100%;
-}
-.nav-links li {
-  width: 100%;
 }
 .hamburger {
-  display: flex; /* Always display hamburger as menu options reside inside the drawer */
+  display: none;
   background: none;
   border: none;
   color: var(--primary);
@@ -347,8 +316,6 @@ h6 {
   padding: 0;
   align-items: center;
   justify-content: center;
-  z-index: 1010; /* Clickable above the nav-links drawer */
-  position: relative;
 }
 .hamburger svg {
   width: 28px;
@@ -1125,7 +1092,7 @@ footer .container {
   border: 1px solid #2b3a5a;
   border-radius: 8px;
   padding: 5px;
-  background: var(--cream);
+  background: #ffffff;
 }
 .upi-id-text {
   margin-top: 10px;
@@ -1200,6 +1167,35 @@ footer .container {
   .stats-section {
     background-attachment: scroll !important;
   }
+  .nav-links {
+    display: flex;
+    position: fixed;
+    top: 0;
+    right: -280px; /* Hidden offscreen */
+    left: auto;
+    width: 280px;
+    height: 100vh;
+    background: var(--white);
+    flex-direction: column;
+    justify-content: flex-start;
+    padding: 80px 30px 30px 30px;
+    box-shadow: -5px 0 20px rgba(0, 0, 0, 0.1);
+    transition: right 0.3s ease;
+    z-index: 999;
+  }
+  .nav-links.active {
+    right: 0;
+  }
+  .nav-links ul {
+    flex-direction: column;
+    gap: 20px;
+    align-items: flex-start;
+  }
+  .hamburger {
+    display: flex;
+    z-index: 1001;
+    position: relative;
+  }
   .hero h1 {
     font-size: 2.2rem;
   }
@@ -1236,15 +1232,15 @@ footer .container {
 .sos-dot {
   width: 7px;
   height: 7px;
-  background-color: var(--cream);
+  background-color: #ffffff;
   border-radius: 50%;
   display: inline-block;
   animation: morse-sos 4s infinite;
-  box-shadow: 0 0 6px var(--cream);
+  box-shadow: 0 0 6px #ffffff;
 }
 .sos-banner {
   background-color: var(--accent-red);
-  color: var(--cream);
+  color: white;
   padding: 12px 20px;
   text-align: center;
   position: relative;
@@ -1279,10 +1275,10 @@ footer .container {
 .sos-banner-desc {
   font-size: 0.85rem;
   margin: 0;
-  color: rgba(253, 247, 231, 0.9);
+  color: rgba(255, 255, 255, 0.9);
 }
 .sos-banner-btn {
-  background-color: var(--cream);
+  background-color: white;
   color: var(--accent-red) !important;
   font-weight: 700;
   font-size: 0.72rem;

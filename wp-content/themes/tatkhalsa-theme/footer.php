@@ -95,7 +95,6 @@
               <li><a href="<?php echo esc_url( home_url( '/projects/' ) ); ?>">Projects</a></li>
               <li><a href="<?php echo esc_url( home_url( '/volunteer/' ) ); ?>">Volunteer</a></li>
               <li><a href="<?php echo esc_url( home_url( '/punjab-flood-relief/' ) ); ?>">Punjab Flood Relief</a></li>
-              <li><a href="<?php echo esc_url( home_url( '/nimrat-kaur-blood-cancer-fundraiser/' ) ); ?>" style="color:var(--accent-red); font-weight:bold;">Cancer Appeal</a></li>
               <li><a href="#" onclick="openModal(); return false;">Contribute Now</a></li>
             </ul>
           </div>
@@ -241,7 +240,16 @@
           logoEl.style.position = "relative";
         }
 
-        // Nav Links are permanently nested in hamburger drawer
+        // Shift Nav Links on desktop to clear the centered logo text
+        const navEl = document.getElementById("nav-links");
+        if (navEl) {
+          if (!isMobile) {
+            const navTranslation = pct * 160;
+            navEl.style.transform = "translateX(" + navTranslation + "px)";
+          } else {
+            navEl.style.transform = "";
+          }
+        }
       }
       
       window.addEventListener("scroll", updateLogoSize);
@@ -367,22 +375,8 @@
       const hamburger = document.getElementById("hamburger");
       const navLinks = document.getElementById("nav-links");
       if (hamburger) {
-        hamburger.addEventListener("click", (e) => {
-          e.stopPropagation();
+        hamburger.addEventListener("click", () => {
           navLinks.classList.toggle("active");
-        });
-      }
-      if (navLinks) {
-        navLinks.querySelectorAll("a").forEach(link => {
-          link.addEventListener("click", () => {
-            navLinks.classList.remove("active");
-          });
-        });
-        // Close menu on click outside
-        document.addEventListener("click", (e) => {
-          if (navLinks.classList.contains("active") && !navLinks.contains(e.target) && e.target !== hamburger) {
-            navLinks.classList.remove("active");
-          }
         });
       }
 

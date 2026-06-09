@@ -333,40 +333,22 @@
       }
       .nav-links {
         display: flex;
-        position: fixed;
-        top: 0;
-        right: -280px; /* Hidden offscreen by default across all devices */
-        left: auto;
-        width: 280px;
-        height: 100vh;
-        background: var(--white);
-        flex-direction: column;
-        justify-content: flex-start;
-        align-items: flex-start;
-        padding: 80px 30px 30px 30px;
-        box-shadow: -5px 0 20px rgba(0, 0, 0, 0.155);
-        transition: right 0.3s ease;
-        z-index: 1005; /* Keeps drawer on top of other header components */
-        gap: 20px;
-      }
-      .nav-links.active {
-        right: 0;
+        gap: 30px;
+        align-items: center;
+        flex: 1;
+        justify-content: center;
       }
       .nav-links a {
         text-decoration: none;
         color: var(--text-dark);
         font-weight: 500;
-        font-size: 1.15rem;
         transition: color 0.3s ease;
-        padding: 10px 0;
-        width: 100%;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
       }
       .nav-links a:hover {
         color: var(--secondary);
       }
       .hamburger {
-        display: flex; /* Always display hamburger as menu options reside inside the drawer */
+        display: none;
         background: none;
         border: none;
         color: var(--primary);
@@ -374,8 +356,6 @@
         padding: 0;
         align-items: center;
         justify-content: center;
-        z-index: 1010; /* Clickable above the nav-links drawer */
-        position: relative;
       }
       .hamburger svg {
         width: 28px;
@@ -1182,15 +1162,15 @@
       .sos-dot {
         width: 7px;
         height: 7px;
-        background-color: var(--cream);
+        background-color: #ffffff;
         border-radius: 50%;
         display: inline-block;
         animation: morse-sos 4s infinite;
-        box-shadow: 0 0 6px var(--cream);
+        box-shadow: 0 0 6px #ffffff;
       }
       .sos-banner {
         background-color: var(--accent-red);
-        color: var(--cream);
+        color: white;
         padding: 12px 20px;
         text-align: center;
         position: relative;
@@ -1225,10 +1205,10 @@
       .sos-banner-desc {
         font-size: 0.85rem;
         margin: 0;
-        color: rgba(253, 247, 231, 0.9);
+        color: rgba(255, 255, 255, 0.9);
       }
       .sos-banner-btn {
-        background-color: var(--cream);
+        background-color: white;
         color: var(--accent-red) !important;
         font-weight: 700;
         font-size: 0.72rem;
@@ -1373,7 +1353,7 @@
         border: 1px solid #2b3a5a;
         border-radius: 8px;
         padding: 5px;
-        background: var(--cream); /* Warm cream tone matching entire website */
+        background: #ffffff; /* Keep QR code background white for scannability */
       }
       .upi-id-text {
         margin-top: 10px;
@@ -1400,6 +1380,30 @@
         }
         .stats-section {
           background-attachment: scroll !important;
+        }
+        .nav-links {
+          display: flex;
+          position: fixed;
+          top: 0;
+          right: -280px; /* Hidden offscreen to the right */
+          left: auto;
+          width: 280px;
+          height: 100vh;
+          background: var(--white);
+          flex-direction: column;
+          justify-content: flex-start;
+          padding: 80px 30px 30px 30px;
+          box-shadow: -5px 0 20px rgba(0, 0, 0, 0.1);
+          transition: right 0.3s ease;
+          z-index: 999;
+        }
+        .nav-links.active {
+          right: 0;
+        }
+        .hamburger {
+          display: flex;
+          z-index: 1001;
+          position: relative;
         }
         .hero h1 {
           font-size: 2.2rem;
@@ -1539,7 +1543,6 @@
           <a href="./about.html">About</a>
           <a href="./projects.html">Projects</a>
           <a href="./volunteer.html">Volunteer</a>
-          <a href="./nimrat-kaur-blood-cancer-fundraiser.html" style="color: var(--accent-red); font-weight: 600;">Cancer Appeal</a>
         </nav>
 
         <div
@@ -1710,25 +1713,6 @@
         </p>
         <a href="punjab-flood-relief.html" class="sos-banner-btn">
           View & Support
-        </a>
-      </div>
-    </section>
-
-    <!-- Urgent Appeal: Cancer Support Nimrat Kaur -->
-    <section class="sos-banner" style="background: linear-gradient(135deg, #180911, #330d17); border-top: 1px solid var(--accent-red); margin-top: 0;">
-      <div class="sos-banner-container scroll-reveal">
-        <div class="sos-indicator" style="background: rgba(209, 61, 82, 0.2); color: var(--accent-red); border-color: rgba(209, 61, 82, 0.4);">
-          <span class="sos-dot" style="background-color: var(--accent-red); box-shadow: 0 0 6px var(--accent-red);"></span>
-          Urgent Medical Appeal
-        </div>
-        <h2 class="sos-banner-title" style="color: var(--cream);">
-          Save 2-Year-Old Nimrat Fight Cancer
-        </h2>
-        <p class="sos-banner-desc" style="color: var(--text-light);">
-          Diagnosed with aggressive Blood Cancer. Help her humble Gursikh family raise ₹7,00,000 for her oncology treatment & life-saving pediatric sessions.
-        </p>
-        <a href="nimrat-kaur-blood-cancer-fundraiser.html" class="sos-banner-btn" style="background-color: var(--accent-red); box-shadow: 0 4px 12px rgba(209,61,82,0.3);">
-          Donate Now
         </a>
       </div>
     </section>
@@ -2084,7 +2068,6 @@
                   >Contribute</a
                 >
               </li>
-              <li><a href="nimrat-kaur-blood-cancer-fundraiser.html" style="color:var(--accent-red); font-weight:bold;">Cancer Appeal</a></li>
               <li><a href="#">Privacy Policy & Terms</a></li>
             </ul>
           </div>
@@ -2341,7 +2324,16 @@
           logoEl.style.position = "relative";
         }
 
-        // Nav Links are permanently nested in hamburger drawer
+        // Shift Nav Links on desktop to clear the centered logo text
+        const navEl = document.getElementById("nav-links");
+        if (navEl) {
+          if (!isMobile) {
+            const navTranslation = pct * 160;
+            navEl.style.transform = "translateX(" + navTranslation + "px)";
+          } else {
+            navEl.style.transform = "";
+          }
+        }
       }
       
       window.addEventListener("scroll", updateLogoSize);
@@ -2457,22 +2449,8 @@
       const hamburger = document.getElementById("hamburger");
       const navLinks = document.getElementById("nav-links");
       if (hamburger) {
-        hamburger.addEventListener("click", (e) => {
-          e.stopPropagation();
+        hamburger.addEventListener("click", () => {
           navLinks.classList.toggle("active");
-        });
-      }
-      if (navLinks) {
-        navLinks.querySelectorAll("a").forEach(link => {
-          link.addEventListener("click", () => {
-            navLinks.classList.remove("active");
-          });
-        });
-        // Close menu on click outside
-        document.addEventListener("click", (e) => {
-          if (navLinks.classList.contains("active") && !navLinks.contains(e.target) && e.target !== hamburger) {
-            navLinks.classList.remove("active");
-          }
         });
       }
     </script>
