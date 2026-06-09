@@ -76,9 +76,9 @@
               ?>
               <div class="nav-links">
                 <a href="<?php echo esc_url( home_url( '/' ) ); ?>">Home</a>
-                <a href="#about">About</a>
-                <a href="#what-we-do">What We Do</a>
-                <a href="#volunteer">Volunteer</a>
+                <a href="<?php echo esc_url( home_url( '/about/' ) ); ?>">About</a>
+                <a href="<?php echo esc_url( home_url( '/projects/' ) ); ?>">Projects</a>
+                <a href="<?php echo esc_url( home_url( '/volunteer/' ) ); ?>">Volunteer</a>
               </div>
               <?php
           }

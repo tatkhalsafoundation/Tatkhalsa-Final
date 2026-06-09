@@ -91,9 +91,11 @@
             <h4>Quick Links</h4>
             <ul class="footer-links">
               <li><a href="<?php echo esc_url( home_url( '/' ) ); ?>">Home</a></li>
-              <li><a href="#about">About</a></li>
+              <li><a href="<?php echo esc_url( home_url( '/about/' ) ); ?>">About Us</a></li>
+              <li><a href="<?php echo esc_url( home_url( '/projects/' ) ); ?>">Projects</a></li>
+              <li><a href="<?php echo esc_url( home_url( '/volunteer/' ) ); ?>">Volunteer</a></li>
+              <li><a href="<?php echo esc_url( home_url( '/punjab-flood-relief/' ) ); ?>">Punjab Flood Relief</a></li>
               <li><a href="#" onclick="openModal(); return false;">Contribute Now</a></li>
-              <li><a href="<?php echo esc_url( home_url('/privacy-policy/') ); ?>">Privacy Policy & Terms</a></li>
             </ul>
           </div>
         </div>
