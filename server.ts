@@ -7,13 +7,15 @@ async function startServer() {
   const app = express();
   const PORT = 3000;
 
+  const THEME_PATH = path.join(process.cwd(), "wp-content", "themes", "tatkhalsa");
+
   // Render processed PHP theme content
   function renderPHP(filePath: string): string {
     let content = fs.readFileSync(filePath, "utf8");
 
     // Replace header
     if (content.includes("get_header()")) {
-      const headerPath = path.join(process.cwd(), "header.php");
+      const headerPath = path.join(THEME_PATH, "header.php");
       const headerContent = fs.existsSync(headerPath) ? fs.readFileSync(headerPath, "utf8") : "";
       content = content.replace(/<\?php\s*get_header\(\);\s*\?>/g, headerContent);
       content = content.replace(/<\?php\s*get_header\(\);\?>/g, headerContent);
@@ -22,7 +24,7 @@ async function startServer() {
 
     // Replace footer
     if (content.includes("get_footer()")) {
-      const footerPath = path.join(process.cwd(), "footer.php");
+      const footerPath = path.join(THEME_PATH, "footer.php");
       const footerContent = fs.existsSync(footerPath) ? fs.readFileSync(footerPath, "utf8") : "";
       content = content.replace(/<\?php\s*get_footer\(\);\s*\?>/g, footerContent);
       content = content.replace(/<\?php\s*get_footer\(\);\?>/g, footerContent);
@@ -69,9 +71,18 @@ async function startServer() {
     return content;
   }
 
+  // Support direct static serving of style.css and Logo.jpg from theme path
+  app.get("/style.css", (req, res) => {
+    res.sendFile(path.join(THEME_PATH, "style.css"));
+  });
+
+  app.get("/Logo.jpg", (req, res) => {
+    res.sendFile(path.join(THEME_PATH, "Logo.jpg"));
+  });
+
   // Intercept requests to / or index.php
   app.get("/", (req, res) => {
-    const indexPath = path.join(process.cwd(), "index.php");
+    const indexPath = path.join(THEME_PATH, "index.php");
     if (fs.existsSync(indexPath)) {
       const parsedHTML = renderPHP(indexPath);
       res.setHeader("Content-Type", "text/html");
@@ -82,7 +93,7 @@ async function startServer() {
   });
 
   app.get("/index.php", (req, res) => {
-    const indexPath = path.join(process.cwd(), "index.php");
+    const indexPath = path.join(THEME_PATH, "index.php");
     if (fs.existsSync(indexPath)) {
       const parsedHTML = renderPHP(indexPath);
       res.setHeader("Content-Type", "text/html");
@@ -113,7 +124,7 @@ async function startServer() {
     const templateName = pageTemplateMap[pageName] || pageTemplateMap[pageName.toLowerCase()];
 
     if (templateName) {
-      const filePath = path.join(process.cwd(), templateName);
+      const filePath = path.join(THEME_PATH, templateName);
       if (fs.existsSync(filePath)) {
         const parsedHTML = renderPHP(filePath);
         res.setHeader("Content-Type", "text/html");
@@ -141,6 +152,7 @@ async function startServer() {
     const distPath = path.join(process.cwd(), 'dist');
     app.use(express.static(distPath));
     app.use(express.static(process.cwd())); // serve files from root in prod
+    app.use(express.static(THEME_PATH)); // serve files from theme path in prod (e.g. style.css)
   }
 
   app.listen(PORT, "0.0.0.0", () => {
