@@ -270,11 +270,11 @@ h6 {
 }
 @media (max-width: 900px) {
   .scrolling-logo-wrapper {
-    top: 75px;
+    top: 60px;
   }
   .scrolling-logo {
-    width: 160px;
-    height: 160px;
+    width: 90px;
+    height: 90px;
   }
   .logo-text {
     font-size: 1.1rem;

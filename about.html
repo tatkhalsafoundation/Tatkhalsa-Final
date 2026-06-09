@@ -315,11 +315,11 @@
        }
       @media (max-width: 900px) {
         .scrolling-logo-wrapper {
-          top: 75px;
+          top: 60px;
         }
         .scrolling-logo {
-          width: 160px;
-          height: 160px;
+          width: 90px;
+          height: 90px;
         }
         .logo-text {
           font-size: 1.1rem;
@@ -2061,10 +2061,10 @@
         
         // Base sizes for desktop vs mobile
         const isMobile = window.innerWidth <= 900;
-        const startSize = isMobile ? 160 : 320;
-        const endSize = isMobile ? 48 : 64;
-        const startTop = isMobile ? 75 : 90;
-        const endTop = isMobile ? 13.5 : 5.5;
+        const startSize = isMobile ? 90 : 320;
+        const endSize = isMobile ? 45 : 64;
+        const startTop = isMobile ? 60 : 90;
+        const endTop = isMobile ? 15 : 5.5;
         
         let pct = sY / maxScroll;
         if (pct < 0) pct = 0;
@@ -2076,6 +2076,36 @@
         scrollingLogo.style.width = currentSize + "px";
         scrollingLogo.style.height = currentSize + "px";
         scrollingLogoWrapper.style.top = currentTop + "px";
+
+        // Dynamic horizontal translation
+        const leftOffset = isMobile ? 20 : Math.max(20, (window.innerWidth - 1200) / 2 + 20);
+        const startLeft = window.innerWidth / 2;
+        const endLeft = leftOffset + (currentSize / 2);
+        const currentLeft = startLeft - pct * (startLeft - endLeft);
+        
+        scrollingLogoWrapper.style.left = currentLeft + "px";
+        scrollingLogoWrapper.style.transform = "translateX(-50%)";
+
+        // Simultaneously slide logo text from left to center
+        const logoEl = document.querySelector(".header .logo");
+        if (logoEl) {
+          const logoWidth = logoEl.offsetWidth || 180;
+          const targetTranslation = (window.innerWidth / 2) - (leftOffset + logoWidth / 2);
+          const currentTranslation = pct * targetTranslation;
+          logoEl.style.transform = "translateX(" + currentTranslation + "px)";
+          logoEl.style.position = "relative";
+        }
+
+        // Shift Nav Links on desktop to clear the centered logo text
+        const navEl = document.getElementById("nav-links");
+        if (navEl) {
+          if (!isMobile) {
+            const navTranslation = pct * 160;
+            navEl.style.transform = "translateX(" + navTranslation + "px)";
+          } else {
+            navEl.style.transform = "";
+          }
+        }
       }
       
       window.addEventListener("scroll", updateLogoSize);
