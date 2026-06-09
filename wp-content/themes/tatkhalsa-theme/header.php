@@ -63,18 +63,18 @@
         </a>
 
         <!-- Dynamic Menu Setup -->
-        <nav class="nav-menu-container" id="nav-links">
+        <nav class="nav-links" id="nav-links">
           <?php
           if ( has_nav_menu( 'primary' ) ) {
               wp_nav_menu( array(
                   'theme_location' => 'primary',
                   'container'      => false,
-                  'items_wrap'     => '<ul class="nav-links">%3$s</ul>',
+                  'items_wrap'     => '<ul>%3$s</ul>',
               ) );
           } else {
               // Custom default semantic layout
               ?>
-              <div class="nav-links">
+              <div>
                 <a href="<?php echo esc_url( home_url( '/' ) ); ?>">Home</a>
                 <a href="<?php echo esc_url( home_url( '/about/' ) ); ?>">About</a>
                 <a href="<?php echo esc_url( home_url( '/projects/' ) ); ?>">Projects</a>

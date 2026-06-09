@@ -333,22 +333,40 @@
       }
       .nav-links {
         display: flex;
-        gap: 30px;
-        align-items: center;
-        flex: 1;
-        justify-content: center;
+        position: fixed;
+        top: 0;
+        right: -280px; /* Hidden offscreen by default across all devices */
+        left: auto;
+        width: 280px;
+        height: 100vh;
+        background: var(--white);
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: flex-start;
+        padding: 80px 30px 30px 30px;
+        box-shadow: -5px 0 20px rgba(0, 0, 0, 0.155);
+        transition: right 0.3s ease;
+        z-index: 1005; /* Keeps drawer on top of other header components */
+        gap: 20px;
+      }
+      .nav-links.active {
+        right: 0;
       }
       .nav-links a {
         text-decoration: none;
         color: var(--text-dark);
         font-weight: 500;
+        font-size: 1.15rem;
         transition: color 0.3s ease;
+        padding: 10px 0;
+        width: 100%;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
       }
       .nav-links a:hover {
         color: var(--secondary);
       }
       .hamburger {
-        display: none;
+        display: flex; /* Always display hamburger as menu options reside inside the drawer */
         background: none;
         border: none;
         color: var(--primary);
@@ -356,6 +374,8 @@
         padding: 0;
         align-items: center;
         justify-content: center;
+        z-index: 1010; /* Clickable above the nav-links drawer */
+        position: relative;
       }
       .hamburger svg {
         width: 28px;
@@ -442,6 +462,67 @@
       /* General Sections */
       section {
         padding: 80px 0;
+      }
+      /* Gurbani Quote Section styles */
+      .gurbani-quote-section {
+        background-color: var(--bg-shade-3); /* Deep navy shade */
+        text-align: center;
+        padding: 60px 20px;
+        border-top: 1px solid rgba(212, 175, 55, 0.2);
+        border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+        position: relative;
+        overflow: hidden;
+      }
+      .gurbani-quote-container {
+        max-width: 900px;
+        margin: 0 auto;
+        position: relative;
+        z-index: 2;
+      }
+      .gurbani-ornament {
+        color: var(--secondary);
+        font-size: 1.2rem;
+        margin-bottom: 20px;
+        letter-spacing: 0.2em;
+        opacity: 0.8;
+      }
+      .gurbani-gurmukhi {
+        font-family: var(--font-serif);
+        font-size: 1.8rem;
+        color: var(--secondary);
+        font-weight: 700;
+        margin-bottom: 15px;
+        line-height: 1.5;
+        letter-spacing: 0.02em;
+      }
+      .gurbani-translit {
+        font-family: var(--font-sans);
+        font-size: 0.95rem;
+        color: var(--text-light);
+        font-style: italic;
+        margin-bottom: 20px;
+        line-height: 1.6;
+        opacity: 0.8;
+      }
+      .gurbani-english {
+        font-family: var(--font-serif);
+        font-size: 1.25rem;
+        color: var(--primary);
+        line-height: 1.6;
+        margin-bottom: 20px;
+        font-weight: 500;
+      }
+      .gurbani-source {
+        font-family: var(--font-mono), monospace;
+        font-size: 0.8rem;
+        color: var(--secondary);
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        display: inline-block;
+        padding: 4px 12px;
+        background: rgba(212, 175, 55, 0.06);
+        border-radius: 4px;
+        border: 1px solid rgba(212, 175, 55, 0.15);
       }
       .section-title {
         text-align: center;
@@ -1073,6 +1154,99 @@
         }
       }
 
+      /* SOS Blinking Animation & Classes */
+      @keyframes morse-sos {
+        0%, 3%, 6%, 9%, 12%, 15% { opacity: 1; }
+        1.5%, 4.5%, 7.5%, 10.5%, 13.5% { opacity: 0.2; } /* S: 3 short blinks */
+        16.5%, 28.5% { opacity: 0.2; } /* Gap */
+        30%, 36%, 42% { opacity: 1; }
+        33%, 39%, 45% { opacity: 0.2; } /* O: 3 long blinks */
+        46.5%, 58.5% { opacity: 0.2; } /* Gap */
+        60%, 63%, 66%, 69%, 72%, 75% { opacity: 1; }
+        61.5%, 64.5%, 67.5%, 70.5%, 73.5% { opacity: 0.2; } /* S: 3 short blinks */
+        76.5%, 100% { opacity: 0.2; } /* Pause before repeating */
+      }
+      .sos-indicator {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        background: rgba(255, 255, 255, 0.15);
+        padding: 3px 8px;
+        border-radius: 4px;
+        font-family: var(--font-mono);
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        font-size: 0.7rem;
+      }
+      .sos-dot {
+        width: 7px;
+        height: 7px;
+        background-color: #ffffff;
+        border-radius: 50%;
+        display: inline-block;
+        animation: morse-sos 4s infinite;
+        box-shadow: 0 0 6px #ffffff;
+      }
+      .sos-banner {
+        background-color: var(--accent-red);
+        color: white;
+        padding: 12px 20px;
+        text-align: center;
+        position: relative;
+        z-index: 1000;
+        border-radius: 12px;
+        max-width: calc(100% - 30px);
+        width: 1200px;
+        margin: 20px auto;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+      }
+      .sos-banner-container {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 12px;
+        flex-wrap: wrap;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 15px;
+      }
+      .sos-banner-title {
+        font-family: var(--font-sans);
+        font-size: 0.9rem;
+        font-weight: 700;
+        margin: 0;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        text-transform: uppercase;
+        letter-spacing: 0.03em;
+      }
+      .sos-banner-desc {
+        font-size: 0.85rem;
+        margin: 0;
+        color: rgba(255, 255, 255, 0.9);
+      }
+      .sos-banner-btn {
+        background-color: white;
+        color: var(--accent-red) !important;
+        font-weight: 700;
+        font-size: 0.72rem;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        border: none;
+        padding: 5px 12px;
+        border-radius: 4px;
+        text-decoration: none;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        transition: opacity 0.2s, transform 0.2s;
+        white-space: nowrap;
+      }
+      .sos-banner-btn:hover {
+        opacity: 0.95;
+        transform: translateY(-1px);
+      }
+
       /* Scroll to top button */
       .back-to-top {
         position: fixed;
@@ -1226,30 +1400,6 @@
         }
         .stats-section {
           background-attachment: scroll !important;
-        }
-        .nav-links {
-          display: flex;
-          position: fixed;
-          top: 0;
-          right: -280px; /* Hidden offscreen to the right */
-          left: auto;
-          width: 280px;
-          height: 100vh;
-          background: var(--white);
-          flex-direction: column;
-          justify-content: flex-start;
-          padding: 80px 30px 30px 30px;
-          box-shadow: -5px 0 20px rgba(0, 0, 0, 0.1);
-          transition: right 0.3s ease;
-          z-index: 999;
-        }
-        .nav-links.active {
-          right: 0;
-        }
-        .hamburger {
-          display: flex;
-          z-index: 1001;
-          position: relative;
         }
         .hero h1 {
           font-size: 2.2rem;
@@ -1545,50 +1695,21 @@
     </section>
 
     <!-- Hot Update: Punjab Flood Relief -->
-    <section
-      style="
-        background-color: var(--accent-red);
-        color: white;
-        padding: 40px 0;
-        text-align: center;
-        position: relative;
-        z-index: 2;
-      "
-    >
-      <div class="container scroll-reveal">
-        <h2
-          style="
-            font-size: 2.2rem;
-            margin-bottom: 15px;
-            font-family: var(--font-serif);
-          "
-        >
+    <section class="sos-banner">
+      <div class="sos-banner-container scroll-reveal">
+        <div class="sos-indicator">
+          <span class="sos-dot"></span>
+          Emergency Update
+        </div>
+        <h2 class="sos-banner-title">
           Punjab Flood Relief 2025
         </h2>
-        <p
-          style="
-            font-size: 1.1rem;
-            max-width: 600px;
-            margin: 0 auto 20px auto;
-            color: rgba(255, 255, 255, 0.9);
-          "
-        >
-          Emergency response initiated. Our volunteer teams are actively
-          providing medical aid, Langar, and rescuing stranded families.
+        <p class="sos-banner-desc">
+          Emergency response initiated. Our volunteer teams are actively providing medical aid, Langar, and rescue.
         </p>
-        <a
-          href="punjab-flood-relief.html"
-          class="btn"
-          style="
-            background-color: white;
-            color: var(--accent-red);
-            font-weight: bold;
-            border: none;
-            padding: 12px 30px;
-            border-radius: 50px;
-          "
-          >View Relief Efforts & Contribute</a
-        >
+        <a href="punjab-flood-relief.html" class="sos-banner-btn">
+          View & Support
+        </a>
       </div>
     </section>
 
@@ -1819,6 +1940,17 @@
             </div>
           </div>
         </div>
+      </div>
+    </section>
+
+    <!-- Gurbani Quote Section -->
+    <section class="gurbani-quote-section scroll-reveal">
+      <div class="gurbani-quote-container">
+        <div class="gurbani-ornament">✧ ✦ ✧</div>
+        <div class="gurbani-gurmukhi">ਵਿਚਿ ਦੁਨੀਆ ਸੇਵ ਕਮਾਈਐ ॥ ਤਾ ਦਰਗਹ ਬੈਸਣੁ ਪਾਈਐ ॥</div>
+        <div class="gurbani-translit">vich dhuneeaa saev kamaaeeai || thaa dharageh baisan paaeeai ||</div>
+        <div class="gurbani-english">"In the midst of this world, perform selfless service, and you shall find a place of honor in the Divine Court."</div>
+        <div class="gurbani-source">Sri Guru Granth Sahib Ji — Ang 26</div>
       </div>
     </section>
 
@@ -2188,16 +2320,7 @@
           logoEl.style.position = "relative";
         }
 
-        // Shift Nav Links on desktop to clear the centered logo text
-        const navEl = document.getElementById("nav-links");
-        if (navEl) {
-          if (!isMobile) {
-            const navTranslation = pct * 160;
-            navEl.style.transform = "translateX(" + navTranslation + "px)";
-          } else {
-            navEl.style.transform = "";
-          }
-        }
+        // Nav Links are permanently nested in hamburger drawer
       }
       
       window.addEventListener("scroll", updateLogoSize);
@@ -2313,8 +2436,22 @@
       const hamburger = document.getElementById("hamburger");
       const navLinks = document.getElementById("nav-links");
       if (hamburger) {
-        hamburger.addEventListener("click", () => {
+        hamburger.addEventListener("click", (e) => {
+          e.stopPropagation();
           navLinks.classList.toggle("active");
+        });
+      }
+      if (navLinks) {
+        navLinks.querySelectorAll("a").forEach(link => {
+          link.addEventListener("click", () => {
+            navLinks.classList.remove("active");
+          });
+        });
+        // Close menu on click outside
+        document.addEventListener("click", (e) => {
+          if (navLinks.classList.contains("active") && !navLinks.contains(e.target) && e.target !== hamburger) {
+            navLinks.classList.remove("active");
+          }
         });
       }
     </script>

@@ -315,5 +315,16 @@ get_header();
       </div>
     </section>
 
+<!-- Gurbani Quote Section -->
+<section class="gurbani-quote-section scroll-reveal">
+  <div class="gurbani-quote-container">
+    <div class="gurbani-ornament">✧ ✦ ✧</div>
+    <div class="gurbani-gurmukhi">ਸਭ ਮਹਿ ਜੋਤਿ ਜੋਤਿ ਹੈ ਸੋਇ ॥ ਤਿਸ ਦੈ ਚਾਨਣਿ ਸਭ ਮਹਿ ਚਾਨਣੁ ਹੋਇ ॥</div>
+    <div class="gurbani-translit">sabh meh joth joth hai soe || thas dhai chaanan sabh meh chaanan hoi ||</div>
+    <div class="gurbani-english">"The Divine Light is within everyone, and everyone is illuminated by that same Light."</div>
+    <div class="gurbani-source">Sri Guru Granth Sahib Ji — Ang 13</div>
+  </div>
+</section>
+
 <?php
 get_footer();

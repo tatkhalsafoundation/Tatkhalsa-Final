@@ -123,17 +123,20 @@ get_header();
 </section>
 
 <!-- Hot Update Callout Section: Punjab Flood Relief -->
-<section style="background-color: var(--accent-red); color: white; padding: 40px 0; text-align: center; position: relative; z-index: 2;">
-  <div class="container scroll-reveal">
-    <h2 style="font-size: 2.2rem; margin-bottom: 15px; font-family: var(--font-serif);">
+<section class="sos-banner">
+  <div class="sos-banner-container scroll-reveal">
+    <div class="sos-indicator">
+      <span class="sos-dot"></span>
+      Emergency Update
+    </div>
+    <h2 class="sos-banner-title">
       Punjab Flood Relief 2025
     </h2>
-    <p style="font-size: 1.1rem; max-width: 600px; margin: 0 auto 20px auto; color: rgba(255, 255, 255, 0.9);">
-      Emergency response initiated. Our volunteer teams are actively
-      providing medical aid, Langar, and rescuing stranded families.
+    <p class="sos-banner-desc">
+      Emergency response initiated. Our volunteer teams are actively providing medical aid, Langar, and rescue.
     </p>
-    <a href="<?php echo esc_url( home_url( '/punjab-flood-relief/' ) ); ?>" class="btn" style="background-color: white; color: var(--accent-red); font-weight: bold; border: none; padding: 12px 30px; border-radius: 50px;">
-      View Relief Efforts & Contribute
+    <a href="<?php echo esc_url( home_url( '/punjab-flood-relief/' ) ); ?>" class="sos-banner-btn">
+      View & Support
     </a>
   </div>
 </section>
@@ -301,6 +304,17 @@ get_header();
         </div>
       </div>
     </div>
+  </div>
+</section>
+
+<!-- Gurbani Quote Section -->
+<section class="gurbani-quote-section scroll-reveal">
+  <div class="gurbani-quote-container">
+    <div class="gurbani-ornament">✧ ✦ ✧</div>
+    <div class="gurbani-gurmukhi">ਵਿਚਿ ਦੁਨੀਆ ਸੇਵ ਕਮਾਈਐ ॥ ਤਾ ਦਰਗਹ ਬੈਸਣੁ ਪਾਈਐ ॥</div>
+    <div class="gurbani-translit">vich dhuneeaa saev kamaaeeai || thaa dharageh baisan paaeeai ||</div>
+    <div class="gurbani-english">"In the midst of this world, perform selfless service, and you shall find a place of honor in the Divine Court."</div>
+    <div class="gurbani-source">Sri Guru Granth Sahib Ji — Ang 26</div>
   </div>
 </section>
 

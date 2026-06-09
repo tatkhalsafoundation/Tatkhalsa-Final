@@ -330,22 +330,40 @@
       }
       .nav-links {
         display: flex;
-        gap: 30px;
-        align-items: center;
-        flex: 1;
-        justify-content: center;
+        position: fixed;
+        top: 0;
+        right: -280px; /* Hidden offscreen by default across all devices */
+        left: auto;
+        width: 280px;
+        height: 100vh;
+        background: var(--white);
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: flex-start;
+        padding: 80px 30px 30px 30px;
+        box-shadow: -5px 0 20px rgba(0, 0, 0, 0.155);
+        transition: right 0.3s ease;
+        z-index: 1005; /* Keeps drawer on top of other header components */
+        gap: 20px;
+      }
+      .nav-links.active {
+        right: 0;
       }
       .nav-links a {
         text-decoration: none;
         color: var(--text-dark);
         font-weight: 500;
+        font-size: 1.15rem;
         transition: color 0.3s ease;
+        padding: 10px 0;
+        width: 100%;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
       }
       .nav-links a:hover {
         color: var(--secondary);
       }
       .hamburger {
-        display: none;
+        display: flex; /* Always display hamburger as menu options reside inside the drawer */
         background: none;
         border: none;
         color: var(--primary);
@@ -353,6 +371,8 @@
         padding: 0;
         align-items: center;
         justify-content: center;
+        z-index: 1010; /* Clickable above the nav-links drawer */
+        position: relative;
       }
       .hamburger svg {
         width: 28px;
@@ -439,6 +459,67 @@
       /* General Sections */
       section {
         padding: 80px 0;
+      }
+      /* Gurbani Quote Section styles */
+      .gurbani-quote-section {
+        background-color: var(--bg-shade-3); /* Deep navy shade */
+        text-align: center;
+        padding: 60px 20px;
+        border-top: 1px solid rgba(212, 175, 55, 0.2);
+        border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+        position: relative;
+        overflow: hidden;
+      }
+      .gurbani-quote-container {
+        max-width: 900px;
+        margin: 0 auto;
+        position: relative;
+        z-index: 2;
+      }
+      .gurbani-ornament {
+        color: var(--secondary);
+        font-size: 1.2rem;
+        margin-bottom: 20px;
+        letter-spacing: 0.2em;
+        opacity: 0.8;
+      }
+      .gurbani-gurmukhi {
+        font-family: var(--font-serif);
+        font-size: 1.8rem;
+        color: var(--secondary);
+        font-weight: 700;
+        margin-bottom: 15px;
+        line-height: 1.5;
+        letter-spacing: 0.02em;
+      }
+      .gurbani-translit {
+        font-family: var(--font-sans);
+        font-size: 0.95rem;
+        color: var(--text-light);
+        font-style: italic;
+        margin-bottom: 20px;
+        line-height: 1.6;
+        opacity: 0.8;
+      }
+      .gurbani-english {
+        font-family: var(--font-serif);
+        font-size: 1.25rem;
+        color: var(--primary);
+        line-height: 1.6;
+        margin-bottom: 20px;
+        font-weight: 500;
+      }
+      .gurbani-source {
+        font-family: var(--font-mono), monospace;
+        font-size: 0.8rem;
+        color: var(--secondary);
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        display: inline-block;
+        padding: 4px 12px;
+        background: rgba(212, 175, 55, 0.06);
+        border-radius: 4px;
+        border: 1px solid rgba(212, 175, 55, 0.15);
       }
       .section-title {
         text-align: center;
@@ -1224,30 +1305,6 @@
         .stats-section {
           background-attachment: scroll !important;
         }
-        .nav-links {
-          display: flex;
-          position: fixed;
-          top: 0;
-          right: -280px; /* Hidden offscreen to the right */
-          left: auto;
-          width: 280px;
-          height: 100vh;
-          background: var(--white);
-          flex-direction: column;
-          justify-content: flex-start;
-          padding: 80px 30px 30px 30px;
-          box-shadow: -5px 0 20px rgba(0, 0, 0, 0.1);
-          transition: right 0.3s ease;
-          z-index: 999;
-        }
-        .nav-links.active {
-          right: 0;
-        }
-        .hamburger {
-          display: flex;
-          z-index: 1001;
-          position: relative;
-        }
         .hero h1 {
           font-size: 2.2rem;
         }
@@ -1560,6 +1617,17 @@
             </div>
           </div>
         </div>
+      </div>
+    </section>
+
+    <!-- Gurbani Quote Section -->
+    <section class="gurbani-quote-section scroll-reveal">
+      <div class="gurbani-quote-container">
+        <div class="gurbani-ornament">✧ ✦ ✧</div>
+        <div class="gurbani-gurmukhi">ਸੇਵਾ ਕਰਤ ਹੋਇ ਨਿਹਕਾਮੀ ॥ ਤਿਸ ਕੋ ਹੋਤ ਪਰਾਪਤਿ ਸੁਆਮੀ ॥</div>
+        <div class="gurbani-translit">seva karat hoi nihkaamee || tis ko hot paraapat suaamee ||</div>
+        <div class="gurbani-english">"One who performs selfless service without thought of reward, shall attain the Lord Master."</div>
+        <div class="gurbani-source">Sri Guru Granth Sahib Ji — Ang 286</div>
       </div>
     </section>
 
@@ -1929,16 +1997,7 @@
           logoEl.style.position = "relative";
         }
 
-        // Shift Nav Links on desktop to clear the centered logo text
-        const navEl = document.getElementById("nav-links");
-        if (navEl) {
-          if (!isMobile) {
-            const navTranslation = pct * 160;
-            navEl.style.transform = "translateX(" + navTranslation + "px)";
-          } else {
-            navEl.style.transform = "";
-          }
-        }
+        // Nav Links are permanently nested in hamburger drawer
       }
       
       window.addEventListener("scroll", updateLogoSize);
@@ -2054,8 +2113,22 @@
       const hamburger = document.getElementById("hamburger");
       const navLinks = document.getElementById("nav-links");
       if (hamburger) {
-        hamburger.addEventListener("click", () => {
+        hamburger.addEventListener("click", (e) => {
+          e.stopPropagation();
           navLinks.classList.toggle("active");
+        });
+      }
+      if (navLinks) {
+        navLinks.querySelectorAll("a").forEach(link => {
+          link.addEventListener("click", () => {
+            navLinks.classList.remove("active");
+          });
+        });
+        // Close menu on click outside
+        document.addEventListener("click", (e) => {
+          if (navLinks.classList.contains("active") && !navLinks.contains(e.target) && e.target !== hamburger) {
+            navLinks.classList.remove("active");
+          }
         });
       }
     </script>

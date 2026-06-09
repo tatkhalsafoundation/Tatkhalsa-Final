@@ -271,5 +271,16 @@ get_header();
       </div>
     </section>
 
+<!-- Gurbani Quote Section -->
+<section class="gurbani-quote-section scroll-reveal">
+  <div class="gurbani-quote-container">
+    <div class="gurbani-ornament">✧ ✦ ✧</div>
+    <div class="gurbani-gurmukhi">ਨਾਨਕ ਨਾਮ ਚੜ੍ਹਦੀ ਕਲਾ ॥ ਤੇਰੇ ਭਾਣੇ ਸਰਬੱਤ ਦਾ ਭਲਾ ॥</div>
+    <div class="gurbani-translit">Nanak Naam Chardhi Kala || Tere Bhane Sarbat Da Bhala ||</div>
+    <div class="gurbani-english">"O Nanak, with the Divine Name comes high spirits! And by Your grace, may there be welfare and prosperity for all humanity."</div>
+    <div class="gurbani-source">Universal Sikh Prayer for All Humanity</div>
+  </div>
+</section>
+
 <?php
 get_footer();

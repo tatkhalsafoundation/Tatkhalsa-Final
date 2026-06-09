@@ -85,5 +85,16 @@ get_header();
       </div>
     </section>
 
+<!-- Gurbani Quote Section -->
+<section class="gurbani-quote-section scroll-reveal">
+  <div class="gurbani-quote-container">
+    <div class="gurbani-ornament">✧ ✦ ✧</div>
+    <div class="gurbani-gurmukhi">ਨਾ ਕੋ ਬੈਰੀ ਨਹੀ ਬਿਗਾਨਾ ਸਗਲ ਸੰਗਿ ਹਮ ਕਉ ਬਨਿ ਆਈ ॥</div>
+    <div class="gurbani-translit">Na Ko Bairee Nahee Bigaanaa Sagal Sang Ham Kau Ban Aaee ||</div>
+    <div class="gurbani-english">"No one is my enemy, and no one is a stranger to us; we are in harmony with everyone."</div>
+    <div class="gurbani-source">Sri Guru Granth Sahib Ji — Ang 1299</div>
+  </div>
+</section>
+
 <?php
 get_footer();

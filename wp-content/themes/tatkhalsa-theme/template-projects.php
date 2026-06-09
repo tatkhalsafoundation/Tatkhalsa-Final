@@ -148,5 +148,16 @@ get_header();
       </div>
     </section>
 
+<!-- Gurbani Quote Section -->
+<section class="gurbani-quote-section scroll-reveal">
+  <div class="gurbani-quote-container">
+    <div class="gurbani-ornament">✧ ✦ ✧</div>
+    <div class="gurbani-gurmukhi">ਸੇਵਾ ਕਰਤ ਹੋਇ ਨਿਹਕਾਮੀ ॥ ਤਿਸ ਕੋ ਹੋਤ ਪਰਾਪਤਿ ਸੁਆਮੀ ॥</div>
+    <div class="gurbani-translit">seva karat hoi nihkaamee || tis ko hot paraapat suaamee ||</div>
+    <div class="gurbani-english">"One who performs selfless service without thought of reward, shall attain the Lord Master."</div>
+    <div class="gurbani-source">Sri Guru Granth Sahib Ji — Ang 286</div>
+  </div>
+</section>
+
 <?php
 get_footer();

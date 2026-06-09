@@ -240,16 +240,7 @@
           logoEl.style.position = "relative";
         }
 
-        // Shift Nav Links on desktop to clear the centered logo text
-        const navEl = document.getElementById("nav-links");
-        if (navEl) {
-          if (!isMobile) {
-            const navTranslation = pct * 160;
-            navEl.style.transform = "translateX(" + navTranslation + "px)";
-          } else {
-            navEl.style.transform = "";
-          }
-        }
+        // Nav Links are permanently nested in hamburger drawer
       }
       
       window.addEventListener("scroll", updateLogoSize);
@@ -375,8 +366,22 @@
       const hamburger = document.getElementById("hamburger");
       const navLinks = document.getElementById("nav-links");
       if (hamburger) {
-        hamburger.addEventListener("click", () => {
+        hamburger.addEventListener("click", (e) => {
+          e.stopPropagation();
           navLinks.classList.toggle("active");
+        });
+      }
+      if (navLinks) {
+        navLinks.querySelectorAll("a").forEach(link => {
+          link.addEventListener("click", () => {
+            navLinks.classList.remove("active");
+          });
+        });
+        // Close menu on click outside
+        document.addEventListener("click", (e) => {
+          if (navLinks.classList.contains("active") && !navLinks.contains(e.target) && e.target !== hamburger) {
+            navLinks.classList.remove("active");
+          }
         });
       }
 
