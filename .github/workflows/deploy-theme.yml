@@ -1,0 +1,25 @@
+name: Deploy WordPress Theme to Hostinger
+
+on:
+  push:
+    branches:
+      - main # Or your default branch (e.g., master)
+
+jobs:
+  web-deploy:
+    name: Sync Theme
+    runs-on: ubuntu-latest
+    steps:
+      - name: 🚚 Get latest code
+        uses: actions/checkout@v3
+
+      - name: 📂 Sync custom theme folder
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          server-dir: public_html/wp-content/themes/tatkhalsa-theme/
+          local-dir: wp-content/themes/tatkhalsa-theme/
+          # This ensures only your theme files are updated on Hostinger,
+          # leaving WordPress core, plugins, and configuration files untouched.
