@@ -86,9 +86,6 @@
         </nav>
 
         <div class="header-actions" style="display: flex; justify-content: flex-end; align-items: center; gap: 15px;">
-          <button class="top-bar-btn" style="margin: 0" onclick="openModal()">
-            Contribute Now
-          </button>
           <button class="hamburger" id="hamburger" aria-label="Toggle Navigation">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <line x1="3" y1="12" x2="21" y2="12"></line>
