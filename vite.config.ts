@@ -14,15 +14,7 @@ export default defineConfig(() => {
     },
     build: {
       outDir: "dist",
-      emptyOutDir: true,
-      rollupOptions: {
-        input: {
-          main: path.resolve(__dirname, 'index.html'),
-          about: path.resolve(__dirname, 'about.html'),
-          projects: path.resolve(__dirname, 'projects.html'),
-          volunteer: path.resolve(__dirname, 'volunteer.html')
-        }
-      }
+      emptyOutDir: true
     },
     publicDir: "public",
     server: {

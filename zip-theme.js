@@ -3,11 +3,27 @@ import path from 'path';
 
 try {
   const zip = new AdmZip();
-  const themeDir = path.join(process.cwd(), 'wp-content', 'themes', 'tatkhalsa-theme');
   const outputPath = path.join(process.cwd(), 'tatkhalsa-theme.zip');
+  const destFolder = 'tatkhalsa-theme';
 
-  // Add the local folder under the folder 'tatkhalsa-theme' inside the zip so WordPress installs it in its own folder
-  zip.addLocalFolder(themeDir, 'tatkhalsa-theme');
+  // Add the root level WordPress theme files directly
+  const filesToZip = [
+    'style.css',
+    'Logo.jpg',
+    'functions.php',
+    'header.php',
+    'footer.php',
+    'index.php',
+    'template-about.php',
+    'template-projects.php',
+    'template-punjab-flood-relief.php',
+    'template-volunteer.php'
+  ];
+
+  filesToZip.forEach(file => {
+    const filePath = path.join(process.cwd(), file);
+    zip.addLocalFile(filePath, destFolder);
+  });
   
   // Write the zip file
   zip.writeZip(outputPath);
