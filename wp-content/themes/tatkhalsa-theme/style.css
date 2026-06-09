@@ -1125,7 +1125,7 @@ footer .container {
   border: 1px solid #2b3a5a;
   border-radius: 8px;
   padding: 5px;
-  background: #ffffff;
+  background: var(--cream);
 }
 .upi-id-text {
   margin-top: 10px;
@@ -1236,15 +1236,15 @@ footer .container {
 .sos-dot {
   width: 7px;
   height: 7px;
-  background-color: #ffffff;
+  background-color: var(--cream);
   border-radius: 50%;
   display: inline-block;
   animation: morse-sos 4s infinite;
-  box-shadow: 0 0 6px #ffffff;
+  box-shadow: 0 0 6px var(--cream);
 }
 .sos-banner {
   background-color: var(--accent-red);
-  color: white;
+  color: var(--cream);
   padding: 12px 20px;
   text-align: center;
   position: relative;
@@ -1279,10 +1279,10 @@ footer .container {
 .sos-banner-desc {
   font-size: 0.85rem;
   margin: 0;
-  color: rgba(255, 255, 255, 0.9);
+  color: rgba(253, 247, 231, 0.9);
 }
 .sos-banner-btn {
-  background-color: white;
+  background-color: var(--cream);
   color: var(--accent-red) !important;
   font-weight: 700;
   font-size: 0.72rem;
