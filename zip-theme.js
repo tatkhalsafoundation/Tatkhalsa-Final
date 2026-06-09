@@ -9,7 +9,7 @@ try {
   // Add the root level WordPress theme files directly
   const filesToZip = [
     'style.css',
-    'Logo.jpg',
+    'Logo.png',
     'functions.php',
     'header.php',
     'footer.php',

@@ -41,7 +41,7 @@ async function startServer() {
     content = content.replace(/<\?php\s*wp_footer\(\);\s*\?>/g, '');
 
     // Resolve template directory and logo or home URLs
-    content = content.replace(/<\?php\s*echo\s*esc_url\(\s*get_template_directory_uri\(\)\s*\.\s*['"]\/Logo\.jpg['"]\s*\);\s*\?>/g, '/Logo.jpg');
+    content = content.replace(/<\?php\s*echo\s*esc_url\(\s*get_template_directory_uri\(\)\s*\.\s*['"]\/Logo\.(jpg|png)['"]\s*\);\s*\?>/g, '/Logo.png');
     content = content.replace(/<\?php\s*echo\s*esc_url\(\s*home_url\(\s*['"]\/['"]\s*\)\s*\);\s*\?>/g, '/');
     
     // Resolve navigation links
@@ -76,8 +76,8 @@ async function startServer() {
     res.sendFile(path.join(THEME_PATH, "style.css"));
   });
 
-  app.get("/Logo.jpg", (req, res) => {
-    res.sendFile(path.join(THEME_PATH, "Logo.jpg"));
+  app.get("/Logo.png", (req, res) => {
+    res.sendFile(path.join(THEME_PATH, "Logo.png"));
   });
 
   // Intercept requests to / or index.php
