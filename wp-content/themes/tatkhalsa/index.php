@@ -313,7 +313,7 @@ get_header();
 
     <!-- View All Pill Button -->
     <div style="text-align: center; margin-top: 50px;">
-      <a href="<?php echo esc_url( home_url( '/projects/' ) ); ?>" class="btn" style="background-color: var(--secondary); color: var(--bg-dark); text-transform: uppercase; font-size: 0.85rem; letter-spacing: 1.5px; padding: 14px 34px; box-shadow: 0 8px 20px rgba(212, 175, 55, 0.2); transition: all 0.3s; font-weight: 700; border-radius: 50px; text-decoration: none;">
+      <a href="<?php echo esc_url( home_url( '/projects/' ) ); ?>" class="btn" style="background-color: var(--secondary); color: var(--body-bg); text-transform: uppercase; font-size: 0.85rem; letter-spacing: 1.5px; padding: 14px 34px; box-shadow: 0 8px 20px rgba(212, 175, 55, 0.2); transition: all 0.3s; font-weight: 700; border-radius: 50px; text-decoration: none;">
         View All Campaigns
       </a>
     </div>
@@ -332,6 +332,11 @@ get_header();
       nextCampaign(event);
     } else if (slide.classList.contains("prev-preview")) {
       prevCampaign(event);
+    } else if (slide.classList.contains("active")) {
+      const viewTag = slide.querySelector('.campaign-view-tag');
+      if (viewTag) {
+        viewTag.click();
+      }
     }
   }
 

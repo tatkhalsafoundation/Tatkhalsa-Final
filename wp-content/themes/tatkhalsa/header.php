@@ -10,6 +10,15 @@
     <meta name="author" content="Tatkhalsa Foundation" />
     <meta name="robots" content="index, follow" />
     
+    <script>
+      (function() {
+        const savedTheme = localStorage.getItem("tatkhalsa-theme");
+        if (savedTheme === "light") {
+          document.documentElement.setAttribute("data-theme", "light");
+        }
+      })();
+    </script>
+
     <?php wp_head(); ?>
   </head>
   <body <?php body_class(); ?>>
@@ -97,40 +106,38 @@
  
         <!-- Elegant Multi-Selection Dropdown for Mobile / Tablet (Instead of Hamburger Menu) -->
         <div class="header-nav-selector">
-          <select id="mobileNavSelect" onchange="if(this.value === 'donate') { openModal(); } else if(this.value === 'blood') { openBloodRequestModal(); } else if(this.value === 'flood') { openPunjabFloodReliefModal(); } else if(this.value === 'contact') { document.getElementById('footer').scrollIntoView({ behavior: 'smooth' }); } else if(this.value) { window.location.href=this.value; }" style="display: none;" aria-label="Select Seva Page">
-            <option value="" disabled selected>Explore Seva...</option>
-            <option value="<?php echo esc_url( home_url( '/' ) ); ?>">Home Page</option>
-            <option value="<?php echo esc_url( home_url( '/about/' ) ); ?>">About Tatkhalsa</option>
-            <option value="<?php echo esc_url( home_url( '/projects/' ) ); ?>">Our Seva Projects</option>
-            <option value="<?php echo esc_url( home_url( '/volunteer/' ) ); ?>">Join as Volunteer</option>
-            <option value="<?php echo esc_url( home_url( '/blog/' ) ); ?>">Insights & Blog</option>
-            <option value="flood">🌊 Flood Relief SOS</option>
-            <option value="blood">🩸 Request Blood (Emergency)</option>
-            <option value="contact">☏ Contact Us</option>
-            <option value="donate">♥ Contribute Now</option>
-          </select>
-          
-          <div class="custom-select-wrapper" id="customMobileNavWrapper">
-            <button class="custom-select-btn icon-only-btn" id="customMobileNavBtn" aria-haspopup="listbox" aria-expanded="false" aria-label="Explore Seva Page Menu">
-              <span id="customMobileNavLabel" style="display:none;"></span>
-              <span class="select-chevron icon-circle">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                  <polyline points="6 9 12 15 18 9"></polyline>
-                </svg>
-              </span>
-            </button>
-            <div class="custom-select-dropdown" id="customMobileNavDropdown" role="listbox">
-              <a href="<?php echo esc_url( home_url( '/' ) ); ?>" class="custom-dropdown-opt" role="option">Home Page</a>
-              <a href="<?php echo esc_url( home_url( '/about/' ) ); ?>" class="custom-dropdown-opt" role="option">About Tatkhalsa</a>
-              <a href="<?php echo esc_url( home_url( '/projects/' ) ); ?>" class="custom-dropdown-opt" role="option">Our Seva Projects</a>
-              <a href="<?php echo esc_url( home_url( '/volunteer/' ) ); ?>" class="custom-dropdown-opt" role="option">Join as Volunteer</a>
-              <a href="<?php echo esc_url( home_url( '/blog/' ) ); ?>" class="custom-dropdown-opt" role="option">Insights & Blog</a>
-              <a href="#" onclick="openPunjabFloodReliefModal(); document.getElementById('customMobileNavWrapper').classList.remove('open'); return false;" class="custom-dropdown-opt" role="option" style="color: #4da6ff !important; font-weight: 700;">🌊 Flood Relief SOS</a>
-              <a href="#" onclick="openBloodRequestModal(); document.getElementById('customMobileNavWrapper').classList.remove('open'); return false;" class="custom-dropdown-opt" role="option" style="color: #ff334b !important; font-weight: 700;">🩸 Request Blood</a>
-              <a href="#" onclick="document.getElementById('footer').scrollIntoView({ behavior: 'smooth' }); document.getElementById('customMobileNavWrapper').classList.remove('open'); return false;" class="custom-dropdown-opt" role="option" style="color: #4da6ff !important; font-weight: 700;">☏ Contact Us</a>
-              <a href="#" onclick="openModal(); document.getElementById('customMobileNavWrapper').classList.remove('open'); return false;" class="custom-dropdown-opt header-mobile-contrib-opt" role="option" style="color: #ff5d73 !important; font-weight: 700;">♥ Contribute Now</a>
+            <select id="mobileNavSelect" onchange="if(this.value === 'donate') { openModal(); } else if(this.value === 'blood') { openBloodRequestModal(); } else if(this.value === 'contact') { document.getElementById('footer').scrollIntoView({ behavior: 'smooth' }); } else if(this.value) { window.location.href=this.value; }" style="display: none;" aria-label="Select Seva Page">
+              <option value="" disabled selected>Explore Seva...</option>
+              <option value="<?php echo esc_url( home_url( '/' ) ); ?>">Home Page</option>
+              <option value="<?php echo esc_url( home_url( '/about/' ) ); ?>">About Tatkhalsa</option>
+              <option value="<?php echo esc_url( home_url( '/projects/' ) ); ?>">Our Seva Projects</option>
+              <option value="<?php echo esc_url( home_url( '/volunteer/' ) ); ?>">Join as Volunteer</option>
+              <option value="<?php echo esc_url( home_url( '/blog/' ) ); ?>">Insights & Blog</option>
+              <option value="blood">🩸 Request Blood (Emergency)</option>
+              <option value="contact">☏ Contact Us</option>
+              <option value="donate">♥ Contribute Now</option>
+            </select>
+            
+            <div class="custom-select-wrapper" id="customMobileNavWrapper">
+              <button class="custom-select-btn icon-only-btn" id="customMobileNavBtn" aria-haspopup="listbox" aria-expanded="false" aria-label="Explore Seva Page Menu">
+                <span id="customMobileNavLabel" style="display:none;"></span>
+                <span class="select-chevron icon-circle">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="6 9 12 15 18 9"></polyline>
+                  </svg>
+                </span>
+              </button>
+              <div class="custom-select-dropdown" id="customMobileNavDropdown" role="listbox">
+                <a href="<?php echo esc_url( home_url( '/' ) ); ?>" class="custom-dropdown-opt" role="option">Home Page</a>
+                <a href="<?php echo esc_url( home_url( '/about/' ) ); ?>" class="custom-dropdown-opt" role="option">About Tatkhalsa</a>
+                <a href="<?php echo esc_url( home_url( '/projects/' ) ); ?>" class="custom-dropdown-opt" role="option">Our Seva Projects</a>
+                <a href="<?php echo esc_url( home_url( '/volunteer/' ) ); ?>" class="custom-dropdown-opt" role="option">Join as Volunteer</a>
+                <a href="<?php echo esc_url( home_url( '/blog/' ) ); ?>" class="custom-dropdown-opt" role="option">Insights & Blog</a>
+                <a href="#" onclick="openBloodRequestModal(); document.getElementById('customMobileNavWrapper').classList.remove('open'); return false;" class="custom-dropdown-opt" role="option" style="color: #ff334b !important; font-weight: 700;">🩸 Request Blood</a>
+                <a href="#" onclick="document.getElementById('footer').scrollIntoView({ behavior: 'smooth' }); document.getElementById('customMobileNavWrapper').classList.remove('open'); return false;" class="custom-dropdown-opt" role="option" style="color: #4da6ff !important; font-weight: 700;">☏ Contact Us</a>
+                <a href="#" onclick="openModal(); document.getElementById('customMobileNavWrapper').classList.remove('open'); return false;" class="custom-dropdown-opt header-mobile-contrib-opt" role="option" style="color: #ff5d73 !important; font-weight: 700;">♥ Contribute Now</a>
+              </div>
             </div>
-          </div>
         </div>
       </div>
     </header>
