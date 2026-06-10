@@ -558,46 +558,50 @@ body.scrolled .header-logo-img-new {
     display: inline-flex !important;
   }
   .logo::after {
-    width: 38px !important;
-    height: 38px !important;
-    margin-left: 10px !important;
+    width: 32px !important;
+    height: 32px !important;
+    margin-left: 8px !important;
   }
   .header-logo-badge {
-    width: 38px !important;
-    height: 38px !important;
-    margin-right: 10px !important;
-  }
-  .header-logo-img-new {
-    width: 28px !important;
-    height: 28px !important;
-  }
-  .logo-text-up {
-    font-size: 1.25rem;
-    color: var(--secondary) !important;
-    -webkit-text-fill-color: var(--secondary) !important; /* Forces solid gold fill on mobile to ensure zero-visibility issues on mobile WebKit */
-    background: none !important;
-  }
-  .logo-text-down {
-    font-size: 0.6rem;
-    letter-spacing: 0.25em;
-  }
-  body.scrolled .header-logo-badge {
     width: 32px !important;
     height: 32px !important;
     margin-right: 8px !important;
   }
+  .header-logo-img-new {
+    width: 20px !important;
+    height: 20px !important;
+  }
+  .logo-text-up {
+    font-size: 1.1rem;
+    color: var(--secondary) !important;
+    -webkit-text-fill-color: var(--secondary) !important;
+    background: none !important;
+  }
+  .logo-text-down {
+    font-size: 0.55rem;
+    letter-spacing: 0.22em;
+  }
+  body.scrolled .header-logo-badge {
+    width: 28px !important;
+    height: 28px !important;
+    margin-right: 6px !important;
+  }
   body.scrolled .header-logo-img-new {
-    width: 24px !important;
-    height: 24px !important;
+    width: 18px !important;
+    height: 18px !important;
   }
   body.scrolled .logo-text-up {
-    font-size: 1.05rem !important;
+    font-size: 0.95rem !important;
   }
   body.scrolled .logo-text-down {
-    font-size: 0.55rem !important;
+    font-size: 0.5rem !important;
   }
   .header-actions {
-    gap: 10px !important;
+    gap: 8px !important;
+  }
+  .header {
+    min-height: 60px !important;
+    padding: 10px 0 !important;
   }
 }
 .nav-menu-container {
@@ -2424,6 +2428,14 @@ footer .container {
 
 /* Responsive adjustments for campaign display */
 @media (max-width: 768px) {
+  .campaign-slide {
+    display: none !important;
+    position: absolute !important;
+  }
+  .campaign-slide.active {
+    display: block !important;
+    position: relative !important;
+  }
   .campaign-slide.next-preview,
   .campaign-slide.prev-preview {
     display: none !important; /* Hide pre-stack previews on small screens and narrow widths */
