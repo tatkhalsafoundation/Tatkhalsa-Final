@@ -36,12 +36,12 @@ get_header();
   <div class="hero-overlay"></div>
   <div class="container scroll-reveal" style="position: relative; z-index: 2">
     <!-- Centered Logo -->
-    <div class="hero-logo-wrapper" style="display: flex; justify-content: center; margin-bottom: 15px; margin-top: 5px; min-height: 180px; position: relative;">
+    <div class="hero-logo-wrapper">
       <a href="<?php echo esc_url( home_url( '/' ) ); ?>" style="display: contents;">
         <img
           src="<?php echo esc_url( tatkhalsa_get_logo_url() ); ?>"
           alt="Tatkhalsa Foundation Logo"
-          class="hero-gurbani-logo transition-img"
+          class="hero-gurbani-logo"
         />
       </a>
     </div>
@@ -429,7 +429,7 @@ get_header();
   let campaignTouchStartX = 0;
   let campaignTouchEndX = 0;
 
-  document.addEventListener("DOMContentLoaded", () => {
+  function initCampaigns() {
     const container = document.querySelector(".campaign-slides-container");
     if (container) {
       container.addEventListener("touchstart", (e) => {
@@ -444,7 +444,13 @@ get_header();
     
     // Initial display
     showCampaign(0);
-  });
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", initCampaigns);
+  } else {
+    initCampaigns();
+  }
 
   function handleCampaignSwipe() {
     if (campaignTouchEndX < campaignTouchStartX - 50) {

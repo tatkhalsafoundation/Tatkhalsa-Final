@@ -510,6 +510,95 @@
       }
     </script>
 
+    <!-- Global Dynamic Liquid Background Canvas and SVG Gooey filter -->
+    <canvas id="liquid-bg-canvas"></canvas>
+    <svg xmlns="http://www.w3.org/2000/svg" style="display: none; position: absolute; width: 0; height: 0;">
+      <defs>
+        <filter id="liquid-goo">
+          <feGaussianBlur in="SourceGraphic" stdDeviation="15" result="blur" />
+          <feColorMatrix in="blur" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 19 -9" result="goo" />
+          <feBlend in="SourceGraphic" in2="goo" />
+        </filter>
+      </defs>
+    </svg>
+
+    <script>
+      (function() {
+        const canvas = document.getElementById('liquid-bg-canvas');
+        if (!canvas) return;
+        const ctx = canvas.getContext('2d');
+        
+        let width = canvas.width = window.innerWidth;
+        let height = canvas.height = window.innerHeight;
+        
+        // Handle responsive resize with debouncing to prevent layout stutter
+        let resizeTimeout;
+        window.addEventListener('resize', () => {
+          clearTimeout(resizeTimeout);
+          resizeTimeout = setTimeout(() => {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+          }, 100);
+        });
+        
+        // Elegant color schemes matching the exact Tatkhalsa Foundation identity
+        const colors = [
+          '#d4af37', // Gold Logo Accent
+          '#fdf7e7', // Warm Cream Primary Accent
+          '#3285c7', // Bright Compassionate Blue
+          '#d4af37', // Secondary Gold
+          '#142a54'  // Subtle deep corporate navy accent
+        ];
+        
+        // Define floating liquid metaball particles
+        const particles = [];
+        const particleCount = Math.min(10, Math.max(5, Math.floor((width * height) / 160000)));
+        
+        for (let i = 0; i < particleCount; i++) {
+          particles.push({
+            x: Math.random() * width,
+            y: Math.random() * height,
+            vx: (Math.random() - 0.5) * 0.35, // Slow emotional flowing drift
+            vy: (Math.random() - 0.5) * 0.35,
+            radius: Math.random() * 80 + 75, // Massive merging liquid metaballs
+            color: colors[i % colors.length]
+          });
+        }
+        
+        function animate() {
+          if (document.visibilityState === 'hidden') {
+            requestAnimationFrame(animate);
+            return;
+          }
+          
+          ctx.clearRect(0, 0, width, height);
+          
+          // Smooth math loop to float particles around and wrap screen bounds fluidly
+          particles.forEach(p => {
+            p.x += p.vx;
+            p.y += p.vy;
+            
+            const margin = p.radius + 15;
+            if (p.x < -margin) p.x = width + margin;
+            else if (p.x > width + margin) p.x = -margin;
+            
+            if (p.y < -margin) p.y = height + margin;
+            else if (p.y > height + margin) p.y = -margin;
+            
+            // Draw circle which will be merged by standard SVG filter matrix
+            ctx.beginPath();
+            ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+            ctx.fillStyle = p.color;
+            ctx.fill();
+          });
+          
+          requestAnimationFrame(animate);
+        }
+        
+        requestAnimationFrame(animate);
+      })();
+    </script>
+
     <!-- Floating Circular WhatsApp Seva Desk Button -->
     <a href="https://wa.me/919877038520" target="_blank" rel="noopener noreferrer" class="whatsapp-float-fab" aria-label="WhatsApp Seva Desk">
       <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">

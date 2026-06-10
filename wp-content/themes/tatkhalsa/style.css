@@ -24,13 +24,13 @@ Tags: clean, gold, navy, ngo, sikh, seva, non-profit, responsive, custom-logo, t
   --accent-orange: #ea8545; /* Bright Orange */
   --text-dark: #fdf7e7; /* Cream colour for text in dark mode */
   --text-light: #c4b9a3; /* Darker cream for secondary text */
-  --bg-dark: #081123; /* Deep Navy Background */
-  --bg-light: #0c1933; /* Slightly lighter Navy for cards */
-  --bg-shade-1: #050a15;
-  --bg-shade-2: #081123;
-  --bg-shade-3: #0c1933;
-  --bg-shade-4: #102142;
-  --bg-shade-5: #142a54;
+  --bg-dark: rgba(8, 17, 35, 0.76); /* Deep Navy Background with elegant transparency for liquid visual depth */
+  --bg-light: rgba(12, 25, 51, 0.84); /* Slightly lighter Navy for cards with elegant transparency */
+  --bg-shade-1: rgba(5, 10, 21, 0.88);
+  --bg-shade-2: rgba(8, 17, 35, 0.76);
+  --bg-shade-3: rgba(12, 25, 51, 0.78);
+  --bg-shade-4: rgba(16, 33, 66, 0.80);
+  --bg-shade-5: rgba(20, 42, 84, 0.80);
   --white: #183366; /* Dark color for formerly white cards */
   --cream: #fdf7e7;
   --font-sans: "Inter", sans-serif;
@@ -46,10 +46,23 @@ Tags: clean, gold, navy, ngo, sikh, seva, non-profit, responsive, custom-logo, t
 body {
   font-family: var(--font-sans);
   color: var(--text-dark);
-  background-color: var(--bg-dark);
+  background-color: #040914 !important; /* Elegant solid navy bedrock base */
   line-height: 1.6;
   scroll-behavior: smooth;
   position: relative;
+}
+
+/* Global Dynamic Liquid Background Canvas */
+#liquid-bg-canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: -2;
+  pointer-events: none;
+  filter: url(#liquid-goo);
+  opacity: 0.18;
 }
 
 /* Side Graphics for empty space */
@@ -290,57 +303,58 @@ h6 {
   color: var(--secondary);
   display: inline-flex;
   align-items: center;
-  width: 250px; /* Placeholder width so flex sizing holds its place */
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+.header-logo-img {
+  width: 48px;
+  height: 48px;
+  object-fit: contain;
 }
 .logo-stack {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: flex-start;
+  align-items: center;
+  text-align: center;
   line-height: 1.1;
-  position: absolute;
-  left: 20px;
-  top: 50%;
-  transform: translateY(-50%);
-  transition: all 0.6s cubic-bezier(0.25, 1, 0.4, 1);
-  z-index: 1020;
-}
-body.scrolled .logo-stack {
-  left: 50%;
-  transform: translate(-50%, -50%);
-  align-items: center; /* Center the text internally when positioned in center */
 }
 
-/* Home Page Hero Logo Transition into Header */
-.transition-img {
+/* Home Page Hero Logo Definition */
+.hero-logo-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  height: calc(max(215px, 24vh) + 15px);
+  margin-top: 5px;
+}
+.hero-gurbani-logo {
   width: 240px;
   height: 240px;
   object-fit: contain;
-  position: fixed;
-  top: max(180px, 23vh);
-  left: 50%;
-  transform: translate(-50%, -50%);
-  transition: all 0.6s cubic-bezier(0.25, 1, 0.4, 1);
-  z-index: 1050;
-  pointer-events: none;
-}
-body.scrolled .transition-img {
-  top: 40px; /* Aligns visually with the sticky header center */
-  left: max(45px, calc((100vw - 1200px) / 2 + 45px)); /* 20px padding + 25px half width */
-  transform: translate(-50%, -50%);
-  width: 50px;
-  height: 50px;
-  pointer-events: auto;
 }
 .logo-text-up {
   font-size: 1.6rem;
   font-weight: 700;
   letter-spacing: 0.15em;
   text-transform: uppercase;
-  background: linear-gradient(135deg, var(--secondary) 0%, var(--primary) 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+  color: var(--secondary); /* Premium solid gold fallback */
+  display: inline-block;
 }
+
+/* Graceful progressive enhancement for browsers supporting text clippings */
+@supports (-webkit-background-clip: text) or (background-clip: text) {
+  .logo-text-up {
+    background: linear-gradient(135deg, var(--secondary) 0%, var(--primary) 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+}
+
 .logo-text-down {
   font-size: 0.75rem;
   font-family: var(--font-sans);
@@ -354,8 +368,15 @@ body.scrolled .transition-img {
   .logo {
     display: inline-flex !important;
   }
+  .header-logo-img {
+    width: 36px !important;
+    height: 36px !important;
+  }
   .logo-text-up {
     font-size: 1.25rem;
+    color: var(--secondary) !important;
+    -webkit-text-fill-color: var(--secondary) !important; /* Forces solid gold fill on mobile to ensure zero-visibility issues on mobile WebKit */
+    background: none !important;
   }
   .logo-text-down {
     font-size: 0.6rem;
@@ -367,6 +388,7 @@ body.scrolled .transition-img {
 }
 .nav-menu-container {
   transition: opacity 0.4s ease, transform 0.4s ease;
+  margin-left: auto;
 }
 body.scrolled .nav-menu-container {
   opacity: 0;
@@ -574,7 +596,8 @@ body.scrolled .nav-menu-container {
 .gurbani-text {
   font-size: 1.4rem;
   color: var(--secondary);
-  margin-bottom: 25px;
+  margin-top: 20px;
+  margin-bottom: 35px;
   font-weight: 500;
   line-height: 1.5;
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
@@ -583,7 +606,7 @@ body.scrolled .nav-menu-container {
   color: var(--cream);
   font-size: 3.5rem;
   max-width: 900px;
-  margin: 0 auto 20px;
+  margin: 35px auto 20px;
   line-height: 1.2;
 }
 .hero p {
@@ -1475,6 +1498,7 @@ footer .container {
   .header-nav-selector {
     display: block !important;
     width: auto;
+    margin-left: auto !important;
   }
   .top-bar-btn {
     font-size: 0.8rem;
@@ -1868,41 +1892,42 @@ footer .container {
 }
 
 .campaign-slide {
-  position: absolute;
-  width: 100%;
-  max-width: 440px;
-  opacity: 0;
-  transform: scale(0.8) translateY(20px);
-  pointer-events: none;
-  visibility: hidden;
+  position: absolute !important;
+  width: 100% !important;
+  max-width: 440px !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+  visibility: hidden !important;
   transition: all 0.6s cubic-bezier(0.25, 1, 0.4, 1);
   z-index: 1;
 }
 
 /* Dynamic Carousel States for Stacked 3D Layout */
 .campaign-slide.active {
-  position: relative;
-  opacity: 1;
-  visibility: visible;
-  transform: scale(1) translateY(0);
-  pointer-events: auto;
-  z-index: 5;
+  position: relative !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+  transform: scale(1) translateY(0) !important;
+  pointer-events: auto !important;
+  z-index: 5 !important;
 }
 
 .campaign-slide.next-preview {
-  opacity: 0.35;
-  visibility: visible;
-  transform: translateX(110px) scale(0.85);
-  pointer-events: none;
-  z-index: 2;
+  position: absolute !important;
+  opacity: 0.35 !important;
+  visibility: visible !important;
+  transform: translateX(110px) scale(0.85) !important;
+  pointer-events: none !important;
+  z-index: 2 !important;
 }
 
 .campaign-slide.prev-preview {
-  opacity: 0.35;
-  visibility: visible;
-  transform: translateX(-110px) scale(0.85);
-  pointer-events: none;
-  z-index: 2;
+  position: absolute !important;
+  opacity: 0.35 !important;
+  visibility: visible !important;
+  transform: translateX(-110px) scale(0.85) !important;
+  pointer-events: none !important;
+  z-index: 2 !important;
 }
 
 .campaign-card {
