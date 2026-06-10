@@ -777,91 +777,145 @@
 
     <!-- Contribution Modal -->
     <div class="modal-overlay" id="contributionModal">
-      <div class="modal-content">
-        <button class="modal-close" onclick="closeModal()">×</button>
-        <h3 style="font-size: 1.8rem; margin-bottom: 10px; color: var(--primary);">
-          Contribute to Tatkhalsa Foundation
-        </h3>
-        <p style="color: var(--text-light); margin-bottom: 20px;">
-          Your support helps us serve humanity.
-        </p>
-
-        <!-- Direct Bank Transfer Details -->
-        <div class="bank-details">
-          <p>
-            <span><strong>Bank:</strong> Axis Bank</span>
-          </p>
-          <p>
-            <span><strong>Account No:</strong> 925010057912966</span>
-            <button class="copy-btn" onclick="copyText('925010057912966')">
-              Copy Account
-            </button>
-          </p>
-          <p>
-            <span><strong>IFSC Code:</strong> UTIB0004354</span>
-            <button class="copy-btn" onclick="copyText('UTIB0004354')">
-              Copy IFSC
-            </button>
+      <div class="modal-content" style="padding: 0; max-width: 600px; overflow-y: auto; max-height: 90vh; position: relative;">
+        <!-- Header Banner -->
+        <div class="contribution-modal-header" style="background: linear-gradient(135deg, var(--primary) 0%, #1a3c6d 100%); position: relative; overflow: hidden;">
+          <!-- decorative shapes -->
+          <svg style="position: absolute; right: -20px; top: -30px; opacity: 0.1; width: 150px; height: 150px;" viewBox="0 0 100 100"><circle cx="50" cy="50" r="50" fill="#fff"/></svg>
+          <svg style="position: absolute; left: 10px; bottom: -20px; opacity: 0.1; width: 80px; height: 80px;" viewBox="0 0 100 100"><rect width="100" height="100" rx="20" fill="#fff" transform="rotate(25 50 50)"/></svg>
+          
+          <button class="modal-close cm-close-btn" onclick="closeModal()" style="color: white; background: rgba(255,255,255,0.1); border: none; z-index: 10;">×</button>
+          
+          <h3 class="cm-header-title" style="margin-bottom: 8px; position: relative; z-index: 2; text-align: left;">
+            Join Our Mission
+          </h3>
+          <p class="cm-header-desc" style="margin: 0; position: relative; z-index: 2; text-align: left;">
+            Your generosity fuels our seva for humanity. Every contribution makes a difference.
           </p>
         </div>
 
-        <!-- Interactive UPI Billing Node -->
-        <div class="upi-section">
-          <h4 style="margin-bottom: 15px; color: var(--primary);">
-            Contribute via UPI QR
-          </h4>
-
-          <div class="amount-buttons" id="amountButtons">
-            <button class="amount-btn active" onclick="setUpiAmount(0, this)">
-              Any Amount
-            </button>
-            <button class="amount-btn" onclick="setUpiAmount(500, this)">
-              ₹500
-            </button>
-            <button class="amount-btn" onclick="setUpiAmount(1000, this)">
-              ₹1000
-            </button>
-            <button class="amount-btn" onclick="setUpiAmount(5000, this)">
-              ₹5000
-            </button>
-          </div>
-
-          <div class="qr-container">
-            <img
-              id="upiQrCode"
-              class="qr-code-img"
-              src="https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=upi%3A%2F%2Fpay%3Fpa%3Dmab.037215043540097%40axisbank%26pn%3DTatkhalsa%2520Foundation%26cu%3DINR"
-              alt="UPI QR Code"
-            />
-            <div class="upi-id-text">
-              <span style="font-size: 0.825rem; font-family: monospace;">mab.037215043540097@axisbank</span>
-              <button
-                class="copy-btn"
-                onclick="copyText('mab.037215043540097@axisbank')"
-                style="padding: 2px 6px; font-size: 0.75rem"
-              >
-                Copy ID
-              </button>
+        <div class="contribution-modal-body" style="background: var(--bg-shade-1);">
+          
+          <!-- Unified Grid Layout -->
+          <div style="display: grid; grid-template-columns: 1fr; gap: 20px; text-align: left;">
+            
+            <!-- Bank Details Card -->
+            <div style="background: rgba(0, 0, 0, 0.15); border: 1px solid rgba(212, 175, 55, 0.2); border-radius: 16px; padding: 25px; position: relative;" class="bank-details-card">
+              <div style="display: flex; align-items: center; margin-bottom: 15px; color: var(--secondary);">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 10px;"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
+                <h4 style="margin: 0; font-size: 1.2rem; color: inherit;">Direct Bank Transfer</h4>
+              </div>
+              
+              <div style="display: flex; flex-direction: column; gap: 12px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 8px;">
+                  <span style="color: var(--text-light); font-size: 0.95rem;">Bank Name</span>
+                  <strong style="color: var(--cream); font-size: 1.05rem;"><img src="https://upload.wikimedia.org/wikipedia/commons/1/1a/Axis_Bank_logo.svg" alt="Axis Bank" style="height: 20px; background: white; padding: 3px 6px; border-radius: 4px; display: inline-block; vertical-align: middle;"></strong>
+                </div>
+                <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 8px;">
+                  <div>
+                    <span style="color: var(--text-light); font-size: 0.95rem; display: block;">Account Number</span>
+                    <strong style="color: var(--cream); font-size: 1.15rem; font-family: monospace; letter-spacing: 1px;">925010057912966</strong>
+                  </div>
+                  <button class="copy-btn" onclick="copyText('925010057912966')" style="padding: 6px 12px; border-radius: 20px;">Copy</button>
+                </div>
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                  <div>
+                    <span style="color: var(--text-light); font-size: 0.95rem; display: block;">IFSC Code</span>
+                    <strong style="color: var(--cream); font-size: 1.15rem; font-family: monospace; letter-spacing: 1px;">UTIB0004354</strong>
+                  </div>
+                  <button class="copy-btn" onclick="copyText('UTIB0004354')" style="padding: 6px 12px; border-radius: 20px;">Copy</button>
+                </div>
+              </div>
             </div>
+
+            <!-- Interactive UPI Billing Node -->
+            <div style="background: rgba(0, 0, 0, 0.15); border: 1px solid rgba(212, 175, 55, 0.2); border-radius: 16px; padding: 25px;" class="upi-section-card">
+              <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px;">
+                <div style="display: flex; align-items: center; color: var(--secondary);">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 10px;"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+                  <h4 style="margin: 0; font-size: 1.2rem; color: inherit;">Quick UPI Pay</h4>
+                </div>
+              </div>
+
+              <div class="amount-buttons" id="amountButtons" style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 25px;">
+                <button class="amount-btn active" onclick="setUpiAmount(0, this)" style="border-radius: 12px;">Custom</button>
+                <button class="amount-btn" onclick="setUpiAmount(501, this)" style="border-radius: 12px;">₹501</button>
+                <button class="amount-btn" onclick="setUpiAmount(1100, this)" style="border-radius: 12px;">₹1100</button>
+                <button class="amount-btn" onclick="setUpiAmount(5100, this)" style="border-radius: 12px;">₹5100</button>
+              </div>
+
+              <div class="upi-qr-wrapper">
+                <div class="qr-container" style="margin: 0; flex-shrink: 0; background: #fff; padding: 8px; border-radius: 12px; width: 120px; height: 120px; display: flex; align-items: center; justify-content: center;">
+                  <img
+                    id="upiQrCode"
+                    class="qr-code-img"
+                    src="https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=upi%3A%2F%2Fpay%3Fpa%3Dmab.037215043540097%40axisbank%26pn%3DTatkhalsa%2520Foundation%26cu%3DINR"
+                    alt="UPI QR Code"
+                    style="width: 100%; height: 100%; display: block;"
+                  />
+                </div>
+                
+                <div style="flex-grow: 1; display: flex; flex-direction: column; justify-content: center;">
+                  <div style="color: var(--text-light); font-size: 0.85rem; margin-bottom: 5px;">Scan QR or copy UPI ID</div>
+                  <strong style="color: var(--cream); font-family: monospace; font-size: 0.95rem; display: block; margin-bottom: 12px; word-break: break-all;">mab.037215043540097@axisbank</strong>
+                  
+                  <div class="upi-qr-actions">
+                    <button class="copy-btn" onclick="copyText('mab.037215043540097@axisbank')" style="flex: 1; border-radius: 8px; padding: 8px 0; font-size: 0.85rem; display: flex; align-items: center; justify-content: center; gap: 6px;">
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg> Copy
+                    </button>
+                    <!-- Direct Phone UPI Link Launch Button -->
+                    <a id="directUpiPayBtn" href="upi://pay?pa=mab.037215043540097@axisbank&pn=Tatkhalsa%20Foundation&cu=INR" style="flex: 1; background: var(--secondary); color: var(--bg-shade-1); text-decoration: none; display: flex; align-items: center; justify-content: center; border-radius: 8px; font-weight: 600; font-size: 0.85rem; padding: 8px 0; gap: 6px; transition: transform 0.2s;" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='none'">
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg> Pay App
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+          </div>
+          
+          <div style="text-align: center; margin-top: 25px; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.05);">
+            <p style="font-size: 0.8rem; color: var(--text-light); margin: 0; display: flex; align-items: center; justify-content: center; gap: 8px;">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: var(--secondary);"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+              <span>Secure contributions. Eligible for tax benefits under Section 80G.</span>
+            </p>
           </div>
 
-          <!-- Direct Phone UPI Link Launch Button -->
-          <div class="direct-upi-pay-wrapper" style="margin-top: 20px; text-align: center;">
-            <a id="directUpiPayBtn" href="upi://pay?pa=mab.037215043540097@axisbank&pn=Tatkhalsa%20Foundation&cu=INR" style="display: flex; align-items: center; justify-content: center; gap: 8px; background: #00875a; color: #ffffff; padding: 12px 20px; border-radius: 8px; font-weight: bold; text-decoration: none; font-size: 1.05rem; width: 100%; box-sizing: border-box; box-shadow: 0 4px 12px rgba(0,135,90,0.25); transition: all 0.25s;" onmouseover="this.style.background='#006644'; this.style.transform='translateY(-1px)';" onmouseout="this.style.background='#00875a'; this.style.transform='none';">
-              <span style="font-size: 1.2rem; line-height: 1;">📱</span> Contribute Now
-            </a>
-            <span style="display: block; font-size: 0.75rem; color: var(--text-light); margin-top: 8px; font-style: italic; line-height: 1.3;">
-              *Tap to immediately open any available payment app (GPay, PhonePe, Paytm, BHIM, etc.) on your phone
-            </span>
-          </div>
-        </div>
-
-        <div style="font-size: 0.85rem; color: var(--text-light); margin-top: 20px;">
-          Contributions made to Tatkhalsa Foundation may be eligible for tax
-          benefits under Section 80G of the Income Tax Act, subject to
-          applicable regulations.
         </div>
       </div>
+      <style>
+        .cm-header-title { color: white !important; font-size: 2rem; }
+        .cm-header-desc { color: rgba(255, 255, 255, 0.8) !important; font-size: 1.05rem; }
+        .cm-close-btn { color: white !important; background: rgba(255,255,255,0.1) !important; border-color: rgba(255,255,255,0.2) !important; }
+        .contribution-modal-header { padding: 40px 30px; }
+        .contribution-modal-body { padding: 35px 30px; }
+        .upi-qr-wrapper { display: flex; gap: 20px; align-items: center; background: rgba(255,255,255,0.03); padding: 15px; border-radius: 12px; border: 1px dashed rgba(255,255,255,0.1); }
+        .upi-qr-actions { display: flex; gap: 10px; }
+        @media(max-width: 500px) {
+          .cm-header-title { font-size: 1.6rem; }
+          .cm-header-desc { font-size: 0.95rem; }
+          .contribution-modal-header { padding: 25px 20px; }
+          .contribution-modal-body { padding: 20px 15px; }
+          .bank-details-card, .upi-section-card { padding: 15px !important; }
+          .upi-qr-wrapper { flex-direction: column; text-align: center; gap: 15px; padding: 10px; }
+          .upi-qr-actions { flex-direction: column; width: 100%; }
+          #amountButtons { grid-template-columns: repeat(2, 1fr) !important; }
+        }
+        [data-theme="light"] .bank-details-card, [data-theme="light"] .upi-section-card {
+            background: rgba(0, 0, 0, 0.03) !important;
+            border-color: rgba(0, 0, 0, 0.08) !important;
+        }
+        [data-theme="light"] .bank-details-card span, [data-theme="light"] .upi-section-card div {
+            color: var(--text-dark);
+        }
+        [data-theme="light"] .bank-details-card strong, [data-theme="light"] .upi-section-card strong {
+            color: #111 !important;
+        }
+        [data-theme="light"] .upi-qr-wrapper {
+            background: rgba(0,0,0,0.03) !important;
+            border-color: rgba(0,0,0,0.1) !important;
+        }
+      </style>
     </div>
 
     <!-- Theme Toggle Button -->
