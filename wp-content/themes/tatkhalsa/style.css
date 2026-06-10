@@ -43,6 +43,11 @@ Tags: clean, gold, navy, ngo, sikh, seva, non-profit, responsive, custom-logo, t
   box-sizing: border-box;
 }
 
+html, body {
+  overflow-x: hidden;
+  max-width: 100%;
+}
+
 body {
   font-family: var(--font-sans);
   color: var(--text-dark);
@@ -312,8 +317,25 @@ h6 {
   color: var(--secondary);
   display: inline-flex;
   align-items: center;
-  position: relative;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
   transition: all 0.3s ease;
+}
+.logo::after {
+  content: '';
+  width: 50px;
+  height: 50px;
+  margin-left: 14px;
+  display: block;
+  flex-shrink: 0;
+  pointer-events: none;
+  transition: width 0.4s ease, height 0.4s ease, margin-left 0.4s ease;
+}
+body.scrolled .logo::after {
+  width: 42px;
+  height: 42px;
 }
 .header-logo-badge {
   position: relative;
@@ -435,6 +457,11 @@ body.scrolled .header-logo-img-new {
 @media (max-width: 900px) {
   .logo {
     display: inline-flex !important;
+  }
+  .logo::after {
+    width: 38px !important;
+    height: 38px !important;
+    margin-left: 10px !important;
   }
   .header-logo-badge {
     width: 38px !important;

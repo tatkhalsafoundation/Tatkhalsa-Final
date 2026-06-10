@@ -37,9 +37,9 @@ get_header();
   <div class="container scroll-reveal" style="position: relative; z-index: 2">
     <!-- Centered Logo -->
     <div class="hero-logo-wrapper">
-      <a href="<?php echo esc_url( home_url( '/' ) ); ?>" style="display: contents;">
+      <a href="<?php echo esc_url( home_url( '/' ) ); ?>" style="display: inline-flex; justify-content: center; align-items: center;">
         <img
-          src="<?php echo esc_url( tatkhalsa_get_theme_logo_url() ); ?>"
+          src="<?php echo esc_url( tatkhalsa_get_logo_url() ); ?>"
           alt="Tatkhalsa Foundation Logo"
           class="hero-gurbani-logo"
           width="240"

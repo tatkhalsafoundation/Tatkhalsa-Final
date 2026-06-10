@@ -651,6 +651,19 @@
           const bigRect = bigLogo.getBoundingClientRect();
           const smallRect = smallLogo.getBoundingClientRect();
           
+          // Safeguard: Wait for images to load and have dimensions before calculating
+          if (!bigRect.width || !bigRect.height || !smallRect.width || !smallRect.height) {
+            // Restore styles before returning
+            bigLogo.style.transform = origBigTransform;
+            bigLogo.style.opacity = origBigOpacity;
+            smallLogo.style.transform = origSmallTransform;
+            smallLogo.style.opacity = origSmallOpacity;
+            
+            // Retry again once details are rendered
+            setTimeout(measurePositions, 100);
+            return;
+          }
+          
           initialRect = {
             width: bigRect.width,
             height: bigRect.height,
