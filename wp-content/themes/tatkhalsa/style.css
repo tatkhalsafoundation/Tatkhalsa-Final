@@ -1599,3 +1599,114 @@ footer .container {
     display: none !important;
   }
 }
+
+/* Floating Circular WhatsApp Seva Desk Button */
+.whatsapp-float-fab {
+  position: fixed;
+  bottom: 30px;
+  left: 30px;
+  width: 58px;
+  height: 58px;
+  background-color: #25d366;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  box-shadow: 0 8px 32px rgba(37, 211, 102, 0.4);
+  z-index: 9999;
+  text-decoration: none;
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+/* Pulsing background ring anim */
+.whatsapp-float-fab::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border-radius: 50%;
+  border: 2px solid #25d366;
+  opacity: 0.8;
+  z-index: -1;
+  animation: whatsappPulse 2s infinite;
+}
+
+.whatsapp-float-fab svg {
+  width: 28px;
+  height: 28px;
+  transition: transform 0.3s ease;
+}
+
+.whatsapp-float-fab:hover {
+  transform: scale(1.12);
+  background-color: #20ba5a;
+  box-shadow: 0 12px 36px rgba(37, 211, 102, 0.6);
+  color: #ffffff;
+}
+
+.whatsapp-float-fab:hover svg {
+  transform: rotate(8deg) scale(1.05);
+}
+
+/* Simple Hover Tooltip to the right */
+.whatsapp-float-fab .tooltip-text {
+  visibility: hidden;
+  width: 150px;
+  background-color: #1a1e29;
+  color: #fef7e7;
+  text-align: center;
+  border-radius: 8px;
+  padding: 6px 12px;
+  position: absolute;
+  z-index: 10000;
+  left: 74px;
+  top: 50%;
+  transform: translateY(-50%) translateX(-10px);
+  opacity: 0;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  font-family: var(--font-sans);
+  font-size: 0.77rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  border: 1px solid rgba(212, 175, 55, 0.3);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+  pointer-events: none;
+}
+
+.whatsapp-float-fab:hover .tooltip-text {
+  visibility: visible;
+  opacity: 1;
+  transform: translateY(-50%) translateX(0);
+}
+
+@keyframes whatsappPulse {
+  0% {
+    transform: scale(1);
+    opacity: 0.8;
+  }
+  100% {
+    transform: scale(1.4);
+    opacity: 0;
+  }
+}
+
+/* Ensure the floating FAB responds well dynamically, lifting higher if a bottom banner or elements block it on smaller screens */
+@media (max-width: 480px) {
+  .whatsapp-float-fab {
+    bottom: 20px;
+    left: 20px;
+    width: 50px;
+    height: 50px;
+  }
+  .whatsapp-float-fab svg {
+    width: 24px;
+    height: 24px;
+  }
+  .whatsapp-float-fab .tooltip-text {
+    display: none; /* Hide tooltips on pure mobile touches */
+  }
+}

@@ -25,6 +25,15 @@ get_header();
         class="container scroll-reveal"
         style="position: relative; z-index: 2; text-align: center"
       >
+        <!-- Centered Logo same as home page -->
+        <div class="hero-logo-wrapper" style="display: flex; justify-content: center; margin-bottom: 25px; margin-top: 10px;">
+          <img
+            src="<?php echo esc_url( tatkhalsa_get_logo_url() ); ?>"
+            alt="Tatkhalsa Foundation Logo"
+            class="hero-gurbani-logo"
+            style="width: 240px; height: 240px; object-fit: contain;"
+          />
+        </div>
         <h1 style="font-size: 3.5rem; color: var(--cream); margin-bottom: 20px; font-family: var(--font-serif); text-shadow: 0 4px 10px rgba(0,0,0,0.5);">
           Punjab Flood Relief 2025
         </h1>
@@ -58,9 +67,6 @@ get_header();
       "
     >
       <div class="container">
-        <h2 class="section-title" style="color: var(--cream)">
-          Punjab Flood Relief 2025
-        </h2>
         <div
           style="
             max-width: 800px;

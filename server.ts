@@ -7,6 +7,9 @@ async function startServer() {
   const app = express();
   const PORT = 3000;
 
+  app.use(express.json());
+  app.use(express.urlencoded({ extended: true }));
+
   const THEME_PATH = path.join(process.cwd(), "wp-content", "themes", "tatkhalsa");
 
   // Render processed PHP theme content
@@ -46,6 +49,9 @@ async function startServer() {
     content = content.replace(/<\?php\s*echo\s*esc_url\(\s*tatkhalsa_get_logo_url\(\)\s*\)\s*;?\s*\?>/g, '/Logo.png');
     content = content.replace(/<\?php\s*echo\s*esc_url\(\s*home_url\(\s*['"]\/['"]\s*\)\s*\);\s*\?>/g, '/');
     
+    // Resolve admin-ajax url to mock express API
+    content = content.replace(/<\?php\s*echo\s*esc_url\(\s*admin_url\(\s*['"]admin-ajax\.php['"]\s*\)\s*\);\s*\?>/g, '/api/admin-ajax.php');
+    
     // Resolve navigation links
     content = content.replace(/<\?php\s*echo\s*esc_url\(\s*home_url\(\s*['"]\/about\/['"]\s*\)\s*\);\s*\?>/g, '/about');
     content = content.replace(/<\?php\s*echo\s*esc_url\(\s*home_url\(\s*['"]\/projects\/['"]\s*\)\s*\);\s*\?>/g, '/projects');
@@ -72,6 +78,37 @@ async function startServer() {
 
     return content;
   }
+
+  // Mock WordPress admin-ajax handler for previews
+  app.post("/api/admin-ajax.php", (req, res) => {
+    const action = req.body.action || req.query.action;
+    
+    if (action === "submit_volunteer") {
+      const name = req.body.vName;
+      const email = req.body.vEmail;
+      const phone = req.body.vPhone;
+      const message = req.body.vMessage;
+
+      if (!name || !email || !phone || !message) {
+        return res.json({
+          success: false,
+          data: {
+            message: "Please fill in all layout fields."
+          }
+        });
+      }
+
+      // Return standard WordPress SUCCESS JSON format
+      return res.json({
+        success: true,
+        data: {
+          message: "Application submitted successfully! We will contact you soon."
+        }
+      });
+    }
+
+    res.status(404).json({ success: false, data: { message: `Unknown AJAX action: ${action}` } });
+  });
 
   // Support direct static serving of style.css and Logo.jpg/Logo.png from theme path
   app.get("/style.css", (req, res) => {

@@ -24,6 +24,15 @@ get_header();
         class="container scroll-reveal"
         style="position: relative; z-index: 2; text-align: center"
       >
+        <!-- Centered Logo same as home page -->
+        <div class="hero-logo-wrapper" style="display: flex; justify-content: center; margin-bottom: 25px; margin-top: 10px;">
+          <img
+            src="<?php echo esc_url( tatkhalsa_get_logo_url() ); ?>"
+            alt="Tatkhalsa Foundation Logo"
+            class="hero-gurbani-logo"
+            style="width: 240px; height: 240px; object-fit: contain;"
+          />
+        </div>
         <h1 style="font-size: 3rem; color: var(--cream); margin-bottom: 20px">
           Volunteer With Us
         </h1>

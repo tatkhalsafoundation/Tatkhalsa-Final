@@ -501,6 +501,15 @@ get_header();
   
   <section class="hero" style="padding: 40px 0 35px 0; background: linear-gradient(135deg, rgba(8, 17, 35, 0.96) 0%, rgba(5, 10, 20, 0.99) 100%);">
     <div class="container scroll-reveal" style="text-align: center">
+      <!-- Centered Logo same as home page -->
+      <div class="hero-logo-wrapper" style="display: flex; justify-content: center; margin-bottom: 25px; margin-top: 10px;">
+        <img
+          src="<?php echo esc_url( tatkhalsa_get_logo_url() ); ?>"
+          alt="Tatkhalsa Foundation Logo"
+          class="hero-gurbani-logo"
+          style="width: 240px; height: 240px; object-fit: contain;"
+        />
+      </div>
       <h1 style="font-family: var(--font-serif); font-size: 2.8rem; color: var(--cream); margin-bottom: 10px; letter-spacing: -0.01em;">
         Our Seva Projects
       </h1>
