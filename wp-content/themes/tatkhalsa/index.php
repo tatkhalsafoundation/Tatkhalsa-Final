@@ -159,6 +159,43 @@ get_header();
       Current Campaigns
     </h2>
 
+    <style>
+      /* Fallback CSS injected to ensure the campaign carousel works securely on all standard WP setups */
+      @media (max-width: 768px) {
+        .campaign-slide {
+          opacity: 0 !important;
+          visibility: hidden !important;
+          pointer-events: none !important;
+          position: absolute !important;
+          transform: scale(0.95) !important;
+          display: block !important;
+          transition: opacity 0.4s ease, visibility 0.4s ease, transform 0.4s ease !important;
+        }
+        .campaign-slide.active {
+          opacity: 1 !important;
+          visibility: visible !important;
+          pointer-events: auto !important;
+          position: relative !important;
+          transform: scale(1) translateY(0) !important;
+          display: block !important;
+        }
+        .campaign-slide.next-preview,
+        .campaign-slide.prev-preview {
+          display: none !important;
+          opacity: 0 !important;
+          visibility: hidden !important;
+        }
+        .campaign-slides-container {
+          height: auto !important;
+          min-height: 480px !important;
+          overflow: hidden !important;
+        }
+        .campaign-slider-wrapper {
+          overflow: hidden !important;
+        }
+      }
+    </style>
+
     <!-- Interactive Carousel Wrapper -->
     <div class="campaign-slider-wrapper" style="position: relative; max-width: 440px; margin: 0 auto; overflow: visible;">
       <div class="campaign-slides-container">
@@ -167,7 +204,7 @@ get_header();
         <div class="campaign-slide active" data-index="0" data-title="Nimrat Kaur (2 yrs, Cancer)" onclick="handleSlideClick(0, event)">
           <div class="campaign-card">
             <span class="campaign-view-tag" onclick="openNimratKaurModal(); event.stopPropagation(); return false;" style="cursor: pointer;">View Campaign</span>
-            <img class="campaign-img" src="/src/assets/images/regenerated_image_1781122402788.jpg" alt="Pediatric Cancer Care Support - Nimrat Kaur" />
+            <img class="campaign-img" src="https://images.unsplash.com/photo-1542816417-0983c9c9ad53?auto=format&fit=crop&w=800&q=80" alt="Pediatric Cancer Care Support - Nimrat Kaur" />
             <div class="campaign-overlay">
               <span class="campaign-category" style="color: var(--accent-red);">Healthcare Aid</span>
               <h3 class="campaign-title">Cancer Patient Nimrat Kaur</h3>

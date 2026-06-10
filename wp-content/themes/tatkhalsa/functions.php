@@ -107,7 +107,7 @@ function tatkhalsa_get_theme_logo_url() {
 function tatkhalsa_scripts() {
 	// Enqueue main Theme Theme-Stylesheet with cache busting.
 	$style_path = get_stylesheet_directory() . '/style.css';
-	$version = file_exists( $style_path ) ? filemtime( $style_path ) : '1.0.0';
+	$version = time();
 	wp_enqueue_style( 'tatkhalsa-theme-style', get_stylesheet_uri(), array(), $version );
 }
 add_action( 'wp_enqueue_scripts', 'tatkhalsa_scripts' );

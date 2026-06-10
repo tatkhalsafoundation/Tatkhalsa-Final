@@ -211,7 +211,7 @@
           <!-- Left details or photo -->
           <div style="flex: 1; min-width: 250px;">
             <div style="position: relative; border-radius: 10px; overflow: hidden; border: 2px solid rgba(255, 51, 75, 0.2); box-shadow: 0 4px 15px rgba(0,0,0,0.3); margin-bottom: 12px;">
-              <img src="/src/assets/images/regenerated_image_1781122402788.jpg" alt="Sikh Child Nimrat Kaur" style="width: 100%; display: block; filter: saturate(1.15);">
+              <img src="https://images.unsplash.com/photo-1542816417-0983c9c9ad53?auto=format&fit=crop&w=800&q=80" alt="Sikh Child Nimrat Kaur" style="width: 100%; display: block; filter: saturate(1.15);">
               <div style="position: absolute; bottom: 0; left: 0; right: 0; background: linear-gradient(to top, rgba(0,0,0,0.85), rgba(0,0,0,0)); padding: 12px 10px; text-align: center;">
                 <span style="color: #fff; font-size: 0.95rem; font-weight: bold; text-shadow: 0 1px 2px rgba(0,0,0,0.8);">Nimrat Kaur (2 years old)</span>
               </div>

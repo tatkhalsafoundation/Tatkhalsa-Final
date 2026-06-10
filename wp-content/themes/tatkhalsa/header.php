@@ -19,6 +19,56 @@
       })();
     </script>
 
+    <style>
+      /* Fallback injected CSS for direct mobile fixes bypassing aggressive WP caching plugins */
+      @media (max-width: 768px) {
+        .logo::after {
+          width: 32px !important;
+          height: 32px !important;
+          margin-left: 8px !important;
+        }
+        .header-logo-badge {
+          width: 32px !important;
+          height: 32px !important;
+          margin-right: 8px !important;
+          transition: all 0.3s ease !important;
+        }
+        .header-logo-img-new {
+          width: 20px !important;
+          height: 20px !important;
+          transition: all 0.3s ease !important;
+        }
+        .logo-text-up {
+          font-size: 1.1rem !important;
+          transition: 0.3s ease !important;
+        }
+        .logo-text-down {
+          font-size: 0.55rem !important;
+          transition: 0.3s ease !important;
+        }
+
+        /* Scrolled States applied securely via inline CSS */
+        body.scrolled .header-logo-badge {
+          width: 28px !important;
+          height: 28px !important;
+          margin-right: 6px !important;
+        }
+        body.scrolled .header-logo-img-new {
+          width: 18px !important;
+          height: 18px !important;
+        }
+        body.scrolled .logo-text-up {
+          font-size: 0.95rem !important;
+        }
+        body.scrolled .logo-text-down {
+          font-size: 0.5rem !important;
+        }
+        .header {
+          transition: padding 0.3s ease, min-height 0.3s ease, background 0.3s ease !important;
+        }
+      }
+    </style>
+
     <?php wp_head(); ?>
   </head>
   <body <?php body_class(); ?>>
