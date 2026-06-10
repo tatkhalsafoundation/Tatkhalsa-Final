@@ -175,6 +175,16 @@
               </button>
             </div>
           </div>
+
+          <!-- Direct Phone UPI Link Launch Button -->
+          <div class="direct-upi-pay-wrapper" style="margin-top: 20px; text-align: center;">
+            <a id="directUpiPayBtn" href="upi://pay?pa=mab.037215043540097@axisbank&pn=Tatkhalsa%20Foundation&cu=INR" style="display: flex; align-items: center; justify-content: center; gap: 8px; background: #00875a; color: #ffffff; padding: 12px 20px; border-radius: 8px; font-weight: bold; text-decoration: none; font-size: 1.05rem; width: 100%; box-sizing: border-box; box-shadow: 0 4px 12px rgba(0,135,90,0.25); transition: all 0.25s;" onmouseover="this.style.background='#006644'; this.style.transform='translateY(-1px)';" onmouseout="this.style.background='#00875a'; this.style.transform='none';">
+              <span style="font-size: 1.2rem; line-height: 1;">📱</span> Contribute Now
+            </a>
+            <span style="display: block; font-size: 0.75rem; color: var(--text-light); margin-top: 8px; font-style: italic; line-height: 1.3;">
+              *Tap to immediately open any available payment app (GPay, PhonePe, Paytm, BHIM, etc.) on your phone
+            </span>
+          </div>
         </div>
 
         <div style="font-size: 0.85rem; color: var(--text-light); margin-top: 20px;">
@@ -194,34 +204,41 @@
 
     <!-- Vanilla Javascript Interactions and States -->
     <script>
-      // Scroll to Top Logic
+      // Scroll to Top Logic with defensive null checks
       const backToTopBtn = document.getElementById("backToTop");
-      window.addEventListener("scroll", () => {
-        if (window.scrollY > 300) {
-          backToTopBtn.classList.add("visible");
-        } else {
-          backToTopBtn.classList.remove("visible");
-        }
-      });
-
-      backToTopBtn.addEventListener("click", () => {
-        window.scrollTo({
-          top: 0,
-          behavior: "smooth",
+      if (backToTopBtn) {
+        window.addEventListener("scroll", () => {
+          if (window.scrollY > 300) {
+            backToTopBtn.classList.add("visible");
+          } else {
+            backToTopBtn.classList.remove("visible");
+          }
         });
-      });
 
-      // Modal Display Mechanics
+        backToTopBtn.addEventListener("click", () => {
+          window.scrollTo({
+            top: 0,
+            behavior: "smooth",
+          });
+        });
+      }
+
+      // Modal Display Mechanics with robust safety guards
       function openModal() {
-        document.getElementById("contributionModal").classList.add("active");
+        const modal = document.getElementById("contributionModal");
+        if (modal) modal.classList.add("active");
       }
       function closeModal() {
-        document.getElementById("contributionModal").classList.remove("active");
+        const modal = document.getElementById("contributionModal");
+        if (modal) modal.classList.remove("active");
       }
 
-      document.getElementById("contributionModal").addEventListener("click", function (e) {
+      const contribModal = document.getElementById("contributionModal");
+      if (contribModal) {
+        contribModal.addEventListener("click", function (e) {
           if (e.target === this) closeModal();
-      });
+        });
+      }
 
       // Copy Buffer Helper with Visual confirmation
       function copyText(text) {
@@ -265,7 +282,14 @@
         }
 
         const qrCodeImg = document.getElementById("upiQrCode");
-        qrCodeImg.src = `https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodeURIComponent(upiString)}`;
+        if (qrCodeImg) {
+          qrCodeImg.src = `https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodeURIComponent(upiString)}`;
+        }
+
+        const directPayBtn = document.getElementById("directUpiPayBtn");
+        if (directPayBtn) {
+          directPayBtn.href = upiString;
+        }
       }
 
       // Scroll Reveal triggers
@@ -309,7 +333,7 @@
         }
       });
 
-      // Sync Mobile Dropdown Select Option with Active Page URL
+      // Synchronize and manage Mobile Dropdown Selector on ALL Pages with multi-permalink normalization
       const mobileNavSelect = document.getElementById("mobileNavSelect");
       const customWrapper = document.getElementById("customMobileNavWrapper");
       const customBtn = document.getElementById("customMobileNavBtn");
@@ -338,38 +362,67 @@
         });
       }
 
-      if (mobileNavSelect) {
-        const currentPath = window.location.pathname;
-        let matchedIndex = -1;
-        for (let i = 0; i < mobileNavSelect.options.length; i++) {
-          const opt = mobileNavSelect.options[i];
-          if (opt.value) {
-            try {
-              const optPath = new URL(opt.value, window.location.origin).pathname;
-              if (currentPath === optPath || (currentPath === "/" && optPath === "/index.php") || (currentPath === "/index.php" && optPath === "/")) {
-                opt.selected = true;
-                matchedIndex = i;
-                break;
-              }
-            } catch (e) {
-              if (currentPath.includes(opt.value)) {
-                opt.selected = true;
-                matchedIndex = i;
-                break;
-              }
-            }
+      // Fully normalize URLs for comparison (handling trailing slashes, index.php, clean/plain query-params)
+      function getNormalizedMatchKey(urlStr) {
+        try {
+          const urlObj = new URL(urlStr, window.location.origin);
+          let pathname = urlObj.pathname.toLowerCase().replace(/\/$/, "");
+          if (pathname === "" || pathname === "/index.php") {
+            pathname = "/";
           }
+          const searchParams = new URLSearchParams(urlObj.search);
+          const pageId = searchParams.get("page_id") || searchParams.get("p") || "";
+          const pageName = searchParams.get("pagename") || "";
+          
+          return {
+            path: pathname,
+            pageId: pageId,
+            pageName: pageName.toLowerCase()
+          };
+        } catch (err) {
+          return { path: urlStr.toLowerCase(), pageId: "", pageName: "" };
+        }
+      }
+
+      if (customOpts.length > 0) {
+        const currentLoc = getNormalizedMatchKey(window.location.href);
+        let matchedIndex = -1;
+
+        // Try exact keys first
+        customOpts.forEach((opt, idx) => {
+          const optLoc = getNormalizedMatchKey(opt.href);
+          
+          // Match by query strings (page_id etc.) if both present
+          if (currentLoc.pageId && optLoc.pageId && currentLoc.pageId === optLoc.pageId) {
+            matchedIndex = idx;
+          } else if (currentLoc.pageName && optLoc.pageName && currentLoc.pageName === optLoc.pageName) {
+            matchedIndex = idx;
+          } else if (!currentLoc.pageId && !optLoc.pageId && currentLoc.path === optLoc.path) {
+            matchedIndex = idx;
+          }
+        });
+
+        // Fallback checks (e.g., if we are looking at subpages or partial matching)
+        if (matchedIndex === -1) {
+          customOpts.forEach((opt, idx) => {
+            const optLoc = getNormalizedMatchKey(opt.href);
+            if (currentLoc.path.includes(optLoc.path) && optLoc.path !== "/") {
+              matchedIndex = idx;
+            }
+          });
         }
 
-        // Sync visual custom dropdown active option (placeholder is index 0)
-        if (matchedIndex !== -1 && customOpts.length >= matchedIndex) {
-          const activeOptIndex = matchedIndex - 1; 
-          if (activeOptIndex >= 0 && customOpts[activeOptIndex]) {
-            customOpts.forEach(o => o.classList.remove("active"));
-            customOpts[activeOptIndex].classList.add("active");
-            if (customLabel) {
-              customLabel.innerText = customOpts[activeOptIndex].innerText;
-            }
+        // Apply active class, labels, and select index if custom dropdown matched
+        if (matchedIndex !== -1 && customOpts[matchedIndex]) {
+          customOpts.forEach(o => o.classList.remove("active"));
+          customOpts[matchedIndex].classList.add("active");
+          
+          if (customLabel) {
+            customLabel.innerText = customOpts[matchedIndex].innerText;
+          }
+
+          if (mobileNavSelect) {
+            mobileNavSelect.selectedIndex = matchedIndex + 1; // account for placeholder at index 0
           }
         }
       }

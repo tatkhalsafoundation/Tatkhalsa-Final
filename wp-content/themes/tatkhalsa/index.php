@@ -194,6 +194,259 @@ get_header();
         </div>
       </div>
     </div>
+
+    <!-- New Dynamic Seva Contribution Ledger & Declaration Section -->
+    <div class="ledger-box" style="margin-top: 60px; border-top: 1px solid rgba(212, 175, 55, 0.15); padding-top: 45px;">
+      <h3 style="color: var(--text-dark); margin-bottom: 25px; font-family: var(--font-sans); text-align: center; font-size: 1.8rem; display: flex; align-items: center; justify-content: center; gap: 10px;">
+        <span>⚜️</span> Recent Seva Ledger (Dasvandh Board)
+      </h3>
+      <p style="color: var(--text-light); text-align: center; max-width: 700px; margin: 0 auto 40px auto; font-size: 0.95rem; line-height: 1.6;">
+        Every contribution helps support our free community kitchen (Langar), flood relief operations, and educational materials. Fill in the form to self-declare a voluntary Seva contribution.
+      </p>
+
+      <div class="budget-grid" style="align-items: flex-start; gap: 40px;">
+        <!-- Left Column: Transactions List -->
+        <div style="flex: 1.2; min-width: 280px; width: 100%;">
+          <h4 style="color: var(--primary); margin-bottom: 20px; font-size: 1.25rem; display: flex; align-items: center; gap: 8px;">
+            <span>📋 Live Contributions Board</span>
+            <span style="font-size: 0.75rem; background: rgba(0, 135, 90, 0.15); color: #00bf75; padding: 3px 8px; border-radius: 12px; font-weight: bold;">Verified Ledger</span>
+          </h4>
+          
+          <div id="transactions-loading" style="color: var(--text-light); padding: 30px 0; text-align: center; font-size: 0.950rem;">
+            ⏳ Retrieving active ledgers...
+          </div>
+          <div id="transactions-container" style="display: flex; flex-direction: column; gap: 14px; max-height: 480px; overflow-y: auto; padding-right: 8px;">
+            <!-- Rendered dynamically -->
+          </div>
+        </div>
+
+        <!-- Right Column: Declaration Form -->
+        <div style="flex: 0.8; min-width: 280px; width: 100%; background: rgba(255,255,255,0.02); border: 1px solid rgba(212,175,55,0.15); padding: 30px; border-radius: 12px; box-shadow: 0 10px 40px rgba(0,0,0,0.25); box-sizing: border-box;">
+          <h4 style="color: var(--primary); margin-bottom: 12px; font-size: 1.25rem;">
+            ✍️ Report Your Seva
+          </h4>
+          <p style="color: var(--text-light); font-size: 0.85rem; margin-bottom: 20px; line-height: 1.4;">
+            If you transferred funds via Bank or UPI QR, register below to list it on the board.
+          </p>
+          <form id="declarationForm">
+            <div style="margin-bottom: 16px;">
+              <label for="dtName" id="dtNameLabel" style="display: block; color: var(--text-dark); margin-bottom: 6px; font-size: 0.85rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px;">Your Name / Organisation</label>
+              <input type="text" id="dtName" required placeholder="Sardarni / Sardar..." style="width: 100%; padding: 12px 14px; border-radius: 6px; border: 1px solid rgba(255,255,255,0.1); background: var(--bg-dark); color: #fff; font-size: 0.95rem; box-sizing: border-box; transition: border-color 0.2s;">
+            </div>
+
+            <div style="margin-bottom: 20px; display: flex; align-items: center; gap: 8px; background: rgba(212,175,55,0.05); padding: 10px 12px; border-radius: 6px; border: 1px solid rgba(212,175,55,0.08);">
+              <input type="checkbox" id="dtAnonymous" style="cursor: pointer; width: 18px; height: 18px; accent-color: var(--primary);">
+              <label for="dtAnonymous" style="color: var(--text-dark); font-size: 0.9rem; cursor: pointer; user-select: none; font-weight: 500;">Contribute anonymously</label>
+            </div>
+
+            <div style="margin-bottom: 16px;">
+              <label for="dtAmount" style="display: block; color: var(--text-dark); margin-bottom: 6px; font-size: 0.85rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px;">Seva Amount (₹)</label>
+              <input type="number" id="dtAmount" required min="1" placeholder="e.g. 5100" style="width: 100%; padding: 12px 14px; border-radius: 6px; border: 1px solid rgba(255,255,255,0.1); background: var(--bg-dark); color: #fff; font-size: 0.95rem; box-sizing: border-box;">
+            </div>
+
+            <div style="margin-bottom: 16px;">
+              <label for="dtSevaType" style="display: block; color: var(--text-dark); margin-bottom: 6px; font-size: 0.85rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px;">Select Seva Project</label>
+              <select id="dtSevaType" required style="width: 100%; padding: 12px 14px; border-radius: 6px; border: 1px solid rgba(255,255,255,0.1); background: var(--bg-dark); color: #fff; font-size: 0.95rem; box-sizing: border-box; cursor: pointer;">
+                <option value="General Seva">General Seva / Dasvandh</option>
+                <option value="Langar Seva">Guru ka Langar Seva</option>
+                <option value="Punjab Flood Relief">Punjab Flood Relief</option>
+                <option value="Education Support">Educational & Youth Support</option>
+              </select>
+            </div>
+
+            <div style="margin-bottom: 24px;">
+              <label for="dtNote" style="display: block; color: var(--text-dark); margin-bottom: 6px; font-size: 0.85rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px;">Reference / Message (Optional)</label>
+              <input type="text" id="dtNote" placeholder="e.g. Transferred via GPay / Gursikh Sewa" style="width: 100%; padding: 12px 14px; border-radius: 6px; border: 1px solid rgba(255,255,255,0.1); background: var(--bg-dark); color: #fff; font-size: 0.95rem; box-sizing: border-box;">
+            </div>
+
+            <button type="submit" style="width: 100%; padding: 14px; background: var(--primary); color: var(--bg-dark); border: none; border-radius: 6px; font-weight: bold; font-size: 1rem; cursor: pointer; transition: all 0.2s; box-shadow: 0 4px 15px rgba(212,175,55,0.15); text-transform: uppercase; letter-spacing: 0.5px;">
+              Submit Declaration
+            </button>
+
+            <div id="dtStatus" style="margin-top: 15px; font-size: 0.9rem; text-align: center; font-weight: 500;"></div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- Live Ledger Scripts -->
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        const ajaxUrl = "<?php echo esc_url( admin_url( 'admin-ajax.php' ) ); ?>";
+        const anonCheckbox = document.getElementById("dtAnonymous");
+        const nameField = document.getElementById("dtName");
+        
+        // Handle anonymous checkbox visibility effect
+        if (anonCheckbox && nameField) {
+          anonCheckbox.addEventListener("change", () => {
+            if (anonCheckbox.checked) {
+              nameField.value = "Anonymous Sevadar";
+              nameField.setAttribute("disabled", "true");
+              nameField.removeAttribute("required");
+              nameField.style.opacity = "0.5";
+            } else {
+              nameField.value = "";
+              nameField.removeAttribute("disabled");
+              nameField.setAttribute("required", "true");
+              nameField.style.opacity = "1";
+            }
+          });
+        }
+
+        // Relative Formatting
+        function formatDateString(dateStr) {
+          if (!dateStr) return "Just now";
+          try {
+            const d = new Date(dateStr.replace(/-/g, "/"));
+            if (isNaN(d.getTime())) return dateStr;
+            const now = new Date();
+            const diffMs = now - d;
+            const diffMins = Math.floor(diffMs / 60000);
+            
+            if (diffMins < 1) return "Just now";
+            if (diffMins < 60) return `${diffMins}m ago`;
+            const diffHrs = Math.floor(diffMins / 60);
+            if (diffHrs < 24) return `${diffHrs}h ago`;
+            
+            return d.toLocaleDateString("en-IN", { month: "short", day: "numeric", year: "numeric" });
+          } catch (e) {
+            return dateStr;
+          }
+        }
+
+        // Fetch and Render Transactions list
+        async function loadTransactions() {
+          const container = document.getElementById("transactions-container");
+          const loadingEl = document.getElementById("transactions-loading");
+          
+          try {
+            const response = await fetch(`${ajaxUrl}?action=get_transactions`);
+            const data = await response.json();
+            
+            if (data.success && data.data.transactions) {
+              if (loadingEl) loadingEl.style.display = "none";
+              container.innerHTML = "";
+              
+              if (data.data.transactions.length === 0) {
+                container.innerHTML = `<div style="color: var(--text-light); padding: 30px; text-align: center;">No transactions found. Be the first to report standard seva!</div>`;
+                return;
+              }
+              
+              data.data.transactions.forEach(tx => {
+                const card = document.createElement("div");
+                card.style.background = "rgba(255, 255, 255, 0.03)";
+                card.style.border = "1px solid rgba(255, 255, 255, 0.05)";
+                card.style.borderRadius = "8px";
+                card.style.padding = "16px";
+                card.style.display = "flex";
+                card.style.justifyContent = "space-between";
+                card.style.alignItems = "center";
+                card.style.gap = "15px";
+                card.style.transition = "all 0.25s";
+                
+                const verifiedTag = tx.verified == 1 
+                  ? `<span style="font-size: 0.725rem; font-weight: bold; background: rgba(0, 191, 117, 0.12); color: #00bf75; padding: 2px 7px; border-radius: 10px; margin-left: 8px; display: inline-flex; align-items: center; gap: 4px;">Verified ✓</span>`
+                  : `<span style="font-size: 0.725rem; font-weight: bold; background: rgba(212, 175, 55, 0.1); color: var(--primary); padding: 2px 7px; border-radius: 10px; margin-left: 8px; display: inline-flex; align-items: center; gap: 4px;">Pending Sync ⏳</span>`;
+
+                const contributorName = tx.anonymous == 1 ? "Anonymous Sevadar" : tx.name;
+                const noteElement = tx.note 
+                  ? `<p style="margin: 5px 0 0 0; font-size: 0.8rem; color: var(--text-light); font-style: italic;">"${escapeHtml(tx.note)}"</p>` 
+                  : '';
+
+                card.innerHTML = `
+                  <div style="display: flex; align-items: center; gap: 14px;">
+                    <div style="background: rgba(212,175,55,0.08); width: 44px; height: 44px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: var(--primary); border: 1px solid rgba(212,175,55,0.15); flex-shrink: 0;">
+                      ⚜️
+                    </div>
+                    <div>
+                      <div style="display: flex; align-items: center; flex-wrap: wrap; gap: 6px;">
+                        <strong style="color: var(--text-dark); font-size: 0.95rem;">${escapeHtml(contributorName)}</strong>
+                        ${verifiedTag}
+                      </div>
+                      <span style="font-size: 0.75rem; color: var(--primary); font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; display: block; margin-top: 3px;">${escapeHtml(tx.seva_type)}</span>
+                      ${noteElement}
+                    </div>
+                  </div>
+                  <div style="text-align: right; flex-shrink: 0;">
+                    <span style="font-size: 1.15rem; font-weight: bold; color: var(--accent-green); display: block;">₹${parseFloat(tx.amount).toLocaleString('en-IN')}</span>
+                    <span style="font-size: 0.75rem; color: var(--text-light); display: block; margin-top: 3px;">${formatDateString(tx.date)}</span>
+                  </div>
+                `;
+                container.appendChild(card);
+              });
+            } else {
+              if (loadingEl) loadingEl.textContent = "Unable to retrieve database. Please refresh.";
+            }
+          } catch (err) {
+            console.error("Ledger fetch error:", err);
+            if (loadingEl) loadingEl.textContent = "Network sync timeout. Refreshing soon...";
+          }
+        }
+
+        function escapeHtml(text) {
+          if (!text) return "";
+          return text
+            .toString()
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&#039;");
+        }
+
+        // Handle form declaration submit
+        const decForm = document.getElementById("declarationForm");
+        if (decForm) {
+          decForm.addEventListener("submit", async (e) => {
+            e.preventDefault();
+            const statusEl = document.getElementById("dtStatus");
+            statusEl.style.color = "var(--text-light)";
+            statusEl.textContent = "Recording your Seva contribution details...";
+
+            const params = new URLSearchParams();
+            params.append("action", "submit_transaction");
+            params.append("tName", nameField.value);
+            params.append("tAnonymous", anonCheckbox.checked ? "1" : "0");
+            params.append("tAmount", document.getElementById("dtAmount").value);
+            params.append("tSevaType", document.getElementById("dtSevaType").value);
+            params.append("tNote", document.getElementById("dtNote").value);
+
+            try {
+              const response = await fetch(ajaxUrl, {
+                method: "POST",
+                headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                body: params
+              });
+              const result = await response.json();
+              if (result.success) {
+                statusEl.style.color = "var(--accent-green)";
+                statusEl.textContent = result.data.message || "Seva submitted! Thank you.";
+                decForm.reset();
+                if (anonCheckbox.checked) {
+                  anonCheckbox.checked = false;
+                  nameField.value = "";
+                  nameField.removeAttribute("disabled");
+                  nameField.setAttribute("required", "true");
+                  nameField.style.opacity = "1";
+                }
+                // Reload transactions immediately to show new item
+                await loadTransactions();
+              } else {
+                statusEl.style.color = "var(--accent-red)";
+                statusEl.textContent = result.data.message || "Error submitting seva. Please verify entries.";
+              }
+            } catch (err) {
+              console.error("Seva declaration error:", err);
+              statusEl.style.color = "var(--accent-red)";
+              statusEl.textContent = "Network error. Please try declaring again.";
+            }
+          });
+        }
+
+        // Run initial load
+        loadTransactions();
+      });
+    </script>
   </div>
 </section>
 

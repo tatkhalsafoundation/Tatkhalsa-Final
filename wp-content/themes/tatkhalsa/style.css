@@ -1592,11 +1592,76 @@ footer .container {
     justify-content: center !important;
     gap: 12px !important;
     margin-left: 0 !important;
+    width: 100% !important;
+  }
+  
+  /* Make social list visible, centered, and touch-accessible */
+  .top-bar-social {
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    gap: 18px !important;
+    width: 100% !important;
+  }
+  
+  .top-bar-social a {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 38px !important;
+    height: 38px !important;
+    padding: 0 !important;
+    background: rgba(255, 255, 255, 0.08) !important;
+    border: 1px solid rgba(255, 255, 255, 0.15) !important;
+    border-radius: 50% !important;
+    transition: all 0.2s ease-in-out !important;
+  }
+  
+  .top-bar-social a svg {
+    width: 18px !important;
+    height: 18px !important;
+    display: inline-block !important;
+    stroke-width: 2.2px !important;
+    stroke-linecap: round !important;
+    stroke-linejoin: round !important;
+  }
+  
+  /* Target the Instagram SVG components (first child social a elements) with brighter, outstanding pink color */
+  .top-bar-social a[href*="instagram.com"] svg,
+  .top-bar-social a[href*="instagram.com"] svg rect,
+  .top-bar-social a[href*="instagram.com"] svg path,
+  .top-bar-social a[href*="instagram.com"] svg line {
+    color: #ff3377 !important;
+    stroke: #ff3377 !important;
+  }
+  
+  /* Other social elements color preservation */
+  .top-bar-social a[href*="facebook.com"] svg {
+    color: #1877f2 !important;
+    stroke: #1877f2 !important;
+  }
+  .top-bar-social a[href*="x.com"] svg {
+    color: var(--cream) !important;
+    stroke: var(--cream) !important;
+  }
+  .top-bar-social a[href*="snapchat.com"] svg {
+    color: #fffc00 !important;
+    fill: #fffc00 !important;
   }
 }
 @media (max-width: 520px) {
   .top-bar-motto {
     display: none !important;
+  }
+}
+@media (max-width: 480px) {
+  .top-bar-social a {
+    width: 42px !important;
+    height: 42px !important;
+  }
+  .top-bar-social a svg {
+    width: 20px !important;
+    height: 20px !important;
   }
 }
 
