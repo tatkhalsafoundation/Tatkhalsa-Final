@@ -282,25 +282,42 @@ h6 {
   width: 100%;
 }
 .logo {
-  font-family: var(--font-serif);
-  font-size: 1.45rem;
-  font-weight: 700;
   text-decoration: none;
   white-space: nowrap;
   z-index: 1010;
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+}
+.logo-text {
+  font-family: var(--font-serif);
+  font-size: 1.45rem;
+  font-weight: 700;
   letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--secondary);
   background: linear-gradient(135deg, var(--secondary) 0%, var(--primary) 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  display: inline-flex;
-  align-items: center;
+  display: inline-block;
+}
+.logo img {
+  height: 44px;
+  width: auto;
+  object-fit: contain;
+  transition: transform 0.25s ease;
+  filter: drop-shadow(0 0 4px rgba(212, 175, 55, 0.2));
+}
+.logo:hover img {
+  transform: scale(1.08) rotate(3deg);
 }
 @media (max-width: 900px) {
   .logo {
-    font-size: 1.15rem;
     display: inline-flex !important;
+    gap: 8px;
+  }
+  .logo img {
+    height: 36px;
   }
   .logo-text {
     font-size: 0.95rem;
