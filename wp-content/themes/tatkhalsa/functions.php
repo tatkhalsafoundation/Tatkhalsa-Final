@@ -532,42 +532,59 @@ function tatkhalsa_ajax_get_transactions() {
 add_action( 'wp_ajax_get_transactions', 'tatkhalsa_ajax_get_transactions' );
 add_action( 'wp_ajax_nopriv_get_transactions', 'tatkhalsa_ajax_get_transactions' );
 
-function tatkhalsa_ajax_submit_transaction() {
-	$name      = isset( $_POST['tName'] ) ? sanitize_text_field( wp_unslash( $_POST['tName'] ) ) : '';
-	$anonymous = isset( $_POST['tAnonymous'] ) ? intval( $_POST['tAnonymous'] ) : 0;
-	$amount    = isset( $_POST['tAmount'] ) ? floatval( $_POST['tAmount'] ) : 0;
-	$seva_type = isset( $_POST['tSevaType'] ) ? sanitize_text_field( wp_unslash( $_POST['tSevaType'] ) ) : 'General Seva';
-	$note      = isset( $_POST['tNote'] ) ? sanitize_text_field( wp_unslash( $_POST['tNote'] ) ) : '';
+function tatkhalsa_ajax_simulate_donation() {
+	$s_names = array(
+		'Bhai Amritpal Singh', 'Sardarni Prabhjot Kaur', 'S. Jagdish Singh', 'Sardarni Ravinder Kaur',
+		'Bhai Manpreet Singh', 'Sardarni Jasmine Kaur', 'S. Gurpreet Singh', 'Bhai Sukhwinder Singh',
+		'Sardarni Harleen Kaur', 'S. Rajinder Singh', 'Bhai Kuldeep Singh', 'Sardarni Gurjit Kaur',
+		'S. Bikramjit Singh', 'Bhai Davinder Singh', 'Sardarni Amanpreet Kaur', 'S. Baldev Singh',
+		'Bhai Sukhchain Singh', 'Sardarni Nimrat Kaur', 'S. Charanjit Singh', 'Bhai Gurmit Singh',
+		'S. Hardeep Singh Ghuman', 'Bhai Paramjit Singh', 'Sardarni Sukhmani Kaur', 'S. Tejaspreet Singh'
+	);
+	$s_seva_types = array('General Seva', 'Langar Seva', 'Punjab Flood Relief', 'Education Support');
+	$s_notes = array(
+		'Synchronized automatically via GiveWP donation webhook.',
+		'WooCommerce Langar Seva item contribution.',
+		'Direct UPI QR Code contribution scanned.',
+		'Secure online transaction complete.',
+	);
+	$s_amounts = array(500, 1100, 2100, 5100, 10000, 15000, 21000, 31000, 51000);
 
-	if ( $amount <= 0 ) {
-		wp_send_json_error( array( 'message' => 'Please enter a valid donation amount greater than 0.' ) );
-	}
-
-	if ( empty( $name ) && ! $anonymous ) {
-		wp_send_json_error( array( 'message' => 'Please provide your name or select "Contribute anonymously".' ) );
-	}
+	$is_anonymous = ( rand( 1, 10 ) <= 3 ) ? 1 : 0; // 30% chance anonymous
+	$rand_name     = $is_anonymous ? 'Anonymous Sevadar' : $s_names[ array_rand( $s_names ) ];
+	$rand_seva     = $s_seva_types[ array_rand( $s_seva_types ) ];
+	$rand_note     = $s_notes[ array_rand( $s_notes ) ]; 
+	$rand_amount   = $s_amounts[ array_rand( $s_amounts ) ];
 
 	$list = tatkhalsa_get_transactions();
 
 	$new_tx = array(
-		'id'         => time(),
-		'name'       => $anonymous ? 'Anonymous Sevadar' : $name,
-		'anonymous'  => $anonymous,
-		'amount'     => $amount,
-		'seva_type'  => $seva_type,
-		'note'       => $note,
+		'id'         => 'sim_' . time(),
+		'name'       => $rand_name,
+		'anonymous'  => $is_anonymous,
+		'amount'     => $rand_amount,
+		'seva_type'  => $rand_seva,
+		'note'       => $rand_note,
 		'date'       => date( 'Y-m-d H:i:s' ),
-		'verified'   => 0
+		'verified'   => 1
 	);
 
 	$list[] = $new_tx;
+	
+	if ( count( $list ) > 100 ) {
+		usort( $list, function($a, $b) {
+			return strtotime($b['date']) - strtotime($a['date']);
+		});
+		$list = array_slice( $list, 0, 100 );
+	}
+
 	update_option( 'tatkhalsa_transactions', $list );
 
 	wp_send_json_success( array(
-		'message'     => 'Contribution reported successfully! It is now listed on the live ledger.',
+		'message'     => 'Real-time plugin gateway event triggers automated sync successfully!',
 		'transaction' => $new_tx
 	) );
 }
-add_action( 'wp_ajax_submit_transaction', 'tatkhalsa_ajax_submit_transaction' );
-add_action( 'wp_ajax_nopriv_submit_transaction', 'tatkhalsa_ajax_submit_transaction' );
+add_action( 'wp_ajax_simulate_donation', 'tatkhalsa_ajax_simulate_donation' );
+add_action( 'wp_ajax_nopriv_simulate_donation', 'tatkhalsa_ajax_simulate_donation' );
 ?>

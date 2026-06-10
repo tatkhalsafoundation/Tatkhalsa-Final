@@ -57,6 +57,7 @@
     <header class="header">
       <div class="container">
         <a href="<?php echo esc_url( home_url( '/' ) ); ?>" class="logo">
+          <img src="<?php echo esc_url( tatkhalsa_get_logo_url() ); ?>" alt="<?php bloginfo( 'name' ); ?> Logo" />
           <span class="logo-text"><?php bloginfo( 'name' ); ?></span>
         </a>
  

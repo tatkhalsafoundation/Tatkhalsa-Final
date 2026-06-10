@@ -79,26 +79,137 @@ async function startServer() {
     return content;
   }
 
-  // Mock WordPress admin-ajax handler for previews
-  app.post("/api/admin-ajax.php", (req, res) => {
-    const action = req.body.action || req.query.action;
+  // Mock transaction data to support previews of the automated ledger board
+  let mockTransactions = [
+    {
+      id: "sim_1",
+      name: "Sardarni Harpreet Kaur",
+      anonymous: 0,
+      amount: 15000,
+      seva_type: "Punjab Flood Relief",
+      note: "In dedication to aid affected families",
+      date: new Date(Date.now() - 27 * 3600 * 1000).toISOString().replace("T", " ").substring(0, 19),
+      verified: 1
+    },
+    {
+      id: "sim_2",
+      name: "Anonymous Sevadar",
+      anonymous: 1,
+      amount: 5000,
+      seva_type: "Langar Seva",
+      note: "Guru Ka Langar Seva contribution",
+      date: new Date(Date.now() - 48 * 3600 * 1000).toISOString().replace("T", " ").substring(0, 19),
+      verified: 1
+    },
+    {
+      id: "sim_3",
+      name: "Bhai Jagjit Singh",
+      anonymous: 0,
+      amount: 1100,
+      seva_type: "General Seva",
+      note: "Supporting the poor & needy",
+      date: new Date(Date.now() - 120 * 3600 * 1000).toISOString().replace("T", " ").substring(0, 19),
+      verified: 1
+    },
+    {
+      id: "sim_4",
+      name: "S. Gurcharan Singh",
+      anonymous: 0,
+      amount: 5100,
+      seva_type: "Education Support",
+      note: "Youth educational materials & study kits",
+      date: new Date(Date.now() - 168 * 3600 * 1000).toISOString().replace("T", " ").substring(0, 19),
+      verified: 1
+    },
+    {
+      id: "sim_5",
+      name: "Anonymous Sevadar",
+      anonymous: 1,
+      amount: 2100,
+      seva_type: "Langar Seva",
+      note: "Karah Prasad & Degh contribution",
+      date: new Date(Date.now() - 240 * 3600 * 1000).toISOString().replace("T", " ").substring(0, 19),
+      verified: 1
+    }
+  ];
+
+  // Mock WordPress admin-ajax handler for previews (GET and POST)
+  app.all("/api/admin-ajax.php", (req, res) => {
+    const action = req.body?.action || req.query?.action;
     
+    if (action === "get_transactions") {
+      return res.json({
+        success: true,
+        data: {
+          transactions: mockTransactions
+        }
+      });
+    }
+
+    if (action === "simulate_donation") {
+      const s_names = [
+        'Bhai Amritpal Singh', 'Sardarni Prabhjot Kaur', 'S. Jagdish Singh', 'Sardarni Ravinder Kaur',
+        'Bhai Manpreet Singh', 'Sardarni Jasmine Kaur', 'S. Gurpreet Singh', 'Bhai Sukhwinder Singh',
+        'Sardarni Harleen Kaur', 'S. Rajinder Singh', 'Bhai Kuldeep Singh', 'Sardarni Gurjit Kaur',
+        'S. Bikramjit Singh', 'Bhai Davinder Singh', 'Sardarni Amanpreet Kaur', 'S. Baldev Singh',
+        'Bhai Sukhchain Singh', 'Sardarni Nimrat Kaur', 'S. Charanjit Singh', 'Bhai Gurmit Singh',
+        'S. Hardeep Singh Ghuman', 'Bhai Paramjit Singh', 'Sardarni Sukhmani Kaur', 'S. Tejaspreet Singh'
+      ];
+      const s_seva_types = ['General Seva', 'Langar Seva', 'Punjab Flood Relief', 'Education Support'];
+      const s_notes = [
+        'Synchronized automatically via GiveWP donation webhook.',
+        'WooCommerce Langar Seva item contribution.',
+        'Direct UPI QR Code contribution scanned.',
+        'Secure online transaction complete.',
+      ];
+      const s_amounts = [500, 1100, 2100, 5100, 10000, 15000, 21000, 31000, 51000];
+
+      const is_anonymous = Math.random() <= 0.3 ? 1 : 0;
+      const rand_name = is_anonymous ? 'Anonymous Sevadar' : s_names[Math.floor(Math.random() * s_names.length)];
+      const rand_seva = s_seva_types[Math.floor(Math.random() * s_seva_types.length)];
+      const rand_note = s_notes[Math.floor(Math.random() * s_notes.length)];
+      const rand_amount = s_amounts[Math.floor(Math.random() * s_amounts.length)];
+
+      const new_tx = {
+        id: 'sim_' + Date.now(),
+        name: rand_name,
+        anonymous: is_anonymous,
+        amount: rand_amount,
+        seva_type: rand_seva,
+        note: rand_note,
+        date: new Date().toISOString().replace("T", " ").substring(0, 19),
+        verified: 1
+      };
+      
+      mockTransactions.unshift(new_tx);
+      if (mockTransactions.length > 50) {
+        mockTransactions = mockTransactions.slice(0, 50);
+      }
+
+      return res.json({
+        success: true,
+        data: {
+          message: 'Real-time plugin gateway event triggers automated sync successfully!',
+          transaction: new_tx
+        }
+      });
+    }
+
     if (action === "submit_volunteer") {
-      const name = req.body.vName;
-      const email = req.body.vEmail;
-      const phone = req.body.vPhone;
-      const message = req.body.vMessage;
+      const name = req.body?.vName;
+      const email = req.body?.vEmail;
+      const phone = req.body?.vPhone;
+      const message = req.body?.vMessage;
 
       if (!name || !email || !phone || !message) {
         return res.json({
           success: false,
           data: {
-            message: "Please fill in all layout fields."
+            message: "Please fill in all volunteer fields."
           }
         });
       }
 
-      // Return standard WordPress SUCCESS JSON format
       return res.json({
         success: true,
         data: {

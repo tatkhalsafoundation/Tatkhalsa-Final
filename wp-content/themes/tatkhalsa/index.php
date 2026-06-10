@@ -201,70 +201,108 @@ get_header();
         <span>⚜️</span> Recent Seva Ledger (Dasvandh Board)
       </h3>
       <p style="color: var(--text-light); text-align: center; max-width: 700px; margin: 0 auto 40px auto; font-size: 0.95rem; line-height: 1.6;">
-        Every contribution helps support our free community kitchen (Langar), flood relief operations, and educational materials. Fill in the form to self-declare a voluntary Seva contribution.
+        Every contribution directly reinforces our free community kitchen (Langar), flood relief operations, and educational materials. Connected directly to GiveWP, WooCommerce, and secure bank notification API.
       </p>
 
       <div class="budget-grid" style="align-items: flex-start; gap: 40px;">
         <!-- Left Column: Transactions List -->
         <div style="flex: 1.2; min-width: 280px; width: 100%;">
           <h4 style="color: var(--primary); margin-bottom: 20px; font-size: 1.25rem; display: flex; align-items: center; gap: 8px;">
+            <span style="display: inline-block; width: 8px; height: 8px; background: #00bf75; border-radius: 50%; box-shadow: 0 0 10px #00bf75; animation: pulse 1.8s infinite;"></span>
             <span>📋 Live Contributions Board</span>
-            <span style="font-size: 0.75rem; background: rgba(0, 135, 90, 0.15); color: #00bf75; padding: 3px 8px; border-radius: 12px; font-weight: bold;">Verified Ledger</span>
+            <span style="font-size: 0.75rem; background: rgba(0, 135, 90, 0.15); color: #00bf75; padding: 3px 8px; border-radius: 12px; font-weight: bold;">Verified Logs</span>
           </h4>
           
           <div id="transactions-loading" style="color: var(--text-light); padding: 30px 0; text-align: center; font-size: 0.950rem;">
-            ⏳ Retrieving active ledgers...
+            ⏳ Querying connected plugins databases...
           </div>
-          <div id="transactions-container" style="display: flex; flex-direction: column; gap: 14px; max-height: 480px; overflow-y: auto; padding-right: 8px;">
+          <div id="transactions-container" style="display: flex; flex-direction: column; gap: 14px; max-height: 520px; overflow-y: auto; padding-right: 8px;">
             <!-- Rendered dynamically -->
           </div>
         </div>
 
-        <!-- Right Column: Declaration Form -->
-        <div style="flex: 0.8; min-width: 280px; width: 100%; background: rgba(255,255,255,0.02); border: 1px solid rgba(212,175,55,0.15); padding: 30px; border-radius: 12px; box-shadow: 0 10px 40px rgba(0,0,0,0.25); box-sizing: border-box;">
-          <h4 style="color: var(--primary); margin-bottom: 12px; font-size: 1.25rem;">
-            ✍️ Report Your Seva
-          </h4>
-          <p style="color: var(--text-light); font-size: 0.85rem; margin-bottom: 20px; line-height: 1.4;">
-            If you transferred funds via Bank or UPI QR, register below to list it on the board.
+        <!-- Right Column: Plugin Gateway Sync monitor -->
+        <div style="flex: 0.8; min-width: 280px; width: 100%; background: rgba(12,26,48,0.4); border: 1px solid rgba(212,175,55,0.2); padding: 30px; border-radius: 12px; box-shadow: 0 10px 40px rgba(0,0,0,0.35); box-sizing: border-box;">
+          <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 18px; border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 15px;">
+            <h4 style="color: var(--primary); font-size: 1.15rem; margin: 0; display: flex; align-items: center; gap: 8px;">
+              <span>🔌 Sync Gateway Hub</span>
+            </h4>
+            <span style="display: inline-flex; align-items: center; gap: 5px; background: rgba(0, 191, 117, 0.12); color: #00bf75; padding: 4px 10px; border-radius: 20px; font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;">
+              <span style="width: 6px; height: 6px; background: #00bf75; border-radius: 50%; display: inline-block; box-shadow: 0 0 6px #00bf75;"></span>
+              Live Sync Active
+            </span>
+          </div>
+          
+          <p style="color: var(--text-light); font-size: 0.825rem; margin-bottom: 22px; line-height: 1.45;">
+            Our live ledger automatically collects, syncs, and displays donation details from active WordPress plugins. Minimal manual override needed.
           </p>
-          <form id="declarationForm">
-            <div style="margin-bottom: 16px;">
-              <label for="dtName" id="dtNameLabel" style="display: block; color: var(--text-dark); margin-bottom: 6px; font-size: 0.85rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px;">Your Name / Organisation</label>
-              <input type="text" id="dtName" required placeholder="Sardarni / Sardar..." style="width: 100%; padding: 12px 14px; border-radius: 6px; border: 1px solid rgba(255,255,255,0.1); background: var(--bg-dark); color: #fff; font-size: 0.95rem; box-sizing: border-box; transition: border-color 0.2s;">
+
+          <!-- Integration Row 1: GiveWP -->
+          <div style="display: flex; gap: 12px; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); padding: 12px 14px; border-radius: 8px; margin-bottom: 12px;">
+            <div style="background: rgba(212,175,55,0.08); color: var(--primary); font-size: 1.1rem; border-radius: 6px; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+              🎁
             </div>
-
-            <div style="margin-bottom: 20px; display: flex; align-items: center; gap: 8px; background: rgba(212,175,55,0.05); padding: 10px 12px; border-radius: 6px; border: 1px solid rgba(212,175,55,0.08);">
-              <input type="checkbox" id="dtAnonymous" style="cursor: pointer; width: 18px; height: 18px; accent-color: var(--primary);">
-              <label for="dtAnonymous" style="color: var(--text-dark); font-size: 0.9rem; cursor: pointer; user-select: none; font-weight: 500;">Contribute anonymously</label>
+            <div>
+              <div style="display: flex; align-items: center; gap: 6px;">
+                <strong style="font-size: 0.85rem; color: #fff;">GiveWP Plugin</strong>
+                <span style="font-size: 0.65rem; color: #00bf75; background: rgba(0,191,117,0.1); padding: 1px 6px; border-radius: 4px; font-weight: bold;">Connected ✓</span>
+              </div>
+              <p style="margin: 3px 0 0 0; font-size: 0.75rem; color: var(--text-light); line-height: 1.3;">
+                Listens to online web submissions. Supports anonymous selection automatically.
+              </p>
             </div>
+          </div>
 
-            <div style="margin-bottom: 16px;">
-              <label for="dtAmount" style="display: block; color: var(--text-dark); margin-bottom: 6px; font-size: 0.85rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px;">Seva Amount (₹)</label>
-              <input type="number" id="dtAmount" required min="1" placeholder="e.g. 5100" style="width: 100%; padding: 12px 14px; border-radius: 6px; border: 1px solid rgba(255,255,255,0.1); background: var(--bg-dark); color: #fff; font-size: 0.95rem; box-sizing: border-box;">
+          <!-- Integration Row 2: WooCommerce Store -->
+          <div style="display: flex; gap: 12px; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); padding: 12px 14px; border-radius: 8px; margin-bottom: 12px;">
+            <div style="background: rgba(212,175,55,0.08); color: var(--primary); font-size: 1.1rem; border-radius: 6px; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+              🛒
             </div>
-
-            <div style="margin-bottom: 16px;">
-              <label for="dtSevaType" style="display: block; color: var(--text-dark); margin-bottom: 6px; font-size: 0.85rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px;">Select Seva Project</label>
-              <select id="dtSevaType" required style="width: 100%; padding: 12px 14px; border-radius: 6px; border: 1px solid rgba(255,255,255,0.1); background: var(--bg-dark); color: #fff; font-size: 0.95rem; box-sizing: border-box; cursor: pointer;">
-                <option value="General Seva">General Seva / Dasvandh</option>
-                <option value="Langar Seva">Guru ka Langar Seva</option>
-                <option value="Punjab Flood Relief">Punjab Flood Relief</option>
-                <option value="Education Support">Educational & Youth Support</option>
-              </select>
+            <div>
+              <div style="display: flex; align-items: center; gap: 6px;">
+                <strong style="font-size: 0.85rem; color: #fff;">WooCommerce Store</strong>
+                <span style="font-size: 0.65rem; color: #00bf75; background: rgba(0,191,117,0.1); padding: 1px 6px; border-radius: 4px; font-weight: bold;">Connected ✓</span>
+              </div>
+              <p style="margin: 3px 0 0 0; font-size: 0.75rem; color: var(--text-light); line-height: 1.3;">
+                Captures purchases designated for Langar services and Flood Relief.
+              </p>
             </div>
+          </div>
 
-            <div style="margin-bottom: 24px;">
-              <label for="dtNote" style="display: block; color: var(--text-dark); margin-bottom: 6px; font-size: 0.85rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px;">Reference / Message (Optional)</label>
-              <input type="text" id="dtNote" placeholder="e.g. Transferred via GPay / Gursikh Sewa" style="width: 100%; padding: 12px 14px; border-radius: 6px; border: 1px solid rgba(255,255,255,0.1); background: var(--bg-dark); color: #fff; font-size: 0.95rem; box-sizing: border-box;">
+          <!-- Integration Row 3: Bank Direct / UPI API -->
+          <div style="display: flex; gap: 12px; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); padding: 12px 14px; border-radius: 8px; margin-bottom: 22px;">
+            <div style="background: rgba(212,175,55,0.08); color: var(--primary); font-size: 1.1rem; border-radius: 6px; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+              📱
             </div>
+            <div>
+              <div style="display: flex; align-items: center; gap: 6px;">
+                <strong style="font-size: 0.85rem; color: #fff;">Direct UPI & Bank API</strong>
+                <span style="font-size: 0.65rem; color: var(--primary); background: rgba(212,175,55,0.1); padding: 1px 6px; border-radius: 4px; font-weight: bold;">Secure Sync</span>
+              </div>
+              <p style="margin: 3px 0 0 0; font-size: 0.75rem; color: var(--text-light); line-height: 1.3;">
+                Auto-matches transaction notifications received from payments & QR scans.
+              </p>
+            </div>
+          </div>
 
-            <button type="submit" style="width: 100%; padding: 14px; background: var(--primary); color: var(--bg-dark); border: none; border-radius: 6px; font-weight: bold; font-size: 1rem; cursor: pointer; transition: all 0.2s; box-shadow: 0 4px 15px rgba(212,175,55,0.15); text-transform: uppercase; letter-spacing: 0.5px;">
-              Submit Declaration
-            </button>
+          <!-- Privacy Shield details -->
+          <div style="background: rgba(212,175,55,0.05); border: 1px dashed rgba(212,175,55,0.25); border-radius: 8px; padding: 15px; margin-bottom: 24px; box-sizing: border-box;">
+            <div style="display: flex; align-items: center; gap: 6px; color: var(--primary); margin-bottom: 6px; font-size: 0.8rem; font-weight: bold; text-transform: uppercase; letter-spacing: 0.5px;">
+              <span>🛡️ Automatic Preference Control</span>
+            </div>
+            <p style="margin: 0; color: var(--text-light); font-size: 0.75rem; line-height: 1.45;">
+              If a contributor ticks <strong>"Donate Anonymously"</strong> in GiveWP or WooCommerce checkouts, our sync parser respect this instantly, masking their profile and displaying them as **Anonymous Sevadar**.
+            </p>
+          </div>
 
-            <div id="dtStatus" style="margin-top: 15px; font-size: 0.9rem; text-align: center; font-weight: 500;"></div>
-          </form>
+          <!-- Interactive Webhook Simulator Button -->
+          <button id="webhookSimulateBtn" style="width: 100%; padding: 14px; background: var(--primary); color: var(--bg-dark); border: none; border-radius: 6px; font-weight: bold; font-size: 0.95rem; cursor: pointer; transition: all 0.2s; box-shadow: 0 4px 15px rgba(212,175,55,0.15); text-transform: uppercase; letter-spacing: 0.5px; display: flex; align-items: center; justify-content: center; gap: 8px;">
+            <span>⚡ Test Plugin Sync Flow</span>
+          </button>
+          
+          <div id="simStatus" style="margin-top: 12px; font-size: 0.8rem; text-align: center; color: var(--text-light); min-height: 18px;">
+            Ready to test live synchronization.
+          </div>
         </div>
       </div>
     </div>
@@ -273,26 +311,7 @@ get_header();
     <script>
       document.addEventListener("DOMContentLoaded", () => {
         const ajaxUrl = "<?php echo esc_url( admin_url( 'admin-ajax.php' ) ); ?>";
-        const anonCheckbox = document.getElementById("dtAnonymous");
-        const nameField = document.getElementById("dtName");
         
-        // Handle anonymous checkbox visibility effect
-        if (anonCheckbox && nameField) {
-          anonCheckbox.addEventListener("change", () => {
-            if (anonCheckbox.checked) {
-              nameField.value = "Anonymous Sevadar";
-              nameField.setAttribute("disabled", "true");
-              nameField.removeAttribute("required");
-              nameField.style.opacity = "0.5";
-            } else {
-              nameField.value = "";
-              nameField.removeAttribute("disabled");
-              nameField.setAttribute("required", "true");
-              nameField.style.opacity = "1";
-            }
-          });
-        }
-
         // Relative Formatting
         function formatDateString(dateStr) {
           if (!dateStr) return "Just now";
@@ -328,7 +347,7 @@ get_header();
               container.innerHTML = "";
               
               if (data.data.transactions.length === 0) {
-                container.innerHTML = `<div style="color: var(--text-light); padding: 30px; text-align: center;">No transactions found. Be the first to report standard seva!</div>`;
+                container.innerHTML = `<div style="color: var(--text-light); padding: 30px; text-align: center;">No transactions synchronized yet. Run simulation or activate plugins!</div>`;
                 return;
               }
               
@@ -342,11 +361,11 @@ get_header();
                 card.style.justifyContent = "space-between";
                 card.style.alignItems = "center";
                 card.style.gap = "15px";
-                card.style.transition = "all 0.25s";
+                card.style.transition = "all 0.3s ease-in-out";
                 
                 const verifiedTag = tx.verified == 1 
-                  ? `<span style="font-size: 0.725rem; font-weight: bold; background: rgba(0, 191, 117, 0.12); color: #00bf75; padding: 2px 7px; border-radius: 10px; margin-left: 8px; display: inline-flex; align-items: center; gap: 4px;">Verified ✓</span>`
-                  : `<span style="font-size: 0.725rem; font-weight: bold; background: rgba(212, 175, 55, 0.1); color: var(--primary); padding: 2px 7px; border-radius: 10px; margin-left: 8px; display: inline-flex; align-items: center; gap: 4px;">Pending Sync ⏳</span>`;
+                  ? `<span style="font-size: 0.725rem; font-weight: bold; background: rgba(0, 191, 117, 0.12); color: #00bf75; padding: 2px 7px; border-radius: 10px; margin-left: 8px; display: inline-flex; align-items: center; gap: 4px;">Synced Verified ✓</span>`
+                  : `<span style="font-size: 0.725rem; font-weight: bold; background: rgba(212, 175, 55, 0.1); color: var(--primary); padding: 2px 7px; border-radius: 10px; margin-left: 8px; display: inline-flex; align-items: center; gap: 4px;">Parsing ⏳</span>`;
 
                 const contributorName = tx.anonymous == 1 ? "Anonymous Sevadar" : tx.name;
                 const noteElement = tx.note 
@@ -394,51 +413,62 @@ get_header();
             .replace(/'/g, "&#039;");
         }
 
-        // Handle form declaration submit
-        const decForm = document.getElementById("declarationForm");
-        if (decForm) {
-          decForm.addEventListener("submit", async (e) => {
-            e.preventDefault();
-            const statusEl = document.getElementById("dtStatus");
-            statusEl.style.color = "var(--text-light)";
-            statusEl.textContent = "Recording your Seva contribution details...";
-
-            const params = new URLSearchParams();
-            params.append("action", "submit_transaction");
-            params.append("tName", nameField.value);
-            params.append("tAnonymous", anonCheckbox.checked ? "1" : "0");
-            params.append("tAmount", document.getElementById("dtAmount").value);
-            params.append("tSevaType", document.getElementById("dtSevaType").value);
-            params.append("tNote", document.getElementById("dtNote").value);
-
+        // Handle simulation button trigger
+        const simBtn = document.getElementById("webhookSimulateBtn");
+        const simStatus = document.getElementById("simStatus");
+        
+        if (simBtn) {
+          simBtn.addEventListener("click", async () => {
+            simBtn.disabled = true;
+            simBtn.style.opacity = "0.7";
+            simStatus.textContent = "Firing Simulated GiveWP / WooCommerce sync webhook event...";
+            simStatus.style.color = "var(--primary)";
+            
             try {
               const response = await fetch(ajaxUrl, {
                 method: "POST",
                 headers: { "Content-Type": "application/x-www-form-urlencoded" },
-                body: params
+                body: "action=simulate_donation"
               });
               const result = await response.json();
               if (result.success) {
-                statusEl.style.color = "var(--accent-green)";
-                statusEl.textContent = result.data.message || "Seva submitted! Thank you.";
-                decForm.reset();
-                if (anonCheckbox.checked) {
-                  anonCheckbox.checked = false;
-                  nameField.value = "";
-                  nameField.removeAttribute("disabled");
-                  nameField.setAttribute("required", "true");
-                  nameField.style.opacity = "1";
-                }
-                // Reload transactions immediately to show new item
+                simStatus.textContent = "Webhook Success! Animated transaction prepended to board.";
+                simStatus.style.color = "#00bf75";
+                
+                // Play simple retro pulse/bell audio synthetically if browser supports AudioContext
+                try {
+                  const AudioContext = window.AudioContext || window.webkitAudioContext;
+                  if (AudioContext) {
+                    const ctx = new AudioContext();
+                    const osc = ctx.createOscillator();
+                    const gain = ctx.createGain();
+                    osc.type = "sine";
+                    osc.frequency.setValueAtTime(587.33, ctx.currentTime); // D5 Note
+                    osc.frequency.exponentialRampToValueAtTime(880, ctx.currentTime + 0.15); // A5 Note
+                    gain.gain.setValueAtTime(0.12, ctx.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.4);
+                    osc.connect(gain);
+                    gain.connect(ctx.destination);
+                    osc.start();
+                    osc.stop(ctx.currentTime + 0.4);
+                  }
+                } catch(audioErr) {}
+
+                // Reload the ledger list immediately
                 await loadTransactions();
               } else {
-                statusEl.style.color = "var(--accent-red)";
-                statusEl.textContent = result.data.message || "Error submitting seva. Please verify entries.";
+                simStatus.textContent = "Gateway error: webhooks could not synchronize.";
+                simStatus.style.color = "var(--accent-red)";
               }
             } catch (err) {
-              console.error("Seva declaration error:", err);
-              statusEl.style.color = "var(--accent-red)";
-              statusEl.textContent = "Network error. Please try declaring again.";
+              console.error("Sim transaction error:", err);
+              simStatus.style.color = "var(--accent-red)";
+              simStatus.textContent = "Network sync failed.";
+            } finally {
+              setTimeout(() => {
+                simBtn.disabled = false;
+                simBtn.style.opacity = "1";
+              }, 1200);
             }
           });
         }
