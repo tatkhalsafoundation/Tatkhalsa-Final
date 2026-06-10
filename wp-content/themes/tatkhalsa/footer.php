@@ -204,6 +204,17 @@
 
     <!-- Vanilla Javascript Interactions and States -->
     <script>
+      // Header and document body scroll state
+      window.addEventListener("scroll", () => {
+        if (window.scrollY > 50) {
+          document.body.classList.add("scrolled");
+          document.querySelector(".header")?.classList.add("scrolled");
+        } else {
+          document.body.classList.remove("scrolled");
+          document.querySelector(".header")?.classList.remove("scrolled");
+        }
+      });
+
       // Scroll to Top Logic with defensive null checks
       const backToTopBtn = document.getElementById("backToTop");
       if (backToTopBtn) {

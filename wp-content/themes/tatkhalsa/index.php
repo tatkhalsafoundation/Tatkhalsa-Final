@@ -35,19 +35,21 @@ get_header();
   </video>
   <div class="hero-overlay"></div>
   <div class="container scroll-reveal" style="position: relative; z-index: 2">
+    <!-- Centered Logo -->
+    <div class="hero-logo-wrapper" style="display: flex; justify-content: center; margin-bottom: 15px; margin-top: 5px; min-height: 180px; position: relative;">
+      <a href="<?php echo esc_url( home_url( '/' ) ); ?>" style="display: contents;">
+        <img
+          src="<?php echo esc_url( tatkhalsa_get_logo_url() ); ?>"
+          alt="Tatkhalsa Foundation Logo"
+          class="hero-gurbani-logo transition-img"
+        />
+      </a>
+    </div>
+
+    <!-- Gurbani Text -->
     <div class="gurbani-text">
       ਏਕਹੀ ਕੀ ਸੇਵ ਸਭ ਹੀ ਕੋ ਗੁਰਦੇਵ ਏਕ ॥<br />
       ਏਕਹੀ ਸਰੂਪ ਸਭੈ ਏਕੈ ਜੋਤਿ ਜਾਨਬੋ ॥
-    </div>
-    
-    <!-- Centered Logo under Gurbani verse -->
-    <div class="hero-logo-wrapper" style="display: flex; justify-content: center; margin-bottom: 25px; margin-top: 10px;">
-      <img
-        src="<?php echo esc_url( tatkhalsa_get_logo_url() ); ?>"
-        alt="Tatkhalsa Foundation Logo"
-        class="hero-gurbani-logo"
-        style="width: 240px; height: 240px; object-fit: contain;"
-      />
     </div>
 
     <h1>Serving Humanity Through Seva, Compassion, and Community Action</h1>
@@ -139,6 +141,320 @@ get_header();
     </a>
   </div>
 </section>
+
+<!-- Current Campaigns Section (Fulfilling User Request) -->
+<section id="current-campaigns" style="background-color: var(--bg-shade-3); position: relative; padding: 100px 0; overflow: hidden; border-bottom: 1px solid rgba(212, 175, 55, 0.1);">
+  <div style="position: absolute; top: 0; right: 0; width: 400px; height: 400px; background: radial-gradient(circle, rgba(212, 175, 55, 0.03) 0%, transparent 70%); pointer-events: none;"></div>
+  <div class="container" style="max-width: 1200px; margin: 0 auto; padding: 0 20px;">
+    
+    <span class="campaign-subtitle" style="font-family: 'Cinzel', serif; color: var(--secondary); letter-spacing: 3px; font-size: 0.95rem; text-transform: uppercase; font-weight: 600; text-align: center; display: block; margin-bottom: 8px;">
+      Tatkhalsa Foundation Seva
+    </span>
+    <h2 class="section-title" style="margin-bottom: 50px;">
+      Current Campaigns
+    </h2>
+
+    <!-- Interactive Carousel Wrapper -->
+    <div class="campaign-slider-wrapper" style="position: relative; max-width: 440px; margin: 0 auto; overflow: visible;">
+      <div class="campaign-slides-container">
+        
+        <!-- Slide 1: Cancer Patient Nimrat Kaur -->
+        <div class="campaign-slide active" data-index="0" data-title="Nimrat Kaur (2 yrs, Cancer)" onclick="openCampaignModal('Cancer Patient Nimrat Kaur (2yrs old) oncology treatment help')">
+          <div class="campaign-card">
+            <span class="campaign-view-tag">View Campaign</span>
+            <img class="campaign-img" src="https://images.unsplash.com/photo-1543332143-4e8c27e3256f?auto=format&fit=crop&w=800&q=80" alt="Pediatric Cancer Care Support - Nimrat Kaur" />
+            <div class="campaign-overlay">
+              <span class="campaign-category" style="color: var(--accent-red);">Healthcare Aid</span>
+              <h3 class="campaign-title">Cancer Patient Nimrat Kaur</h3>
+              <p class="campaign-desc">2-year-old child battling cancer. Urgent financial support needed for life-saving oncology chemotherapy sessions.</p>
+              
+              <!-- Progress Tracker -->
+              <div class="campaign-progress-wrapper">
+                <div class="campaign-progress-stats">
+                  <span>Raised: ₹2,25,000</span>
+                  <span>Goal: ₹5,00,000</span>
+                </div>
+                <div class="campaign-progress-bar">
+                  <div class="campaign-progress-fill" style="width: 45%; background: var(--accent-red);"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Slide 2: Punjab Flood Relief -->
+        <div class="campaign-slide" data-index="1" data-title="Punjab Flood Relief 2025" onclick="openCampaignModal('Punjab Flood Relief 2025')">
+          <div class="campaign-card">
+            <span class="campaign-view-tag">View Campaign</span>
+            <img class="campaign-img" src="https://images.unsplash.com/photo-1547683905-f686c993aae5?auto=format&fit=crop&w=800&q=80" alt="Punjab Flood Relief 2025" />
+            <div class="campaign-overlay">
+              <span class="campaign-category" style="color: var(--accent-blue);">Emergency SOS</span>
+              <h3 class="campaign-title">Punjab Flood Relief 2025</h3>
+              <p class="campaign-desc">Providing urgent dry ration packs, medical camps, and infrastructure repair for distressed remote flood areas.</p>
+              
+              <!-- Progress Tracker -->
+              <div class="campaign-progress-wrapper">
+                <div class="campaign-progress-stats">
+                  <span>Raised: ₹5,80,000</span>
+                  <span>Goal: ₹10,00,000</span>
+                </div>
+                <div class="campaign-progress-bar">
+                  <div class="campaign-progress-fill" style="width: 58%; background: var(--accent-blue);"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Slide 3: grocery help -->
+        <div class="campaign-slide" data-index="2" data-title="Grocery Help Seva" onclick="openCampaignModal('Grocery Seva for impoverished families')">
+          <div class="campaign-card">
+            <span class="campaign-view-tag">View Campaign</span>
+            <img class="campaign-img" src="https://images.unsplash.com/photo-1593113598332-cd288d649433?auto=format&fit=crop&w=800&q=80" alt="Grocery Help Seva" />
+            <div class="campaign-overlay">
+              <span class="campaign-category" style="color: var(--accent-green);">Ration Seva</span>
+              <h3 class="campaign-title">Essential Grocery Help</h3>
+              <p class="campaign-desc">Distributing monthly ration hampers with wheat flour, pulses, ghee, sugar, and hygiene kits to disabled and elderly families.</p>
+              
+              <!-- Progress Tracker -->
+              <div class="campaign-progress-wrapper">
+                <div class="campaign-progress-stats">
+                  <span>Raised: ₹1,60,000</span>
+                  <span>Goal: ₹3,00,000</span>
+                </div>
+                <div class="campaign-progress-bar">
+                  <div class="campaign-progress-fill" style="width: 53.3%; background: var(--accent-green);"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Slide 4: 1984 victims families -->
+        <div class="campaign-slide" data-index="3" data-title="1984 Victims Family Support" onclick="openCampaignModal('Support for family members of 1984 victims')">
+          <div class="campaign-card">
+            <span class="campaign-view-tag">View Campaign</span>
+            <img class="campaign-img" src="https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?auto=format&fit=crop&w=800&q=80" alt="1984 Victim Families Support" />
+            <div class="campaign-overlay">
+              <span class="campaign-category" style="color: var(--accent-purple);">Livelihood Aid</span>
+              <h3 class="campaign-title">1984 Victim Families</h3>
+              <p class="campaign-desc">Providing education sponsorships and monthly livelihood stipends to families & widows of 1984 victims.</p>
+              
+              <!-- Progress Tracker -->
+              <div class="campaign-progress-wrapper">
+                <div class="campaign-progress-stats">
+                  <span>Raised: ₹3,15,000</span>
+                  <span>Goal: ₹6,00,000</span>
+                </div>
+                <div class="campaign-progress-bar">
+                  <div class="campaign-progress-fill" style="width: 52.5%; background: var(--accent-purple);"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Slide 5: impoverished marriage support -->
+        <div class="campaign-slide" data-index="4" data-title="Gursikh Daughters Marriages Seva" onclick="openCampaignModal('Marriage of Gursikh families below poverty line')">
+          <div class="campaign-card">
+            <span class="campaign-view-tag">View Campaign</span>
+            <img class="campaign-img" src="https://images.unsplash.com/photo-1583939003579-730e3918a45a?auto=format&fit=crop&w=800&q=80" alt="Underprivileged Marriages support" />
+            <div class="campaign-overlay">
+              <span class="campaign-category" style="color: var(--accent-orange);">Social Welfare</span>
+              <h3 class="campaign-title">Gursikh Marriages Seva</h3>
+              <p class="campaign-desc">Supporting respectful Anand Karaj and essential household startup kits for daughters of Gursikh families below poverty line.</p>
+              
+              <!-- Progress Tracker -->
+              <div class="campaign-progress-wrapper">
+                <div class="campaign-progress-stats">
+                  <span>Raised: ₹1,52,000</span>
+                  <span>Goal: ₹4,00,000</span>
+                </div>
+                <div class="campaign-progress-bar">
+                  <div class="campaign-progress-fill" style="width: 38%; background: var(--accent-orange);"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Navigation Controls -->
+      <div class="campaign-controls-wrapper" style="display: flex; justify-content: center; align-items: center; gap: 30px; margin-top: 30px; position: relative; z-index: 20;">
+        <button class="campaign-arrow-btn prev" aria-label="Previous Campaign" onclick="prevCampaign(event)">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="15 18 9 12 15 6"></polyline>
+          </svg>
+        </button>
+        
+        <!-- Dots indicators -->
+        <div class="campaign-dots-container">
+          <span class="campaign-dot active" onclick="gotoCampaign(0)"></span>
+          <span class="campaign-dot" onclick="gotoCampaign(1)"></span>
+          <span class="campaign-dot" onclick="gotoCampaign(2)"></span>
+          <span class="campaign-dot" onclick="gotoCampaign(3)"></span>
+          <span class="campaign-dot" onclick="gotoCampaign(4)"></span>
+        </div>
+
+        <button class="campaign-arrow-btn next" aria-label="Next Campaign" onclick="nextCampaign(event)">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="9 18 15 12 9 6"></polyline>
+          </svg>
+        </button>
+      </div>
+
+    </div>
+
+    <!-- View All Pill Button -->
+    <div style="text-align: center; margin-top: 50px;">
+      <a href="<?php echo esc_url( home_url( '/projects/' ) ); ?>" class="btn" style="background-color: var(--secondary); color: var(--bg-dark); text-transform: uppercase; font-size: 0.85rem; letter-spacing: 1.5px; padding: 14px 34px; box-shadow: 0 8px 20px rgba(212, 175, 55, 0.2); transition: all 0.3s; font-weight: 700; border-radius: 50px; text-decoration: none;">
+        View All Campaigns
+      </a>
+    </div>
+
+  </div>
+</section>
+
+<!-- Slider JavaScript and Modal Integration -->
+<script>
+  let currentCampaignIndex = 0;
+  const totalCampaigns = 5;
+
+  function showCampaign(index) {
+    currentCampaignIndex = (index + totalCampaigns) % totalCampaigns;
+    
+    const slides = document.querySelectorAll(".campaign-slide");
+    const dots = document.querySelectorAll(".campaign-dot");
+    
+    slides.forEach((slide) => {
+      slide.classList.remove("active", "next-preview", "prev-preview");
+    });
+    
+    dots.forEach((dot) => {
+      dot.classList.remove("active");
+    });
+    
+    // Set current active slide
+    const activeSlide = document.querySelector(`.campaign-slide[data-index="${currentCampaignIndex}"]`);
+    if (activeSlide) {
+      activeSlide.classList.add("active");
+    }
+    
+    // Set next-preview link
+    const nextIndex = (currentCampaignIndex + 1) % totalCampaigns;
+    const nextSlide = document.querySelector(`.campaign-slide[data-index="${nextIndex}"]`);
+    if (nextSlide) {
+      nextSlide.classList.add("next-preview");
+    }
+    
+    // Set prev-preview link
+    const prevIndex = (currentCampaignIndex - 1 + totalCampaigns) % totalCampaigns;
+    const prevSlide = document.querySelector(`.campaign-slide[data-index="${prevIndex}"]`);
+    if (prevSlide) {
+      prevSlide.classList.add("prev-preview");
+    }
+    
+    // Update active dot indicators
+    const activeDot = dots[currentCampaignIndex];
+    if (activeDot) {
+      activeDot.classList.add("active");
+    }
+  }
+
+  function prevCampaign(e) {
+    if (e) e.stopPropagation();
+    showCampaign(currentCampaignIndex - 1);
+  }
+
+  function nextCampaign(e) {
+    if (e) e.stopPropagation();
+    showCampaign(currentCampaignIndex + 1);
+  }
+
+  function gotoCampaign(index) {
+    showCampaign(index);
+  }
+
+  // Pre-fill campaign details in the UPI & Bank Modal for a seamless user redirection
+  function openCampaignModal(campaignName) {
+    let titleEl = document.getElementById("campaign-target-title");
+    if (!titleEl) {
+      const modalHeader = document.querySelector("#contributionModal h3");
+      if (modalHeader) {
+        titleEl = document.createElement("div");
+        titleEl.id = "campaign-target-title";
+        titleEl.style.color = "var(--secondary)";
+        titleEl.style.fontSize = "0.95rem";
+        titleEl.style.fontWeight = "bold";
+        titleEl.style.marginTop = "5px";
+        titleEl.style.marginBottom = "15px";
+        titleEl.style.padding = "10px 15px";
+        titleEl.style.borderRadius = "12px";
+        titleEl.style.lineHeight = "1.4";
+        titleEl.style.backgroundColor = "rgba(212, 175, 55, 0.08)";
+        titleEl.style.borderLeft = "4px solid var(--secondary)";
+        titleEl.style.textAlign = "left";
+        modalHeader.parentNode.insertBefore(titleEl, modalHeader.nextSibling);
+      }
+    }
+    if (titleEl) {
+      titleEl.innerHTML = `<span style="color: var(--text-light); font-weight: normal; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.5px;">Designated Campaign Seva:</span><br/><strong style="color:#ffffff;">${campaignName}</strong>`;
+      titleEl.style.display = "block";
+    }
+
+    // Adapt the UPI QR code and Direct payment link to send the correct remarks tag so accounts group correctly
+    const upiId = "mab.037215043540097@axisbank";
+    const payeeName = "Tatkhalsa Foundation";
+    const remark = 'Seva ' + campaignName.substring(0, 15);
+    const upiString = `upi://pay?pa=${upiId}&pn=${encodeURIComponent(payeeName)}&cu=INR&tn=${encodeURIComponent(remark)}`;
+    
+    const directPayBtn = document.getElementById("directUpiPayBtn");
+    if (directPayBtn) {
+      directPayBtn.href = upiString;
+    }
+    
+    const qrCodeImg = document.getElementById("upiQrCode");
+    if (qrCodeImg) {
+      qrCodeImg.src = `https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodeURIComponent(upiString)}`;
+    }
+
+    // Activate modal using existing functions
+    if (typeof openModal === "function") {
+      openModal();
+    }
+  }
+
+  // Swipe Support for Touch Devices
+  let campaignTouchStartX = 0;
+  let campaignTouchEndX = 0;
+
+  document.addEventListener("DOMContentLoaded", () => {
+    const container = document.querySelector(".campaign-slides-container");
+    if (container) {
+      container.addEventListener("touchstart", (e) => {
+        campaignTouchStartX = e.changedTouches[0].screenX;
+      }, { passive: true });
+      
+      container.addEventListener("touchend", (e) => {
+        campaignTouchEndX = e.changedTouches[0].screenX;
+        handleCampaignSwipe();
+      }, { passive: true });
+    }
+    
+    // Initial display
+    showCampaign(0);
+  });
+
+  function handleCampaignSwipe() {
+    if (campaignTouchEndX < campaignTouchStartX - 50) {
+      nextCampaign();
+    }
+    if (campaignTouchEndX > campaignTouchStartX + 50) {
+      prevCampaign();
+    }
+  }
+</script>
 
 <!-- Financial Transparency / Budget Allocation Section -->
 <section id="transparency" style="background-color: var(--bg-shade-5); position: relative;">

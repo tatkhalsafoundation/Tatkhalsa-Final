@@ -56,7 +56,10 @@
     <header class="header">
       <div class="container">
         <a href="<?php echo esc_url( home_url( '/' ) ); ?>" class="logo">
-          <span class="logo-text"><?php bloginfo( 'name' ); ?></span>
+          <div class="logo-stack">
+            <span class="logo-text-up">Tatkhalsa</span>
+            <span class="logo-text-down">Foundation</span>
+          </div>
         </a>
  
         <!-- Dynamic Menu Setup (Desktop/Wide Viewports) -->
@@ -94,10 +97,10 @@
           </select>
           
           <div class="custom-select-wrapper" id="customMobileNavWrapper">
-            <button class="custom-select-btn" id="customMobileNavBtn" aria-haspopup="listbox" aria-expanded="false" aria-label="Explore Seva Page Menu">
-              <span id="customMobileNavLabel">Explore Seva...</span>
-              <span class="select-chevron">
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <button class="custom-select-btn icon-only-btn" id="customMobileNavBtn" aria-haspopup="listbox" aria-expanded="false" aria-label="Explore Seva Page Menu">
+              <span id="customMobileNavLabel" style="display:none;"></span>
+              <span class="select-chevron icon-circle">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                   <polyline points="6 9 12 15 18 9"></polyline>
                 </svg>
               </span>
