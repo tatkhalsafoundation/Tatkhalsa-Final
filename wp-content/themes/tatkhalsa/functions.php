@@ -76,8 +76,8 @@ function tatkhalsa_get_logo_url() {
 		}
 	}
 
-	// Check for various casing and extensions in the parent theme folder
-	$theme_dir = get_template_directory();
+	// Check for various casing and extensions in the active theme folder
+	$theme_dir = get_stylesheet_directory();
 	$possible_filenames = array(
 		'/Logo.png',
 		'/logo.png',
@@ -89,24 +89,19 @@ function tatkhalsa_get_logo_url() {
 
 	foreach ( $possible_filenames as $filename ) {
 		if ( file_exists( $theme_dir . $filename ) ) {
-			return set_url_scheme( get_template_directory_uri() . $filename );
+			return set_url_scheme( get_stylesheet_directory_uri() . $filename );
 		}
 	}
 
-	return set_url_scheme( get_template_directory_uri() . '/Logo.png' );
+	return set_url_scheme( get_stylesheet_directory_uri() . '/Logo.png' );
 }
 
 /**
  * Enqueue scripts and styles.
  */
 function tatkhalsa_scripts() {
-	$theme_version = wp_get_theme()->get( 'Version' );
-	$theme_dir = get_template_directory();
-	$style_file = $theme_dir . '/style.css';
-	$cache_buster = file_exists( $style_file ) ? filemtime( $style_file ) : time();
-	
-	// Enqueue main Theme Theme-Stylesheet with cache-busting version
-	wp_enqueue_style( 'tatkhalsa-theme-style', get_stylesheet_uri(), array(), $theme_version . '.' . $cache_buster );
+	// Enqueue main Theme Theme-Stylesheet.
+	wp_enqueue_style( 'tatkhalsa-theme-style', get_stylesheet_uri(), array(), '1.0.0' );
 }
 add_action( 'wp_enqueue_scripts', 'tatkhalsa_scripts' );
 
