@@ -151,7 +151,7 @@ Tags: clean, gold, navy, ngo, sikh, seva, non-profit, responsive, custom-logo, t
 }
 
 html, body {
-  overflow-x: hidden;
+  overflow-x: clip;
   max-width: 100%;
 }
 
@@ -389,6 +389,7 @@ h6 {
   background-color: var(--bg-shade-1);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
+  position: -webkit-sticky;
   position: sticky;
   top: 0;
   z-index: 1000;
