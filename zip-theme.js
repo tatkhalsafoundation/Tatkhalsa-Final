@@ -18,7 +18,8 @@ try {
   }
 
   const zip = new AdmZip();
-  const outputPath = path.join(process.cwd(), 'tatkhalsa.zip');
+  const outputPath1 = path.join(process.cwd(), 'tatkhalsa.zip');
+  const outputPath2 = path.join(process.cwd(), 'tatkhalsa-theme.zip');
   const destFolder = 'tatkhalsa';
 
   // Add the root level WordPress theme files directly (with both uppercase and lowercase logos)
@@ -60,12 +61,15 @@ try {
     zip.addLocalFile(filePath, destFolder);
   });
   
-  // Write the zip file
-  zip.writeZip(outputPath);
+  // Write the zip files
+  zip.writeZip(outputPath1);
+  zip.writeZip(outputPath2);
   
   console.log('------------------------------------------------------');
   console.log('SUCCESS: WordPress Theme packaged successfully!');
-  console.log('File created at the workspace root: tatkhalsa.zip');
+  console.log('Files created at the workspace root:');
+  console.log('  - tatkhalsa.zip');
+  console.log('  - tatkhalsa-theme.zip');
   console.log('------------------------------------------------------');
 } catch (error) {
   console.error('An error occurred while zipping the theme:', error);
