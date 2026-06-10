@@ -46,7 +46,7 @@ async function startServer() {
     // Resolve template directory and logo or home URLs
     content = content.replace(/<\?php\s*echo\s*esc_url\(\s*get_template_directory_uri\(\)\s*\.\s*['"]\/Logo\.(jpg|png)['"]\s*\)\s*;\s*\?>/g, '/Logo.png');
     content = content.replace(/<\?php\s*echo\s*esc_url\(\s*get_template_directory_uri\(\)\s*\.\s*['"]\/Logo\.(jpg|png)['"]\s*\);\s*\?>/g, '/Logo.png');
-    content = content.replace(/<\?php\s*echo\s*esc_url\(\s*tatkhalsa_get_logo_url\(\)\s*\)\s*;?\s*\?>/g, '/Logo.png');
+    content = content.replace(/<\?php[\s\S]*?tatkhalsa_get_logo_url\(\)[\s\S]*?\?>/g, '/Logo.png');
     content = content.replace(/<\?php\s*echo\s*esc_url\(\s*home_url\(\s*['"]\/['"]\s*\)\s*\);\s*\?>/g, '/');
     
     // Resolve admin-ajax url to mock express API
