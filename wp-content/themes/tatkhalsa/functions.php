@@ -657,4 +657,26 @@ function tatkhalsa_submit_blood_request() {
 }
 add_action( 'wp_ajax_submit_blood_request', 'tatkhalsa_submit_blood_request' );
 add_action( 'wp_ajax_nopriv_submit_blood_request', 'tatkhalsa_submit_blood_request' );
+
+/**
+ * Register Customizer Settings for Images
+ */
+function tatkhalsa_customize_register( $wp_customize ) {
+	$wp_customize->add_section( 'tatkhalsa_campaigns', array(
+		'title'    => __( 'Campaign Images', 'tatkhalsa-theme' ),
+		'priority' => 130,
+	) );
+
+	$wp_customize->add_setting( 'tatkhalsa_nimrat_kaur_img', array(
+		'default'           => get_stylesheet_directory_uri() . '/assets/images/regenerated_image_1781128512768.jpg',
+		'sanitize_callback' => 'esc_url_raw',
+	) );
+
+	$wp_customize->add_control( new WP_Customize_Image_Control( $wp_customize, 'tatkhalsa_nimrat_kaur_img', array(
+		'label'    => __( 'Nimrat Kaur Campaign Image', 'tatkhalsa-theme' ),
+		'section'  => 'tatkhalsa_campaigns',
+		'settings' => 'tatkhalsa_nimrat_kaur_img',
+	) ) );
+}
+add_action( 'customize_register', 'tatkhalsa_customize_register' );
 ?>

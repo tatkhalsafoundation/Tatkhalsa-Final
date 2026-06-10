@@ -204,7 +204,7 @@ get_header();
         <div class="campaign-slide active" data-index="0" data-title="Nimrat Kaur (2 yrs, Cancer)" onclick="handleSlideClick(0, event)">
           <div class="campaign-card">
             <span class="campaign-view-tag" onclick="openNimratKaurModal(); event.stopPropagation(); return false;" style="cursor: pointer;">View Campaign</span>
-            <img class="campaign-img" src="<?php echo esc_url( get_stylesheet_directory_uri() ); ?>/assets/images/regenerated_image_1781128512768.jpg" alt="Pediatric Cancer Care Support - Nimrat Kaur" />
+            <img class="campaign-img" src="<?php echo esc_url( get_theme_mod( 'tatkhalsa_nimrat_kaur_img', get_stylesheet_directory_uri() . '/assets/images/regenerated_image_1781128512768.jpg' ) ); ?>" alt="Pediatric Cancer Care Support - Nimrat Kaur" />
             <div class="campaign-overlay">
               <span class="campaign-category" style="color: var(--accent-red);">Healthcare Aid</span>
               <h3 class="campaign-title">Cancer Patient Nimrat Kaur</h3>
