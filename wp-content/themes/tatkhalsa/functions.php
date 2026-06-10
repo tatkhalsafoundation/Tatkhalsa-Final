@@ -909,4 +909,210 @@ function tatkhalsa_send_whatsapp_alert( $message_body ) {
 	$response_code = wp_remote_retrieve_response_code( $response );
 	return ( $response_code >= 200 && $response_code < 300 );
 }
+
+/**
+ * Gurbani Search Shortcode via GurbaniNow API
+ */
+function tatkhalsa_gurbani_search_shortcode() {
+    ob_start();
+    ?>
+    <div class="gurbani-search-container">
+        <form id="gurbani-search-form" class="gurbani-search-form">
+            <input type="text" id="gurbani-search-input" placeholder="Search Gurbani (e.g. 'm m' or 'tu prabh')" required />
+            <button type="submit" class="btn gurbani-search-btn">Search</button>
+        </form>
+        <div id="gurbani-search-results" class="gurbani-search-results"></div>
+    </div>
+    
+    <style>
+        .gurbani-search-container {
+            background: var(--bg-shade-1);
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            margin: 20px 0;
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            width: 100%;
+        }
+        .gurbani-search-form {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        .gurbani-search-form input {
+            flex: 1;
+            padding: 14px 20px;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(212, 175, 55, 0.4);
+            color: var(--cream);
+            font-size: 1.1rem;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+        .gurbani-search-form input:focus {
+            border-color: var(--secondary);
+            background: rgba(255, 255, 255, 0.1);
+        }
+        [data-theme="light"] .gurbani-search-form input {
+            background: rgba(0,0,0,0.05);
+            color: var(--text-dark);
+            border: 1px solid rgba(0, 0, 0, 0.1);
+        }
+        [data-theme="light"] .gurbani-search-form input:focus {
+            border-color: var(--secondary);
+            background: #ffffff;
+        }
+        .gurbani-search-btn {
+            background: var(--secondary);
+            color: #fff;
+            padding: 0 25px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s, background 0.3s;
+        }
+        .gurbani-search-btn:hover {
+            transform: translateY(-2px);
+            background: #e5bf42;
+        }
+        .gurbani-search-results {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            max-height: 600px;
+            overflow-y: auto;
+            padding-right: 10px;
+        }
+        .shabad-card {
+            background: rgba(0,0,0,0.2);
+            border-left: 4px solid var(--secondary);
+            padding: 20px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+        .shabad-card:hover {
+            background: rgba(255,255,255,0.05);
+        }
+        [data-theme="light"] .shabad-card {
+            background: rgba(255,255,255,0.6);
+            border-left: 4px solid var(--secondary);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+        [data-theme="light"] .shabad-card:hover {
+            background: #ffffff;
+        }
+        .shabad-gurmukhi {
+            font-size: 1.8rem;
+            color: var(--secondary);
+            margin-bottom: 15px;
+            line-height: 1.4;
+            font-weight: 500;
+        }
+        .shabad-english {
+            font-size: 1.15rem;
+            color: var(--cream);
+            margin-bottom: 5px;
+        }
+        [data-theme="light"] .shabad-english {
+            color: var(--text-dark);
+        }
+        .shabad-transliteration {
+             font-size: 1rem;
+             color: var(--text-light);
+             margin-bottom: 15px;
+             font-style: italic;
+        }
+        [data-theme="light"] .shabad-transliteration {
+             color: rgba(0,0,0,0.6);
+        }
+        .shabad-meta {
+            font-size: 0.85rem;
+            color: rgba(255,255,255,0.5);
+            border-top: 1px solid rgba(212, 175, 55, 0.2);
+            padding-top: 12px;
+            display: flex;
+            justify-content: space-between;
+        }
+        [data-theme="light"] .shabad-meta {
+            color: rgba(0,0,0,0.5);
+        }
+        .loading-shabads {
+            text-align: center;
+            color: var(--secondary);
+            padding: 30px;
+            font-size: 1.1rem;
+        }
+        /* Mobile */
+        @media(max-width: 768px) {
+            .gurbani-search-form {
+                flex-direction: column;
+            }
+            .gurbani-search-btn {
+                padding: 14px;
+            }
+            .shabad-gurmukhi {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.getElementById('gurbani-search-form');
+            if(!form) return;
+            
+            form.addEventListener('submit', async function(e) {
+                e.preventDefault();
+                const input = document.getElementById('gurbani-search-input').value.trim();
+                if(!input) return;
+                
+                const resultsDiv = document.getElementById('gurbani-search-results');
+                resultsDiv.innerHTML = '<div class="loading-shabads">Searching Gurbani... <br><small style="opacity:0.7;margin-top:10px;display:block">Fetching from BaniDB via GurbaniNow API</small></div>';
+                
+                try {
+                    // searchtype 1 resolves to 'First letter anywhere' 
+                    // Most intuitive for generalized searches (e.g., 't p' -> tu prabh)
+                    const res = await fetch(`https://api.gurbaninow.com/v2/search/${encodeURIComponent(input)}/?searchtype=1`);
+                    const data = await res.json();
+                    
+                    if(!data || data.error || !data.shabads || data.shabads.length === 0) {
+                        resultsDiv.innerHTML = '<div class="loading-shabads">No shabads found for "'+input+'".<br>Try typing the first letters of each word in English (e.g. "m m" for mere man).</div>';
+                        return;
+                    }
+                    
+                    let html = '';
+                    data.shabads.forEach(item => {
+                        const line = item.shabad;
+                        const gurmukhi = line.gurmukhi.unicode;
+                        const englishTranslation = line.translation.english.default;
+                        const transliteration = line.transliteration.english.text;
+                        const writer = line.writer.english;
+                        const ang = line.pageno;
+                        
+                        html += `
+                            <div class="shabad-card">
+                                <div class="shabad-gurmukhi">${gurmukhi}</div>
+                                <div class="shabad-english">${englishTranslation}</div>
+                                <div class="shabad-transliteration">${transliteration}</div>
+                                <div class="shabad-meta">
+                                    <span>${writer}</span>
+                                    <span>Ang ${ang}</span>
+                                </div>
+                            </div>
+                        `;
+                    });
+                    
+                    resultsDiv.innerHTML = html;
+                } catch(e) {
+                    resultsDiv.innerHTML = '<div class="loading-shabads" style="color:#ff6b6b">Error connecting to Gurbani API. Please check your internet connection or try again later.</div>';
+                }
+            });
+        });
+    </script>
+    <?php
+    return ob_get_clean();
+}
+add_shortcode('gurbani_search', 'tatkhalsa_gurbani_search_shortcode');
 ?>
