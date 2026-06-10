@@ -511,7 +511,7 @@
     </script>
 
     <!-- Global Dynamic Liquid Background Canvas and SVG Gooey filter -->
-    <canvas id="liquid-bg-canvas"></canvas>
+    <canvas id="liquid-bg-canvas" style="position: fixed !important; top: 0 !important; left: 0 !important; width: 100vw !important; height: 100vh !important; z-index: -2 !important; pointer-events: none !important; filter: url(#liquid-goo) !important; opacity: 0.18 !important; display: block !important;"></canvas>
     <svg xmlns="http://www.w3.org/2000/svg" style="display: none; position: absolute; width: 0; height: 0;">
       <defs>
         <filter id="liquid-goo">
