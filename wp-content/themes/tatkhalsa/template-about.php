@@ -52,7 +52,7 @@ get_header();
     <section
       id="about"
       style="
-        background-image: url('<?php echo esc_url( get_stylesheet_directory_uri() ); ?>/assets/images/media_1781128759420_15.jpg');
+        background-image: url('https://upload.wikimedia.org/wikipedia/commons/3/30/A_group_of_volunteers_helping_with_daily_food_preparation_for_Langar_at_the_Golden_Temple.jpg');
         background-size: cover;
         background-position: center;
         background-attachment: fixed;

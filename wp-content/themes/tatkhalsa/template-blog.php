@@ -558,7 +558,7 @@ get_header();
         <div class="blog-card-img-wrapper">
           <img 
             class="blog-card-img" 
-            src="<?php echo esc_url( get_stylesheet_directory_uri() ); ?>/assets/images/media_1781128759368_11.jpg" 
+            src="https://images.unsplash.com/photo-1544027993-37dbfe43562a?auto=format&fit=crop&q=80&w=600" 
             alt="The Essence of Seva: Selfless Service as a Spiritual Path" 
             loading="lazy" 
           />
@@ -580,7 +580,7 @@ get_header();
             <div class="blog-author-block">
               <img 
                 class="blog-author-avatar" 
-                src="<?php echo esc_url( get_stylesheet_directory_uri() ); ?>/assets/images/media_1781128794897_qr_gravatar_5.jpg" 
+                src="https://secure.gravatar.com/avatar/fb000000000000000000000000000001?s=96&d=mp" 
                 alt="Bhai Jagjit Singh" 
               />
               <span class="blog-author-name">Bhai Jagjit Singh</span>
@@ -608,7 +608,7 @@ get_header();
         <div class="blog-card-img-wrapper">
           <img 
             class="blog-card-img" 
-            src="<?php echo esc_url( get_stylesheet_directory_uri() ); ?>/assets/images/media_1781128759388_12.jpg" 
+            src="https://images.unsplash.com/photo-1547683905-f686c993aae5?auto=format&fit=crop&q=80&w=600" 
             alt="Flood Response Diaries: Restoring Hope in Inundated Villages" 
             loading="lazy" 
           />
@@ -630,7 +630,7 @@ get_header();
             <div class="blog-author-block">
               <img 
                 class="blog-author-avatar" 
-                src="<?php echo esc_url( get_stylesheet_directory_uri() ); ?>/assets/images/media_1781128795065_qr_gravatar_6.jpg" 
+                src="https://secure.gravatar.com/avatar/fb000000000000000000000000000002?s=96&d=mp" 
                 alt="Bibi Harpreet Kaur" 
               />
               <span class="blog-author-name">Bibi Harpreet Kaur</span>
@@ -658,7 +658,7 @@ get_header();
         <div class="blog-card-img-wrapper">
           <img 
             class="blog-card-img" 
-            src="<?php echo esc_url( get_stylesheet_directory_uri() ); ?>/assets/images/media_1781128759409_13.jpg" 
+            src="https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?auto=format&fit=crop&q=80&w=600" 
             alt="Preserving Sikh Heritage: Digitizing Silent Ancient Manuscripts" 
             loading="lazy" 
           />
@@ -680,7 +680,7 @@ get_header();
             <div class="blog-author-block">
               <img 
                 class="blog-author-avatar" 
-                src="<?php echo esc_url( get_stylesheet_directory_uri() ); ?>/assets/images/media_1781128795198_qr_gravatar_7.jpg" 
+                src="https://secure.gravatar.com/avatar/fb000000000000000000000000000003?s=96&d=mp" 
                 alt="Dr. Gurmukh Singh" 
               />
               <span class="blog-author-name">Dr. Gurmukh Singh</span>
@@ -708,7 +708,7 @@ get_header();
         <div class="blog-card-img-wrapper">
           <img 
             class="blog-card-img" 
-            src="<?php echo esc_url( get_stylesheet_directory_uri() ); ?>/assets/images/media_1781128759415_14.jpg" 
+            src="https://images.unsplash.com/photo-1466692476868-aef1dfb1e735?auto=format&fit=crop&q=80&w=600" 
             alt="Nurturing Our Mother Earth: Replanting Green Canopies" 
             loading="lazy" 
           />
@@ -730,7 +730,7 @@ get_header();
             <div class="blog-author-block">
               <img 
                 class="blog-author-avatar" 
-                src="<?php echo esc_url( get_stylesheet_directory_uri() ); ?>/assets/images/media_1781128795338_qr_gravatar_8.jpg" 
+                src="https://secure.gravatar.com/avatar/fb000000000000000000000000000004?s=96&d=mp" 
                 alt="Prof. Balwinder Singh" 
               />
               <span class="blog-author-name">Prof. Balwinder Singh</span>
@@ -819,10 +819,10 @@ get_header();
       content: `<h3>Understanding the Spiritual bedrock of Seva</h3><p>In the heart of the Sikh ethos lies the eternal doctrine of <strong>Seva</strong> (selfless duty) — service done without any expectation of reward, validation, or personal gain. Guru Nanak Dev Ji, the first Sikh Guru, engineered this philosophy to dismantle pride (Ahamkar) and bring humanity together around one universal table.</p><h4>Langar: Servitude in Action</h4><p>The practice of Langar (the free community kitchen) serves as the ultimate expression of Seva and Equality. In our modern context, the Tatkhalsa Foundation strives to preserve this holy heritage. We organize free community kitchens and medical camps designed specifically for the underserved, carrying forward Guru Nanak Dev Ji’s eternal call of <em>Vand Chhako</em> (Share what you earn with the needy).</p><h4>Overcoming Ego to Find Divine Light</h4><p>Seva is not merely physical assistance; it is a profound spiritual cleansing. By engaging in active, humble service — whether by cleaning floors, cooking meals, distributing medicine, or preserving historical Gurmukhi transcripts — one humbles the self. In this state of quiet humility, the heart is primed to experience the Divine Light present inside all living creation.</p><p>We welcome you to join our active volunteer network. Whether you contribute half an hour of your time, some specialized medical skills, or financial sponsorships, you are actively facilitating real humanitarian transformation on the ground.</p>`,
       date: 'Jun 08, 2026',
       author: 'Bhai Jagjit Singh',
-      avatar: '<?php echo esc_url( get_stylesheet_directory_uri() ); ?>/assets/images/media_1781128794897_qr_gravatar_5.jpg',
+      avatar: 'https://secure.gravatar.com/avatar/fb000000000000000000000000000001?s=96&d=mp',
       category: 'Philosophy',
       read_time: '5 min read',
-      image: '<?php echo esc_url( get_stylesheet_directory_uri() ); ?>/assets/images/media_1781128759368_11.jpg'
+      image: 'https://images.unsplash.com/photo-1544027993-37dbfe43562a?auto=format&fit=crop&q=80&w=600'
     },
     {
       id: 'seeded_2',
@@ -831,10 +831,10 @@ get_header();
       content: `<h3>On the Front Lines of Nature’s Fury</h3><p>When monsoons breached the embankments of Punjab’s primary river basins, entire villages in districts such as Ferozepur, Jalandhar, and Kapurthala lay submerged under feet of dangerous, muddy water. Crops were ruined, livestock lost, and families stranded in roof-high isolations. In this hour of darkness, the Tatkhalsa Foundation was mobilized instantly.</p><h4>The SOS Strategy: Rapid Intervention</h4><p>Our disaster action protocol was split into three critical phases:</p><ol><li><strong>Emergency Evacuation & Survival Rations:</strong> Deploying volunteer rescue inflatable boats and supplying high-density nutrient kits (wheat, pulses, oil, baby formula, and clean bottled water).</li><li><strong>Water Purification & Health Guards:</strong> Because biological contaminants pose the highest post-flood threat, we distributed over 1,500 portable water filtration kits and established 24-hour medical diagnostic tents on high grounds.</li><li><strong>Long-Term Rehabilitation:</strong> Rebuilding dry-walls, disinfecting wells, and restoring ruined local primary school structures to prepare communities for a return to education and normal life.</li></ol><h4>Stories of Resilience and Unity</h4><p>One of our lead volunteers recalls: "In a small hamlet near Ferozepur, we found an elderly grandmother and her grandchildren stranded on their terrace with no food for 3 days. When we handed them warm Langar meals and medicine, she didn’t ask where we were from — she simply raised her hands in profound blessing. That moment of shared connection contains the heart of our mission."</p><p>This campaign is funded purely by compassionate, transparent donations. Support the Tatkhalsa Punjab Flood Relief SOS today and empower us to keep standing between disaster and vulnerable families.</p>`,
       date: 'May 25, 2026',
       author: 'Bibi Harpreet Kaur',
-      avatar: '<?php echo esc_url( get_stylesheet_directory_uri() ); ?>/assets/images/media_1781128795065_qr_gravatar_6.jpg',
+      avatar: 'https://secure.gravatar.com/avatar/fb000000000000000000000000000002?s=96&d=mp',
       category: 'Relief Mission',
       read_time: '7 min read',
-      image: '<?php echo esc_url( get_stylesheet_directory_uri() ); ?>/assets/images/media_1781128759388_12.jpg'
+      image: 'https://images.unsplash.com/photo-1547683905-f686c993aae5?auto=format&fit=crop&q=80&w=600'
     },
     {
       id: 'seeded_3',
@@ -843,10 +843,10 @@ get_header();
       content: `<h3>Rescuing Our Sacred History</h3><p>Beyond our visual physical bodies, a community lives and breathes through its recorded history, its visual expressions, and its sacred manuscripts. Over centuries, Punjab has experienced immense geopolitical unrest, leading to the destruction and decay of priceless Gurmukhi scripts, manuscripts (Birhs), and historical scrolls. Tatkhalsa’s Heritage Preservation Wing is addressing this critical issue head-on.</p><h4>Digital Seva: Merging Heritage with Science</h4><p>We have introduced state-of-the-art non-destructive imaging studios on-site in historic Gurdwaras and private repositories. Using temperature-controlled high-resolution digital cameras and specialized white-light spectra, we successfully digitize aging manuscripts without stressing the ancient fiber pages.</p><h4>Why Gurmukhi Archiving Is Crucial</h4><p>Our work focuses not only on preservation but on democratic accessibility. Once indexed, these historical archives are cataloged into open-access online repositories. These allow international scholars, researchers, and Sikh youth to interact with authentic 18th and 19th-century scripts directly.</p><p><em>"A nation that forgets its history loses its roots,"</em> says Dr. Gurmukh Singh. <em>"By archiving these pages, we make sure our future generations hear the authentic, beautiful voices of our ancestors."</em></p><p>This massive task is ongoing. If you possess information about rare historical artifacts, manuscripts, or scrolls in Punjab in need of active preservation, contact our specialized preservation wing today.</p>`,
       date: 'Apr 12, 2026',
       author: 'Dr. Gurmukh Singh',
-      avatar: '<?php echo esc_url( get_stylesheet_directory_uri() ); ?>/assets/images/media_1781128795198_qr_gravatar_7.jpg',
+      avatar: 'https://secure.gravatar.com/avatar/fb000000000000000000000000000003?s=96&d=mp',
       category: 'Heritage',
       read_time: '6 min read',
-      image: '<?php echo esc_url( get_stylesheet_directory_uri() ); ?>/assets/images/media_1781128759409_13.jpg'
+      image: 'https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?auto=format&fit=crop&q=80&w=600'
     },
     {
       id: 'seeded_4',
@@ -855,10 +855,10 @@ get_header();
       content: `<h3>Pawan Guru Paani Pita, Mata Dharat Mahat</h3><p>In accordance with the sacred Gurbani composition of Guru Nanak Dev Ji, our natural environment is elevated to the level of divine guidance: <em>"Air is the Guru, Water the Father, and Earth the Great Mother."</em> Yet, modern Punjab suffers from deep industrial deforestation, water table reduction, and intensive pesticide runoff. Tatkhalsa Foundation’s <strong>Green Seva Initiative</strong> was born to restore this sacred balance.</p><h4>The Micro-Forest Revolution Let’s Go</h4><p>Our environmental team utilizes the Japanese Miyawaki afforestation methodology. By planting highly dense, native multi-tier saplings closely together, we grow forests that develop 10 times faster and become 30 times denser than standard plantations. Areas that were barren dumps are transformed into oxygen-rich biodiversity spaces within months.</p><h4>Empowering Farmers toward Organic Stewardship</h4><p>Furthermore, we conduct regular educational outreach programs for local farmers. We provide organic seed varieties and practical workshops detailing bio-enzyme farming, soil conservation, and drip irrigation. This minimizes rely-on toxic agrochemicals, protecting Punjab’s groundwater for future generations.</p><p>We dream of a Punjab where the streams run clear and the air is pristine. Our local micro-forest planting is powered entirely by volunteers. Join our next weekend planting drive and leave a legacy that grows for centuries!</p>`,
       date: 'Mar 22, 2026',
       author: 'Prof. Balwinder Singh',
-      avatar: '<?php echo esc_url( get_stylesheet_directory_uri() ); ?>/assets/images/media_1781128795338_qr_gravatar_8.jpg',
+      avatar: 'https://secure.gravatar.com/avatar/fb000000000000000000000000000004?s=96&d=mp',
       category: 'Environment',
       read_time: '4 min read',
-      image: '<?php echo esc_url( get_stylesheet_directory_uri() ); ?>/assets/images/media_1781128759415_14.jpg'
+      image: 'https://images.unsplash.com/photo-1466692476868-aef1dfb1e735?auto=format&fit=crop&q=80&w=600'
     }
   ];
 
