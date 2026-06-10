@@ -75,6 +75,24 @@ function tatkhalsa_get_logo_url() {
 			return set_url_scheme( $logo[0] );
 		}
 	}
+
+	// Check for various casing and extensions in the active theme folder
+	$theme_dir = get_stylesheet_directory();
+	$possible_filenames = array(
+		'/Logo.png',
+		'/logo.png',
+		'/Logo.jpg',
+		'/logo.jpg',
+		'/Logo.jpeg',
+		'/logo.jpeg'
+	);
+
+	foreach ( $possible_filenames as $filename ) {
+		if ( file_exists( $theme_dir . $filename ) ) {
+			return set_url_scheme( get_stylesheet_directory_uri() . $filename );
+		}
+	}
+
 	return set_url_scheme( get_stylesheet_directory_uri() . '/Logo.png' );
 }
 
