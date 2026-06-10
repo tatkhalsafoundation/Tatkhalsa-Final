@@ -279,19 +279,19 @@ h6 {
 
 /* Header & Nav */
 .header {
-  background-color: rgba(8, 17, 35, 0.9);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  background-color: rgba(6, 12, 26, 0.85);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
   position: sticky;
   top: 0;
   z-index: 1000;
-  border-bottom: 1px solid rgba(212, 175, 55, 0.15);
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
-  padding: 6px 0;
-  min-height: 80px;
+  border-bottom: 1.5px solid rgba(212, 175, 55, 0.12);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.25);
+  padding: 16px 0;
+  min-height: 85px;
   display: flex;
   align-items: center;
-  transition: all 0.3s ease;
+  transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
 }
 /* WordPress admin bar displacement fix */
 .admin-bar .header {
@@ -317,39 +317,28 @@ h6 {
   color: var(--secondary);
   display: inline-flex;
   align-items: center;
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  transition: all 0.3s ease;
+  gap: 12px;
+  position: relative;
+  left: auto;
+  top: auto;
+  transform: none;
+  transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
 }
 .logo::after {
-  content: '';
-  width: 50px;
-  height: 50px;
-  margin-left: 14px;
-  display: block;
-  flex-shrink: 0;
-  pointer-events: none;
-  transition: width 0.4s ease, height 0.4s ease, margin-left 0.4s ease;
-}
-body.scrolled .logo::after {
-  width: 42px;
-  height: 42px;
+  display: none;
 }
 .header-logo-badge {
   position: relative;
-  width: 50px;
-  height: 50px;
+  width: 52px;
+  height: 52px;
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(212, 175, 55, 0.18) 0%, rgba(8, 17, 35, 0.8) 70%);
+  background: radial-gradient(circle, rgba(212, 175, 55, 0.22) 0%, rgba(8, 17, 35, 0.85) 75%);
   border: 1.5px solid rgba(212, 175, 55, 0.4);
-  box-shadow: 0 0 15px rgba(212, 175, 55, 0.15);
+  box-shadow: 0 0 18px rgba(212, 175, 55, 0.2);
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-right: 14px;
-  transition: border-color 0.4s ease, box-shadow 0.4s ease, background 0.4s ease, width 0.4s ease, height 0.4s ease;
+  transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
   overflow: visible;
   flex-shrink: 0;
 }
@@ -380,31 +369,32 @@ body:has(.hero-gurbani-logo) .header-logo-badge {
 }
 .logo:hover .header-logo-badge {
   border-color: var(--secondary);
-  box-shadow: 0 0 20px rgba(212, 175, 55, 0.35);
-  background: radial-gradient(circle, rgba(212, 175, 55, 0.25) 0%, rgba(8, 17, 35, 0.9) 70%);
+  box-shadow: 0 0 25px rgba(212, 175, 55, 0.4);
+  background: radial-gradient(circle, rgba(212, 175, 55, 0.28) 0%, rgba(8, 17, 35, 0.9) 75%);
 }
 .logo:hover .header-logo-badge::after {
-  opacity: 0.3;
+  opacity: 0.35;
   filter: blur(20px);
 }
 .logo:hover .header-logo-img-new {
   transform: scale(1.12) rotate(6deg);
 }
 body.scrolled .header-logo-badge {
-  width: 42px;
-  height: 42px;
+  width: 44px;
+  height: 44px;
 }
 body.scrolled .header-logo-img-new {
-  width: 32px;
-  height: 32px;
+  width: 30px;
+  height: 30px;
 }
 .logo-stack {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: center;
-  text-align: center;
+  align-items: flex-start;
+  text-align: left;
   line-height: 1.1;
+  transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
 }
 
 /* Home Page Hero Logo Definition */
@@ -422,14 +412,15 @@ body.scrolled .header-logo-img-new {
   object-fit: contain;
 }
 .logo-text-up {
-  font-size: 1.6rem;
-  font-weight: 700;
-  letter-spacing: 0.15em;
+  font-size: 1.5rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--secondary); /* Premium solid gold fallback */
   display: block;
-  text-align: center;
-  margin-right: -0.15em;
+  text-align: left;
+  margin-right: -0.12em;
+  transition: all 0.3s ease;
 }
 
 /* Graceful progressive enhancement for browsers supporting text clippings */
@@ -443,16 +434,17 @@ body.scrolled .header-logo-img-new {
 }
 
 .logo-text-down {
-  font-size: 0.75rem;
+  font-size: 0.72rem;
   font-family: var(--font-sans);
-  letter-spacing: 0.35em;
-  font-weight: 500;
+  letter-spacing: 0.32em;
+  font-weight: 600;
   text-transform: uppercase;
   color: var(--text-light);
-  margin-top: 2px;
+  margin-top: 1px;
   display: block;
-  text-align: center;
-  margin-right: -0.35em;
+  text-align: left;
+  margin-right: -0.32em;
+  transition: all 0.3s ease;
 }
 @media (max-width: 900px) {
   .logo {
@@ -487,13 +479,57 @@ body.scrolled .header-logo-img-new {
   }
 }
 .nav-menu-container {
-  transition: opacity 0.4s ease, transform 0.4s ease;
-  margin-left: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+  margin: 0 auto;
 }
-body.scrolled .nav-menu-container {
-  opacity: 0;
-  pointer-events: none;
-  transform: translateY(-8px);
+body.scrolled .header {
+  background-color: rgba(6, 12, 26, 0.98);
+  padding: 8px 0;
+  min-height: 68px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
+}
+body.scrolled .logo-text-up {
+  font-size: 1.25rem;
+}
+body.scrolled .logo-text-down {
+  font-size: 0.62rem;
+  letter-spacing: 0.28em;
+}
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+.header-cta-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 18px;
+  background: linear-gradient(135deg, var(--secondary) 0%, #ffdf79 100%);
+  color: #040914 !important;
+  text-decoration: none;
+  font-family: var(--font-sans);
+  font-weight: 700;
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  border-radius: 50px;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 4px 15px rgba(212, 175, 55, 0.25);
+  transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+.header-cta-btn:hover {
+  transform: translateY(-1.5px);
+  box-shadow: 0 6px 20px rgba(212, 175, 55, 0.45);
+  background: linear-gradient(135deg, #ffdf79 0%, var(--secondary) 100%);
+}
+body.scrolled .header-cta-btn {
+  padding: 6px 14px;
+  font-size: 0.68rem;
 }
 .nav-links {
   display: flex;
@@ -1591,7 +1627,10 @@ footer .container {
 /* Mobile Responsive Hooks */
 @media (max-width: 900px) {
   .logo-stack {
-    align-items: center;
+    align-items: flex-start;
+  }
+  .header-actions {
+    display: none !important;
   }
   .header .container {
     justify-content: space-between !important;

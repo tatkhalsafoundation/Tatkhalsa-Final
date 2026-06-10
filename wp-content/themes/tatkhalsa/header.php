@@ -89,6 +89,11 @@
           ?>
         </nav>
  
+        <!-- Header Actions CTA (Desktop/Wide Viewports) -->
+        <div class="header-actions">
+          <a href="<?php echo esc_url( home_url( '/volunteer/' ) ); ?>" class="header-cta-btn">Join Seva</a>
+        </div>
+ 
         <!-- Elegant Multi-Selection Dropdown for Mobile / Tablet (Instead of Hamburger Menu) -->
         <div class="header-nav-selector">
           <select id="mobileNavSelect" onchange="if(this.value) window.location.href=this.value;" style="display: none;" aria-label="Select Seva Page">
