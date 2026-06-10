@@ -22,14 +22,14 @@ get_header();
     loop
     playsinline
     class="hero-video"
-    poster="https://upload.wikimedia.org/wikipedia/commons/thumb/c/cd/Golden_Temple_India.jpg/640px-Golden_Temple_India.jpg"
+    poster="<?php echo esc_url( get_stylesheet_directory_uri() ); ?>/assets/images/media_1781128758806_4.jpg"
   >
     <source
-      src="https://upload.wikimedia.org/wikipedia/commons/2/29/Revealed-_The_Golden_Temple_%28HD_Version%29.webm"
+      src="<?php echo esc_url( get_stylesheet_directory_uri() ); ?>/assets/images/media_1781128758846_5.webm"
       type="video/webm"
     />
     <source
-      src="https://upload.wikimedia.org/wikipedia/commons/transcoded/2/29/Revealed-_The_Golden_Temple_%28HD_Version%29.webm/Revealed-_The_Golden_Temple_%28HD_Version%29.webm.720p.mp4"
+      src="<?php echo esc_url( get_stylesheet_directory_uri() ); ?>/assets/images/media_1781128758855_6.mp4"
       type="video/mp4"
     />
   </video>
@@ -204,7 +204,7 @@ get_header();
         <div class="campaign-slide active" data-index="0" data-title="Nimrat Kaur (2 yrs, Cancer)" onclick="handleSlideClick(0, event)">
           <div class="campaign-card">
             <span class="campaign-view-tag" onclick="openNimratKaurModal(); event.stopPropagation(); return false;" style="cursor: pointer;">View Campaign</span>
-            <img class="campaign-img" src="https://images.unsplash.com/photo-1542816417-0983c9c9ad53?auto=format&fit=crop&w=800&q=80" alt="Pediatric Cancer Care Support - Nimrat Kaur" />
+            <img class="campaign-img" src="<?php echo esc_url( get_stylesheet_directory_uri() ); ?>/assets/images/regenerated_image_1781128913145.jpg" alt="Pediatric Cancer Care Support - Nimrat Kaur" />
             <div class="campaign-overlay">
               <span class="campaign-category" style="color: var(--accent-red);">Healthcare Aid</span>
               <h3 class="campaign-title">Cancer Patient Nimrat Kaur</h3>
@@ -228,7 +228,7 @@ get_header();
         <div class="campaign-slide" data-index="1" data-title="Punjab Flood Relief 2025" onclick="handleSlideClick(1, event)">
           <div class="campaign-card">
             <span class="campaign-view-tag" onclick="openPunjabFloodReliefModal(); event.stopPropagation(); return false;" style="cursor: pointer;">View Campaign</span>
-            <img class="campaign-img" src="https://images.unsplash.com/photo-1514222134-b57cbb8ce073?auto=format&fit=crop&w=800&q=80" alt="Punjab Relief - Sri Harmandir Sahib" />
+            <img class="campaign-img" src="<?php echo esc_url( get_stylesheet_directory_uri() ); ?>/assets/images/media_1781128758865_7.jpg" alt="Punjab Relief - Sri Harmandir Sahib" />
             <div class="campaign-overlay">
               <span class="campaign-category" style="color: var(--accent-blue);">Emergency SOS</span>
               <h3 class="campaign-title">Punjab Flood Relief 2025</h3>
@@ -252,7 +252,7 @@ get_header();
         <div class="campaign-slide" data-index="2" data-title="Grocery Help Seva" onclick="handleSlideClick(2, event)">
           <div class="campaign-card">
             <span class="campaign-view-tag" onclick="openGroceryHelpSevaModal(); event.stopPropagation(); return false;" style="cursor: pointer;">View Campaign</span>
-            <img class="campaign-img" src="https://images.unsplash.com/photo-1609137144813-1d67493fa7b2?auto=format&fit=crop&w=800&q=80" alt="Grocery Help Seva - Sikh Sevadar Elder Support" />
+            <img class="campaign-img" src="<?php echo esc_url( get_stylesheet_directory_uri() ); ?>/assets/images/media_1781128758893_8.jpg" alt="Grocery Help Seva - Sikh Sevadar Elder Support" />
             <div class="campaign-overlay">
               <span class="campaign-category" style="color: var(--accent-green);">Ration Seva</span>
               <h3 class="campaign-title">Essential Grocery Help</h3>
@@ -276,7 +276,7 @@ get_header();
         <div class="campaign-slide" data-index="3" data-title="1984 Victims Family Support" onclick="handleSlideClick(3, event)">
           <div class="campaign-card">
             <span class="campaign-view-tag" onclick="openVictimFamilySupportModal(); event.stopPropagation(); return false;" style="cursor: pointer;">View Campaign</span>
-            <img class="campaign-img" src="https://images.unsplash.com/photo-1605701243007-df5b128caff8?auto=format&fit=crop&w=800&q=80" alt="1984 Victim Families Support - Sikh Elder Portrait" />
+            <img class="campaign-img" src="<?php echo esc_url( get_stylesheet_directory_uri() ); ?>/assets/images/media_1781128759121_9.jpg" alt="1984 Victim Families Support - Sikh Elder Portrait" />
             <div class="campaign-overlay">
               <span class="campaign-category" style="color: var(--accent-purple);">Livelihood Aid</span>
               <h3 class="campaign-title">1984 Victim Families</h3>
@@ -300,7 +300,7 @@ get_header();
         <div class="campaign-slide" data-index="4" data-title="Gursikh Daughters Marriages Seva" onclick="handleSlideClick(4, event)">
           <div class="campaign-card">
             <span class="campaign-view-tag" onclick="openMarriagesSevaModal(); event.stopPropagation(); return false;" style="cursor: pointer;">View Campaign</span>
-            <img class="campaign-img" src="https://images.unsplash.com/photo-1610030469668-93535c17b6b3?auto=format&fit=crop&w=800&q=80" alt="Underprivileged Marriages support - Traditional Bridal Hands" />
+            <img class="campaign-img" src="<?php echo esc_url( get_stylesheet_directory_uri() ); ?>/assets/images/media_1781128759249_10.jpg" alt="Underprivileged Marriages support - Traditional Bridal Hands" />
             <div class="campaign-overlay">
               <span class="campaign-category" style="color: var(--accent-orange);">Social Welfare</span>
               <h3 class="campaign-title">Gursikh Marriages Seva</h3>

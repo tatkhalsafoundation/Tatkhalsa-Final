@@ -211,7 +211,7 @@
           <!-- Left details or photo -->
           <div style="flex: 1; min-width: 250px;">
             <div style="position: relative; border-radius: 10px; overflow: hidden; border: 2px solid rgba(255, 51, 75, 0.2); box-shadow: 0 4px 15px rgba(0,0,0,0.3); margin-bottom: 12px;">
-              <img src="https://images.unsplash.com/photo-1542816417-0983c9c9ad53?auto=format&fit=crop&w=800&q=80" alt="Sikh Child Nimrat Kaur" style="width: 100%; display: block; filter: saturate(1.15);">
+              <img src="<?php echo esc_url( get_stylesheet_directory_uri() ); ?>/assets/images/regenerated_image_1781128913145.jpg" alt="Sikh Child Nimrat Kaur" style="width: 100%; display: block; filter: saturate(1.15);">
               <div style="position: absolute; bottom: 0; left: 0; right: 0; background: linear-gradient(to top, rgba(0,0,0,0.85), rgba(0,0,0,0)); padding: 12px 10px; text-align: center;">
                 <span style="color: #fff; font-size: 0.95rem; font-weight: bold; text-shadow: 0 1px 2px rgba(0,0,0,0.8);">Nimrat Kaur (2 years old)</span>
               </div>
@@ -278,7 +278,7 @@
           <div style="text-align: center; background: rgba(255,255,255,0.02); border: 1.2px solid rgba(255,255,255,0.06); padding: 15px; border-radius: 8px;">
             <div style="margin-bottom: 10px; color: #fff; font-weight: bold; font-size: 0.85rem;">UPI INSTANT PAY</div>
             <div style="width: 140px; height: 140px; margin: 0 auto 10px auto; background: #fff; padding: 8px; border-radius: 6px; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 10px rgba(0,0,0,0.2);">
-              <img src="https://api.qrserver.com/v1/create-qr-code/?size=140x140&data=upi%3A%2F%2Fpay%3Fpa%3Dmab.037215043540097%40axisbank%26pn%3DTatkhalsa%2520Foundation%26cu%3DINR%26amp%3Btn%3DNimrat%2520Kaur%2520Cancer%2520Seva" alt="UPI QR Code" style="width: 100%; display: block;">
+              <img src="<?php echo esc_url( get_stylesheet_directory_uri() ); ?>/assets/images/media_1781128794678_qr_gravatar_0.png" alt="UPI QR Code" style="width: 100%; display: block;">
             </div>
             <p style="margin: 0; font-size: 0.72rem; color: var(--text-light); word-break: break-all;">
               Scan or pay to:<br/>
@@ -327,7 +327,7 @@
           <!-- Left details or photo -->
           <div style="flex: 1; min-width: 250px;">
             <div style="position: relative; border-radius: 10px; overflow: hidden; border: 2px solid rgba(77, 166, 255, 0.2); box-shadow: 0 4px 15px rgba(0,0,0,0.3); margin-bottom: 12px;">
-              <img src="https://images.unsplash.com/photo-1542045618-971efac693e5?q=80&w=600&auto=format&fit=crop" alt="Punjab Relief Support" style="width: 100%; display: block; filter: saturate(1.15);">
+              <img src="<?php echo esc_url( get_stylesheet_directory_uri() ); ?>/assets/images/media_1781128756473_0.jpg" alt="Punjab Relief Support" style="width: 100%; display: block; filter: saturate(1.15);">
               <div style="position: absolute; bottom: 0; left: 0; right: 0; background: linear-gradient(to top, rgba(0,0,0,0.85), rgba(0,0,0,0)); padding: 12px 10px; text-align: center;">
                 <span style="color: #fff; font-size: 0.95rem; font-weight: bold; text-shadow: 0 1px 2px rgba(0,0,0,0.8);">Punjab Flood Relief 2025</span>
               </div>
@@ -394,7 +394,7 @@
           <div style="text-align: center; background: rgba(255,255,255,0.02); border: 1.2px solid rgba(255,255,255,0.06); padding: 15px; border-radius: 8px;">
             <div style="margin-bottom: 10px; color: #fff; font-weight: bold; font-size: 0.85rem;">UPI INSTANT PAY</div>
             <div style="width: 140px; height: 140px; margin: 0 auto 10px auto; background: #fff; padding: 8px; border-radius: 6px; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 10px rgba(0,0,0,0.2);">
-              <img src="https://api.qrserver.com/v1/create-qr-code/?size=140x140&data=upi%3A%2F%2Fpay%3Fpa%3Dmab.037215043540097%40axisbank%26pn%3DTatkhalsa%2520Foundation%26cu%3DINR%26amp%3Btn%3DFlood%2520Relief%2520Seva" alt="UPI QR Code" style="width: 100%; display: block;">
+              <img src="<?php echo esc_url( get_stylesheet_directory_uri() ); ?>/assets/images/media_1781128794818_qr_gravatar_1.png" alt="UPI QR Code" style="width: 100%; display: block;">
             </div>
             <p style="margin: 0; font-size: 0.72rem; color: var(--text-light); word-break: break-all;">
               Scan or pay to:<br/>
@@ -443,7 +443,7 @@
           <!-- Left details or photo -->
           <div style="flex: 1; min-width: 250px;">
             <div style="position: relative; border-radius: 10px; overflow: hidden; border: 2px solid rgba(0, 204, 136, 0.2); box-shadow: 0 4px 15px rgba(0,0,0,0.3); margin-bottom: 12px;">
-              <img src="https://images.unsplash.com/photo-1609137144813-1d67493fa7b2?auto=format&fit=crop&w=600&q=80" alt="Grocery Help Support" style="width: 100%; display: block; filter: saturate(1.15);">
+              <img src="<?php echo esc_url( get_stylesheet_directory_uri() ); ?>/assets/images/media_1781128757002_1.jpg" alt="Grocery Help Support" style="width: 100%; display: block; filter: saturate(1.15);">
               <div style="position: absolute; bottom: 0; left: 0; right: 0; background: linear-gradient(to top, rgba(0,0,0,0.85), rgba(0,0,0,0)); padding: 12px 10px; text-align: center;">
                 <span style="color: #fff; font-size: 0.95rem; font-weight: bold; text-shadow: 0 1px 2px rgba(0,0,0,0.8);">Monthly Ration & Grocery Support</span>
               </div>
@@ -510,7 +510,7 @@
           <div style="text-align: center; background: rgba(255,255,255,0.02); border: 1.2px solid rgba(255,255,255,0.06); padding: 15px; border-radius: 8px;">
             <div style="margin-bottom: 10px; color: #fff; font-weight: bold; font-size: 0.85rem;">UPI INSTANT PAY</div>
             <div style="width: 140px; height: 140px; margin: 0 auto 10px auto; background: #fff; padding: 8px; border-radius: 6px; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 10px rgba(0,0,0,0.2);">
-              <img src="https://api.qrserver.com/v1/create-qr-code/?size=140x140&data=upi%3A%2F%2Fpay%3Fpa%3Dmab.037215043540097%40axisbank%26pn%3DTatkhalsa%2520Foundation%26cu%3DINR%26amp%3Btn%3DGrocery%2520Help%2520Seva" alt="UPI QR Code" style="width: 100%; display: block;">
+              <img src="<?php echo esc_url( get_stylesheet_directory_uri() ); ?>/assets/images/media_1781128794838_qr_gravatar_2.png" alt="UPI QR Code" style="width: 100%; display: block;">
             </div>
             <p style="margin: 0; font-size: 0.72rem; color: var(--text-light); word-break: break-all;">
               Scan or pay to:<br/>
@@ -559,7 +559,7 @@
           <!-- Left details or photo -->
           <div style="flex: 1; min-width: 250px;">
             <div style="position: relative; border-radius: 10px; overflow: hidden; border: 2px solid rgba(168, 85, 247, 0.2); box-shadow: 0 4px 15px rgba(0,0,0,0.3); margin-bottom: 12px;">
-              <img src="https://images.unsplash.com/photo-1605701243007-df5b128caff8?auto=format&fit=crop&w=600&q=80" alt="1984 Victim Support" style="width: 100%; display: block; filter: saturate(1.15);">
+              <img src="<?php echo esc_url( get_stylesheet_directory_uri() ); ?>/assets/images/media_1781128757830_2.jpg" alt="1984 Victim Support" style="width: 100%; display: block; filter: saturate(1.15);">
               <div style="position: absolute; bottom: 0; left: 0; right: 0; background: linear-gradient(to top, rgba(0,0,0,0.85), rgba(0,0,0,0)); padding: 12px 10px; text-align: center;">
                 <span style="color: #fff; font-size: 0.95rem; font-weight: bold; text-shadow: 0 1px 2px rgba(0,0,0,0.8);">Sikh Family Rehabilitation Seva</span>
               </div>
@@ -626,7 +626,7 @@
           <div style="text-align: center; background: rgba(255,255,255,0.02); border: 1.2px solid rgba(255,255,255,0.06); padding: 15px; border-radius: 8px;">
             <div style="margin-bottom: 10px; color: #fff; font-weight: bold; font-size: 0.85rem;">UPI INSTANT PAY</div>
             <div style="width: 140px; height: 140px; margin: 0 auto 10px auto; background: #fff; padding: 8px; border-radius: 6px; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 10px rgba(0,0,0,0.2);">
-              <img src="https://api.qrserver.com/v1/create-qr-code/?size=140x140&data=upi%3A%2F%2Fpay%3Fpa%3Dmab.037215043540097%40axisbank%26pn%3DTatkhalsa%2520Foundation%26cu%3DINR%26amp%3Btn%3D1984%2520Family%2520Support" alt="UPI QR Code" style="width: 100%; display: block;">
+              <img src="<?php echo esc_url( get_stylesheet_directory_uri() ); ?>/assets/images/media_1781128794858_qr_gravatar_3.png" alt="UPI QR Code" style="width: 100%; display: block;">
             </div>
             <p style="margin: 0; font-size: 0.72rem; color: var(--text-light); word-break: break-all;">
               Scan or pay to:<br/>
@@ -675,7 +675,7 @@
           <!-- Left details or photo -->
           <div style="flex: 1; min-width: 250px;">
             <div style="position: relative; border-radius: 10px; overflow: hidden; border: 2px solid rgba(249, 115, 22, 0.2); box-shadow: 0 4px 15px rgba(0,0,0,0.3); margin-bottom: 12px;">
-              <img src="https://images.unsplash.com/photo-1610030469668-93535c17b6b3?auto=format&fit=crop&w=600&q=80" alt="Marriages Seva Support" style="width: 100%; display: block; filter: saturate(1.15);">
+              <img src="<?php echo esc_url( get_stylesheet_directory_uri() ); ?>/assets/images/media_1781128758321_3.jpg" alt="Marriages Seva Support" style="width: 100%; display: block; filter: saturate(1.15);">
               <div style="position: absolute; bottom: 0; left: 0; right: 0; background: linear-gradient(to top, rgba(0,0,0,0.85), rgba(0,0,0,0)); padding: 12px 10px; text-align: center;">
                 <span style="color: #fff; font-size: 0.95rem; font-weight: bold; text-shadow: 0 1px 2px rgba(0,0,0,0.8);">Anand Karaj & Marriage Support</span>
               </div>
@@ -742,7 +742,7 @@
           <div style="text-align: center; background: rgba(255,255,255,0.02); border: 1.2px solid rgba(255,255,255,0.06); padding: 15px; border-radius: 8px;">
             <div style="margin-bottom: 10px; color: #fff; font-weight: bold; font-size: 0.85rem;">UPI INSTANT PAY</div>
             <div style="width: 140px; height: 140px; margin: 0 auto 10px auto; background: #fff; padding: 8px; border-radius: 6px; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 10px rgba(0,0,0,0.2);">
-              <img src="https://api.qrserver.com/v1/create-qr-code/?size=140x140&data=upi%3A%2F%2Fpay%3Fpa%3Dmab.037215043540097%40axisbank%26pn%3DTatkhalsa%2520Foundation%26cu%3DINR%26amp%3Btn%3DDaughters%2520Marriages%2520Seva" alt="UPI QR Code" style="width: 100%; display: block;">
+              <img src="<?php echo esc_url( get_stylesheet_directory_uri() ); ?>/assets/images/media_1781128794877_qr_gravatar_4.png" alt="UPI QR Code" style="width: 100%; display: block;">
             </div>
             <p style="margin: 0; font-size: 0.72rem; color: var(--text-light); word-break: break-all;">
               Scan or pay to:<br/>
@@ -830,7 +830,7 @@
             <img
               id="upiQrCode"
               class="qr-code-img"
-              src="https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=upi%3A%2F%2Fpay%3Fpa%3Dmab.037215043540097%40axisbank%26pn%3DTatkhalsa%2520Foundation%26cu%3DINR"
+              src="<?php echo esc_url( get_stylesheet_directory_uri() ); ?>/assets/images/qr_250_main.png"
               alt="UPI QR Code"
             />
             <div class="upi-id-text">

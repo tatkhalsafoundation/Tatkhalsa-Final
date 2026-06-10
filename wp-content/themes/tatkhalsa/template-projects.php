@@ -579,7 +579,7 @@ get_header();
         <div style="display: flex; flex-direction: column; justify-content: space-between;">
           <div style="border-radius: 12px; overflow: hidden; border: 1px solid rgba(212, 175, 55, 0.2); box-shadow: 0 10px 30px rgba(0,0,0,0.5); margin-bottom: 20px;">
             <img 
-              src="https://upload.wikimedia.org/wikipedia/commons/3/30/A_group_of_volunteers_helping_with_daily_food_preparation_for_Langar_at_the_Golden_Temple.jpg" 
+              src="<?php echo esc_url( get_stylesheet_directory_uri() ); ?>/assets/images/media_1781128759420_15.jpg" 
               alt="Punjab flood volunteer preparation" 
               style="width: 100%; height: 200px; object-fit: cover;"
             />
@@ -629,7 +629,7 @@ get_header();
             </div>
 
             <div class="bento-card-image-wrap">
-              <img src="https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?q=80&w=800&auto=format&fit=crop" alt="General Charity Support" />
+              <img src="<?php echo esc_url( get_stylesheet_directory_uri() ); ?>/assets/images/media_1781128759429_16.jpg" alt="General Charity Support" />
             </div>
 
             <p class="card-desc">
@@ -672,7 +672,7 @@ get_header();
             </div>
 
             <div class="bento-card-image-wrap">
-              <img src="https://images.unsplash.com/photo-1584515979956-d9f6e5d09982?q=80&w=800&auto=format&fit=crop" alt="Sikh Blood Contribution Network" />
+              <img src="<?php echo esc_url( get_stylesheet_directory_uri() ); ?>/assets/images/media_1781128759451_17.jpg" alt="Sikh Blood Contribution Network" />
             </div>
 
             <p class="card-desc">
@@ -701,7 +701,7 @@ get_header();
             </div>
 
             <div class="bento-card-image-wrap">
-              <img src="https://images.unsplash.com/photo-1547683905-f686c993aae5?q=80&w=800&auto=format&fit=crop" alt="Punjab flood response team" />
+              <img src="<?php echo esc_url( get_stylesheet_directory_uri() ); ?>/assets/images/media_1781128759491_18.jpg" alt="Punjab flood response team" />
             </div>
 
             <p class="card-desc">
@@ -730,7 +730,7 @@ get_header();
             </div>
 
             <div class="bento-card-image-wrap">
-              <img src="https://upload.wikimedia.org/wikipedia/commons/e/ee/Group_of_Nihang_Singhs.jpg" alt="Preserving Sikh Heritage" />
+              <img src="<?php echo esc_url( get_stylesheet_directory_uri() ); ?>/assets/images/media_1781128759514_19.jpg" alt="Preserving Sikh Heritage" />
             </div>
 
             <p class="card-desc">
@@ -773,7 +773,7 @@ get_header();
             </div>
 
             <div class="bento-card-image-wrap">
-              <img src="https://images.unsplash.com/photo-1517649763962-0c623066013b?q=80&w=800&auto=format&fit=crop" alt="Kabaddi and Athletic support" />
+              <img src="<?php echo esc_url( get_stylesheet_directory_uri() ); ?>/assets/images/media_1781128759522_20.jpg" alt="Kabaddi and Athletic support" />
             </div>
 
             <p class="card-desc">
@@ -802,7 +802,7 @@ get_header();
             </div>
 
             <div class="bento-card-image-wrap">
-              <img src="https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?q=80&w=800&auto=format&fit=crop" alt="Tree planting stewardship" />
+              <img src="<?php echo esc_url( get_stylesheet_directory_uri() ); ?>/assets/images/media_1781128759530_21.jpg" alt="Tree planting stewardship" />
             </div>
 
             <p class="card-desc">
@@ -843,7 +843,7 @@ get_header();
       <div class="gallery-grid">
         <div class="gallery-item" style="border: 1px solid rgba(212, 175, 55, 0.15); border-radius: 12px; overflow: hidden; position: relative;">
           <img
-            src="https://upload.wikimedia.org/wikipedia/commons/e/ee/Group_of_Nihang_Singhs.jpg"
+            src="<?php echo esc_url( get_stylesheet_directory_uri() ); ?>/assets/images/media_1781128759514_19.jpg"
             alt="Group of Nihang Singhs"
             style="width: 100%; transition: transform 0.4s ease;"
           />
@@ -853,7 +853,7 @@ get_header();
         </div>
         <div class="gallery-item" style="border: 1px solid rgba(212, 175, 55, 0.15); border-radius: 12px; overflow: hidden; position: relative;">
           <img
-            src="https://upload.wikimedia.org/wikipedia/commons/3/30/A_group_of_volunteers_helping_with_daily_food_preparation_for_Langar_at_the_Golden_Temple.jpg"
+            src="<?php echo esc_url( get_stylesheet_directory_uri() ); ?>/assets/images/media_1781128759420_15.jpg"
             alt="Langar Preparation"
             style="width: 100%; transition: transform 0.4s ease;"
           />
@@ -863,7 +863,7 @@ get_header();
         </div>
         <div class="gallery-item" style="border: 1px solid rgba(212, 175, 55, 0.15); border-radius: 12px; overflow: hidden; position: relative;">
           <img
-            src="https://upload.wikimedia.org/wikipedia/commons/d/de/Sikhs_gathered_at_Hola_Mohalla_Holi_festival_in_Anandpur_Sahib.jpg"
+            src="<?php echo esc_url( get_stylesheet_directory_uri() ); ?>/assets/images/media_1781128759536_22.jpg"
             alt="Sikhs at Hola Mohalla"
             style="width: 100%; transition: transform 0.4s ease;"
           />
@@ -873,7 +873,7 @@ get_header();
         </div>
         <div class="gallery-item" style="border: 1px solid rgba(212, 175, 55, 0.15); border-radius: 12px; overflow: hidden; position: relative;">
           <img
-            src="https://upload.wikimedia.org/wikipedia/commons/7/73/The_Camp_of_Bhai_Bir_Singh_Naurangabad%2C_Punjab%2C_ca.1850.jpg"
+            src="<?php echo esc_url( get_stylesheet_directory_uri() ); ?>/assets/images/media_1781128759545_23.jpg"
             alt="Historic Sikh Camp"
             style="width: 100%; transition: transform 0.4s ease;"
           />
@@ -986,7 +986,7 @@ get_header();
     charity: {
       category: "General Charity & Support",
       title: "Charitable Rehabilitation Seva",
-      image: "https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?q=80&w=800&auto=format&fit=crop",
+      image: "<?php echo esc_url( get_stylesheet_directory_uri() ); ?>/assets/images/media_1781128759429_16.jpg",
       desc1: "At Tatkhalsa, we strictly believe in raising up families in sustained difficulty through targeted rehabilitation. Rather than giving just a transient token of help, we analyze long-term constraints. This includes helping underprivileged widows achieve self-employment by sponsoring sewing equipment, or setting up small community stores.",
       desc2: "Furthermore, during hostile extreme winter nights and summer heatwaves, our active teams travel directly into remote areas and urban pockets distributing thousands of premium quality warm blankets and water/electrolyte kits to those sleeping on pavements and underprotected huts.",
       basis: "Daya (Compassion), Vand Chhako, and Sarbat da Bhala",
@@ -995,7 +995,7 @@ get_header();
     blood: {
       category: "Healthcare Support",
       title: "Sikh Blood Contribution Network",
-      image: "https://images.unsplash.com/photo-1584515979956-d9f6e5d09982?q=80&w=800&auto=format&fit=crop",
+      image: "<?php echo esc_url( get_stylesheet_directory_uri() ); ?>/assets/images/media_1781128759451_17.jpg",
       desc1: "When immediate urgent health crises occur, finding the exact blood type becomes a frantic race against the clock. Our Tatkhalsa Sikh Blood network lists vetted, registered, non-commercial donors across major cities who stand fully mobilized to travel immediately to save a patient.",
       desc2: "We maintain close regular audits of patients in need to prevent exploitation, while regularly hosting community blood collection drives in coordination with municipal hospitals and approved medical practitioners.",
       basis: "Tan-Man-Dhan Seva (Physical & Spiritual service)",
@@ -1004,7 +1004,7 @@ get_header();
     disaster: {
       category: "Emergency Response",
       title: "Disaster Rapid Response Squad",
-      image: "https://images.unsplash.com/photo-1547683905-f686c993aae5?q=80&w=800&auto=format&fit=crop",
+      image: "<?php echo esc_url( get_stylesheet_directory_uri() ); ?>/assets/images/media_1781128759491_18.jpg",
       desc1: "Our trained local response team is structured for peak speed and efficiency. Ready to act synchronously during seasonal floods, earthquakes, and emergency calamities, the team moves swiftly with essential rescue assets, inflatables, and temporary food storage setups.",
       desc2: "By coordinating directly with public officials, we bypass bureaucratic gaps to immediately establish functional Langars, field healthcare cabins, and supply lines to safely feed, house, and protect local residents.",
       basis: "Nirbhau Nirvair (Without Fear, Without Hatred)",
@@ -1013,7 +1013,7 @@ get_header();
     heritage: {
       category: "Preservation Board",
       title: "Sikh History & Heritage Board",
-      image: "https://upload.wikimedia.org/wikipedia/commons/e/ee/Group_of_Nihang_Singhs.jpg",
+      image: "<?php echo esc_url( get_stylesheet_directory_uri() ); ?>/assets/images/media_1781128759514_19.jpg",
       desc1: "Preserving ancient Sikh values, original historical documents, and correct theological analysis requires active and continuous scholarly oversight. Our Review Board consists of respected academic consultants, language experts, and research historians working in tandem.",
       desc2: "We digitize fragile, ancient Gurmukhi scripts, translate historical manuscripts into correct modern English, and correct any distorted mainstream narratives to keep the brilliant, inspiring historical legacy of the Sikh panth authentic and universally accessible.",
       basis: "Dharam de Rakha (Preservation of Righteousness)",
@@ -1022,7 +1022,7 @@ get_header();
     youth: {
       category: "Development Programs",
       title: "Kabaddi, Gatka & Youth Athletic Clubs",
-      image: "https://images.unsplash.com/photo-1517649763962-0c623066013b?q=80&w=800&auto=format&fit=crop",
+      image: "<?php echo esc_url( get_stylesheet_directory_uri() ); ?>/assets/images/media_1781128759522_20.jpg",
       desc1: "With modern digital distractions and the devastating rise of substance abuse, we engage and vitalize local youth through robust traditional athletic sports. By creating well-equipped local wrestling arenas (Alkhadas), Gatka training centers, and sports fields, we channel youthful energy productively.",
       desc2: "We organize annual grand level sports championships, giving rewarding awards and encouraging healthy eating habits, clean living, and absolute mental toughness aligned with top moral disciplines.",
       basis: "Charhdi Kala (Dynamic high spirits and positivity)",
@@ -1031,7 +1031,7 @@ get_header();
     eco: {
       category: "Community Welfare",
       title: "Eco-Sikh Environmental Stewardship",
-      image: "https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?q=80&w=800&auto=format&fit=crop",
+      image: "<?php echo esc_url( get_stylesheet_directory_uri() ); ?>/assets/images/media_1781128759530_21.jpg",
       desc1: "The eternal teachings of Guru Nanak Dev Ji state 'Air as Guru, Water as Father, and the Earth as Great Mother'. Our Eco-Sikh stewardship operates specifically to restore and respect soil health and pure resource access.",
       desc2: "Our campaigns plant massive indigenous trees across degraded school grounds and sterile village edges, while implementing durable micro-reverse-osmosis clean water filtration systems in central public zones deficient of clean water resources.",
       basis: "Sarbat Da Bhala (Universal Peace & Well-being)",
