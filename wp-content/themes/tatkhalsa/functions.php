@@ -662,21 +662,175 @@ add_action( 'wp_ajax_nopriv_submit_blood_request', 'tatkhalsa_submit_blood_reque
  * Register Customizer Settings for Images
  */
 function tatkhalsa_customize_register( $wp_customize ) {
+	// Campaign Images Section
 	$wp_customize->add_section( 'tatkhalsa_campaigns', array(
 		'title'    => __( 'Campaign Images', 'tatkhalsa-theme' ),
 		'priority' => 130,
 	) );
 
-	$wp_customize->add_setting( 'tatkhalsa_nimrat_kaur_img', array(
-		'default'           => get_stylesheet_directory_uri() . '/assets/images/regenerated_image_1781128512768.jpg',
-		'sanitize_callback' => 'esc_url_raw',
+	// Settings & Controls for Campaigns
+	$campaigns = array(
+		'tatkhalsa_nimrat_kaur_img' => array(
+			'label' => __( 'Nimrat Kaur Campaign Image', 'tatkhalsa-theme' ),
+			'default' => get_stylesheet_directory_uri() . '/assets/images/regenerated_image_1781128512768.jpg'
+		),
+		'tatkhalsa_punjab_relief_img' => array(
+			'label' => __( 'Punjab Relief Support Image', 'tatkhalsa-theme' ),
+			'default' => 'https://images.unsplash.com/photo-1514222134-b57cbb8ce073?auto=format&fit=crop&w=800&q=80'
+		),
+		'tatkhalsa_grocery_help_img' => array(
+			'label' => __( 'Grocery Help Seva Image', 'tatkhalsa-theme' ),
+			'default' => 'https://images.unsplash.com/photo-1609137144813-1d67493fa7b2?auto=format&fit=crop&w=800&q=80'
+		),
+		'tatkhalsa_1984_victim_img' => array(
+			'label' => __( '1984 Victim Families Support Image', 'tatkhalsa-theme' ),
+			'default' => 'https://images.unsplash.com/photo-1605701243007-df5b128caff8?auto=format&fit=crop&w=800&q=80'
+		),
+		'tatkhalsa_marriages_seva_img' => array(
+			'label' => __( 'Underprivileged Marriages Support Image', 'tatkhalsa-theme' ),
+			'default' => 'https://images.unsplash.com/photo-1610030469668-93535c17b6b3?auto=format&fit=crop&w=800&q=80'
+		),
+	);
+
+	foreach ( $campaigns as $id => $data ) {
+		$wp_customize->add_setting( $id, array(
+			'default'           => $data['default'],
+			'sanitize_callback' => 'esc_url_raw',
+		) );
+		$wp_customize->add_control( new WP_Customize_Image_Control( $wp_customize, $id, array(
+			'label'    => $data['label'],
+			'section'  => 'tatkhalsa_campaigns',
+			'settings' => $id,
+		) ) );
+	}
+
+	// Project Images Section
+	$wp_customize->add_section( 'tatkhalsa_projects', array(
+		'title'    => __( 'Project Images', 'tatkhalsa-theme' ),
+		'priority' => 131,
 	) );
 
-	$wp_customize->add_control( new WP_Customize_Image_Control( $wp_customize, 'tatkhalsa_nimrat_kaur_img', array(
-		'label'    => __( 'Nimrat Kaur Campaign Image', 'tatkhalsa-theme' ),
-		'section'  => 'tatkhalsa_campaigns',
-		'settings' => 'tatkhalsa_nimrat_kaur_img',
-	) ) );
+	// Settings & Controls for Projects
+	$projects = array(
+		'tatkhalsa_charity_support_img' => array(
+			'label' => __( 'General Charity Support Image', 'tatkhalsa-theme' ),
+			'default' => 'https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?q=80&w=800&auto=format&fit=crop'
+		),
+		'tatkhalsa_blood_contribution_img' => array(
+			'label' => __( 'Sikh Blood Contribution Image', 'tatkhalsa-theme' ),
+			'default' => 'https://images.unsplash.com/photo-1584515979956-d9f6e5d09982?q=80&w=800&auto=format&fit=crop'
+		),
+		'tatkhalsa_punjab_flood_img' => array(
+			'label' => __( 'Punjab Flood Response Image', 'tatkhalsa-theme' ),
+			'default' => 'https://images.unsplash.com/photo-1547683905-f686c993aae5?q=80&w=800&auto=format&fit=crop'
+		),
+		'tatkhalsa_sikh_heritage_img' => array(
+			'label' => __( 'Preserving Sikh Heritage Image', 'tatkhalsa-theme' ),
+			'default' => 'https://upload.wikimedia.org/wikipedia/commons/e/ee/Group_of_Nihang_Singhs.jpg'
+		),
+		'tatkhalsa_kabaddi_athletic_img' => array(
+			'label' => __( 'Kabaddi and Athletic Support Image', 'tatkhalsa-theme' ),
+			'default' => 'https://images.unsplash.com/photo-1517649763962-0c623066013b?q=80&w=800&auto=format&fit=crop'
+		),
+		'tatkhalsa_tree_planting_img' => array(
+			'label' => __( 'Tree Planting Stewardship Image', 'tatkhalsa-theme' ),
+			'default' => 'https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?q=80&w=800&auto=format&fit=crop'
+		),
+	);
+
+	foreach ( $projects as $id => $data ) {
+		$wp_customize->add_setting( $id, array(
+			'default'           => $data['default'],
+			'sanitize_callback' => 'esc_url_raw',
+		) );
+		$wp_customize->add_control( new WP_Customize_Image_Control( $wp_customize, $id, array(
+			'label'    => $data['label'],
+			'section'  => 'tatkhalsa_projects',
+			'settings' => $id,
+		) ) );
+	}
+	// Other Page Images Section
+	$wp_customize->add_section( 'tatkhalsa_other_pages', array(
+		'title'    => __( 'Other Page Images', 'tatkhalsa-theme' ),
+		'priority' => 132,
+	) );
+
+	$other_pages = array(
+		'tatkhalsa_home_hero_img' => array(
+			'label' => __( 'Home Page Hero Image', 'tatkhalsa-theme' ),
+			'default' => 'https://images.unsplash.com/photo-1543332143-4e8c27e3256f?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80'
+		),
+		'tatkhalsa_about_hero_img' => array(
+			'label' => __( 'About Page Hero Image', 'tatkhalsa-theme' ),
+			'default' => 'https://upload.wikimedia.org/wikipedia/commons/3/30/A_group_of_volunteers_helping_with_daily_food_preparation_for_Langar_at_the_Golden_Temple.jpg'
+		),
+	);
+
+	foreach ( $other_pages as $id => $data ) {
+		$wp_customize->add_setting( $id, array(
+			'default'           => $data['default'],
+			'sanitize_callback' => 'esc_url_raw',
+		) );
+		$wp_customize->add_control( new WP_Customize_Image_Control( $wp_customize, $id, array(
+			'label'    => $data['label'],
+			'section'  => 'tatkhalsa_other_pages',
+			'settings' => $id,
+		) ) );
+	}
+	// Blog Images Section
+	$wp_customize->add_section( 'tatkhalsa_blog', array(
+		'title'    => __( 'Blog Images', 'tatkhalsa-theme' ),
+		'priority' => 133,
+	) );
+
+	$blog_images = array(
+		'tatkhalsa_blog_img_1' => array(
+			'label' => __( 'Blog Post 1 Image', 'tatkhalsa-theme' ),
+			'default' => 'https://images.unsplash.com/photo-1544027993-37dbfe43562a?auto=format&fit=crop&q=80&w=600'
+		),
+		'tatkhalsa_blog_img_2' => array(
+			'label' => __( 'Blog Post 2 Image', 'tatkhalsa-theme' ),
+			'default' => 'https://images.unsplash.com/photo-1547683905-f686c993aae5?auto=format&fit=crop&q=80&w=600'
+		),
+		'tatkhalsa_blog_img_3' => array(
+			'label' => __( 'Blog Post 3 Image', 'tatkhalsa-theme' ),
+			'default' => 'https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?auto=format&fit=crop&q=80&w=600'
+		),
+		'tatkhalsa_blog_img_4' => array(
+			'label' => __( 'Blog Post 4 Image', 'tatkhalsa-theme' ),
+			'default' => 'https://images.unsplash.com/photo-1466692476868-aef1dfb1e735?auto=format&fit=crop&q=80&w=600'
+		),
+	);
+
+	foreach ( $blog_images as $id => $data ) {
+		$wp_customize->add_setting( $id, array(
+			'default'           => $data['default'],
+			'sanitize_callback' => 'esc_url_raw',
+		) );
+		$wp_customize->add_control( new WP_Customize_Image_Control( $wp_customize, $id, array(
+			'label'    => $data['label'],
+			'section'  => 'tatkhalsa_blog',
+			'settings' => $id,
+		) ) );
+	}
 }
 add_action( 'customize_register', 'tatkhalsa_customize_register' );
+
+/**
+ * Output Customizer CSS for Home Hero Image
+ */
+function tatkhalsa_customizer_css() {
+	$home_hero_img = get_theme_mod( 'tatkhalsa_home_hero_img', 'https://images.unsplash.com/photo-1543332143-4e8c27e3256f?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80' );
+	?>
+	<style type="text/css">
+		.hero {
+			background: linear-gradient( 135deg, rgba(220, 240, 255, 0.92), rgba(235, 248, 255, 0.96) ), url("<?php echo esc_url( $home_hero_img ); ?>") center/cover !important;
+		}
+		[data-theme="dark"] .hero {
+			background: linear-gradient( 135deg, rgba(10, 46, 109, 0.98), rgba(5, 26, 64, 0.95) ), url("<?php echo esc_url( $home_hero_img ); ?>") center/cover !important;
+		}
+	</style>
+	<?php
+}
+add_action( 'wp_head', 'tatkhalsa_customizer_css' );
 ?>

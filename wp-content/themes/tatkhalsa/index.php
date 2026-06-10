@@ -228,7 +228,7 @@ get_header();
         <div class="campaign-slide" data-index="1" data-title="Punjab Flood Relief 2025" onclick="handleSlideClick(1, event)">
           <div class="campaign-card">
             <span class="campaign-view-tag" onclick="openPunjabFloodReliefModal(); event.stopPropagation(); return false;" style="cursor: pointer;">View Campaign</span>
-            <img class="campaign-img" src="https://images.unsplash.com/photo-1514222134-b57cbb8ce073?auto=format&fit=crop&w=800&q=80" alt="Punjab Relief - Sri Harmandir Sahib" />
+            <img class="campaign-img" src="<?php echo esc_url( get_theme_mod( 'tatkhalsa_punjab_relief_img', 'https://images.unsplash.com/photo-1514222134-b57cbb8ce073?auto=format&fit=crop&w=800&q=80' ) ); ?>" alt="Punjab Relief - Sri Harmandir Sahib" />
             <div class="campaign-overlay">
               <span class="campaign-category" style="color: var(--accent-blue);">Emergency SOS</span>
               <h3 class="campaign-title">Punjab Flood Relief 2025</h3>
@@ -252,7 +252,7 @@ get_header();
         <div class="campaign-slide" data-index="2" data-title="Grocery Help Seva" onclick="handleSlideClick(2, event)">
           <div class="campaign-card">
             <span class="campaign-view-tag" onclick="openGroceryHelpSevaModal(); event.stopPropagation(); return false;" style="cursor: pointer;">View Campaign</span>
-            <img class="campaign-img" src="https://images.unsplash.com/photo-1609137144813-1d67493fa7b2?auto=format&fit=crop&w=800&q=80" alt="Grocery Help Seva - Sikh Sevadar Elder Support" />
+            <img class="campaign-img" src="<?php echo esc_url( get_theme_mod( 'tatkhalsa_grocery_help_img', 'https://images.unsplash.com/photo-1609137144813-1d67493fa7b2?auto=format&fit=crop&w=800&q=80' ) ); ?>" alt="Grocery Help Seva - Sikh Sevadar Elder Support" />
             <div class="campaign-overlay">
               <span class="campaign-category" style="color: var(--accent-green);">Ration Seva</span>
               <h3 class="campaign-title">Essential Grocery Help</h3>
@@ -276,7 +276,7 @@ get_header();
         <div class="campaign-slide" data-index="3" data-title="1984 Victims Family Support" onclick="handleSlideClick(3, event)">
           <div class="campaign-card">
             <span class="campaign-view-tag" onclick="openVictimFamilySupportModal(); event.stopPropagation(); return false;" style="cursor: pointer;">View Campaign</span>
-            <img class="campaign-img" src="https://images.unsplash.com/photo-1605701243007-df5b128caff8?auto=format&fit=crop&w=800&q=80" alt="1984 Victim Families Support - Sikh Elder Portrait" />
+            <img class="campaign-img" src="<?php echo esc_url( get_theme_mod( 'tatkhalsa_1984_victim_img', 'https://images.unsplash.com/photo-1605701243007-df5b128caff8?auto=format&fit=crop&w=800&q=80' ) ); ?>" alt="1984 Victim Families Support - Sikh Elder Portrait" />
             <div class="campaign-overlay">
               <span class="campaign-category" style="color: var(--accent-purple);">Livelihood Aid</span>
               <h3 class="campaign-title">1984 Victim Families</h3>
@@ -300,7 +300,7 @@ get_header();
         <div class="campaign-slide" data-index="4" data-title="Gursikh Daughters Marriages Seva" onclick="handleSlideClick(4, event)">
           <div class="campaign-card">
             <span class="campaign-view-tag" onclick="openMarriagesSevaModal(); event.stopPropagation(); return false;" style="cursor: pointer;">View Campaign</span>
-            <img class="campaign-img" src="https://images.unsplash.com/photo-1610030469668-93535c17b6b3?auto=format&fit=crop&w=800&q=80" alt="Underprivileged Marriages support - Traditional Bridal Hands" />
+            <img class="campaign-img" src="<?php echo esc_url( get_theme_mod( 'tatkhalsa_marriages_seva_img', 'https://images.unsplash.com/photo-1610030469668-93535c17b6b3?auto=format&fit=crop&w=800&q=80' ) ); ?>" alt="Underprivileged Marriages support - Traditional Bridal Hands" />
             <div class="campaign-overlay">
               <span class="campaign-category" style="color: var(--accent-orange);">Social Welfare</span>
               <h3 class="campaign-title">Gursikh Marriages Seva</h3>

@@ -327,7 +327,7 @@
           <!-- Left details or photo -->
           <div style="flex: 1; min-width: 250px;">
             <div style="position: relative; border-radius: 10px; overflow: hidden; border: 2px solid rgba(77, 166, 255, 0.2); box-shadow: 0 4px 15px rgba(0,0,0,0.3); margin-bottom: 12px;">
-              <img src="https://images.unsplash.com/photo-1542045618-971efac693e5?q=80&w=600&auto=format&fit=crop" alt="Punjab Relief Support" style="width: 100%; display: block; filter: saturate(1.15);">
+              <img src="<?php echo esc_url( get_theme_mod( 'tatkhalsa_punjab_relief_img', 'https://images.unsplash.com/photo-1542045618-971efac693e5?q=80&w=600&auto=format&fit=crop' ) ); ?>" alt="Punjab Relief Support" style="width: 100%; display: block; filter: saturate(1.15);">
               <div style="position: absolute; bottom: 0; left: 0; right: 0; background: linear-gradient(to top, rgba(0,0,0,0.85), rgba(0,0,0,0)); padding: 12px 10px; text-align: center;">
                 <span style="color: #fff; font-size: 0.95rem; font-weight: bold; text-shadow: 0 1px 2px rgba(0,0,0,0.8);">Punjab Flood Relief 2025</span>
               </div>
@@ -443,7 +443,7 @@
           <!-- Left details or photo -->
           <div style="flex: 1; min-width: 250px;">
             <div style="position: relative; border-radius: 10px; overflow: hidden; border: 2px solid rgba(0, 204, 136, 0.2); box-shadow: 0 4px 15px rgba(0,0,0,0.3); margin-bottom: 12px;">
-              <img src="https://images.unsplash.com/photo-1609137144813-1d67493fa7b2?auto=format&fit=crop&w=600&q=80" alt="Grocery Help Support" style="width: 100%; display: block; filter: saturate(1.15);">
+              <img src="<?php echo esc_url( get_theme_mod( 'tatkhalsa_grocery_help_img', 'https://images.unsplash.com/photo-1609137144813-1d67493fa7b2?auto=format&fit=crop&w=600&q=80' ) ); ?>" alt="Grocery Help Support" style="width: 100%; display: block; filter: saturate(1.15);">
               <div style="position: absolute; bottom: 0; left: 0; right: 0; background: linear-gradient(to top, rgba(0,0,0,0.85), rgba(0,0,0,0)); padding: 12px 10px; text-align: center;">
                 <span style="color: #fff; font-size: 0.95rem; font-weight: bold; text-shadow: 0 1px 2px rgba(0,0,0,0.8);">Monthly Ration & Grocery Support</span>
               </div>
@@ -559,7 +559,7 @@
           <!-- Left details or photo -->
           <div style="flex: 1; min-width: 250px;">
             <div style="position: relative; border-radius: 10px; overflow: hidden; border: 2px solid rgba(168, 85, 247, 0.2); box-shadow: 0 4px 15px rgba(0,0,0,0.3); margin-bottom: 12px;">
-              <img src="https://images.unsplash.com/photo-1605701243007-df5b128caff8?auto=format&fit=crop&w=600&q=80" alt="1984 Victim Support" style="width: 100%; display: block; filter: saturate(1.15);">
+              <img src="<?php echo esc_url( get_theme_mod( 'tatkhalsa_1984_victim_img', 'https://images.unsplash.com/photo-1605701243007-df5b128caff8?auto=format&fit=crop&w=600&q=80' ) ); ?>" alt="1984 Victim Support" style="width: 100%; display: block; filter: saturate(1.15);">
               <div style="position: absolute; bottom: 0; left: 0; right: 0; background: linear-gradient(to top, rgba(0,0,0,0.85), rgba(0,0,0,0)); padding: 12px 10px; text-align: center;">
                 <span style="color: #fff; font-size: 0.95rem; font-weight: bold; text-shadow: 0 1px 2px rgba(0,0,0,0.8);">Sikh Family Rehabilitation Seva</span>
               </div>
@@ -675,7 +675,7 @@
           <!-- Left details or photo -->
           <div style="flex: 1; min-width: 250px;">
             <div style="position: relative; border-radius: 10px; overflow: hidden; border: 2px solid rgba(249, 115, 22, 0.2); box-shadow: 0 4px 15px rgba(0,0,0,0.3); margin-bottom: 12px;">
-              <img src="https://images.unsplash.com/photo-1610030469668-93535c17b6b3?auto=format&fit=crop&w=600&q=80" alt="Marriages Seva Support" style="width: 100%; display: block; filter: saturate(1.15);">
+              <img src="<?php echo esc_url( get_theme_mod( 'tatkhalsa_marriages_seva_img', 'https://images.unsplash.com/photo-1610030469668-93535c17b6b3?auto=format&fit=crop&w=600&q=80' ) ); ?>" alt="Marriages Seva Support" style="width: 100%; display: block; filter: saturate(1.15);">
               <div style="position: absolute; bottom: 0; left: 0; right: 0; background: linear-gradient(to top, rgba(0,0,0,0.85), rgba(0,0,0,0)); padding: 12px 10px; text-align: center;">
                 <span style="color: #fff; font-size: 0.95rem; font-weight: bold; text-shadow: 0 1px 2px rgba(0,0,0,0.8);">Anand Karaj & Marriage Support</span>
               </div>

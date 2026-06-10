@@ -558,7 +558,7 @@ get_header();
         <div class="blog-card-img-wrapper">
           <img 
             class="blog-card-img" 
-            src="https://images.unsplash.com/photo-1544027993-37dbfe43562a?auto=format&fit=crop&q=80&w=600" 
+            src="<?php echo esc_url( get_theme_mod( 'tatkhalsa_blog_img_1', 'https://images.unsplash.com/photo-1544027993-37dbfe43562a?auto=format&fit=crop&q=80&w=600' ) ); ?>" 
             alt="The Essence of Seva: Selfless Service as a Spiritual Path" 
             loading="lazy" 
           />
@@ -608,7 +608,7 @@ get_header();
         <div class="blog-card-img-wrapper">
           <img 
             class="blog-card-img" 
-            src="https://images.unsplash.com/photo-1547683905-f686c993aae5?auto=format&fit=crop&q=80&w=600" 
+            src="<?php echo esc_url( get_theme_mod( 'tatkhalsa_blog_img_2', 'https://images.unsplash.com/photo-1547683905-f686c993aae5?auto=format&fit=crop&q=80&w=600' ) ); ?>" 
             alt="Flood Response Diaries: Restoring Hope in Inundated Villages" 
             loading="lazy" 
           />
@@ -658,7 +658,7 @@ get_header();
         <div class="blog-card-img-wrapper">
           <img 
             class="blog-card-img" 
-            src="https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?auto=format&fit=crop&q=80&w=600" 
+            src="<?php echo esc_url( get_theme_mod( 'tatkhalsa_blog_img_3', 'https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?auto=format&fit=crop&q=80&w=600' ) ); ?>" 
             alt="Preserving Sikh Heritage: Digitizing Silent Ancient Manuscripts" 
             loading="lazy" 
           />
@@ -708,7 +708,7 @@ get_header();
         <div class="blog-card-img-wrapper">
           <img 
             class="blog-card-img" 
-            src="https://images.unsplash.com/photo-1466692476868-aef1dfb1e735?auto=format&fit=crop&q=80&w=600" 
+            src="<?php echo esc_url( get_theme_mod( 'tatkhalsa_blog_img_4', 'https://images.unsplash.com/photo-1466692476868-aef1dfb1e735?auto=format&fit=crop&q=80&w=600' ) ); ?>" 
             alt="Nurturing Our Mother Earth: Replanting Green Canopies" 
             loading="lazy" 
           />
@@ -822,7 +822,7 @@ get_header();
       avatar: 'https://secure.gravatar.com/avatar/fb000000000000000000000000000001?s=96&d=mp',
       category: 'Philosophy',
       read_time: '5 min read',
-      image: 'https://images.unsplash.com/photo-1544027993-37dbfe43562a?auto=format&fit=crop&q=80&w=600'
+      image: '<?php echo esc_url( get_theme_mod( 'tatkhalsa_blog_img_1', 'https://images.unsplash.com/photo-1544027993-37dbfe43562a?auto=format&fit=crop&q=80&w=600' ) ); ?>'
     },
     {
       id: 'seeded_2',
@@ -834,7 +834,7 @@ get_header();
       avatar: 'https://secure.gravatar.com/avatar/fb000000000000000000000000000002?s=96&d=mp',
       category: 'Relief Mission',
       read_time: '7 min read',
-      image: 'https://images.unsplash.com/photo-1547683905-f686c993aae5?auto=format&fit=crop&q=80&w=600'
+      image: '<?php echo esc_url( get_theme_mod( 'tatkhalsa_blog_img_2', 'https://images.unsplash.com/photo-1547683905-f686c993aae5?auto=format&fit=crop&q=80&w=600' ) ); ?>'
     },
     {
       id: 'seeded_3',
@@ -846,7 +846,7 @@ get_header();
       avatar: 'https://secure.gravatar.com/avatar/fb000000000000000000000000000003?s=96&d=mp',
       category: 'Heritage',
       read_time: '6 min read',
-      image: 'https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?auto=format&fit=crop&q=80&w=600'
+      image: '<?php echo esc_url( get_theme_mod( 'tatkhalsa_blog_img_3', 'https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?auto=format&fit=crop&q=80&w=600' ) ); ?>'
     },
     {
       id: 'seeded_4',
@@ -858,7 +858,7 @@ get_header();
       avatar: 'https://secure.gravatar.com/avatar/fb000000000000000000000000000004?s=96&d=mp',
       category: 'Environment',
       read_time: '4 min read',
-      image: 'https://images.unsplash.com/photo-1466692476868-aef1dfb1e735?auto=format&fit=crop&q=80&w=600'
+      image: '<?php echo esc_url( get_theme_mod( 'tatkhalsa_blog_img_4', 'https://images.unsplash.com/photo-1466692476868-aef1dfb1e735?auto=format&fit=crop&q=80&w=600' ) ); ?>'
     }
   ];
 
