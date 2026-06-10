@@ -145,6 +145,10 @@ function tatkhalsa_submit_volunteer() {
 	// Try sending email
 	$sent = wp_mail( $to, $subject, $body, $headers );
 
+	// Send Twilio SMS/WhatsApp Alert
+	$sms_message = "New Volunteer Form:\nName: $name\nPhone: $phone\nEmail: $email\nSkills: $skills";
+	tatkhalsa_send_twilio_alert( $sms_message );
+
 	if ( $sent ) {
 		wp_send_json_success( array( 'message' => esc_html__( 'Application submitted successfully! We will contact you soon.', 'tatkhalsa-theme' ) ) );
 	} else {
@@ -649,6 +653,10 @@ function tatkhalsa_submit_blood_request() {
 	// Try sending email
 	$sent = wp_mail( $to, $subject, $body, $headers );
 
+	// Send Twilio SMS/WhatsApp Alert
+	$sms_message = "URGENT BLOOD REQUEST:\nType: $blood_group\nUnits: $units\nHospital: $hospital_city\nContact: $contact_details";
+	tatkhalsa_send_twilio_alert( $sms_message );
+
 	if ( $sent ) {
 		wp_send_json_success( array( 'message' => esc_html__( 'Emergency Blood Request submitted successfully! Alerts have been sent to our sevadars.', 'tatkhalsa-theme' ) ) );
 	} else {
@@ -813,6 +821,31 @@ function tatkhalsa_customize_register( $wp_customize ) {
 			'settings' => $id,
 		) ) );
 	}
+	// Twilio SMS & WhatsApp Alert Settings
+	$wp_customize->add_section( 'tatkhalsa_twilio', array(
+		'title'       => __( 'Twilio SMS / WhatsApp Alerts', 'tatkhalsa-theme' ),
+		'description' => __( 'Configure Twilio API for emergency alerts and volunteer notifications.', 'tatkhalsa-theme' ),
+		'priority'    => 140,
+	) );
+
+	$twilio_settings = array(
+		'tatkhalsa_twilio_account_sid' => 'Account SID',
+		'tatkhalsa_twilio_auth_token'  => 'Auth Token',
+		'tatkhalsa_twilio_from_number' => 'From Number (e.g. +1234567890 or whatsapp:+1234567890)',
+		'tatkhalsa_twilio_to_number'   => 'Admin Receiving Number (e.g. +0987654321 or whatsapp:+0987654321)'
+	);
+
+	foreach ( $twilio_settings as $id => $label ) {
+		$wp_customize->add_setting( $id, array(
+			'default'           => '',
+			'sanitize_callback' => 'sanitize_text_field',
+		) );
+		$wp_customize->add_control( $id, array(
+			'label'   => $label,
+			'section' => 'tatkhalsa_twilio',
+			'type'    => ( $id === 'tatkhalsa_twilio_auth_token' ) ? 'password' : 'text',
+		) );
+	}
 }
 add_action( 'customize_register', 'tatkhalsa_customize_register' );
 
@@ -833,4 +866,40 @@ function tatkhalsa_customizer_css() {
 	<?php
 }
 add_action( 'wp_head', 'tatkhalsa_customizer_css' );
+
+/**
+ * Send Twilio SMS or WhatsApp Alert
+ */
+function tatkhalsa_send_twilio_alert( $message_body ) {
+	$sid   = get_theme_mod( 'tatkhalsa_twilio_account_sid' );
+	$token = get_theme_mod( 'tatkhalsa_twilio_auth_token' );
+	$from  = get_theme_mod( 'tatkhalsa_twilio_from_number' );
+	$to    = get_theme_mod( 'tatkhalsa_twilio_to_number' );
+
+	if ( empty($sid) || empty($token) || empty($from) || empty($to) ) {
+		return false; // Not fully configured
+	}
+
+	$api_url = 'https://api.twilio.com/2010-04-01/Accounts/' . $sid . '/Messages.json';
+
+	$args = array(
+		'headers' => array(
+			'Authorization' => 'Basic ' . base64_encode( $sid . ':' . $token )
+		),
+		'body' => array(
+			'From' => $from,
+			'To'   => $to,
+			'Body' => $message_body
+		)
+	);
+
+	$response = wp_remote_post( $api_url, $args );
+
+	if ( is_wp_error( $response ) ) {
+		return false;
+	}
+
+	$response_code = wp_remote_retrieve_response_code( $response );
+	return ( $response_code >= 200 && $response_code < 300 );
+}
 ?>
