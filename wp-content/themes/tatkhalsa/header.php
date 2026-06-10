@@ -109,14 +109,4 @@
       </div>
     </header>
  
-    <!-- Scrolling Compressing Logo Emblem -->
-    <div class="scrolling-logo-wrapper" id="scrollingLogoWrapper">
-      <a href="<?php echo esc_url( home_url( '/' ) ); ?>" style="display: block;">
-        <img
-          src="<?php echo esc_url( get_template_directory_uri() . '/Logo.png' ); ?>"
-          alt="Tatkhalsa Foundation Logo"
-          class="scrolling-logo"
-          id="scrolling-logo"
-        />
-      </a>
-    </div>
+

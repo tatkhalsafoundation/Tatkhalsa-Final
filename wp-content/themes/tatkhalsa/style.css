@@ -269,8 +269,8 @@ h6 {
   z-index: 1000;
   border-bottom: 1px solid rgba(212, 175, 55, 0.15);
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
-  padding: 12px 0;
-  height: 80px;
+  padding: 6px 0;
+  min-height: 80px;
   display: flex;
   align-items: center;
   transition: all 0.3s ease;
@@ -294,48 +294,16 @@ h6 {
   background: linear-gradient(135deg, var(--secondary) 0%, var(--primary) 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  transition: transform 0.3s ease;
-}
-.logo:hover {
-  transform: scale(1.02);
-}
-.scrolling-logo-wrapper {
-  position: fixed;
-  top: 90px;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 1005;
-  pointer-events: none;
-  will-change: top, transform;
-}
-.scrolling-logo {
-  width: 320px;
-  height: 320px;
-  border-radius: 50%;
-  border: none;
-  background-color: transparent;
-  object-fit: cover;
-  pointer-events: auto;
-  cursor: pointer;
-  mix-blend-mode: screen;
-  transition: 
-    width 0.2s cubic-bezier(0.165, 0.84, 0.44, 1), 
-    height 0.2s cubic-bezier(0.165, 0.84, 0.44, 1), 
-    transform 0.3s ease;
-}
-.scrolling-logo:hover {
-  transform: scale(1.05);
+  display: inline-flex;
+  align-items: center;
 }
 @media (max-width: 900px) {
-  .scrolling-logo-wrapper {
-    top: 135px;
-  }
-  .scrolling-logo {
-    width: 110px;
-    height: 110px;
+  .logo {
+    font-size: 1.15rem;
+    display: inline-flex !important;
   }
   .logo-text {
-    font-size: 1.15rem;
+    font-size: 0.95rem;
   }
   .header-actions {
     gap: 10px !important;
@@ -1365,8 +1333,11 @@ footer .container {
 /* Mobile Responsive Hooks */
 @media (max-width: 900px) {
   .logo {
-    font-size: 1.15rem;
-    display: block !important;
+    font-size: 0.95rem;
+    display: inline-flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
   }
   .header .container {
     justify-content: space-between !important;
