@@ -68,15 +68,13 @@ add_action( 'after_setup_theme', 'tatkhalsa_setup' );
  * Safely get the Tatkhalsa Logo URL, supporting Customizer Uploaded custom logo with an SSL-safe fallback to the theme's Logo.png
  */
 function tatkhalsa_get_logo_url() {
-	if ( function_exists( 'has_custom_logo' ) && has_custom_logo() ) {
-		$custom_logo_id = get_theme_mod( 'custom_logo' );
-		$logo = wp_get_attachment_image_src( $custom_logo_id, 'full' );
-		if ( $logo ) {
-			return set_url_scheme( $logo[0] );
-		}
-	}
+	return tatkhalsa_get_theme_logo_url();
+}
 
-	// Check for various casing and extensions in the active theme folder
+/**
+ * Get the direct theme-packaged Logo URL (gold sikh emblem) completely independent of site customizer custom_logo overrides.
+ */
+function tatkhalsa_get_theme_logo_url() {
 	$theme_dir = get_stylesheet_directory();
 	$possible_filenames = array(
 		'/Logo.png',

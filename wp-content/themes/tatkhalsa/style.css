@@ -2097,13 +2097,16 @@ footer .container {
 }
 
 /* Responsive adjustments for campaign display */
-@media (max-width: 540px) {
+@media (max-width: 768px) {
   .campaign-slide.next-preview,
   .campaign-slide.prev-preview {
     display: none !important; /* Hide pre-stack previews on small screens and narrow widths */
   }
   .campaign-slides-container {
     height: 480px;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
   }
   .campaign-card {
     height: 460px;

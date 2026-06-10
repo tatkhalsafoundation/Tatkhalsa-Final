@@ -27,9 +27,11 @@ get_header();
         <!-- Centered Logo same as home page -->
         <div class="hero-logo-wrapper" style="display: flex; justify-content: center; margin-bottom: 25px; margin-top: 10px;">
           <img
-            src="<?php echo esc_url( tatkhalsa_get_logo_url() ); ?>"
+            src="<?php echo esc_url( tatkhalsa_get_theme_logo_url() ); ?>"
             alt="Tatkhalsa Foundation Logo"
             class="hero-gurbani-logo"
+            width="240"
+            height="240"
             style="width: 240px; height: 240px; object-fit: contain;"
           />
         </div>

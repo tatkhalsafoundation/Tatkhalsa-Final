@@ -39,9 +39,12 @@ get_header();
     <div class="hero-logo-wrapper">
       <a href="<?php echo esc_url( home_url( '/' ) ); ?>" style="display: contents;">
         <img
-          src="<?php echo esc_url( tatkhalsa_get_logo_url() ); ?>"
+          src="<?php echo esc_url( tatkhalsa_get_theme_logo_url() ); ?>"
           alt="Tatkhalsa Foundation Logo"
           class="hero-gurbani-logo"
+          width="240"
+          height="240"
+          style="width: 240px; height: 240px; object-fit: contain;"
         />
       </a>
     </div>
@@ -159,7 +162,7 @@ get_header();
       <div class="campaign-slides-container">
         
         <!-- Slide 1: Cancer Patient Nimrat Kaur -->
-        <div class="campaign-slide active" data-index="0" data-title="Nimrat Kaur (2 yrs, Cancer)" onclick="openCampaignModal('Cancer Patient Nimrat Kaur (2yrs old) oncology treatment help')">
+        <div class="campaign-slide active" data-index="0" data-title="Nimrat Kaur (2 yrs, Cancer)" onclick="window.location.href='<?php echo esc_url( home_url( '/projects/' ) ); ?>'">
           <div class="campaign-card">
             <span class="campaign-view-tag">View Campaign</span>
             <img class="campaign-img" src="https://images.unsplash.com/photo-1543332143-4e8c27e3256f?auto=format&fit=crop&w=800&q=80" alt="Pediatric Cancer Care Support - Nimrat Kaur" />
@@ -183,7 +186,7 @@ get_header();
         </div>
 
         <!-- Slide 2: Punjab Flood Relief -->
-        <div class="campaign-slide" data-index="1" data-title="Punjab Flood Relief 2025" onclick="openCampaignModal('Punjab Flood Relief 2025')">
+        <div class="campaign-slide" data-index="1" data-title="Punjab Flood Relief 2025" onclick="window.location.href='<?php echo esc_url( home_url( '/punjab-flood-relief/' ) ); ?>'">
           <div class="campaign-card">
             <span class="campaign-view-tag">View Campaign</span>
             <img class="campaign-img" src="https://images.unsplash.com/photo-1547683905-f686c993aae5?auto=format&fit=crop&w=800&q=80" alt="Punjab Flood Relief 2025" />
@@ -207,7 +210,7 @@ get_header();
         </div>
 
         <!-- Slide 3: grocery help -->
-        <div class="campaign-slide" data-index="2" data-title="Grocery Help Seva" onclick="openCampaignModal('Grocery Seva for impoverished families')">
+        <div class="campaign-slide" data-index="2" data-title="Grocery Help Seva" onclick="window.location.href='<?php echo esc_url( home_url( '/projects/' ) ); ?>'">
           <div class="campaign-card">
             <span class="campaign-view-tag">View Campaign</span>
             <img class="campaign-img" src="https://images.unsplash.com/photo-1593113598332-cd288d649433?auto=format&fit=crop&w=800&q=80" alt="Grocery Help Seva" />
@@ -231,7 +234,7 @@ get_header();
         </div>
 
         <!-- Slide 4: 1984 victims families -->
-        <div class="campaign-slide" data-index="3" data-title="1984 Victims Family Support" onclick="openCampaignModal('Support for family members of 1984 victims')">
+        <div class="campaign-slide" data-index="3" data-title="1984 Victims Family Support" onclick="window.location.href='<?php echo esc_url( home_url( '/projects/' ) ); ?>'">
           <div class="campaign-card">
             <span class="campaign-view-tag">View Campaign</span>
             <img class="campaign-img" src="https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?auto=format&fit=crop&w=800&q=80" alt="1984 Victim Families Support" />
@@ -255,7 +258,7 @@ get_header();
         </div>
 
         <!-- Slide 5: impoverished marriage support -->
-        <div class="campaign-slide" data-index="4" data-title="Gursikh Daughters Marriages Seva" onclick="openCampaignModal('Marriage of Gursikh families below poverty line')">
+        <div class="campaign-slide" data-index="4" data-title="Gursikh Daughters Marriages Seva" onclick="window.location.href='<?php echo esc_url( home_url( '/projects/' ) ); ?>'">
           <div class="campaign-card">
             <span class="campaign-view-tag">View Campaign</span>
             <img class="campaign-img" src="https://images.unsplash.com/photo-1583939003579-730e3918a45a?auto=format&fit=crop&w=800&q=80" alt="Underprivileged Marriages support" />
