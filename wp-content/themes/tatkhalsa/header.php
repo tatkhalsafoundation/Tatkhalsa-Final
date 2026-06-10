@@ -63,8 +63,11 @@
         body.scrolled .logo-text-down {
           font-size: 0.5rem !important;
         }
+        .header-nav-selector {
+          margin-right: 15px !important;
+        }
         .header {
-          transition: padding 0.3s ease, min-height 0.3s ease, background 0.3s ease !important;
+          transition: padding 0.3s ease, min-height 0.3s ease, background 0.3s ease, transform 0.4s cubic-bezier(0.165, 0.84, 0.44, 1) !important;
         }
       }
     </style>

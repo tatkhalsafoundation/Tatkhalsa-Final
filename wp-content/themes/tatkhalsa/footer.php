@@ -893,12 +893,19 @@
     <script>
       // Header and document body scroll state
       window.addEventListener("scroll", () => {
+        const header = document.querySelector(".header");
         if (window.scrollY > 50) {
           document.body.classList.add("scrolled");
-          document.querySelector(".header")?.classList.add("scrolled");
+          if (header) {
+            header.classList.add("scrolled");
+            header.style.transform = "translateY(0)";
+          }
         } else {
           document.body.classList.remove("scrolled");
-          document.querySelector(".header")?.classList.remove("scrolled");
+          if (header) {
+            header.classList.remove("scrolled");
+            header.style.transform = "translateY(0)";
+          }
         }
       });
 
