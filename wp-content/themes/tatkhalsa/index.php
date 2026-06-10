@@ -121,7 +121,9 @@ get_header();
       <button class="btn" style="background: var(--accent-red); color: var(--primary); display: inline-flex; align-items: center; justify-content: center; height: 50px; padding: 0 30px; box-sizing: border-box; border: 2px solid transparent; font-weight: bold;" onclick="openModal()">
         Contribute Now
       </button>
-      <a href="<?php echo esc_url( home_url( '/volunteer/' ) ); ?>" class="btn-outline" style="display: inline-flex; align-items: center; justify-content: center; height: 50px; padding: 0 30px; box-sizing: border-box; font-weight: bold;">Become a Volunteer</a>
+      <button class="btn-outline" style="display: inline-flex; align-items: center; justify-content: center; height: 50px; padding: 0 30px; box-sizing: border-box; font-weight: bold; border-color: #ff334b; color: #ff334b; background: rgba(255, 51, 75, 0.05); cursor: pointer;" onclick="openBloodRequestModal()">
+        Request Blood 🩸
+      </button>
     </div>
   </div>
 </section>
@@ -162,23 +164,23 @@ get_header();
       <div class="campaign-slides-container">
         
         <!-- Slide 1: Cancer Patient Nimrat Kaur -->
-        <div class="campaign-slide active" data-index="0" data-title="Nimrat Kaur (2 yrs, Cancer)" onclick="window.location.href='<?php echo esc_url( home_url( '/projects/' ) ); ?>'">
+        <div class="campaign-slide active" data-index="0" data-title="Nimrat Kaur (2 yrs, Cancer)" onclick="handleSlideClick(0, event)">
           <div class="campaign-card">
-            <span class="campaign-view-tag">View Campaign</span>
-            <img class="campaign-img" src="https://images.unsplash.com/photo-1543332143-4e8c27e3256f?auto=format&fit=crop&w=800&q=80" alt="Pediatric Cancer Care Support - Nimrat Kaur" />
+            <span class="campaign-view-tag" onclick="openNimratKaurModal(); event.stopPropagation(); return false;" style="cursor: pointer;">View Campaign</span>
+            <img class="campaign-img" src="/src/assets/images/regenerated_image_1781122402788.jpg" alt="Pediatric Cancer Care Support - Nimrat Kaur" />
             <div class="campaign-overlay">
               <span class="campaign-category" style="color: var(--accent-red);">Healthcare Aid</span>
               <h3 class="campaign-title">Cancer Patient Nimrat Kaur</h3>
-              <p class="campaign-desc">2-year-old child battling cancer. Urgent financial support needed for life-saving oncology chemotherapy sessions.</p>
+              <p class="campaign-desc">2-year-old Gursikh child battling blood cancer. Urgent medical treatment support needed to save her life and cover expensive oncology sessions.</p>
               
               <!-- Progress Tracker -->
               <div class="campaign-progress-wrapper">
                 <div class="campaign-progress-stats">
                   <span>Raised: ₹2,25,000</span>
-                  <span>Goal: ₹5,00,000</span>
+                  <span>Goal: ₹7,00,000</span>
                 </div>
                 <div class="campaign-progress-bar">
-                  <div class="campaign-progress-fill" style="width: 45%; background: var(--accent-red);"></div>
+                  <div class="campaign-progress-fill" style="width: 32.1%; background: var(--accent-red);"></div>
                 </div>
               </div>
             </div>
@@ -186,10 +188,10 @@ get_header();
         </div>
 
         <!-- Slide 2: Punjab Flood Relief -->
-        <div class="campaign-slide" data-index="1" data-title="Punjab Flood Relief 2025" onclick="window.location.href='<?php echo esc_url( home_url( '/punjab-flood-relief/' ) ); ?>'">
+        <div class="campaign-slide" data-index="1" data-title="Punjab Flood Relief 2025" onclick="handleSlideClick(1, event)">
           <div class="campaign-card">
-            <span class="campaign-view-tag">View Campaign</span>
-            <img class="campaign-img" src="https://images.unsplash.com/photo-1547683905-f686c993aae5?auto=format&fit=crop&w=800&q=80" alt="Punjab Flood Relief 2025" />
+            <span class="campaign-view-tag" onclick="openPunjabFloodReliefModal(); event.stopPropagation(); return false;" style="cursor: pointer;">View Campaign</span>
+            <img class="campaign-img" src="https://images.unsplash.com/photo-1514222134-b57cbb8ce073?auto=format&fit=crop&w=800&q=80" alt="Punjab Relief - Sri Harmandir Sahib" />
             <div class="campaign-overlay">
               <span class="campaign-category" style="color: var(--accent-blue);">Emergency SOS</span>
               <h3 class="campaign-title">Punjab Flood Relief 2025</h3>
@@ -210,10 +212,10 @@ get_header();
         </div>
 
         <!-- Slide 3: grocery help -->
-        <div class="campaign-slide" data-index="2" data-title="Grocery Help Seva" onclick="window.location.href='<?php echo esc_url( home_url( '/projects/' ) ); ?>'">
+        <div class="campaign-slide" data-index="2" data-title="Grocery Help Seva" onclick="handleSlideClick(2, event)">
           <div class="campaign-card">
-            <span class="campaign-view-tag">View Campaign</span>
-            <img class="campaign-img" src="https://images.unsplash.com/photo-1593113598332-cd288d649433?auto=format&fit=crop&w=800&q=80" alt="Grocery Help Seva" />
+            <span class="campaign-view-tag" onclick="openGroceryHelpSevaModal(); event.stopPropagation(); return false;" style="cursor: pointer;">View Campaign</span>
+            <img class="campaign-img" src="https://images.unsplash.com/photo-1609137144813-1d67493fa7b2?auto=format&fit=crop&w=800&q=80" alt="Grocery Help Seva - Sikh Sevadar Elder Support" />
             <div class="campaign-overlay">
               <span class="campaign-category" style="color: var(--accent-green);">Ration Seva</span>
               <h3 class="campaign-title">Essential Grocery Help</h3>
@@ -234,10 +236,10 @@ get_header();
         </div>
 
         <!-- Slide 4: 1984 victims families -->
-        <div class="campaign-slide" data-index="3" data-title="1984 Victims Family Support" onclick="window.location.href='<?php echo esc_url( home_url( '/projects/' ) ); ?>'">
+        <div class="campaign-slide" data-index="3" data-title="1984 Victims Family Support" onclick="handleSlideClick(3, event)">
           <div class="campaign-card">
-            <span class="campaign-view-tag">View Campaign</span>
-            <img class="campaign-img" src="https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?auto=format&fit=crop&w=800&q=80" alt="1984 Victim Families Support" />
+            <span class="campaign-view-tag" onclick="openVictimFamilySupportModal(); event.stopPropagation(); return false;" style="cursor: pointer;">View Campaign</span>
+            <img class="campaign-img" src="https://images.unsplash.com/photo-1605701243007-df5b128caff8?auto=format&fit=crop&w=800&q=80" alt="1984 Victim Families Support - Sikh Elder Portrait" />
             <div class="campaign-overlay">
               <span class="campaign-category" style="color: var(--accent-purple);">Livelihood Aid</span>
               <h3 class="campaign-title">1984 Victim Families</h3>
@@ -258,10 +260,10 @@ get_header();
         </div>
 
         <!-- Slide 5: impoverished marriage support -->
-        <div class="campaign-slide" data-index="4" data-title="Gursikh Daughters Marriages Seva" onclick="window.location.href='<?php echo esc_url( home_url( '/projects/' ) ); ?>'">
+        <div class="campaign-slide" data-index="4" data-title="Gursikh Daughters Marriages Seva" onclick="handleSlideClick(4, event)">
           <div class="campaign-card">
-            <span class="campaign-view-tag">View Campaign</span>
-            <img class="campaign-img" src="https://images.unsplash.com/photo-1583939003579-730e3918a45a?auto=format&fit=crop&w=800&q=80" alt="Underprivileged Marriages support" />
+            <span class="campaign-view-tag" onclick="openMarriagesSevaModal(); event.stopPropagation(); return false;" style="cursor: pointer;">View Campaign</span>
+            <img class="campaign-img" src="https://images.unsplash.com/photo-1610030469668-93535c17b6b3?auto=format&fit=crop&w=800&q=80" alt="Underprivileged Marriages support - Traditional Bridal Hands" />
             <div class="campaign-overlay">
               <span class="campaign-category" style="color: var(--accent-orange);">Social Welfare</span>
               <h3 class="campaign-title">Gursikh Marriages Seva</h3>
@@ -323,6 +325,15 @@ get_header();
 <script>
   let currentCampaignIndex = 0;
   const totalCampaigns = 5;
+
+  function handleSlideClick(index, event) {
+    const slide = event.currentTarget;
+    if (slide.classList.contains("next-preview")) {
+      nextCampaign(event);
+    } else if (slide.classList.contains("prev-preview")) {
+      prevCampaign(event);
+    }
+  }
 
   function showCampaign(index) {
     currentCampaignIndex = (index + totalCampaigns) % totalCampaigns;
@@ -521,114 +532,79 @@ get_header();
     </div>
 
     <!-- New Dynamic Seva Contribution Ledger & Declaration Section -->
-    <div class="ledger-box" style="margin-top: 60px; border-top: 1px solid rgba(212, 175, 55, 0.15); padding-top: 45px;">
-      <h3 style="color: var(--text-dark); margin-bottom: 25px; font-family: var(--font-sans); text-align: center; font-size: 1.8rem; display: flex; align-items: center; justify-content: center; gap: 10px;">
-        <span>⚜️</span> Recent Seva Ledger (Dasvandh Board)
+    <div class="ledger-box" style="margin-top: 50px; border-top: 1px solid rgba(212, 175, 55, 0.15); padding-top: 40px;">
+      <h3 style="color: var(--text-dark); margin-bottom: 20px; font-family: var(--font-sans); text-align: center; font-size: 1.6rem; display: flex; align-items: center; justify-content: center; gap: 10px;">
+        <span>⚜️</span> Seva Ledger & Gateway Hub
       </h3>
-      <p style="color: var(--text-light); text-align: center; max-width: 700px; margin: 0 auto 40px auto; font-size: 0.95rem; line-height: 1.6;">
-        Every contribution directly reinforces our free community kitchen (Langar), flood relief operations, and educational materials. Connected directly to GiveWP, WooCommerce, and secure bank notification API.
+      <p style="color: var(--text-light); text-align: center; max-width: 650px; margin: 0 auto 30px auto; font-size: 0.9rem; line-height: 1.5;">
+        Our live ledger automatically collects, syncs, and displays donation details from active WordPress plugins. Minimal manual override needed.
       </p>
 
-      <div class="budget-grid" style="align-items: flex-start; gap: 40px;">
-        <!-- Left Column: Transactions List -->
-        <div style="flex: 1.2; min-width: 280px; width: 100%;">
-          <h4 style="color: var(--primary); margin-bottom: 20px; font-size: 1.25rem; display: flex; align-items: center; gap: 8px;">
-            <span style="display: inline-block; width: 8px; height: 8px; background: #00bf75; border-radius: 50%; box-shadow: 0 0 10px #00bf75; animation: pulse 1.8s infinite;"></span>
-            <span>📋 Live Contributions Board</span>
-            <span style="font-size: 0.75rem; background: rgba(0, 135, 90, 0.15); color: #00bf75; padding: 3px 8px; border-radius: 12px; font-weight: bold;">Verified Logs</span>
-          </h4>
+      <!-- Unified Compact Dashboard Box -->
+      <div style="max-width: 720px; margin: 0 auto; background: rgba(12, 26, 48, 0.45); border: 1.5px solid rgba(212,175,55,0.22); border-radius: 14px; padding: 22px; box-shadow: 0 15px 45px rgba(0,0,0,0.35); box-sizing: border-box; backdrop-filter: blur(10px);">
+        
+        <!-- Top Bar: Connection Gateway Sync Monitors -->
+        <div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 14px; margin-bottom: 18px;">
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <span style="font-size: 1.15rem; display: inline-block;">🔌</span>
+            <strong style="color: var(--primary); font-family: var(--font-sans); font-size: 1.05rem;">Sync Gateway Active</strong>
+          </div>
           
-          <div id="transactions-loading" style="color: var(--text-light); padding: 30px 0; text-align: center; font-size: 0.950rem;">
-            ⏳ Querying connected plugins databases...
-          </div>
-          <div id="transactions-container" style="display: flex; flex-direction: column; gap: 14px; max-height: 520px; overflow-y: auto; padding-right: 8px;">
-            <!-- Rendered dynamically -->
-          </div>
-        </div>
-
-        <!-- Right Column: Plugin Gateway Sync monitor -->
-        <div style="flex: 0.8; min-width: 280px; width: 100%; background: rgba(12,26,48,0.4); border: 1px solid rgba(212,175,55,0.2); padding: 30px; border-radius: 12px; box-shadow: 0 10px 40px rgba(0,0,0,0.35); box-sizing: border-box;">
-          <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 18px; border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 15px;">
-            <h4 style="color: var(--primary); font-size: 1.15rem; margin: 0; display: flex; align-items: center; gap: 8px;">
-              <span>🔌 Sync Gateway Hub</span>
-            </h4>
-            <span style="display: inline-flex; align-items: center; gap: 5px; background: rgba(0, 191, 117, 0.12); color: #00bf75; padding: 4px 10px; border-radius: 20px; font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;">
-              <span style="width: 6px; height: 6px; background: #00bf75; border-radius: 50%; display: inline-block; box-shadow: 0 0 6px #00bf75;"></span>
-              Live Sync Active
+          <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
+            <span style="font-size: 0.7rem; color: #a4b3cd; display: flex; align-items: center; gap: 4px; background: rgba(0, 191, 117, 0.08); border: 1px solid rgba(0, 191, 117, 0.2); padding: 3px 8px; border-radius: 6px;">
+              <span style="color: #00bf75;">●</span> GiveWP ✓
+            </span>
+            <span style="font-size: 0.7rem; color: #a4b3cd; display: flex; align-items: center; gap: 4px; background: rgba(0, 191, 117, 0.08); border: 1px solid rgba(0, 191, 117, 0.2); padding: 3px 8px; border-radius: 6px;">
+              <span style="color: #00bf75;">●</span> WooCommerce ✓
+            </span>
+            <span style="font-size: 0.7rem; color: #a4b3cd; display: flex; align-items: center; gap: 4px; background: rgba(212, 175, 55, 0.06); border: 1px solid rgba(212, 175, 55, 0.15); padding: 3px 8px; border-radius: 6px;">
+              <span style="color: var(--primary);">●</span> UPI Pay ✓
             </span>
           </div>
+        </div>
+
+        <!-- Middle Body: Double Integrated Feed (Only views 1 log at a time; rotates gracefully) -->
+        <div style="position: relative; overflow: hidden; min-height: 105px; display: flex; align-items: center; justify-content: center; background: rgba(4, 9, 20, 0.4); border: 1px solid rgba(255,255,255,0.03); border-radius: 10px; padding: 14px 18px;" id="ticker-viewport">
           
-          <p style="color: var(--text-light); font-size: 0.825rem; margin-bottom: 22px; line-height: 1.45;">
-            Our live ledger automatically collects, syncs, and displays donation details from active WordPress plugins. Minimal manual override needed.
-          </p>
-
-          <!-- Integration Row 1: GiveWP -->
-          <div style="display: flex; gap: 12px; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); padding: 12px 14px; border-radius: 8px; margin-bottom: 12px;">
-            <div style="background: rgba(212,175,55,0.08); color: var(--primary); font-size: 1.1rem; border-radius: 6px; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
-              🎁
-            </div>
-            <div>
-              <div style="display: flex; align-items: center; gap: 6px;">
-                <strong style="font-size: 0.85rem; color: #fff;">GiveWP Plugin</strong>
-                <span style="font-size: 0.65rem; color: #00bf75; background: rgba(0,191,117,0.1); padding: 1px 6px; border-radius: 4px; font-weight: bold;">Connected ✓</span>
-              </div>
-              <p style="margin: 3px 0 0 0; font-size: 0.75rem; color: var(--text-light); line-height: 1.3;">
-                Listens to online web submissions. Supports anonymous selection automatically.
-              </p>
-            </div>
+          <div id="transactions-loading" style="color: var(--text-light); text-align: center; font-size: 0.850rem; width: 100%;">
+            ⏳ Querying connected plugins databases...
           </div>
 
-          <!-- Integration Row 2: WooCommerce Store -->
-          <div style="display: flex; gap: 12px; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); padding: 12px 14px; border-radius: 8px; margin-bottom: 12px;">
-            <div style="background: rgba(212,175,55,0.08); color: var(--primary); font-size: 1.1rem; border-radius: 6px; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
-              🛒
-            </div>
-            <div>
-              <div style="display: flex; align-items: center; gap: 6px;">
-                <strong style="font-size: 0.85rem; color: #fff;">WooCommerce Store</strong>
-                <span style="font-size: 0.65rem; color: #00bf75; background: rgba(0,191,117,0.1); padding: 1px 6px; border-radius: 4px; font-weight: bold;">Connected ✓</span>
-              </div>
-              <p style="margin: 3px 0 0 0; font-size: 0.75rem; color: var(--text-light); line-height: 1.3;">
-                Captures purchases designated for Langar services and Flood Relief.
-              </p>
-            </div>
-          </div>
-
-          <!-- Integration Row 3: Bank Direct / UPI API -->
-          <div style="display: flex; gap: 12px; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); padding: 12px 14px; border-radius: 8px; margin-bottom: 22px;">
-            <div style="background: rgba(212,175,55,0.08); color: var(--primary); font-size: 1.1rem; border-radius: 6px; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
-              📱
-            </div>
-            <div>
-              <div style="display: flex; align-items: center; gap: 6px;">
-                <strong style="font-size: 0.85rem; color: #fff;">Direct UPI & Bank API</strong>
-                <span style="font-size: 0.65rem; color: var(--primary); background: rgba(212,175,55,0.1); padding: 1px 6px; border-radius: 4px; font-weight: bold;">Secure Sync</span>
-              </div>
-              <p style="margin: 3px 0 0 0; font-size: 0.75rem; color: var(--text-light); line-height: 1.3;">
-                Auto-matches transaction notifications received from payments & QR scans.
-              </p>
-            </div>
-          </div>
-
-          <!-- Privacy Shield details -->
-          <div style="background: rgba(212,175,55,0.05); border: 1px dashed rgba(212,175,55,0.25); border-radius: 8px; padding: 15px; margin-bottom: 24px; box-sizing: border-box;">
-            <div style="display: flex; align-items: center; gap: 6px; color: var(--primary); margin-bottom: 6px; font-size: 0.8rem; font-weight: bold; text-transform: uppercase; letter-spacing: 0.5px;">
-              <span>🛡️ Automatic Preference Control</span>
-            </div>
-            <p style="margin: 0; color: var(--text-light); font-size: 0.75rem; line-height: 1.45;">
-              If a contributor ticks <strong>"Donate Anonymously"</strong> in GiveWP or WooCommerce checkouts, our sync parser respect this instantly, masking their profile and displaying them as **Anonymous Sevadar**.
-            </p>
-          </div>
-
-          <!-- Interactive Webhook Simulator Button -->
-          <button id="webhookSimulateBtn" style="width: 100%; padding: 14px; background: var(--primary); color: var(--bg-dark); border: none; border-radius: 6px; font-weight: bold; font-size: 0.95rem; cursor: pointer; transition: all 0.2s; box-shadow: 0 4px 15px rgba(212,175,55,0.15); text-transform: uppercase; letter-spacing: 0.5px; display: flex; align-items: center; justify-content: center; gap: 8px;">
-            <span>⚡ Test Plugin Sync Flow</span>
-          </button>
-          
-          <div id="simStatus" style="margin-top: 12px; font-size: 0.8rem; text-align: center; color: var(--text-light); min-height: 18px;">
-            Ready to test live synchronization.
+          <div id="transactions-ticker-container" style="width: 100%; transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out; opacity: 1;">
+            <!-- Filled dynamically with single transaction card -->
           </div>
         </div>
+
+        <!-- Privacy Badge Shield & Interactive Webhook Simulator -->
+        <div style="margin-top: 18px; border-top: 1px solid rgba(255,255,255,0.06); padding-top: 16px;">
+          <div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 15px;">
+            
+            <!-- Unified controls -->
+            <div style="display: flex; align-items: center; gap: 12px; font-size: 0.75rem; color: var(--text-light);">
+              <div style="display: flex; align-items: center; gap: 5px;">
+                <span style="display: inline-block; width: 6px; height: 6px; background: #00bf75; border-radius: 50%; box-shadow: 0 0 6px #00bf75; animation: pulse 1.8s infinite;"></span>
+                <span>Verified Seva ledger feeds</span>
+              </div>
+              <div style="display: flex; align-items: center; gap: 8px; background: rgba(255,255,255,0.03); border-radius: 20px; padding: 2px 10px;">
+                <button id="prev-tx-btn" style="background: none; border: none; color: var(--primary); cursor: pointer; font-size: 0.85rem; padding: 1px 4px; line-height: 1;" title="Previous Log">◀</button>
+                <span id="ticker-counter" style="font-family: var(--font-mono); color: #fff; font-size: 0.72rem; min-width: 44px; text-align: center; display: inline-block;">0 / 0</span>
+                <button id="next-tx-btn" style="background: none; border: none; color: var(--primary); cursor: pointer; font-size: 0.85rem; padding: 1px 4px; line-height: 1;" title="Next Log">▶</button>
+              </div>
+            </div>
+
+            <!-- Compact simulator button & status -->
+            <div style="display: flex; align-items: center; gap: 10px;">
+              <button id="webhookSimulateBtn" style="padding: 8px 14px; background: rgba(212,175,55,0.12); border: 1.5px solid rgba(212,175,55,0.3); border-radius: 25px; color: var(--primary); font-weight: bold; font-size: 0.75rem; cursor: pointer; transition: all 0.3s; text-transform: uppercase; letter-spacing: 0.5px;">
+                ⚡ Test Sync Plugin
+              </button>
+            </div>
+          </div>
+
+          <div id="simStatus" style="margin-top: 8px; font-size: 0.72rem; text-align: right; color: var(--text-light); min-height: 12px;">
+            Ready to test synchronized ledger injection.
+          </div>
+        </div>
+
       </div>
     </div>
 
@@ -658,10 +634,15 @@ get_header();
           }
         }
 
+        let allTransactions = [];
+        let curTransactionIndex = 0;
+        let tickerIntervalId = null;
+
         // Fetch and Render Transactions list
         async function loadTransactions() {
-          const container = document.getElementById("transactions-container");
+          const container = document.getElementById("transactions-ticker-container");
           const loadingEl = document.getElementById("transactions-loading");
+          const counterEl = document.getElementById("ticker-counter");
           
           try {
             const response = await fetch(`${ajaxUrl}?action=get_transactions`);
@@ -669,55 +650,27 @@ get_header();
             
             if (data.success && data.data.transactions) {
               if (loadingEl) loadingEl.style.display = "none";
-              container.innerHTML = "";
               
-              if (data.data.transactions.length === 0) {
-                container.innerHTML = `<div style="color: var(--text-light); padding: 30px; text-align: center;">No transactions synchronized yet. Run simulation or activate plugins!</div>`;
+              allTransactions = data.data.transactions;
+              
+              if (allTransactions.length === 0) {
+                if (container) {
+                  container.style.display = "block";
+                  container.innerHTML = `<div style="color: var(--text-light); padding: 15px; text-align: center; font-size: 0.85rem;">No logs synchronized. Click "Test Sync" below!</div>`;
+                }
+                if (counterEl) counterEl.textContent = "0 / 0";
                 return;
               }
               
-              data.data.transactions.forEach(tx => {
-                const card = document.createElement("div");
-                card.style.background = "rgba(255, 255, 255, 0.03)";
-                card.style.border = "1px solid rgba(255, 255, 255, 0.05)";
-                card.style.borderRadius = "8px";
-                card.style.padding = "16px";
-                card.style.display = "flex";
-                card.style.justifyContent = "space-between";
-                card.style.alignItems = "center";
-                card.style.gap = "15px";
-                card.style.transition = "all 0.3s ease-in-out";
-                
-                const verifiedTag = tx.verified == 1 
-                  ? `<span style="font-size: 0.725rem; font-weight: bold; background: rgba(0, 191, 117, 0.12); color: #00bf75; padding: 2px 7px; border-radius: 10px; margin-left: 8px; display: inline-flex; align-items: center; gap: 4px;">Synced Verified ✓</span>`
-                  : `<span style="font-size: 0.725rem; font-weight: bold; background: rgba(212, 175, 55, 0.1); color: var(--primary); padding: 2px 7px; border-radius: 10px; margin-left: 8px; display: inline-flex; align-items: center; gap: 4px;">Parsing ⏳</span>`;
-
-                const contributorName = tx.anonymous == 1 ? "Anonymous Sevadar" : tx.name;
-                const noteElement = tx.note 
-                  ? `<p style="margin: 5px 0 0 0; font-size: 0.8rem; color: var(--text-light); font-style: italic;">"${escapeHtml(tx.note)}"</p>` 
-                  : '';
-
-                card.innerHTML = `
-                  <div style="display: flex; align-items: center; gap: 14px;">
-                    <div style="background: rgba(212,175,55,0.08); width: 44px; height: 44px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: var(--primary); border: 1px solid rgba(212,175,55,0.15); flex-shrink: 0;">
-                      ⚜️
-                    </div>
-                    <div>
-                      <div style="display: flex; align-items: center; flex-wrap: wrap; gap: 6px;">
-                        <strong style="color: var(--text-dark); font-size: 0.95rem;">${escapeHtml(contributorName)}</strong>
-                        ${verifiedTag}
-                      </div>
-                      <span style="font-size: 0.75rem; color: var(--primary); font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; display: block; margin-top: 3px;">${escapeHtml(tx.seva_type)}</span>
-                      ${noteElement}
-                    </div>
-                  </div>
-                  <div style="text-align: right; flex-shrink: 0;">
-                    <span style="font-size: 1.15rem; font-weight: bold; color: var(--accent-green); display: block;">₹${parseFloat(tx.amount).toLocaleString('en-IN')}</span>
-                    <span style="font-size: 0.75rem; color: var(--text-light); display: block; margin-top: 3px;">${formatDateString(tx.date)}</span>
-                  </div>
-                `;
-                container.appendChild(card);
-              });
+              // Sort by date descending (latest first) to make sure we show new ones automatically
+              allTransactions.sort((a,b) => new Date(b.date) - new Date(a.date));
+              
+              // Initialize view at index 0 (latest)
+              curTransactionIndex = 0;
+              renderActiveTransaction();
+              
+              // Setup automatic rotation every 4500ms
+              startTickerTimer();
             } else {
               if (loadingEl) loadingEl.textContent = "Unable to retrieve database. Please refresh.";
             }
@@ -725,6 +678,89 @@ get_header();
             console.error("Ledger fetch error:", err);
             if (loadingEl) loadingEl.textContent = "Network sync timeout. Refreshing soon...";
           }
+        }
+
+        function renderActiveTransaction() {
+          const container = document.getElementById("transactions-ticker-container");
+          const counterEl = document.getElementById("ticker-counter");
+          if (!container || allTransactions.length === 0) return;
+
+          const tx = allTransactions[curTransactionIndex];
+          
+          const verifiedTag = tx.verified == 1 
+            ? `<span style="font-size: 0.68rem; font-weight: bold; background: rgba(0, 191, 117, 0.12); color: #00bf75; padding: 2px 7px; border-radius: 8px; border: 1.2px solid rgba(0, 191, 117, 0.2)">Synced Verified ✓</span>`
+            : `<span style="font-size: 0.68rem; font-weight: bold; background: rgba(212, 175, 55, 0.1); color: var(--primary); padding: 2px 7px; border-radius: 8px; border: 1.2px solid rgba(212,175,55,0.2)">Parsing ⏳</span>`;
+
+          const contributorName = tx.anonymous == 1 ? "Anonymous Sevadar" : tx.name;
+          const noteElement = tx.note 
+            ? `<p style="margin: 4px 0 0 0; font-size: 0.78rem; color: #a4b3cd; font-style: italic; line-height: 1.3;">"${escapeHtml(tx.note)}"</p>` 
+            : '';
+
+          // Transition animation via fade out/in
+          container.style.opacity = "0";
+          container.style.transform = "translateY(5px)";
+          
+          setTimeout(() => {
+            container.style.display = "block";
+            container.innerHTML = `
+              <div style="display: flex; align-items: center; justify-content: space-between; gap: 15px; width: 100%;">
+                <div style="display: flex; align-items: center; gap: 12px; text-align: left;">
+                  <div style="background: rgba(212,175,55,0.06); width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: var(--primary); border: 1.2px solid rgba(212,175,55,0.18); flex-shrink: 0; font-size: 1rem;">
+                    ⚜️
+                  </div>
+                  <div>
+                    <div style="display: flex; align-items: center; flex-wrap: wrap; gap: 6px;">
+                      <strong style="color: #fff; font-size: 0.92rem; font-weight: 700;">${escapeHtml(contributorName)}</strong>
+                      ${verifiedTag}
+                    </div>
+                    <span style="font-size: 0.72rem; color: var(--primary); font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; display: block; margin-top: 2px;">${escapeHtml(tx.seva_type)}</span>
+                    ${noteElement}
+                  </div>
+                </div>
+                <div style="text-align: right; flex-shrink: 0;">
+                  <span style="font-size: 1.1rem; font-weight: 800; color: var(--accent-green); display: block;">₹${parseFloat(tx.amount).toLocaleString('en-IN')}</span>
+                  <span style="font-size: 0.7rem; color: var(--text-light); display: block; margin-top: 1px;">${formatDateString(tx.date)}</span>
+                </div>
+              </div>
+            `;
+            
+            // Fade in
+            container.style.opacity = "1";
+            container.style.transform = "translateY(0)";
+          }, 180);
+
+          if (counterEl) {
+            counterEl.textContent = `${curTransactionIndex + 1} / ${allTransactions.length}`;
+          }
+        }
+
+        function startTickerTimer() {
+          if (tickerIntervalId) clearInterval(tickerIntervalId);
+          tickerIntervalId = setInterval(() => {
+            if (allTransactions.length <= 1) return;
+            curTransactionIndex = (curTransactionIndex + 1) % allTransactions.length;
+            renderActiveTransaction();
+          }, 4500);
+        }
+
+        // Previous and Next button listeners
+        const prevBtn = document.getElementById("prev-tx-btn");
+        const nextBtn = document.getElementById("next-tx-btn");
+        if (prevBtn) {
+          prevBtn.addEventListener("click", () => {
+            if (allTransactions.length <= 1) return;
+            curTransactionIndex = (curTransactionIndex - 1 + allTransactions.length) % allTransactions.length;
+            renderActiveTransaction();
+            startTickerTimer(); // Reset timer on manual click
+          });
+        }
+        if (nextBtn) {
+          nextBtn.addEventListener("click", () => {
+            if (allTransactions.length <= 1) return;
+            curTransactionIndex = (curTransactionIndex + 1) % allTransactions.length;
+            renderActiveTransaction();
+            startTickerTimer(); // Reset timer on manual click
+          });
         }
 
         function escapeHtml(text) {

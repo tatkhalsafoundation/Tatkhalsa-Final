@@ -81,8 +81,8 @@
                 <a href="<?php echo esc_url( home_url( '/' ) ); ?>">Home</a>
                 <a href="<?php echo esc_url( home_url( '/about/' ) ); ?>">About</a>
                 <a href="<?php echo esc_url( home_url( '/projects/' ) ); ?>">Projects</a>
-                <a href="<?php echo esc_url( home_url( '/volunteer/' ) ); ?>">Volunteer</a>
                 <a href="<?php echo esc_url( home_url( '/blog/' ) ); ?>">Blog</a>
+                <a href="#" onclick="openBloodRequestModal(); return false;" style="color: #ff4d61; font-weight: 700; display: inline-flex; align-items: center; gap: 4px;">🩸 Request Blood</a>
               </div>
               <?php
           }
@@ -91,19 +91,23 @@
  
         <!-- Header Actions CTA (Desktop/Wide Viewports) -->
         <div class="header-actions">
-          <a href="<?php echo esc_url( home_url( '/volunteer/' ) ); ?>" class="header-cta-btn">Join Seva</a>
+          <button onclick="openModal()" class="header-cta-btn header-donate-btn">Contribute Now</button>
+          <a href="<?php echo esc_url( home_url( '/volunteer/' ) ); ?>" class="header-cta-btn header-volunteer-btn">Join Seva</a>
         </div>
  
         <!-- Elegant Multi-Selection Dropdown for Mobile / Tablet (Instead of Hamburger Menu) -->
         <div class="header-nav-selector">
-          <select id="mobileNavSelect" onchange="if(this.value) window.location.href=this.value;" style="display: none;" aria-label="Select Seva Page">
+          <select id="mobileNavSelect" onchange="if(this.value === 'donate') { openModal(); } else if(this.value === 'blood') { openBloodRequestModal(); } else if(this.value === 'flood') { openPunjabFloodReliefModal(); } else if(this.value === 'contact') { document.getElementById('footer').scrollIntoView({ behavior: 'smooth' }); } else if(this.value) { window.location.href=this.value; }" style="display: none;" aria-label="Select Seva Page">
             <option value="" disabled selected>Explore Seva...</option>
             <option value="<?php echo esc_url( home_url( '/' ) ); ?>">Home Page</option>
             <option value="<?php echo esc_url( home_url( '/about/' ) ); ?>">About Tatkhalsa</option>
             <option value="<?php echo esc_url( home_url( '/projects/' ) ); ?>">Our Seva Projects</option>
             <option value="<?php echo esc_url( home_url( '/volunteer/' ) ); ?>">Join as Volunteer</option>
             <option value="<?php echo esc_url( home_url( '/blog/' ) ); ?>">Insights & Blog</option>
-            <option value="<?php echo esc_url( home_url( '/punjab-flood-relief/' ) ); ?>">Flood Relief SOS</option>
+            <option value="flood">🌊 Flood Relief SOS</option>
+            <option value="blood">🩸 Request Blood (Emergency)</option>
+            <option value="contact">☏ Contact Us</option>
+            <option value="donate">♥ Contribute Now</option>
           </select>
           
           <div class="custom-select-wrapper" id="customMobileNavWrapper">
@@ -121,7 +125,10 @@
               <a href="<?php echo esc_url( home_url( '/projects/' ) ); ?>" class="custom-dropdown-opt" role="option">Our Seva Projects</a>
               <a href="<?php echo esc_url( home_url( '/volunteer/' ) ); ?>" class="custom-dropdown-opt" role="option">Join as Volunteer</a>
               <a href="<?php echo esc_url( home_url( '/blog/' ) ); ?>" class="custom-dropdown-opt" role="option">Insights & Blog</a>
-              <a href="<?php echo esc_url( home_url( '/punjab-flood-relief/' ) ); ?>" class="custom-dropdown-opt" role="option">Flood Relief SOS</a>
+              <a href="#" onclick="openPunjabFloodReliefModal(); document.getElementById('customMobileNavWrapper').classList.remove('open'); return false;" class="custom-dropdown-opt" role="option" style="color: #4da6ff !important; font-weight: 700;">🌊 Flood Relief SOS</a>
+              <a href="#" onclick="openBloodRequestModal(); document.getElementById('customMobileNavWrapper').classList.remove('open'); return false;" class="custom-dropdown-opt" role="option" style="color: #ff334b !important; font-weight: 700;">🩸 Request Blood</a>
+              <a href="#" onclick="document.getElementById('footer').scrollIntoView({ behavior: 'smooth' }); document.getElementById('customMobileNavWrapper').classList.remove('open'); return false;" class="custom-dropdown-opt" role="option" style="color: #4da6ff !important; font-weight: 700;">☏ Contact Us</a>
+              <a href="#" onclick="openModal(); document.getElementById('customMobileNavWrapper').classList.remove('open'); return false;" class="custom-dropdown-opt header-mobile-contrib-opt" role="option" style="color: #ff5d73 !important; font-weight: 700;">♥ Contribute Now</a>
             </div>
           </div>
         </div>

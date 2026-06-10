@@ -289,11 +289,13 @@ async function startServer() {
     "volunteer": "template-volunteer.php",
     "volunteer.php": "template-volunteer.php",
     "blog": "template-blog.php",
-    "blog.php": "template-blog.php",
-    "punjab-flood-relief": "template-punjab-flood-relief.php",
-    "punjab-flood-relief.php": "template-punjab-flood-relief.php",
-    "punjab-flood-relief.html": "template-punjab-flood-relief.php"
+    "blog.php": "template-blog.php"
   };
+
+  // Redirect former standalone flood relief page requests to the home page with automated modal trigger
+  app.get(["/punjab-flood-relief", "/punjab-flood-relief/", "/punjab-flood-relief.php", "/punjab-flood-relief.html"], (req, res) => {
+    res.redirect("/?openModal=flood");
+  });
 
   app.get("/:page", (req, res, next) => {
     let pageName = req.params.page;

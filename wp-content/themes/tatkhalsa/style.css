@@ -527,6 +527,15 @@ body.scrolled .logo-text-down {
   box-shadow: 0 6px 20px rgba(212, 175, 55, 0.45);
   background: linear-gradient(135deg, #ffdf79 0%, var(--secondary) 100%);
 }
+.header-donate-btn {
+  background: linear-gradient(135deg, var(--accent-red) 0%, #ff5d73 100%);
+  color: var(--primary) !important;
+  box-shadow: 0 4px 15px rgba(209, 61, 82, 0.35);
+}
+.header-donate-btn:hover {
+  background: linear-gradient(135deg, #ff5d73 0%, var(--accent-red) 100%) !important;
+  box-shadow: 0 6px 20px rgba(209, 61, 82, 0.55);
+}
 body.scrolled .header-cta-btn {
   padding: 6px 14px;
   font-size: 0.68rem;
@@ -1630,7 +1639,16 @@ footer .container {
     align-items: flex-start;
   }
   .header-actions {
+    display: flex !important;
+    gap: 8px !important;
+    margin-left: auto !important;
+  }
+  .header-actions .header-volunteer-btn {
     display: none !important;
+  }
+  .header-actions .header-donate-btn {
+    padding: 6px 12px;
+    font-size: 0.65rem;
   }
   .header .container {
     justify-content: space-between !important;

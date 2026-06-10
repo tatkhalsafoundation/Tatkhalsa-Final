@@ -1,5 +1,5 @@
     <!-- Footer -->
-    <footer>
+    <footer id="footer">
       <div class="footer-graphics">
         <!-- SVG Blob 1 (Warm Red) -->
         <svg
@@ -94,7 +94,7 @@
               <li><a href="<?php echo esc_url( home_url( '/about/' ) ); ?>">About Us</a></li>
               <li><a href="<?php echo esc_url( home_url( '/projects/' ) ); ?>">Projects</a></li>
               <li><a href="<?php echo esc_url( home_url( '/volunteer/' ) ); ?>">Volunteer</a></li>
-              <li><a href="<?php echo esc_url( home_url( '/punjab-flood-relief/' ) ); ?>">Punjab Flood Relief</a></li>
+              <li><a href="#" onclick="openPunjabFloodReliefModal(); return false;">Punjab Flood Relief</a></li>
               <li><a href="#" onclick="openModal(); return false;">Contribute Now</a></li>
             </ul>
           </div>
@@ -105,6 +105,675 @@
         </div>
       </div>
     </footer>
+
+    <!-- Blood Request Modal -->
+    <div class="modal-overlay" id="bloodRequestModal">
+      <div class="modal-content" style="max-width: 550px; text-align: left; padding: 28px; border-color: #ff334b; max-height: 90vh; overflow-y: auto;">
+        <button class="modal-close" onclick="closeBloodRequestModal()">×</button>
+        
+        <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 8px;">
+          <span style="font-size: 1.6rem; animation: pulse 1.5s infinite;">🩸</span>
+          <h3 style="font-size: 1.6rem; margin: 0; color: #ff334b; font-family: var(--font-sans);">
+            Emergency Blood Request
+          </h3>
+        </div>
+        <p style="color: var(--text-light); margin-bottom: 22px; font-size: 0.88rem; line-height: 1.45;">
+          Our 24/7 Tatkhalsa Blood Network coordinates rapid mobilizations of nearby registered donors. Direct email and SMS alerts will be triggered immediately.
+        </p>
+
+        <form id="bloodRequestForm" method="POST" action="">
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px;">
+            <div>
+              <label style="display: block; font-size: 0.78rem; text-transform: uppercase; color: var(--primary); font-weight: 700; margin-bottom: 6px;">Patient Full Name <span style="color:#ff334b;">*</span></label>
+              <input type="text" name="patientName" required placeholder="Enter patient name" style="width: 100%; padding: 10px 12px; background: rgba(255,255,255,0.03); border: 1.2px solid rgba(255,255,255,0.1); border-radius: 6px; color: #fff; font-size: 0.9rem; box-sizing: border-box; outline: none; transition: border-color 0.2s;" onfocus="this.style.borderColor='#ff334b'">
+            </div>
+            <div>
+              <label style="display: block; font-size: 0.78rem; text-transform: uppercase; color: var(--primary); font-weight: 700; margin-bottom: 6px;">Blood Group <span style="color:#ff334b;">*</span></label>
+              <select name="bloodGroup" required style="width: 100%; padding: 10px 12px; background: #0c1a30; border: 1.2px solid rgba(255,255,255,0.1); border-radius: 6px; color: #fff; font-size: 0.9rem; box-sizing: border-box; outline: none; transition: border-color 0.2s;" onfocus="this.style.borderColor='#ff334b'">
+                <option value="" disabled selected>Select Group</option>
+                <option value="A+">A+ (A Positive)</option>
+                <option value="A-">A- (A Negative)</option>
+                <option value="B+">B+ (B Positive)</option>
+                <option value="B-">B- (B Negative)</option>
+                <option value="O+">O+ (O Positive)</option>
+                <option value="O-">O- (O Negative)</option>
+                <option value="AB+">AB+ (AB Positive)</option>
+                <option value="AB-">AB- (AB Negative)</option>
+                <option value="Bombay Phenotype">Rare: Bombay Phenotype</option>
+              </select>
+            </div>
+          </div>
+
+          <div style="margin-bottom: 15px;">
+            <label style="display: block; font-size: 0.78rem; text-transform: uppercase; color: var(--primary); font-weight: 700; margin-bottom: 6px;">Exact Location of Patient <span style="color:#ff334b;">*</span></label>
+            <input type="text" name="patientLocation" required placeholder="e.g. Sector 15, Chandigarh / Civil Lines, Ludhiana" style="width: 100%; padding: 10px 12px; background: rgba(255,255,255,0.03); border: 1.2px solid rgba(255,255,255,0.1); border-radius: 6px; color: #fff; font-size: 0.9rem; box-sizing: border-box; outline: none;" onfocus="this.style.borderColor='#ff334b'">
+          </div>
+
+          <div style="margin-bottom: 15px;">
+            <label style="display: block; font-size: 0.78rem; text-transform: uppercase; color: var(--primary); font-weight: 700; margin-bottom: 6px;">Hospital Name & Detail <span style="color:#ff334b;">*</span></label>
+            <input type="text" name="hospitalName" required placeholder="e.g. PGIMER Ward 4, Fortis Hospital Amritsar" style="width: 100%; padding: 10px 12px; background: rgba(255,255,255,0.03); border: 1.2px solid rgba(255,255,255,0.1); border-radius: 6px; color: #fff; font-size: 0.9rem; box-sizing: border-box; outline: none;" onfocus="this.style.borderColor='#ff334b'">
+          </div>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px;">
+            <div>
+              <label style="display: block; font-size: 0.78rem; text-transform: uppercase; color: var(--primary); font-weight: 700; margin-bottom: 6px;">Units Required <span style="color:#ff334b;">*</span></label>
+              <select name="unitsRequired" required style="width: 100%; padding: 10px 12px; background: #0c1a30; border: 1.2px solid rgba(255,255,255,0.1); border-radius: 6px; color: #fff; font-size: 0.9rem; box-sizing: border-box; outline: none;" onfocus="this.style.borderColor='#ff334b'">
+                <option value="1 Unit">1 Unit</option>
+                <option value="2 Units" selected>2 Units</option>
+                <option value="3 Units">3 Units</option>
+                <option value="4 Units">4 Units</option>
+                <option value="5+ Units">5+ Units (Bulk Crisis)</option>
+              </select>
+            </div>
+            <div>
+              <label style="display: block; font-size: 0.78rem; text-transform: uppercase; color: var(--primary); font-weight: 700; margin-bottom: 6px;">Urgency Level <span style="color:#ff334b;">*</span></label>
+              <select name="urgency" required style="width: 100%; padding: 10px 12px; background: #0c1a30; border: 1.2px solid rgba(255,255,255,0.1); border-radius: 6px; color: #fff; font-size: 0.9rem; box-sizing: border-box; outline: none;" onfocus="this.style.borderColor='#ff334b'">
+                <option value="Urgent" selected>Urgent (Within 12-24 hours)</option>
+                <option value="Normal">Normal (Scheduled/Upcoming Surgery)</option>
+                <option value="Critical Emergency">🚨 Critical (Immediate requirement)</option>
+              </select>
+            </div>
+          </div>
+
+          <div style="margin-bottom: 15px;">
+            <label style="display: block; font-size: 0.78rem; text-transform: uppercase; color: var(--primary); font-weight: 700; margin-bottom: 6px;">Contact Phone / Details <span style="color:#ff334b;">*</span></label>
+            <input type="text" name="contactDetails" required placeholder="e.g. Phone Number, Alt Number, Relation to patient" style="width: 100%; padding: 10px 12px; background: rgba(255,255,255,0.03); border: 1.2px solid rgba(255,255,255,0.1); border-radius: 6px; color: #fff; font-size: 0.9rem; box-sizing: border-box; outline: none;" onfocus="this.style.borderColor='#ff334b'">
+          </div>
+
+          <div style="margin-bottom: 20px;">
+            <label style="display: block; font-size: 0.78rem; text-transform: uppercase; color: var(--primary); font-weight: 700; margin-bottom: 6px;">Additional Case Notes (Optional)</label>
+            <textarea name="additionalInfo" placeholder="e.g., Any replacement donor available? specialized requirements or conditions" style="width: 100%; padding: 10px 12px; background: rgba(255,255,255,0.03); border: 1.2px solid rgba(255,255,255,0.1); border-radius: 6px; color: #fff; font-size: 0.9rem; box-sizing: border-box; outline: none; height: 60px; resize: none;" onfocus="this.style.borderColor='#ff334b'"></textarea>
+          </div>
+
+          <!-- Status Indicator Container -->
+          <div id="bloodSubmitStatus" style="margin-bottom: 18px; font-size: 0.85rem; border-radius: 6px; display: none;"></div>
+
+          <button type="submit" id="bloodSubmitBtn" style="width: 100%; background: linear-gradient(135deg, #ff334b 0%, #ff5d73 100%); color: #fff; border: none; font-size: 1rem; font-weight: bold; padding: 14px; border-radius: 8px; cursor: pointer; transition: all 0.3s; text-transform: uppercase; letter-spacing: 0.5px; text-shadow: 0 1px 2px rgba(0,0,0,0.25); box-shadow: 0 5px 15px rgba(255, 51, 75, 0.35); text-align: center; display: block;">
+            📢 Broadcast Blood Request
+          </button>
+        </form>
+      </div>
+    </div>
+
+    <!-- Nimrat Kaur Cancer Support Modal -->
+    <div class="modal-overlay" id="nimratKaurModal">
+      <div class="modal-content" style="max-width: 620px; text-align: left; padding: 25px; border-color: #ff334b; max-height: 90vh; overflow-y: auto;">
+        <button class="modal-close" onclick="closeNimratKaurModal()">×</button>
+        
+        <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 5px;">
+          <span style="font-size: 1.6rem; animation: pulse 1s infinite;">🚨</span>
+          <h3 style="font-size: 1.5rem; margin: 0; color: #ff334b; font-family: var(--font-sans); font-weight: 800; letter-spacing: -0.5px;">
+            Emergency Medical Fundraiser
+          </h3>
+        </div>
+        
+        <div style="display: flex; flex-wrap: wrap; gap: 20px; margin-top: 15px; margin-bottom: 20px;">
+          <!-- Left details or photo -->
+          <div style="flex: 1; min-width: 250px;">
+            <div style="position: relative; border-radius: 10px; overflow: hidden; border: 2px solid rgba(255, 51, 75, 0.2); box-shadow: 0 4px 15px rgba(0,0,0,0.3); margin-bottom: 12px;">
+              <img src="/src/assets/images/regenerated_image_1781122402788.jpg" alt="Sikh Child Nimrat Kaur" style="width: 100%; display: block; filter: saturate(1.15);">
+              <div style="position: absolute; bottom: 0; left: 0; right: 0; background: linear-gradient(to top, rgba(0,0,0,0.85), rgba(0,0,0,0)); padding: 12px 10px; text-align: center;">
+                <span style="color: #fff; font-size: 0.95rem; font-weight: bold; text-shadow: 0 1px 2px rgba(0,0,0,0.8);">Nimrat Kaur (2 years old)</span>
+              </div>
+            </div>
+            
+            <!-- 80G badge -->
+            <div style="background: linear-gradient(135deg, #d4af37 0%, #b29023 100%); color: #0c1a30; border-radius: 8px; padding: 10px 14px; text-align: center; font-weight: 800; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.5px; box-shadow: 0 3px 10px rgba(212, 175, 55, 0.25);">
+              🎗️ 80G Tax Benefit Available
+            </div>
+          </div>
+
+          <!-- Right core description -->
+          <div style="flex: 1.2; min-width: 280px; display: flex; flex-direction: column; justify-content: space-between;">
+            <div>
+              <span style="font-family: var(--font-mono); font-size: 0.75rem; color: #ff334b; background: rgba(255, 51, 75, 0.1); padding: 4px 8px; border-radius: 4px; font-weight: bold; display: inline-block; margin-bottom: 10px;">
+                CANCER SEVA STATUS: CRITICAL
+              </span>
+              <p style="color: var(--text-light); font-size: 0.92rem; line-height: 1.55; margin: 0 0 15px 0;">
+                "My name is Nimrat Kaur, and I am just 2 years old. I am fighting blood cancer and need your urgent support. I am a Gursikh child, doing my best to stay strong during this difficult time. My family needs ₹7,00,000 for my treatment and life-saving care, which is more than we can afford. Please help me get a chance to live, grow, and experience the world. Even a small contribution can help save my life."
+              </p>
+            </div>
+
+            <!-- Progress Tracker -->
+            <div style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); padding: 15px; border-radius: 8px;">
+              <div style="display: flex; justify-content: space-between; font-size: 0.825rem; font-weight: bold; margin-bottom: 8px;">
+                <span style="color: #fff;">Raised: ₹2,25,000</span>
+                <span style="color: #ff334b;">Goal: ₹7,00,000</span>
+              </div>
+              <div style="width: 100%; height: 8px; background: rgba(255,255,255,0.1); border-radius: 4px; overflow: hidden; margin-bottom: 6px;">
+                <div style="width: 32.1%; height: 100%; background: linear-gradient(90deg, #ff334b 0%, #ff5d73 100%); border-radius: 4px;"></div>
+              </div>
+              <div style="display: flex; justify-content: space-between; font-size: 0.75rem; color: var(--text-light);">
+                <span>32% Completed</span>
+                <span>₹4,75,000 Remaining</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Bank details / UPI block side by side -->
+        <h4 style="font-size: 1.05rem; margin: 0 0 12px 0; color: #fff; font-family: var(--font-sans); border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 8px;">
+          How to Contribute Instantly:
+        </h4>
+
+        <div style="display: grid; grid-template-columns: 1.2fr 1fr; gap: 20px; align-items: start; margin-bottom: 15px;">
+          <!-- Left: Direct Bank Transfer Details -->
+          <div style="background: rgba(255,255,255,0.02); border: 1.2px solid rgba(255,255,255,0.06); padding: 15px; border-radius: 8px; font-size: 0.85rem; line-height: 1.45;">
+            <div style="margin-bottom: 10px; color: #fff; font-weight: bold;">DIRECT BANK TRANSFER</div>
+            <p style="margin: 4px 0 10px 0; color: var(--text-light); font-size: 0.78rem;">Transfer directly from any bank application using standard NEFT/IMPS/RTGS.</p>
+            <div class="bank-details" style="background: transparent; padding: 0; border: none; box-shadow: none; margin: 0;">
+              <p style="margin: 0 0 6px 0; color: var(--text-light);"><strong>Bank:</strong> Axis Bank</p>
+              <div style="background: rgba(0,0,0,0.2); padding: 8px; border-radius: 6px; display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px;">
+                <span style="color:#fff; font-family:var(--font-mono);">A/C: 925010057912966</span>
+                <button class="copy-btn" onclick="copyText('925010057912966')" style="padding: 2px 8px; font-size: 0.7rem; border-radius: 4px; cursor: pointer; background: var(--secondary); color:#0c1a30; border:none; font-weight:bold;">Copy</button>
+              </div>
+              <div style="background: rgba(0,0,0,0.2); padding: 8px; border-radius: 6px; display: flex; align-items: center; justify-content: space-between;">
+                <span style="color:#fff; font-family:var(--font-mono);">IFSC: UTIB0004354</span>
+                <button class="copy-btn" onclick="copyText('UTIB0004354')" style="padding: 2px 8px; font-size: 0.7rem; border-radius: 4px; cursor: pointer; background: var(--secondary); color:#0c1a30; border:none; font-weight:bold;">Copy</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Right: UPI QR Code -->
+          <div style="text-align: center; background: rgba(255,255,255,0.02); border: 1.2px solid rgba(255,255,255,0.06); padding: 15px; border-radius: 8px;">
+            <div style="margin-bottom: 10px; color: #fff; font-weight: bold; font-size: 0.85rem;">UPI INSTANT PAY</div>
+            <div style="width: 140px; height: 140px; margin: 0 auto 10px auto; background: #fff; padding: 8px; border-radius: 6px; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 10px rgba(0,0,0,0.2);">
+              <img src="https://api.qrserver.com/v1/create-qr-code/?size=140x140&data=upi%3A%2F%2Fpay%3Fpa%3Dmab.037215043540097%40axisbank%26pn%3DTatkhalsa%2520Foundation%26cu%3DINR%26amp%3Btn%3DNimrat%2520Kaur%2520Cancer%2520Seva" alt="UPI QR Code" style="width: 100%; display: block;">
+            </div>
+            <p style="margin: 0; font-size: 0.72rem; color: var(--text-light); word-break: break-all;">
+              Scan or pay to:<br/>
+              <strong style="color: #fff; font-family: var(--font-mono); font-size: 0.78rem;">mab.037215043540097@axisbank</strong>
+            </p>
+          </div>
+        </div>
+
+        <!-- Contact details footer -->
+        <div style="background: rgba(212, 175, 55, 0.05); border: 1px dashed rgba(212, 175, 55, 0.25); padding: 12px 15px; border-radius: 8px; display: grid; grid-template-columns: 1fr 1fr; gap: 10px; font-size: 0.8rem; color: var(--text-light);">
+          <div>
+            📞 <strong>Contact:</strong> +91 98770 38520
+          </div>
+          <div>
+            ✉️ <strong>Email:</strong> info@tatkhalsa.in
+          </div>
+          <div>
+            🌐 <strong>Web:</strong> https://tatkhalsa.in
+          </div>
+          <div>
+            📍 <strong>Location:</strong> Nawasahar, Punjab, India
+          </div>
+        </div>
+
+        <div style="margin-top: 15px; text-align: center;">
+          <a href="upi://pay?pa=mab.037215043540097@axisbank&pn=Tatkhalsa%20Foundation&cu=INR&tn=Nimrat%20Kaur%2520Cancer%2520Seva" style="display: inline-flex; align-items: center; justify-content: center; gap: 8px; background: linear-gradient(135deg, #00875a 0%, #00b376 100%); color: #ffffff; padding: 12px 24px; border-radius: 8px; font-weight: bold; text-decoration: none; font-size: 1rem; width: 100%; box-sizing: border-box; box-shadow: 0 4px 12px rgba(0,135,90,0.25); transition: all 0.25s;" onmouseover="this.style.transform='translateY(-1px)';" onmouseout="this.style.transform='none';">
+            📱 Pay Directly via UPI App
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Punjab Flood Relief 2025 Modal -->
+    <div class="modal-overlay" id="punjabFloodReliefModal">
+      <div class="modal-content" style="max-width: 620px; text-align: left; padding: 25px; border-color: #00875a; max-height: 90vh; overflow-y: auto;">
+        <button class="modal-close" onclick="closePunjabFloodReliefModal()">×</button>
+        
+        <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 5px;">
+          <span style="font-size: 1.6rem; animation: pulse 1s infinite;">🌊</span>
+          <h3 style="font-size: 1.5rem; margin: 0; color: #4da6ff; font-family: var(--font-sans); font-weight: 800; letter-spacing: -0.5px;">
+            Emergency Flood Relief SOS
+          </h3>
+        </div>
+        
+        <div style="display: flex; flex-wrap: wrap; gap: 20px; margin-top: 15px; margin-bottom: 20px;">
+          <!-- Left details or photo -->
+          <div style="flex: 1; min-width: 250px;">
+            <div style="position: relative; border-radius: 10px; overflow: hidden; border: 2px solid rgba(77, 166, 255, 0.2); box-shadow: 0 4px 15px rgba(0,0,0,0.3); margin-bottom: 12px;">
+              <img src="https://images.unsplash.com/photo-1542045618-971efac693e5?q=80&w=600&auto=format&fit=crop" alt="Punjab Relief Support" style="width: 100%; display: block; filter: saturate(1.15);">
+              <div style="position: absolute; bottom: 0; left: 0; right: 0; background: linear-gradient(to top, rgba(0,0,0,0.85), rgba(0,0,0,0)); padding: 12px 10px; text-align: center;">
+                <span style="color: #fff; font-size: 0.95rem; font-weight: bold; text-shadow: 0 1px 2px rgba(0,0,0,0.8);">Punjab Flood Relief 2025</span>
+              </div>
+            </div>
+            
+            <!-- 80G badge -->
+            <div style="background: linear-gradient(135deg, #d4af37 0%, #b29023 100%); color: #0c1a30; border-radius: 8px; padding: 10px 14px; text-align: center; font-weight: 800; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.5px; box-shadow: 0 3px 10px rgba(212, 175, 55, 0.25);">
+              🎗️ 80G Tax Benefit Available
+            </div>
+          </div>
+
+          <!-- Right core description -->
+          <div style="flex: 1.2; min-width: 280px; display: flex; flex-direction: column; justify-content: space-between;">
+            <div>
+              <span style="font-family: var(--font-mono); font-size: 0.75rem; color: #4da6ff; background: rgba(77, 166, 255, 0.1); padding: 4px 8px; border-radius: 4px; font-weight: bold; display: inline-block; margin-bottom: 10px;">
+                RELIEF STATUS: ACTIVE
+              </span>
+              <p style="color: var(--text-light); font-size: 0.92rem; line-height: 1.55; margin: 0 0 15px 0;">
+                In response to the devastating floods across Punjab in 2025, Tatkhalsa Foundation has launched comprehensive relief efforts. Our dedicated sevadars are working round-the-clock to distribute essential supplies, dry ration packages, fresh hot langar, water purification pills, and conducting medical camps inside distressed remote rural flood zones. Please contribute to help restore lives.
+              </p>
+            </div>
+
+            <!-- Progress Tracker -->
+            <div style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); padding: 15px; border-radius: 8px;">
+              <div style="display: flex; justify-content: space-between; font-size: 0.825rem; font-weight: bold; margin-bottom: 8px;">
+                <span style="color: #fff;">Raised: ₹5,80,000</span>
+                <span style="color: #4da6ff;">Goal: ₹10,00,000</span>
+              </div>
+              <div style="width: 100%; height: 8px; background: rgba(255,255,255,0.1); border-radius: 4px; overflow: hidden; margin-bottom: 6px;">
+                <div style="width: 58%; height: 100%; background: linear-gradient(90deg, #4da6ff 0%, #00bcff 100%); border-radius: 4px;"></div>
+              </div>
+              <div style="display: flex; justify-content: space-between; font-size: 0.75rem; color: var(--text-light);">
+                <span>58% Completed</span>
+                <span>₹4,20,000 Remaining</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Bank details / UPI block side by side -->
+        <h4 style="font-size: 1.05rem; margin: 0 0 12px 0; color: #fff; font-family: var(--font-sans); border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 8px;">
+          How to Contribute Instantly:
+        </h4>
+
+        <div style="display: grid; grid-template-columns: 1.2fr 1fr; gap: 20px; align-items: start; margin-bottom: 15px;">
+          <!-- Left: Direct Bank Transfer Details -->
+          <div style="background: rgba(255,255,255,0.02); border: 1.2px solid rgba(255,255,255,0.06); padding: 15px; border-radius: 8px; font-size: 0.85rem; line-height: 1.45;">
+            <div style="margin-bottom: 10px; color: #fff; font-weight: bold;">DIRECT BANK TRANSFER</div>
+            <p style="margin: 4px 0 10px 0; color: var(--text-light); font-size: 0.78rem;">Transfer directly from any bank application using standard NEFT/IMPS/RTGS.</p>
+            <div class="bank-details" style="background: transparent; padding: 0; border: none; box-shadow: none; margin: 0;">
+              <p style="margin: 0 0 6px 0; color: var(--text-light);"><strong>Bank:</strong> Axis Bank</p>
+              <div style="background: rgba(0,0,0,0.2); padding: 8px; border-radius: 6px; display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px;">
+                <span style="color:#fff; font-family:var(--font-mono);">A/C: 925010057912966</span>
+                <button class="copy-btn" onclick="copyText('925010057912966')" style="padding: 2px 8px; font-size: 0.7rem; border-radius: 4px; cursor: pointer; background: var(--secondary); color:#0c1a30; border:none; font-weight:bold;">Copy</button>
+              </div>
+              <div style="background: rgba(0,0,0,0.2); padding: 8px; border-radius: 6px; display: flex; align-items: center; justify-content: space-between;">
+                <span style="color:#fff; font-family:var(--font-mono);">IFSC: UTIB0004354</span>
+                <button class="copy-btn" onclick="copyText('UTIB0004354')" style="padding: 2px 8px; font-size: 0.7rem; border-radius: 4px; cursor: pointer; background: var(--secondary); color:#0c1a30; border:none; font-weight:bold;">Copy</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Right: UPI QR Code -->
+          <div style="text-align: center; background: rgba(255,255,255,0.02); border: 1.2px solid rgba(255,255,255,0.06); padding: 15px; border-radius: 8px;">
+            <div style="margin-bottom: 10px; color: #fff; font-weight: bold; font-size: 0.85rem;">UPI INSTANT PAY</div>
+            <div style="width: 140px; height: 140px; margin: 0 auto 10px auto; background: #fff; padding: 8px; border-radius: 6px; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 10px rgba(0,0,0,0.2);">
+              <img src="https://api.qrserver.com/v1/create-qr-code/?size=140x140&data=upi%3A%2F%2Fpay%3Fpa%3Dmab.037215043540097%40axisbank%26pn%3DTatkhalsa%2520Foundation%26cu%3DINR%26amp%3Btn%3DFlood%2520Relief%2520Seva" alt="UPI QR Code" style="width: 100%; display: block;">
+            </div>
+            <p style="margin: 0; font-size: 0.72rem; color: var(--text-light); word-break: break-all;">
+              Scan or pay to:<br/>
+              <strong style="color: #fff; font-family: var(--font-mono); font-size: 0.78rem;">mab.037215043540097@axisbank</strong>
+            </p>
+          </div>
+        </div>
+
+        <!-- Contact details footer -->
+        <div style="background: rgba(212, 175, 55, 0.05); border: 1px dashed rgba(212, 175, 55, 0.25); padding: 12px 15px; border-radius: 8px; display: grid; grid-template-columns: 1fr 1fr; gap: 10px; font-size: 0.8rem; color: var(--text-light);">
+          <div>
+            📞 <strong>Contact:</strong> +91 98770 38520
+          </div>
+          <div>
+            ✉️ <strong>Email:</strong> info@tatkhalsa.in
+          </div>
+          <div>
+            🌐 <strong>Web:</strong> https://tatkhalsa.in
+          </div>
+          <div>
+            📍 <strong>Location:</strong> Nawasahar, Punjab, India
+          </div>
+        </div>
+
+        <div style="margin-top: 15px; text-align: center;">
+          <a href="upi://pay?pa=mab.037215043540097@axisbank&pn=Tatkhalsa%20Foundation&cu=INR&tn=Flood%20Relief%20Seva" style="display: inline-flex; align-items: center; justify-content: center; gap: 8px; background: linear-gradient(135deg, #00875a 0%, #00b376 100%); color: #ffffff; padding: 12px 24px; border-radius: 8px; font-weight: bold; text-decoration: none; font-size: 1rem; width: 100%; box-sizing: border-box; box-shadow: 0 4px 12px rgba(0,135,90,0.25); transition: all 0.25s;" onmouseover="this.style.transform='translateY(-1px)';" onmouseout="this.style.transform='none';">
+            📱 Pay Directly via UPI App
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Essential Grocery Help Seva Modal -->
+    <div class="modal-overlay" id="groceryHelpSevaModal">
+      <div class="modal-content" style="max-width: 620px; text-align: left; padding: 25px; border-color: #00875a; max-height: 90vh; overflow-y: auto;">
+        <button class="modal-close" onclick="closeGroceryHelpSevaModal()">×</button>
+        
+        <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 5px;">
+          <span style="font-size: 1.6rem;">🌾</span>
+          <h3 style="font-size: 1.5rem; margin: 0; color: #00cc88; font-family: var(--font-sans); font-weight: 800; letter-spacing: -0.5px;">
+            Essential Grocery Help Seva
+          </h3>
+        </div>
+        
+        <div style="display: flex; flex-wrap: wrap; gap: 20px; margin-top: 15px; margin-bottom: 20px;">
+          <!-- Left details or photo -->
+          <div style="flex: 1; min-width: 250px;">
+            <div style="position: relative; border-radius: 10px; overflow: hidden; border: 2px solid rgba(0, 204, 136, 0.2); box-shadow: 0 4px 15px rgba(0,0,0,0.3); margin-bottom: 12px;">
+              <img src="https://images.unsplash.com/photo-1609137144813-1d67493fa7b2?auto=format&fit=crop&w=600&q=80" alt="Grocery Help Support" style="width: 100%; display: block; filter: saturate(1.15);">
+              <div style="position: absolute; bottom: 0; left: 0; right: 0; background: linear-gradient(to top, rgba(0,0,0,0.85), rgba(0,0,0,0)); padding: 12px 10px; text-align: center;">
+                <span style="color: #fff; font-size: 0.95rem; font-weight: bold; text-shadow: 0 1px 2px rgba(0,0,0,0.8);">Monthly Ration & Grocery Support</span>
+              </div>
+            </div>
+            
+            <!-- 80G badge -->
+            <div style="background: linear-gradient(135deg, #d4af37 0%, #b29023 100%); color: #0c1a30; border-radius: 8px; padding: 10px 14px; text-align: center; font-weight: 800; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.5px; box-shadow: 0 3px 10px rgba(212, 175, 55, 0.25);">
+              🎗️ 80G Tax Benefit Available
+            </div>
+          </div>
+
+          <!-- Right core description -->
+          <div style="flex: 1.2; min-width: 280px; display: flex; flex-direction: column; justify-content: space-between;">
+            <div>
+              <span style="font-family: var(--font-mono); font-size: 0.75rem; color: #00cc88; background: rgba(0, 204, 136, 0.1); padding: 4px 8px; border-radius: 4px; font-weight: bold; display: inline-block; margin-bottom: 10px;">
+                RATION STATUS: ACTIVE
+              </span>
+              <p style="color: var(--text-light); font-size: 0.92rem; line-height: 1.55; margin: 0 0 15px 0;">
+                Our grocery help campaign focuses on distributing comprehensive monthly ration hampers to physically disabled sevadars, single mothers, and elderly Gursikh families below the poverty line. Each kit includes essential wheat flour, pulses, pure ghee, salt, sugar, tea leaves, oil, and basic hygiene utilities, ensuring that no family goes hungry.
+              </p>
+            </div>
+
+            <!-- Progress Tracker -->
+            <div style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); padding: 15px; border-radius: 8px;">
+              <div style="display: flex; justify-content: space-between; font-size: 0.825rem; font-weight: bold; margin-bottom: 8px;">
+                <span style="color: #fff;">Raised: ₹1,60,000</span>
+                <span style="color: #00cc88;">Goal: ₹3,00,000</span>
+              </div>
+              <div style="width: 100%; height: 8px; background: rgba(255,255,255,0.1); border-radius: 4px; overflow: hidden; margin-bottom: 6px;">
+                <div style="width: 53.3%; height: 100%; background: linear-gradient(90deg, #00cc88 0%, #33ffaa 100%); border-radius: 4px;"></div>
+              </div>
+              <div style="display: flex; justify-content: space-between; font-size: 0.75rem; color: var(--text-light);">
+                <span>53.3% Completed</span>
+                <span>₹1,40,000 Remaining</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Bank details / UPI block side by side -->
+        <h4 style="font-size: 1.05rem; margin: 0 0 12px 0; color: #fff; font-family: var(--font-sans); border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 8px;">
+          How to Contribute Instantly:
+        </h4>
+
+        <div style="display: grid; grid-template-columns: 1.2fr 1fr; gap: 20px; align-items: start; margin-bottom: 15px;">
+          <!-- Left: Direct Bank Transfer Details -->
+          <div style="background: rgba(255,255,255,0.02); border: 1.2px solid rgba(255,255,255,0.06); padding: 15px; border-radius: 8px; font-size: 0.85rem; line-height: 1.45;">
+            <div style="margin-bottom: 10px; color: #fff; font-weight: bold;">DIRECT BANK TRANSFER</div>
+            <p style="margin: 4px 0 10px 0; color: var(--text-light); font-size: 0.78rem;">Transfer directly from any bank application using standard NEFT/IMPS/RTGS.</p>
+            <div class="bank-details" style="background: transparent; padding: 0; border: none; box-shadow: none; margin: 0;">
+              <p style="margin: 0 0 6px 0; color: var(--text-light);"><strong>Bank:</strong> Axis Bank</p>
+              <div style="background: rgba(0,0,0,0.2); padding: 8px; border-radius: 6px; display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px;">
+                <span style="color:#fff; font-family:var(--font-mono);">A/C: 925010057912966</span>
+                <button class="copy-btn" onclick="copyText('925010057912966')" style="padding: 2px 8px; font-size: 0.7rem; border-radius: 4px; cursor: pointer; background: var(--secondary); color:#0c1a30; border:none; font-weight:bold;">Copy</button>
+              </div>
+              <div style="background: rgba(0,0,0,0.2); padding: 8px; border-radius: 6px; display: flex; align-items: center; justify-content: space-between;">
+                <span style="color:#fff; font-family:var(--font-mono);">IFSC: UTIB0004354</span>
+                <button class="copy-btn" onclick="copyText('UTIB0004354')" style="padding: 2px 8px; font-size: 0.7rem; border-radius: 4px; cursor: pointer; background: var(--secondary); color:#0c1a30; border:none; font-weight:bold;">Copy</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Right: UPI QR Code -->
+          <div style="text-align: center; background: rgba(255,255,255,0.02); border: 1.2px solid rgba(255,255,255,0.06); padding: 15px; border-radius: 8px;">
+            <div style="margin-bottom: 10px; color: #fff; font-weight: bold; font-size: 0.85rem;">UPI INSTANT PAY</div>
+            <div style="width: 140px; height: 140px; margin: 0 auto 10px auto; background: #fff; padding: 8px; border-radius: 6px; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 10px rgba(0,0,0,0.2);">
+              <img src="https://api.qrserver.com/v1/create-qr-code/?size=140x140&data=upi%3A%2F%2Fpay%3Fpa%3Dmab.037215043540097%40axisbank%26pn%3DTatkhalsa%2520Foundation%26cu%3DINR%26amp%3Btn%3DGrocery%2520Help%2520Seva" alt="UPI QR Code" style="width: 100%; display: block;">
+            </div>
+            <p style="margin: 0; font-size: 0.72rem; color: var(--text-light); word-break: break-all;">
+              Scan or pay to:<br/>
+              <strong style="color: #fff; font-family: var(--font-mono); font-size: 0.78rem;">mab.037215043540097@axisbank</strong>
+            </p>
+          </div>
+        </div>
+
+        <!-- Contact details footer -->
+        <div style="background: rgba(212, 175, 55, 0.05); border: 1px dashed rgba(212, 175, 55, 0.25); padding: 12px 15px; border-radius: 8px; display: grid; grid-template-columns: 1fr 1fr; gap: 10px; font-size: 0.8rem; color: var(--text-light);">
+          <div>
+            📞 <strong>Contact:</strong> +91 98770 38520
+          </div>
+          <div>
+            ✉️ <strong>Email:</strong> info@tatkhalsa.in
+          </div>
+          <div>
+            🌐 <strong>Web:</strong> https://tatkhalsa.in
+          </div>
+          <div>
+            📍 <strong>Location:</strong> Nawasahar, Punjab, India
+          </div>
+        </div>
+
+        <div style="margin-top: 15px; text-align: center;">
+          <a href="upi://pay?pa=mab.037215043540097@axisbank&pn=Tatkhalsa%20Foundation&cu=INR&tn=Grocery%20Help%20Seva" style="display: inline-flex; align-items: center; justify-content: center; gap: 8px; background: linear-gradient(135deg, #00875a 0%, #00b376 100%); color: #ffffff; padding: 12px 24px; border-radius: 8px; font-weight: bold; text-decoration: none; font-size: 1rem; width: 100%; box-sizing: border-box; box-shadow: 0 4px 12px rgba(0,135,90,0.25); transition: all 0.25s;" onmouseover="this.style.transform='translateY(-1px)';" onmouseout="this.style.transform='none';">
+            📱 Pay Directly via UPI App
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- 1984 Victims Family Support Modal -->
+    <div class="modal-overlay" id="victimFamilySupportModal">
+      <div class="modal-content" style="max-width: 620px; text-align: left; padding: 25px; border-color: #00875a; max-height: 90vh; overflow-y: auto;">
+        <button class="modal-close" onclick="closeVictimFamilySupportModal()">×</button>
+        
+        <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 5px;">
+          <span style="font-size: 1.6rem;">✊</span>
+          <h3 style="font-size: 1.5rem; margin: 0; color: #a855f7; font-family: var(--font-sans); font-weight: 800; letter-spacing: -0.5px;">
+            1984 Victims Family Support
+          </h3>
+        </div>
+        
+        <div style="display: flex; flex-wrap: wrap; gap: 20px; margin-top: 15px; margin-bottom: 20px;">
+          <!-- Left details or photo -->
+          <div style="flex: 1; min-width: 250px;">
+            <div style="position: relative; border-radius: 10px; overflow: hidden; border: 2px solid rgba(168, 85, 247, 0.2); box-shadow: 0 4px 15px rgba(0,0,0,0.3); margin-bottom: 12px;">
+              <img src="https://images.unsplash.com/photo-1605701243007-df5b128caff8?auto=format&fit=crop&w=600&q=80" alt="1984 Victim Support" style="width: 100%; display: block; filter: saturate(1.15);">
+              <div style="position: absolute; bottom: 0; left: 0; right: 0; background: linear-gradient(to top, rgba(0,0,0,0.85), rgba(0,0,0,0)); padding: 12px 10px; text-align: center;">
+                <span style="color: #fff; font-size: 0.95rem; font-weight: bold; text-shadow: 0 1px 2px rgba(0,0,0,0.8);">Sikh Family Rehabilitation Seva</span>
+              </div>
+            </div>
+            
+            <!-- 80G badge -->
+            <div style="background: linear-gradient(135deg, #d4af37 0%, #b29023 100%); color: #0c1a30; border-radius: 8px; padding: 10px 14px; text-align: center; font-weight: 800; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.5px; box-shadow: 0 3px 10px rgba(212, 175, 55, 0.25);">
+              🎗️ 80G Tax Benefit Available
+            </div>
+          </div>
+
+          <!-- Right core description -->
+          <div style="flex: 1.2; min-width: 280px; display: flex; flex-direction: column; justify-content: space-between;">
+            <div>
+              <span style="font-family: var(--font-mono); font-size: 0.75rem; color: #a855f7; background: rgba(168, 85, 247, 0.1); padding: 4px 8px; border-radius: 4px; font-weight: bold; display: inline-block; margin-bottom: 10px;">
+                AID STATUS: ACTIVE
+              </span>
+              <p style="color: var(--text-light); font-size: 0.92rem; line-height: 1.55; margin: 0 0 15px 0;">
+                Providing dignified rehabilitation and life sponsorships to families & widows directly affected by the November 1984 tragedy. We sponsor school education, college tuitions, and vocational skills training for their children, alongside distributing continuous monthly livelihood stipends to secure their futures with respect.
+              </p>
+            </div>
+
+            <!-- Progress Tracker -->
+            <div style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); padding: 15px; border-radius: 8px;">
+              <div style="display: flex; justify-content: space-between; font-size: 0.825rem; font-weight: bold; margin-bottom: 8px;">
+                <span style="color: #fff;">Raised: ₹3,15,000</span>
+                <span style="color: #a855f7;">Goal: ₹6,00,000</span>
+              </div>
+              <div style="width: 100%; height: 8px; background: rgba(255,255,255,0.1); border-radius: 4px; overflow: hidden; margin-bottom: 6px;">
+                <div style="width: 52.5%; height: 100%; background: linear-gradient(90deg, #a855f7 0%, #c084fc 100%); border-radius: 4px;"></div>
+              </div>
+              <div style="display: flex; justify-content: space-between; font-size: 0.75rem; color: var(--text-light);">
+                <span>52.5% Completed</span>
+                <span>₹2,85,000 Remaining</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Bank details / UPI block side by side -->
+        <h4 style="font-size: 1.05rem; margin: 0 0 12px 0; color: #fff; font-family: var(--font-sans); border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 8px;">
+          How to Contribute Instantly:
+        </h4>
+
+        <div style="display: grid; grid-template-columns: 1.2fr 1fr; gap: 20px; align-items: start; margin-bottom: 15px;">
+          <!-- Left: Direct Bank Transfer Details -->
+          <div style="background: rgba(255,255,255,0.02); border: 1.2px solid rgba(255,255,255,0.06); padding: 15px; border-radius: 8px; font-size: 0.85rem; line-height: 1.45;">
+            <div style="margin-bottom: 10px; color: #fff; font-weight: bold;">DIRECT BANK TRANSFER</div>
+            <p style="margin: 4px 0 10px 0; color: var(--text-light); font-size: 0.78rem;">Transfer directly from any bank application using standard NEFT/IMPS/RTGS.</p>
+            <div class="bank-details" style="background: transparent; padding: 0; border: none; box-shadow: none; margin: 0;">
+              <p style="margin: 0 0 6px 0; color: var(--text-light);"><strong>Bank:</strong> Axis Bank</p>
+              <div style="background: rgba(0,0,0,0.2); padding: 8px; border-radius: 6px; display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px;">
+                <span style="color:#fff; font-family:var(--font-mono);">A/C: 925010057912966</span>
+                <button class="copy-btn" onclick="copyText('925010057912966')" style="padding: 2px 8px; font-size: 0.7rem; border-radius: 4px; cursor: pointer; background: var(--secondary); color:#0c1a30; border:none; font-weight:bold;">Copy</button>
+              </div>
+              <div style="background: rgba(0,0,0,0.2); padding: 8px; border-radius: 6px; display: flex; align-items: center; justify-content: space-between;">
+                <span style="color:#fff; font-family:var(--font-mono);">IFSC: UTIB0004354</span>
+                <button class="copy-btn" onclick="copyText('UTIB0004354')" style="padding: 2px 8px; font-size: 0.7rem; border-radius: 4px; cursor: pointer; background: var(--secondary); color:#0c1a30; border:none; font-weight:bold;">Copy</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Right: UPI QR Code -->
+          <div style="text-align: center; background: rgba(255,255,255,0.02); border: 1.2px solid rgba(255,255,255,0.06); padding: 15px; border-radius: 8px;">
+            <div style="margin-bottom: 10px; color: #fff; font-weight: bold; font-size: 0.85rem;">UPI INSTANT PAY</div>
+            <div style="width: 140px; height: 140px; margin: 0 auto 10px auto; background: #fff; padding: 8px; border-radius: 6px; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 10px rgba(0,0,0,0.2);">
+              <img src="https://api.qrserver.com/v1/create-qr-code/?size=140x140&data=upi%3A%2F%2Fpay%3Fpa%3Dmab.037215043540097%40axisbank%26pn%3DTatkhalsa%2520Foundation%26cu%3DINR%26amp%3Btn%3D1984%2520Family%2520Support" alt="UPI QR Code" style="width: 100%; display: block;">
+            </div>
+            <p style="margin: 0; font-size: 0.72rem; color: var(--text-light); word-break: break-all;">
+              Scan or pay to:<br/>
+              <strong style="color: #fff; font-family: var(--font-mono); font-size: 0.78rem;">mab.037215043540097@axisbank</strong>
+            </p>
+          </div>
+        </div>
+
+        <!-- Contact details footer -->
+        <div style="background: rgba(212, 175, 55, 0.05); border: 1px dashed rgba(212, 175, 55, 0.25); padding: 12px 15px; border-radius: 8px; display: grid; grid-template-columns: 1fr 1fr; gap: 10px; font-size: 0.8rem; color: var(--text-light);">
+          <div>
+            📞 <strong>Contact:</strong> +91 98770 38520
+          </div>
+          <div>
+            ✉️ <strong>Email:</strong> info@tatkhalsa.in
+          </div>
+          <div>
+            🌐 <strong>Web:</strong> https://tatkhalsa.in
+          </div>
+          <div>
+            📍 <strong>Location:</strong> Nawasahar, Punjab, India
+          </div>
+        </div>
+
+        <div style="margin-top: 15px; text-align: center;">
+          <a href="upi://pay?pa=mab.037215043540097@axisbank&pn=Tatkhalsa%20Foundation&cu=INR&tn=1984%20Family%20Support" style="display: inline-flex; align-items: center; justify-content: center; gap: 8px; background: linear-gradient(135deg, #00875a 0%, #00b376 100%); color: #ffffff; padding: 12px 24px; border-radius: 8px; font-weight: bold; text-decoration: none; font-size: 1rem; width: 100%; box-sizing: border-box; box-shadow: 0 4px 12px rgba(0,135,90,0.25); transition: all 0.25s;" onmouseover="this.style.transform='translateY(-1px)';" onmouseout="this.style.transform='none';">
+            📱 Pay Directly via UPI App
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Gursikh Daughters Marriages Seva Modal -->
+    <div class="modal-overlay" id="marriagesSevaModal">
+      <div class="modal-content" style="max-width: 620px; text-align: left; padding: 25px; border-color: #00875a; max-height: 90vh; overflow-y: auto;">
+        <button class="modal-close" onclick="closeMarriagesSevaModal()">×</button>
+        
+        <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 5px;">
+          <span style="font-size: 1.6rem;">🌸</span>
+          <h3 style="font-size: 1.5rem; margin: 0; color: #f97316; font-family: var(--font-sans); font-weight: 800; letter-spacing: -0.5px;">
+            Gursikh Daughters Marriages Seva
+          </h3>
+        </div>
+        
+        <div style="display: flex; flex-wrap: wrap; gap: 20px; margin-top: 15px; margin-bottom: 20px;">
+          <!-- Left details or photo -->
+          <div style="flex: 1; min-width: 250px;">
+            <div style="position: relative; border-radius: 10px; overflow: hidden; border: 2px solid rgba(249, 115, 22, 0.2); box-shadow: 0 4px 15px rgba(0,0,0,0.3); margin-bottom: 12px;">
+              <img src="https://images.unsplash.com/photo-1610030469668-93535c17b6b3?auto=format&fit=crop&w=600&q=80" alt="Marriages Seva Support" style="width: 100%; display: block; filter: saturate(1.15);">
+              <div style="position: absolute; bottom: 0; left: 0; right: 0; background: linear-gradient(to top, rgba(0,0,0,0.85), rgba(0,0,0,0)); padding: 12px 10px; text-align: center;">
+                <span style="color: #fff; font-size: 0.95rem; font-weight: bold; text-shadow: 0 1px 2px rgba(0,0,0,0.8);">Anand Karaj & Marriage Support</span>
+              </div>
+            </div>
+            
+            <!-- 80G badge -->
+            <div style="background: linear-gradient(135deg, #d4af37 0%, #b29023 100%); color: #0c1a30; border-radius: 8px; padding: 10px 14px; text-align: center; font-weight: 800; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.5px; box-shadow: 0 3px 10px rgba(212, 175, 55, 0.25);">
+              🎗️ 80G Tax Benefit Available
+            </div>
+          </div>
+
+          <!-- Right core description -->
+          <div style="flex: 1.2; min-width: 280px; display: flex; flex-direction: column; justify-content: space-between;">
+            <div>
+              <span style="font-family: var(--font-mono); font-size: 0.75rem; color: #f97316; background: rgba(249, 115, 22, 0.1); padding: 4px 8px; border-radius: 4px; font-weight: bold; display: inline-block; margin-bottom: 10px;">
+                SUPPORT STATUS: ACTIVE
+              </span>
+              <p style="color: var(--text-light); font-size: 0.92rem; line-height: 1.55; margin: 0 0 15px 0;">
+                Under this welfare initiative, Tatkhalsa Foundation provides funding support, Gurdwara arrangements for respectful Anand Karaj ceremonies, and comprehensive startup household gift hampers (including cookware, blankets, sewing machines, etc.) for daughters of underprivileged and extremely poor Gursikh families who cannot afford standard marriage expenses.
+              </p>
+            </div>
+
+            <!-- Progress Tracker -->
+            <div style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); padding: 15px; border-radius: 8px;">
+              <div style="display: flex; justify-content: space-between; font-size: 0.825rem; font-weight: bold; margin-bottom: 8px;">
+                <span style="color: #fff;">Raised: ₹1,52,000</span>
+                <span style="color: #f97316;">Goal: ₹4,00,000</span>
+              </div>
+              <div style="width: 100%; height: 8px; background: rgba(255,255,255,0.1); border-radius: 4px; overflow: hidden; margin-bottom: 6px;">
+                <div style="width: 38%; height: 100%; background: linear-gradient(90deg, #f97316 0%, #fb923c 100%); border-radius: 4px;"></div>
+              </div>
+              <div style="display: flex; justify-content: space-between; font-size: 0.75rem; color: var(--text-light);">
+                <span>38% Completed</span>
+                <span>₹2,48,000 Remaining</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Bank details / UPI block side by side -->
+        <h4 style="font-size: 1.05rem; margin: 0 0 12px 0; color: #fff; font-family: var(--font-sans); border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 8px;">
+          How to Contribute Instantly:
+        </h4>
+
+        <div style="display: grid; grid-template-columns: 1.2fr 1fr; gap: 20px; align-items: start; margin-bottom: 15px;">
+          <!-- Left: Direct Bank Transfer Details -->
+          <div style="background: rgba(255,255,255,0.02); border: 1.2px solid rgba(255,255,255,0.06); padding: 15px; border-radius: 8px; font-size: 0.85rem; line-height: 1.45;">
+            <div style="margin-bottom: 10px; color: #fff; font-weight: bold;">DIRECT BANK TRANSFER</div>
+            <p style="margin: 4px 0 10px 0; color: var(--text-light); font-size: 0.78rem;">Transfer directly from any bank application using standard NEFT/IMPS/RTGS.</p>
+            <div class="bank-details" style="background: transparent; padding: 0; border: none; box-shadow: none; margin: 0;">
+              <p style="margin: 0 0 6px 0; color: var(--text-light);"><strong>Bank:</strong> Axis Bank</p>
+              <div style="background: rgba(0,0,0,0.2); padding: 8px; border-radius: 6px; display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px;">
+                <span style="color:#fff; font-family:var(--font-mono);">A/C: 925010057912966</span>
+                <button class="copy-btn" onclick="copyText('925010057912966')" style="padding: 2px 8px; font-size: 0.7rem; border-radius: 4px; cursor: pointer; background: var(--secondary); color:#0c1a30; border:none; font-weight:bold;">Copy</button>
+              </div>
+              <div style="background: rgba(0,0,0,0.2); padding: 8px; border-radius: 6px; display: flex; align-items: center; justify-content: space-between;">
+                <span style="color:#fff; font-family:var(--font-mono);">IFSC: UTIB0004354</span>
+                <button class="copy-btn" onclick="copyText('UTIB0004354')" style="padding: 2px 8px; font-size: 0.7rem; border-radius: 4px; cursor: pointer; background: var(--secondary); color:#0c1a30; border:none; font-weight:bold;">Copy</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Right: UPI QR Code -->
+          <div style="text-align: center; background: rgba(255,255,255,0.02); border: 1.2px solid rgba(255,255,255,0.06); padding: 15px; border-radius: 8px;">
+            <div style="margin-bottom: 10px; color: #fff; font-weight: bold; font-size: 0.85rem;">UPI INSTANT PAY</div>
+            <div style="width: 140px; height: 140px; margin: 0 auto 10px auto; background: #fff; padding: 8px; border-radius: 6px; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 10px rgba(0,0,0,0.2);">
+              <img src="https://api.qrserver.com/v1/create-qr-code/?size=140x140&data=upi%3A%2F%2Fpay%3Fpa%3Dmab.037215043540097%40axisbank%26pn%3DTatkhalsa%2520Foundation%26cu%3DINR%26amp%3Btn%3DDaughters%2520Marriages%2520Seva" alt="UPI QR Code" style="width: 100%; display: block;">
+            </div>
+            <p style="margin: 0; font-size: 0.72rem; color: var(--text-light); word-break: break-all;">
+              Scan or pay to:<br/>
+              <strong style="color: #fff; font-family: var(--font-mono); font-size: 0.78rem;">mab.037215043540097@axisbank</strong>
+            </p>
+          </div>
+        </div>
+
+        <!-- Contact details footer -->
+        <div style="background: rgba(212, 175, 55, 0.05); border: 1px dashed rgba(212, 175, 55, 0.25); padding: 12px 15px; border-radius: 8px; display: grid; grid-template-columns: 1fr 1fr; gap: 10px; font-size: 0.8rem; color: var(--text-light);">
+          <div>
+            📞 <strong>Contact:</strong> +91 98770 38520
+          </div>
+          <div>
+            ✉️ <strong>Email:</strong> info@tatkhalsa.in
+          </div>
+          <div>
+            🌐 <strong>Web:</strong> https://tatkhalsa.in
+          </div>
+          <div>
+            📍 <strong>Location:</strong> Nawasahar, Punjab, India
+          </div>
+        </div>
+
+        <div style="margin-top: 15px; text-align: center;">
+          <a href="upi://pay?pa=mab.037215043540097@axisbank&pn=Tatkhalsa%20Foundation&cu=INR&tn=Daughters%20Marriages%20Seva" style="display: inline-flex; align-items: center; justify-content: center; gap: 8px; background: linear-gradient(135deg, #00875a 0%, #00b376 100%); color: #ffffff; padding: 12px 24px; border-radius: 8px; font-weight: bold; text-decoration: none; font-size: 1rem; width: 100%; box-sizing: border-box; box-shadow: 0 4px 12px rgba(0,135,90,0.25); transition: all 0.25s;" onmouseover="this.style.transform='translateY(-1px)';" onmouseout="this.style.transform='none';">
+            📱 Pay Directly via UPI App
+          </a>
+        </div>
+      </div>
+    </div>
 
     <!-- Contribution Modal -->
     <div class="modal-overlay" id="contributionModal">
@@ -244,12 +913,149 @@
         if (modal) modal.classList.remove("active");
       }
 
+      function openNimratKaurModal() {
+        const modal = document.getElementById("nimratKaurModal");
+        if (modal) modal.classList.add("active");
+        document.body.style.overflow = "hidden";
+      }
+      function closeNimratKaurModal() {
+        const modal = document.getElementById("nimratKaurModal");
+        if (modal) modal.classList.remove("active");
+        document.body.style.overflow = "";
+      }
+
+      function openPunjabFloodReliefModal() {
+        const modal = document.getElementById("punjabFloodReliefModal");
+        if (modal) modal.classList.add("active");
+        document.body.style.overflow = "hidden";
+      }
+      function closePunjabFloodReliefModal() {
+        const modal = document.getElementById("punjabFloodReliefModal");
+        if (modal) modal.classList.remove("active");
+        document.body.style.overflow = "";
+      }
+
+      function openGroceryHelpSevaModal() {
+        const modal = document.getElementById("groceryHelpSevaModal");
+        if (modal) modal.classList.add("active");
+        document.body.style.overflow = "hidden";
+      }
+      function closeGroceryHelpSevaModal() {
+        const modal = document.getElementById("groceryHelpSevaModal");
+        if (modal) modal.classList.remove("active");
+        document.body.style.overflow = "";
+      }
+
+      def_openVictimFamilySupportModal = function() {
+        const modal = document.getElementById("victimFamilySupportModal");
+        if (modal) modal.classList.add("active");
+        document.body.style.overflow = "hidden";
+      }
+      window.openVictimFamilySupportModal = def_openVictimFamilySupportModal;
+      
+      def_closeVictimFamilySupportModal = function() {
+        const modal = document.getElementById("victimFamilySupportModal");
+        if (modal) modal.classList.remove("active");
+        document.body.style.overflow = "";
+      }
+      window.closeVictimFamilySupportModal = def_closeVictimFamilySupportModal;
+
+      def_openMarriagesSevaModal = function() {
+        const modal = document.getElementById("marriagesSevaModal");
+        if (modal) modal.classList.add("active");
+        document.body.style.overflow = "hidden";
+      }
+      window.openMarriagesSevaModal = def_openMarriagesSevaModal;
+
+      def_closeMarriagesSevaModal = function() {
+        const modal = document.getElementById("marriagesSevaModal");
+        if (modal) modal.classList.remove("active");
+        document.body.style.overflow = "";
+      }
+      window.closeMarriagesSevaModal = def_closeMarriagesSevaModal;
+
+      function openBloodRequestModal() {
+        const modal = document.getElementById("bloodRequestModal");
+        if (modal) modal.classList.add("active");
+        document.body.style.overflow = "hidden";
+      }
+      function closeBloodRequestModal() {
+        const modal = document.getElementById("bloodRequestModal");
+        if (modal) modal.classList.remove("active");
+        document.body.style.overflow = "";
+      }
+
       const contribModal = document.getElementById("contributionModal");
       if (contribModal) {
         contribModal.addEventListener("click", function (e) {
           if (e.target === this) closeModal();
         });
       }
+
+      const nimratModal = document.getElementById("nimratKaurModal");
+      if (nimratModal) {
+        nimratModal.addEventListener("click", function (e) {
+          if (e.target === this) closeNimratKaurModal();
+        });
+      }
+
+      const pfModal = document.getElementById("punjabFloodReliefModal");
+      if (pfModal) {
+        pfModal.addEventListener("click", function (e) {
+          if (e.target === this) closePunjabFloodReliefModal();
+        });
+      }
+
+      const ghModal = document.getElementById("groceryHelpSevaModal");
+      if (ghModal) {
+        ghModal.addEventListener("click", function (e) {
+          if (e.target === this) closeGroceryHelpSevaModal();
+        });
+      }
+
+      const vfModal = document.getElementById("victimFamilySupportModal");
+      if (vfModal) {
+        vfModal.addEventListener("click", function (e) {
+          if (e.target === this) closeVictimFamilySupportModal();
+        });
+      }
+
+      const msModal = document.getElementById("marriagesSevaModal");
+      if (msModal) {
+        msModal.addEventListener("click", function (e) {
+          if (e.target === this) closeMarriagesSevaModal();
+        });
+      }
+
+      const brModal = document.getElementById("bloodRequestModal");
+      if (brModal) {
+        brModal.addEventListener("click", function (e) {
+          if (e.target === this) closeBloodRequestModal();
+        });
+      }
+
+      // Auto-open campaign modal if requested via URL query params (e.g. from redirects)
+      window.addEventListener("DOMContentLoaded", function() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const openModalType = urlParams.get("openModal");
+        if (openModalType === "flood" || openModalType === "punjab-flood-relief") {
+          if (typeof openPunjabFloodReliefModal === "function") {
+            openPunjabFloodReliefModal();
+          }
+        } else if (openModalType === "grocery") {
+          if (typeof openGroceryHelpSevaModal === "function") {
+            openGroceryHelpSevaModal();
+          }
+        } else if (openModalType === "victim") {
+          if (typeof openVictimFamilySupportModal === "function") {
+            openVictimFamilySupportModal();
+          }
+        } else if (openModalType === "marriage") {
+          if (typeof openMarriagesSevaModal === "function") {
+            openMarriagesSevaModal();
+          }
+        }
+      });
 
       // Copy Buffer Helper with Visual confirmation
       function copyText(text) {
@@ -505,6 +1311,81 @@
             console.error("Submission error:", error);
             statusEl.style.color = "var(--accent-red)";
             statusEl.textContent = "Network error. Please email us directly at tatkhalsafoundation@gmail.com";
+          }
+        });
+      }
+
+      // Real dynamic Blood Request Form submission connected to WordPress backend for direct email alert
+      const bloodForm = document.getElementById("bloodRequestForm");
+      if (bloodForm) {
+        bloodForm.addEventListener("submit", async (e) => {
+          e.preventDefault();
+          const statusEl = document.getElementById("bloodSubmitStatus");
+          const submitBtn = document.getElementById("bloodSubmitBtn");
+          
+          statusEl.style.display = "block";
+          statusEl.style.padding = "10px 12px";
+          statusEl.style.background = "rgba(255,255,255,0.03)";
+          statusEl.style.border = "1px solid rgba(255,255,255,0.08)";
+          statusEl.style.color = "var(--text-light)";
+          statusEl.textContent = "⚙️ Registering emergency details and broadcasting alert emails to tatkhalsafoundation@gmail.com...";
+          
+          if (submitBtn) {
+            submitBtn.textContent = "⏳ Broadcasting alert...";
+            submitBtn.disabled = true;
+            submitBtn.style.opacity = "0.7";
+          }
+
+          const params = new URLSearchParams();
+          params.append("action", "submit_blood_request");
+          params.append("patientName", bloodForm.querySelector('[name="patientName"]').value);
+          params.append("bloodGroup", bloodForm.querySelector('[name="bloodGroup"]').value);
+          params.append("patientLocation", bloodForm.querySelector('[name="patientLocation"]').value);
+          params.append("hospitalName", bloodForm.querySelector('[name="hospitalName"]').value);
+          params.append("unitsRequired", bloodForm.querySelector('[name="unitsRequired"]').value);
+          params.append("urgency", bloodForm.querySelector('[name="urgency"]').value);
+          params.append("contactDetails", bloodForm.querySelector('[name="contactDetails"]').value);
+          params.append("additionalInfo", bloodForm.querySelector('[name="additionalInfo"]').value);
+
+          try {
+            const response = await fetch("<?php echo esc_url( admin_url( 'admin-ajax.php' ) ); ?>", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/x-www-form-urlencoded"
+              },
+              body: params
+            });
+            const result = await response.json();
+            if (result.success) {
+              statusEl.style.color = "var(--accent-green)";
+              statusEl.style.border = "1.2px solid rgba(0, 191, 117, 0.2)";
+              statusEl.style.background = "rgba(0, 191, 117, 0.05)";
+              statusEl.innerHTML = `<strong>Success ✓</strong><br/>${result.data.message || "Emergency Blood Request submitted successfully!"}`;
+              e.target.reset();
+              
+              // Re-enable close modal helper
+              setTimeout(() => {
+                closeBloodRequestModal();
+                statusEl.style.display = "none";
+              }, 4000);
+            } else {
+              statusEl.style.color = "#ff334b";
+              statusEl.style.border = "1.2px solid rgba(255, 51, 75, 0.2)";
+              statusEl.style.background = "rgba(255, 51, 75, 0.05)";
+              statusEl.textContent = result.data.message || "There was an error registering your request. Please try again or call +91-91157-19000 immediately.";
+            }
+          } catch (error) {
+            console.error("Submission error:", error);
+            statusEl.style.color = "#ff334b";
+            statusEl.style.border = "1.2px solid rgba(255, 51, 75, 0.2)";
+            statusEl.style.background = "rgba(255, 51, 75, 0.05)";
+            statusEl.textContent = "Network error. Please call our 24/7 emergency helpline +91-91157-19000 instantly.";
+          } finally {
+            if (submitBtn) {
+              submitBtn.textContent = "📢 Broadcast Blood Request";
+              submitBtn.disabled = false;
+              submitBtn.style.opacity = "1";
+            }
           }
         });
       }

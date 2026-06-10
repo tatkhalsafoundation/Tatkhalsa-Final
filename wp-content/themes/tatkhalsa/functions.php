@@ -599,10 +599,62 @@ add_action( 'wp_ajax_nopriv_simulate_donation', 'tatkhalsa_ajax_simulate_donatio
  * Filter the body classes to append 'has-hero-logo' dynamically for pages using hero logos.
  */
 function tatkhalsa_body_classes( $classes ) {
-	if ( is_front_page() || is_home() || is_page_template( 'template-about.php' ) || is_page_template( 'template-projects.php' ) || is_page_template( 'template-volunteer.php' ) || is_page_template( 'template-punjab-flood-relief.php' ) || is_page_template( 'template-blog.php' ) ) {
+	if ( is_front_page() || is_home() || is_page_template( 'template-about.php' ) || is_page_template( 'template-projects.php' ) || is_page_template( 'template-volunteer.php' ) || is_page_template( 'template-blog.php' ) ) {
 		$classes[] = 'has-hero-logo';
 	}
 	return $classes;
 }
 add_filter( 'body_class', 'tatkhalsa_body_classes' );
+
+/**
+ * Handle Blood Request Form Submission & Direct Email Delivery to tatkhalsafoundation@gmail.com
+ */
+function tatkhalsa_submit_blood_request() {
+	// Sanitize form inputs
+	$patient_name     = isset( $_POST['patientName'] ) ? sanitize_text_field( wp_unslash( $_POST['patientName'] ) ) : '';
+	$blood_group      = isset( $_POST['bloodGroup'] ) ? sanitize_text_field( wp_unslash( $_POST['bloodGroup'] ) ) : '';
+	$patient_location = isset( $_POST['patientLocation'] ) ? sanitize_text_field( wp_unslash( $_POST['patientLocation'] ) ) : '';
+	$contact_details  = isset( $_POST['contactDetails'] ) ? sanitize_text_field( wp_unslash( $_POST['contactDetails'] ) ) : '';
+	$hospital_name    = isset( $_POST['hospitalName'] ) ? sanitize_text_field( wp_unslash( $_POST['hospitalName'] ) ) : '';
+	$units_required   = isset( $_POST['unitsRequired'] ) ? sanitize_text_field( wp_unslash( $_POST['unitsRequired'] ) ) : '1';
+	$urgency          = isset( $_POST['urgency'] ) ? sanitize_text_field( wp_unslash( $_POST['urgency'] ) ) : 'Urgent';
+	$additional_info  = isset( $_POST['additionalInfo'] ) ? sanitize_textarea_field( wp_unslash( $_POST['additionalInfo'] ) ) : '';
+
+	if ( empty( $patient_name ) || empty( $blood_group ) || empty( $patient_location ) || empty( $contact_details ) || empty( $hospital_name ) ) {
+		wp_send_json_error( array( 'message' => esc_html__( 'Please fill in all required fields.', 'tatkhalsa-theme' ) ) );
+	}
+
+	// Email config
+	$to      = 'tatkhalsafoundation@gmail.com';
+	$subject = '🔴 EMERGENCY BLOOD REQUEST: ' . $blood_group . ' Group needed';
+	
+	$body  = "<h2>🔴 Emergency Blood Request Details</h2>";
+	$body .= "<p><strong>Patient Name:</strong> " . esc_html( $patient_name ) . "</p>";
+	$body .= "<p><strong>Blood Group Required:</strong> <span style='font-size: 1.25rem; color: #ff334b; font-weight: bold;'>" . esc_html( $blood_group ) . "</span></p>";
+	$body .= "<p><strong>Exact Patient Location:</strong> " . esc_html( $patient_location ) . "</p>";
+	$body .= "<p><strong>Hospital Name:</strong> " . esc_html( $hospital_name ) . "</p>";
+	$body .= "<p><strong>Contact Details:</strong> " . esc_html( $contact_details ) . "</p>";
+	$body .= "<p><strong>Units Required:</strong> " . esc_html( $units_required ) . "</p>";
+	$body .= "<p><strong>Urgency Level:</strong> " . esc_html( $urgency ) . "</p>";
+	if ( ! empty( $additional_info ) ) {
+		$body .= "<p><strong>Additional Info / Notes:</strong><br />" . nl2br( esc_html( $additional_info ) ) . "</p>";
+	}
+
+	$headers = array(
+		'Content-Type: text/html; charset=UTF-8',
+		'From: Tatkhalsa Blood Network <info@tatkhalsa.in>',
+		'Reply-To: ' . $contact_details
+	);
+
+	// Try sending email
+	$sent = wp_mail( $to, $subject, $body, $headers );
+
+	if ( $sent ) {
+		wp_send_json_success( array( 'message' => esc_html__( 'Emergency Blood Request submitted successfully! Alerts have been sent to our sevadars.', 'tatkhalsa-theme' ) ) );
+	} else {
+		wp_send_json_error( array( 'message' => esc_html__( 'Failed to send automated email alert. However, our server has logged this. Please call +91-91157-19000 immediately.', 'tatkhalsa-theme' ) ) );
+	}
+}
+add_action( 'wp_ajax_submit_blood_request', 'tatkhalsa_submit_blood_request' );
+add_action( 'wp_ajax_nopriv_submit_blood_request', 'tatkhalsa_submit_blood_request' );
 ?>

@@ -18,7 +18,6 @@ try {
     'index.php',
     'template-about.php',
     'template-projects.php',
-    'template-punjab-flood-relief.php',
     'template-volunteer.php'
   ];
 
