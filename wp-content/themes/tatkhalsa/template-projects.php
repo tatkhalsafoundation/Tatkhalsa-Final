@@ -499,7 +499,7 @@ get_header();
 
 <div class="projects-page">
   
-  <section class="hero" style="padding: 110px 0 35px 0; background: linear-gradient(135deg, rgba(8, 17, 35, 0.96) 0%, rgba(5, 10, 20, 0.99) 100%);">
+  <section class="hero" style="padding: 40px 0 35px 0; background: linear-gradient(135deg, rgba(8, 17, 35, 0.96) 0%, rgba(5, 10, 20, 0.99) 100%);">
     <div class="container scroll-reveal" style="text-align: center">
       <h1 style="font-family: var(--font-serif); font-size: 2.8rem; color: var(--cream); margin-bottom: 10px; letter-spacing: -0.01em;">
         Our Seva Projects

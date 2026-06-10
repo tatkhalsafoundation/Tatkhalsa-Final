@@ -92,7 +92,7 @@
  
         <!-- Elegant Multi-Selection Dropdown for Mobile / Tablet (Instead of Hamburger Menu) -->
         <div class="header-nav-selector">
-          <select id="mobileNavSelect" onchange="if(this.value) window.location.href=this.value;" class="custom-nav-select" aria-label="Select Seva Page">
+          <select id="mobileNavSelect" onchange="if(this.value) window.location.href=this.value;" style="display: none;" aria-label="Select Seva Page">
             <option value="" disabled selected>Explore Seva...</option>
             <option value="<?php echo esc_url( home_url( '/' ) ); ?>">Home Page</option>
             <option value="<?php echo esc_url( home_url( '/about/' ) ); ?>">About Tatkhalsa</option>
@@ -100,10 +100,23 @@
             <option value="<?php echo esc_url( home_url( '/volunteer/' ) ); ?>">Join as Volunteer</option>
             <option value="<?php echo esc_url( home_url( '/punjab-flood-relief/' ) ); ?>">Flood Relief SOS</option>
           </select>
-          <div class="select-chevron">
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-              <polyline points="6 9 12 15 18 9"></polyline>
-            </svg>
+          
+          <div class="custom-select-wrapper" id="customMobileNavWrapper">
+            <button class="custom-select-btn" id="customMobileNavBtn" aria-haspopup="listbox" aria-expanded="false" aria-label="Explore Seva Page Menu">
+              <span id="customMobileNavLabel">Explore Seva...</span>
+              <span class="select-chevron">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                  <polyline points="6 9 12 15 18 9"></polyline>
+                </svg>
+              </span>
+            </button>
+            <div class="custom-select-dropdown" id="customMobileNavDropdown" role="listbox">
+              <a href="<?php echo esc_url( home_url( '/' ) ); ?>" class="custom-dropdown-opt" role="option">Home Page</a>
+              <a href="<?php echo esc_url( home_url( '/about/' ) ); ?>" class="custom-dropdown-opt" role="option">About Tatkhalsa</a>
+              <a href="<?php echo esc_url( home_url( '/projects/' ) ); ?>" class="custom-dropdown-opt" role="option">Our Seva Projects</a>
+              <a href="<?php echo esc_url( home_url( '/volunteer/' ) ); ?>" class="custom-dropdown-opt" role="option">Join as Volunteer</a>
+              <a href="<?php echo esc_url( home_url( '/punjab-flood-relief/' ) ); ?>" class="custom-dropdown-opt" role="option">Flood Relief SOS</a>
+            </div>
           </div>
         </div>
       </div>

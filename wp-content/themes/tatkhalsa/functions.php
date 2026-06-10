@@ -61,4 +61,46 @@ function tatkhalsa_scripts() {
 	wp_enqueue_style( 'tatkhalsa-theme-style', get_stylesheet_uri(), array(), '1.0.0' );
 }
 add_action( 'wp_enqueue_scripts', 'tatkhalsa_scripts' );
+
+/**
+ * Handle Volunteer Form Submission & Direct Email Delivery to tatkhalsafoundation@gmail.com
+ */
+function tatkhalsa_submit_volunteer() {
+	// Sanitize form inputs
+	$name    = isset( $_POST['vName'] ) ? sanitize_text_field( wp_unslash( $_POST['vName'] ) ) : '';
+	$email   = isset( $_POST['vEmail'] ) ? sanitize_email( wp_unslash( $_POST['vEmail'] ) ) : '';
+	$phone   = isset( $_POST['vPhone'] ) ? sanitize_text_field( wp_unslash( $_POST['vPhone'] ) ) : '';
+	$message = isset( $_POST['vMessage'] ) ? sanitize_textarea_field( wp_unslash( $_POST['vMessage'] ) ) : '';
+
+	if ( empty( $name ) || empty( $email ) || empty( $phone ) || empty( $message ) ) {
+		wp_send_json_error( array( 'message' => esc_html__( 'Please fill in all layout fields.', 'tatkhalsa-theme' ) ) );
+	}
+
+	// Email config
+	$to      = 'tatkhalsafoundation@gmail.com';
+	$subject = 'New Volunteer Registration - ' . $name;
+	
+	$body  = "<h2>New Tatkhalsa Volunteer Application</h2>";
+	$body .= "<p><strong>Name:</strong> " . esc_html( $name ) . "</p>";
+	$body .= "<p><strong>Email:</strong> " . esc_html( $email ) . "</p>";
+	$body .= "<p><strong>Phone:</strong> " . esc_html( $phone ) . "</p>";
+	$body .= "<p><strong>Skills & Message:</strong><br />" . nl2br( esc_html( $message ) ) . "</p>";
+
+	$headers = array(
+		'Content-Type: text/html; charset=UTF-8',
+		'From: Tatkhalsa Foundation <info@tatkhalsa.in>',
+		'Reply-To: ' . $email
+	);
+
+	// Try sending email
+	$sent = wp_mail( $to, $subject, $body, $headers );
+
+	if ( $sent ) {
+		wp_send_json_success( array( 'message' => esc_html__( 'Application submitted successfully! We will contact you soon.', 'tatkhalsa-theme' ) ) );
+	} else {
+		wp_send_json_error( array( 'message' => esc_html__( 'Failed to send direct email. Please email us directly at tatkhalsafoundation@gmail.com', 'tatkhalsa-theme' ) ) );
+	}
+}
+add_action( 'wp_ajax_submit_volunteer', 'tatkhalsa_submit_volunteer' );
+add_action( 'wp_ajax_nopriv_submit_volunteer', 'tatkhalsa_submit_volunteer' );
 ?>

@@ -311,8 +311,36 @@
 
       // Sync Mobile Dropdown Select Option with Active Page URL
       const mobileNavSelect = document.getElementById("mobileNavSelect");
+      const customWrapper = document.getElementById("customMobileNavWrapper");
+      const customBtn = document.getElementById("customMobileNavBtn");
+      const customLabel = document.getElementById("customMobileNavLabel");
+      const customOpts = document.querySelectorAll(".custom-dropdown-opt");
+
+      if (customBtn && customWrapper) {
+        customBtn.addEventListener("click", (e) => {
+          e.stopPropagation();
+          const isOpen = customWrapper.classList.contains("open");
+          if (isOpen) {
+            customWrapper.classList.remove("open");
+            customBtn.setAttribute("aria-expanded", "false");
+          } else {
+            customWrapper.classList.add("open");
+            customBtn.setAttribute("aria-expanded", "true");
+          }
+        });
+
+        // Close when clicking outside
+        document.addEventListener("click", (e) => {
+          if (!customWrapper.contains(e.target)) {
+            customWrapper.classList.remove("open");
+            customBtn.setAttribute("aria-expanded", "false");
+          }
+        });
+      }
+
       if (mobileNavSelect) {
         const currentPath = window.location.pathname;
+        let matchedIndex = -1;
         for (let i = 0; i < mobileNavSelect.options.length; i++) {
           const opt = mobileNavSelect.options[i];
           if (opt.value) {
@@ -320,13 +348,27 @@
               const optPath = new URL(opt.value, window.location.origin).pathname;
               if (currentPath === optPath || (currentPath === "/" && optPath === "/index.php") || (currentPath === "/index.php" && optPath === "/")) {
                 opt.selected = true;
+                matchedIndex = i;
                 break;
               }
             } catch (e) {
               if (currentPath.includes(opt.value)) {
                 opt.selected = true;
+                matchedIndex = i;
                 break;
               }
+            }
+          }
+        }
+
+        // Sync visual custom dropdown active option (placeholder is index 0)
+        if (matchedIndex !== -1 && customOpts.length >= matchedIndex) {
+          const activeOptIndex = matchedIndex - 1; 
+          if (activeOptIndex >= 0 && customOpts[activeOptIndex]) {
+            customOpts.forEach(o => o.classList.remove("active"));
+            customOpts[activeOptIndex].classList.add("active");
+            if (customLabel) {
+              customLabel.innerText = customOpts[activeOptIndex].innerText;
             }
           }
         }
@@ -362,20 +404,41 @@
         badgeContainers.forEach(c => c.classList.remove("active"));
       });
 
-      // Form submission fallback
+      // Real dynamic Form submission connected to WordPress backend for direct email delivery
       const vForm = document.getElementById("volunteerForm");
       if (vForm) {
         vForm.addEventListener("submit", async (e) => {
           e.preventDefault();
           const statusEl = document.getElementById("vStatus");
-          statusEl.style.color = "var(--text-dark)";
-          statusEl.textContent = "Submitting application...";
+          statusEl.style.color = "var(--text-light)";
+          statusEl.textContent = "Sending application directly to tatkhalsafoundation@gmail.com...";
 
-          setTimeout(() => {
-            statusEl.style.color = "var(--accent-green)";
-            statusEl.textContent = "Application submitted successfully! We will contact you soon.";
-            e.target.reset();
-          }, 1000);
+          const formData = new FormData();
+          formData.append("action", "submit_volunteer");
+          formData.append("vName", document.getElementById("vName").value);
+          formData.append("vEmail", document.getElementById("vEmail").value);
+          formData.append("vPhone", document.getElementById("vPhone").value);
+          formData.append("vMessage", document.getElementById("vMessage").value);
+
+          try {
+            const response = await fetch("<?php echo esc_url( admin_url( 'admin-ajax.php' ) ); ?>", {
+              method: "POST",
+              body: formData
+            });
+            const result = await response.json();
+            if (result.success) {
+              statusEl.style.color = "var(--accent-green)";
+              statusEl.textContent = result.data.message || "Application submitted successfully! Check your inbox.";
+              e.target.reset();
+            } else {
+              statusEl.style.color = "var(--accent-red)";
+              statusEl.textContent = result.data.message || "There was an error sending your application. Please try again.";
+            }
+          } catch (error) {
+            console.error("Submission error:", error);
+            statusEl.style.color = "var(--accent-red)";
+            statusEl.textContent = "Network error. Please email us directly at tatkhalsafoundation@gmail.com";
+          }
         });
       }
     </script>

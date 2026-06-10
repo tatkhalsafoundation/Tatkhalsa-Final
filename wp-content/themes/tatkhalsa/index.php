@@ -46,7 +46,7 @@ get_header();
         src="<?php echo esc_url( get_template_directory_uri() . '/Logo.png' ); ?>"
         alt="Tatkhalsa Foundation Logo"
         class="hero-gurbani-logo"
-        style="width: 140px; height: 140px; object-fit: contain;"
+        style="width: 240px; height: 240px; object-fit: contain;"
       />
     </div>
 

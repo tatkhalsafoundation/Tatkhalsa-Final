@@ -11,7 +11,7 @@ get_header();
     <section
       class="hero"
       style="
-        padding: 120px 0 80px 0;
+        padding: 40px 0 80px 0;
         background: linear-gradient(
           to bottom,
           rgba(8, 17, 35, 0.75),
