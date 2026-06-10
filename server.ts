@@ -64,6 +64,7 @@ async function startServer() {
     content = content.replace(/<\?php\s*echo\s*esc_url\(\s*home_url\(\s*['"]\/about\/['"]\s*\)\s*\);\s*\?>/g, '/about');
     content = content.replace(/<\?php\s*echo\s*esc_url\(\s*home_url\(\s*['"]\/projects\/['"]\s*\)\s*\);\s*\?>/g, '/projects');
     content = content.replace(/<\?php\s*echo\s*esc_url\(\s*home_url\(\s*['"]\/volunteer\/['"]\s*\)\s*\);\s*\?>/g, '/volunteer');
+    content = content.replace(/<\?php\s*echo\s*esc_url\(\s*home_url\(\s*['"]\/blog\/['"]\s*\)\s*\);\s*\?>/g, '/blog');
     content = content.replace(/<\?php\s*echo\s*esc_url\(\s*home_url\(\s*['"]\/punjab-flood-relief\/['"]\s*\)\s*\);\s*\?>/g, '/punjab-flood-relief');
 
     // Any remaining dynamic template directory calls
@@ -77,6 +78,7 @@ async function startServer() {
                 <a href="/about">About Us</a>
                 <a href="/projects">Projects</a>
                 <a href="/volunteer">Volunteer</a>
+                <a href="/blog">Blog</a>
                 <a href="/punjab-flood-relief">Punjab Flood Relief</a>
               </div>
     `);
@@ -286,6 +288,8 @@ async function startServer() {
     "projects.php": "template-projects.php",
     "volunteer": "template-volunteer.php",
     "volunteer.php": "template-volunteer.php",
+    "blog": "template-blog.php",
+    "blog.php": "template-blog.php",
     "punjab-flood-relief": "template-punjab-flood-relief.php",
     "punjab-flood-relief.php": "template-punjab-flood-relief.php",
     "punjab-flood-relief.html": "template-punjab-flood-relief.php"

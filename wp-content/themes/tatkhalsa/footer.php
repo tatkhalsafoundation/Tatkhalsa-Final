@@ -607,6 +607,125 @@
       <span class="tooltip-text">WhatsApp Seva Desk</span>
     </a>
 
+    <!-- Scroll-Driven Hero Logo to Header Logo Merge Animation -->
+    <script>
+      (function() {
+        const bigLogo = document.querySelector('.hero-gurbani-logo');
+        const smallLogo = document.querySelector('.header-logo-badge');
+        
+        if (!smallLogo) return;
+        
+        // If there is no big logo on this page, immediately make the small header logo fully visible
+        if (!bigLogo) {
+          smallLogo.style.opacity = '1';
+          smallLogo.style.transform = 'scale(1)';
+          return;
+        }
+
+        // Apply hardware acceleration hints immediately
+        bigLogo.style.willChange = 'transform, opacity';
+        smallLogo.style.willChange = 'transform, opacity';
+        bigLogo.style.transformOrigin = 'center center';
+        smallLogo.style.transformOrigin = 'center center';
+        
+        // Hide small logo initially to prepare for merge
+        smallLogo.style.opacity = '0';
+        smallLogo.style.transform = 'scale(0.7)';
+
+        let initialRect = null;
+        let targetRect = null;
+        let isTicking = false;
+
+        function measurePositions() {
+          const origScrollY = window.scrollY;
+          
+          // Disable styles to get the reference un-scrolled layout geometry
+          const origBigTransform = bigLogo.style.transform;
+          const origBigOpacity = bigLogo.style.opacity;
+          const origSmallTransform = smallLogo.style.transform;
+          const origSmallOpacity = smallLogo.style.opacity;
+          
+          bigLogo.style.transform = 'none';
+          bigLogo.style.opacity = '1';
+          smallLogo.style.transform = 'none';
+          smallLogo.style.opacity = '1';
+          
+          // Compute at exact top context
+          if (origScrollY > 0) {
+            window.scrollTo(0, 0);
+          }
+          
+          initialRect = bigLogo.getBoundingClientRect();
+          targetRect = smallLogo.getBoundingClientRect();
+          
+          // Restore
+          bigLogo.style.transform = origBigTransform;
+          bigLogo.style.opacity = origBigOpacity;
+          smallLogo.style.transform = origSmallTransform;
+          smallLogo.style.opacity = origSmallOpacity;
+          
+          if (origScrollY > 0) {
+            window.scrollTo(0, origScrollY);
+          }
+        }
+
+        // Perform measurements on load & resize
+        if (document.readyState === 'complete') {
+          measurePositions();
+          updateMerge();
+        } else {
+          window.addEventListener('load', () => {
+            measurePositions();
+            updateMerge();
+          });
+        }
+
+        window.addEventListener('resize', () => {
+          measurePositions();
+          updateMerge();
+        });
+
+        function updateMerge() {
+          if (!initialRect || !targetRect) return;
+          
+          const scrollY = window.scrollY;
+          const maxScroll = 180; // Distance over which merge completes
+          const p = Math.min(1, Math.max(0, scrollY / maxScroll));
+          
+          // Elegant easing function
+          const pEase = p * p * (3 - 2 * p);
+          
+          const initialCenterX = initialRect.left + initialRect.width / 2;
+          const initialCenterY = initialRect.top + initialRect.height / 2;
+          
+          const targetCenterX = targetRect.left + targetRect.width / 2;
+          const targetCenterY = targetRect.top + targetRect.height / 2;
+          
+          const scaleRatio = targetRect.width / initialRect.width;
+          const currentScale = 1 + pEase * (scaleRatio - 1);
+          
+          const tx = pEase * (targetCenterX - initialCenterX);
+          // scrollY offset added to compensate for standard page scrolling displacement
+          const ty = pEase * (targetCenterY - initialCenterY + scrollY);
+          
+          bigLogo.style.transform = `translate(${tx}px, ${ty}px) scale(${currentScale})`;
+          bigLogo.style.opacity = (1 - pEase).toFixed(3);
+          
+          smallLogo.style.opacity = pEase.toFixed(3);
+          smallLogo.style.transform = `scale(${0.7 + 0.3 * pEase})`;
+          
+          isTicking = false;
+        }
+
+        window.addEventListener('scroll', () => {
+          if (!isTicking) {
+            window.requestAnimationFrame(updateMerge);
+            isTicking = true;
+          }
+        }, { passive: true });
+      })();
+    </script>
+
     <?php wp_footer(); ?>
   </body>
 </html>

@@ -56,6 +56,9 @@
     <header class="header">
       <div class="container">
         <a href="<?php echo esc_url( home_url( '/' ) ); ?>" class="logo">
+          <div class="header-logo-badge">
+            <img class="header-logo-img-new" src="<?php echo esc_url( tatkhalsa_get_logo_url() ); ?>" alt="Tatkhalsa Logo" />
+          </div>
           <div class="logo-stack">
             <span class="logo-text-up">Tatkhalsa</span>
             <span class="logo-text-down">Foundation</span>
@@ -79,6 +82,7 @@
                 <a href="<?php echo esc_url( home_url( '/about/' ) ); ?>">About</a>
                 <a href="<?php echo esc_url( home_url( '/projects/' ) ); ?>">Projects</a>
                 <a href="<?php echo esc_url( home_url( '/volunteer/' ) ); ?>">Volunteer</a>
+                <a href="<?php echo esc_url( home_url( '/blog/' ) ); ?>">Blog</a>
               </div>
               <?php
           }
@@ -93,6 +97,7 @@
             <option value="<?php echo esc_url( home_url( '/about/' ) ); ?>">About Tatkhalsa</option>
             <option value="<?php echo esc_url( home_url( '/projects/' ) ); ?>">Our Seva Projects</option>
             <option value="<?php echo esc_url( home_url( '/volunteer/' ) ); ?>">Join as Volunteer</option>
+            <option value="<?php echo esc_url( home_url( '/blog/' ) ); ?>">Insights & Blog</option>
             <option value="<?php echo esc_url( home_url( '/punjab-flood-relief/' ) ); ?>">Flood Relief SOS</option>
           </select>
           
@@ -110,6 +115,7 @@
               <a href="<?php echo esc_url( home_url( '/about/' ) ); ?>" class="custom-dropdown-opt" role="option">About Tatkhalsa</a>
               <a href="<?php echo esc_url( home_url( '/projects/' ) ); ?>" class="custom-dropdown-opt" role="option">Our Seva Projects</a>
               <a href="<?php echo esc_url( home_url( '/volunteer/' ) ); ?>" class="custom-dropdown-opt" role="option">Join as Volunteer</a>
+              <a href="<?php echo esc_url( home_url( '/blog/' ) ); ?>" class="custom-dropdown-opt" role="option">Insights & Blog</a>
               <a href="<?php echo esc_url( home_url( '/punjab-flood-relief/' ) ); ?>" class="custom-dropdown-opt" role="option">Flood Relief SOS</a>
             </div>
           </div>
