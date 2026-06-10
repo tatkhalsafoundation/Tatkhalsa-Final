@@ -2,7 +2,7 @@
 <html <?php language_attributes(); ?>>
   <head>
     <meta charset="<?php bloginfo( 'charset' ); ?>" />
-    <link rel="icon" type="image/png" href="<?php echo esc_url( get_template_directory_uri() . '/Logo.png' ); ?>" />
+    <link rel="icon" type="image/png" href="<?php echo esc_url( tatkhalsa_get_logo_url() ); ?>" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="format-detection" content="telephone=no, date=no, email=no, address=no" />
     
@@ -16,8 +16,8 @@
     <?php wp_body_open(); ?>
  
     <!-- Side Background Graphics utilizing dynamic WP asset pathing -->
-    <div class="side-graphic side-graphic-left" style="background-image: url('<?php echo esc_url( get_template_directory_uri() . '/Logo.png' ); ?>');"></div>
-    <div class="side-graphic side-graphic-right" style="background-image: url('<?php echo esc_url( get_template_directory_uri() . '/Logo.png' ); ?>');"></div>
+    <div class="side-graphic side-graphic-left" style="background-image: url('<?php echo esc_url( tatkhalsa_get_logo_url() ); ?>');"></div>
+    <div class="side-graphic side-graphic-right" style="background-image: url('<?php echo esc_url( tatkhalsa_get_logo_url() ); ?>');"></div>
  
     <!-- Top Announcement Bar -->
     <div class="top-bar">

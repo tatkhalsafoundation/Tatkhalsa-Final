@@ -49,9 +49,34 @@ if ( ! function_exists( 'tatkhalsa_setup' ) ) :
 
 		// Add support for responsive embeds
 		add_theme_support( 'responsive-embeds' );
+
+		// Custom logo support
+		add_theme_support(
+			'custom-logo',
+			array(
+				'height'      => 240,
+				'width'       => 240,
+				'flex-width'  => true,
+				'flex-height' => true,
+			)
+		);
 	}
 endif;
 add_action( 'after_setup_theme', 'tatkhalsa_setup' );
+
+/**
+ * Safely get the Tatkhalsa Logo URL, supporting Customizer Uploaded custom logo with an SSL-safe fallback to the theme's Logo.png
+ */
+function tatkhalsa_get_logo_url() {
+	if ( function_exists( 'has_custom_logo' ) && has_custom_logo() ) {
+		$custom_logo_id = get_theme_mod( 'custom_logo' );
+		$logo = wp_get_attachment_image_src( $custom_logo_id, 'full' );
+		if ( $logo ) {
+			return set_url_scheme( $logo[0] );
+		}
+	}
+	return set_url_scheme( get_stylesheet_directory_uri() . '/Logo.png' );
+}
 
 /**
  * Enqueue scripts and styles.

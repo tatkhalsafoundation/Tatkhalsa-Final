@@ -43,7 +43,7 @@ get_header();
     <!-- Centered Logo under Gurbani verse -->
     <div class="hero-logo-wrapper" style="display: flex; justify-content: center; margin-bottom: 25px; margin-top: 10px;">
       <img
-        src="<?php echo esc_url( get_template_directory_uri() . '/Logo.png' ); ?>"
+        src="<?php echo esc_url( tatkhalsa_get_logo_url() ); ?>"
         alt="Tatkhalsa Foundation Logo"
         class="hero-gurbani-logo"
         style="width: 240px; height: 240px; object-fit: contain;"
