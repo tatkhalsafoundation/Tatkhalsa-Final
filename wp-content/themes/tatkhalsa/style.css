@@ -332,6 +332,7 @@ h6 {
   flex-shrink: 0;
 }
 /* If the page has a hero logo, hide the header logo badge of the sticky header initially so it can merge perfectly on scroll */
+body.has-hero-logo .header-logo-badge,
 body:has(.hero-gurbani-logo) .header-logo-badge {
   opacity: 0;
   transform: scale(0.7);
@@ -404,7 +405,9 @@ body.scrolled .header-logo-img-new {
   letter-spacing: 0.15em;
   text-transform: uppercase;
   color: var(--secondary); /* Premium solid gold fallback */
-  display: inline-block;
+  display: block;
+  text-align: center;
+  margin-right: -0.15em;
 }
 
 /* Graceful progressive enhancement for browsers supporting text clippings */
@@ -425,6 +428,9 @@ body.scrolled .header-logo-img-new {
   text-transform: uppercase;
   color: var(--text-light);
   margin-top: 2px;
+  display: block;
+  text-align: center;
+  margin-right: -0.35em;
 }
 @media (max-width: 900px) {
   .logo {

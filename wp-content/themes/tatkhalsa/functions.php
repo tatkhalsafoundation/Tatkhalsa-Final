@@ -594,4 +594,15 @@ function tatkhalsa_ajax_simulate_donation() {
 }
 add_action( 'wp_ajax_simulate_donation', 'tatkhalsa_ajax_simulate_donation' );
 add_action( 'wp_ajax_nopriv_simulate_donation', 'tatkhalsa_ajax_simulate_donation' );
+
+/**
+ * Filter the body classes to append 'has-hero-logo' dynamically for pages using hero logos.
+ */
+function tatkhalsa_body_classes( $classes ) {
+	if ( is_front_page() || is_home() || is_page_template( 'template-about.php' ) || is_page_template( 'template-projects.php' ) || is_page_template( 'template-volunteer.php' ) || is_page_template( 'template-punjab-flood-relief.php' ) || is_page_template( 'template-blog.php' ) ) {
+		$classes[] = 'has-hero-logo';
+	}
+	return $classes;
+}
+add_filter( 'body_class', 'tatkhalsa_body_classes' );
 ?>

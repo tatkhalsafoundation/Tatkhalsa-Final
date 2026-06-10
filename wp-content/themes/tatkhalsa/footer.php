@@ -637,8 +637,6 @@
         let isTicking = false;
 
         function measurePositions() {
-          const origScrollY = window.scrollY;
-          
           // Disable styles to get the reference un-scrolled layout geometry
           const origBigTransform = bigLogo.style.transform;
           const origBigOpacity = bigLogo.style.opacity;
@@ -650,23 +648,28 @@
           smallLogo.style.transform = 'none';
           smallLogo.style.opacity = '1';
           
-          // Compute at exact top context
-          if (origScrollY > 0) {
-            window.scrollTo(0, 0);
-          }
+          const bigRect = bigLogo.getBoundingClientRect();
+          const smallRect = smallLogo.getBoundingClientRect();
           
-          initialRect = bigLogo.getBoundingClientRect();
-          targetRect = smallLogo.getBoundingClientRect();
+          initialRect = {
+            width: bigRect.width,
+            height: bigRect.height,
+            centerX: bigRect.left + bigRect.width / 2 + window.scrollX,
+            centerY: bigRect.top + bigRect.height / 2 + window.scrollY
+          };
+          
+          targetRect = {
+            width: smallRect.width,
+            height: smallRect.height,
+            centerX: smallRect.left + smallRect.width / 2 + window.scrollX,
+            centerY: smallRect.top + smallRect.height / 2 + window.scrollY
+          };
           
           // Restore
           bigLogo.style.transform = origBigTransform;
           bigLogo.style.opacity = origBigOpacity;
           smallLogo.style.transform = origSmallTransform;
           smallLogo.style.opacity = origSmallOpacity;
-          
-          if (origScrollY > 0) {
-            window.scrollTo(0, origScrollY);
-          }
         }
 
         // Perform measurements on load & resize
@@ -695,18 +698,11 @@
           // Elegant easing function
           const pEase = p * p * (3 - 2 * p);
           
-          const initialCenterX = initialRect.left + initialRect.width / 2;
-          const initialCenterY = initialRect.top + initialRect.height / 2;
-          
-          const targetCenterX = targetRect.left + targetRect.width / 2;
-          const targetCenterY = targetRect.top + targetRect.height / 2;
-          
           const scaleRatio = targetRect.width / initialRect.width;
           const currentScale = 1 + pEase * (scaleRatio - 1);
           
-          const tx = pEase * (targetCenterX - initialCenterX);
-          // scrollY offset added to compensate for standard page scrolling displacement
-          const ty = pEase * (targetCenterY - initialCenterY + scrollY);
+          const tx = pEase * (targetRect.centerX - initialRect.centerX);
+          const ty = pEase * (targetRect.centerY - initialRect.centerY + scrollY);
           
           bigLogo.style.transform = `translate(${tx}px, ${ty}px) scale(${currentScale})`;
           bigLogo.style.opacity = (1 - pEase).toFixed(3);

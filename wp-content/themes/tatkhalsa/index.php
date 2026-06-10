@@ -39,7 +39,7 @@ get_header();
     <div class="hero-logo-wrapper">
       <a href="<?php echo esc_url( home_url( '/' ) ); ?>" style="display: contents;">
         <img
-          src="<?php echo esc_url( tatkhalsa_get_logo_url() ); ?>"
+          src="<?php echo esc_url( tatkhalsa_get_theme_logo_url() ); ?>"
           alt="Tatkhalsa Foundation Logo"
           class="hero-gurbani-logo"
           width="240"

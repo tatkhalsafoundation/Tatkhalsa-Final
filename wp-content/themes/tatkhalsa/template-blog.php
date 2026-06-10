@@ -488,7 +488,7 @@ get_header();
       <!-- Centered Logo supporting scroll-driven merge -->
       <div class="hero-logo-wrapper" style="display: flex; justify-content: center; margin-bottom: 25px; margin-top: 10px;">
         <img
-          src="/Logo.png"
+          src="<?php echo esc_url( tatkhalsa_get_theme_logo_url() ); ?>"
           alt="Tatkhalsa Foundation Logo"
           class="hero-gurbani-logo"
           width="240"
