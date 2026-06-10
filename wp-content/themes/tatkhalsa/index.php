@@ -22,7 +22,7 @@ get_header();
     loop
     playsinline
     class="hero-video"
-    poster="https://upload.wikimedia.org/wikipedia/commons/thumb/c/cd/Golden_Temple_India.jpg/1920px-Golden_Temple_India.jpg"
+    poster="https://upload.wikimedia.org/wikipedia/commons/thumb/c/cd/Golden_Temple_India.jpg/640px-Golden_Temple_India.jpg"
   >
     <source
       src="https://upload.wikimedia.org/wikipedia/commons/2/29/Revealed-_The_Golden_Temple_%28HD_Version%29.webm"

@@ -15,9 +15,8 @@
   <body <?php body_class(); ?>>
     <?php wp_body_open(); ?>
  
-    <!-- Side Background Graphics utilizing dynamic WP asset pathing -->
-    <div class="side-graphic side-graphic-left" style="background-image: url('<?php echo esc_url( tatkhalsa_get_logo_url() ); ?>');"></div>
-    <div class="side-graphic side-graphic-right" style="background-image: url('<?php echo esc_url( tatkhalsa_get_logo_url() ); ?>');"></div>
+    <!-- Side Background Graphics (Removed explicitly due to layout issues) -->
+
  
     <!-- Top Announcement Bar -->
     <div class="top-bar">

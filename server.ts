@@ -12,8 +12,15 @@ async function startServer() {
 
   const THEME_PATH = path.join(process.cwd(), "wp-content", "themes", "tatkhalsa");
 
+  // Cache to optimize loading speeds significantly
+  const templateCache = new Map<string, string>();
+
   // Render processed PHP theme content
   function renderPHP(filePath: string): string {
+    if (process.env.NODE_ENV === "production" && templateCache.has(filePath)) {
+      return templateCache.get(filePath)!;
+    }
+
     let content = fs.readFileSync(filePath, "utf8");
 
     // Replace header
@@ -59,7 +66,7 @@ async function startServer() {
     content = content.replace(/<\?php\s*echo\s*esc_url\(\s*home_url\(\s*['"]\/punjab-flood-relief\/['"]\s*\)\s*\);\s*\?>/g, '/punjab-flood-relief');
 
     // Any remaining dynamic template directory calls
-    content = content.replace(/<\?php\s*echo\s*esc_url\(\s*get_template_directory_uri\(\)\s*\);\s*\?>/g, '.');
+    content = content.replace(/<\?php\s*echo\s*esc_url\(\s*get_template_directory_uri\(\)\s*\);\s*\?>/g, '/');
 
     // Replace WordPress nav menu block
     const navMenuReg = /<\?php\s*if\s*\(\s*has_nav_menu\([\s\S]*?<\?php\s*\}\s*\?>/g;
@@ -76,6 +83,9 @@ async function startServer() {
     // Clean up any remaining small php tag strings that are simple Echo/Esc statements
     content = content.replace(/<\?php\s*echo\s*date\(['"]Y['"]\);\s*\?>/g, new Date().getFullYear().toString());
 
+    if (process.env.NODE_ENV === "production") {
+      templateCache.set(filePath, content);
+    }
     return content;
   }
 
@@ -297,13 +307,7 @@ async function startServer() {
       }
     }
     
-    // Fall back to general static files
-    const generalFilePath = path.join(process.cwd(), pageName);
-    if (fs.existsSync(generalFilePath) && fs.statSync(generalFilePath).isFile()) {
-      res.sendFile(generalFilePath);
-    } else {
-      next();
-    }
+    next();
   });
 
   if (process.env.NODE_ENV !== "production") {
