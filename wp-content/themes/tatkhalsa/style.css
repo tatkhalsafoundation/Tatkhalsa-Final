@@ -288,6 +288,15 @@ h6 {
   align-items: center;
   transition: all 0.3s ease;
 }
+/* WordPress admin bar displacement fix */
+.admin-bar .header {
+  top: 32px;
+}
+@media screen and (max-width: 782px) {
+  .admin-bar .header {
+    top: 46px;
+  }
+}
 .header .container {
   display: flex;
   justify-content: space-between;
@@ -303,10 +312,8 @@ h6 {
   color: var(--secondary);
   display: inline-flex;
   align-items: center;
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
+  position: relative;
+  transition: all 0.3s ease;
 }
 .header-logo-img {
   width: 48px;

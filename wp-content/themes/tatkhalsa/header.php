@@ -56,6 +56,11 @@
     <header class="header">
       <div class="container">
         <a href="<?php echo esc_url( home_url( '/' ) ); ?>" class="logo">
+          <?php
+          $tat_logo_url = tatkhalsa_get_logo_url();
+          if ( $tat_logo_url ) : ?>
+            <img class="header-logo-img" src="<?php echo esc_url( $tat_logo_url ); ?>" alt="<?php echo esc_attr( get_bloginfo( 'name', 'display' ) ); ?>" style="margin-right: 12px;" />
+          <?php endif; ?>
           <div class="logo-stack">
             <span class="logo-text-up">Tatkhalsa</span>
             <span class="logo-text-down">Foundation</span>

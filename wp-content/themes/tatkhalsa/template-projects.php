@@ -209,6 +209,24 @@ get_header();
     opacity: 1;
   }
 
+  .bento-card-image-wrap {
+    height: 180px;
+    margin-bottom: 25px;
+    border-radius: 12px;
+    overflow: hidden;
+    position: relative;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+  }
+  .bento-card-image-wrap img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+  }
+  .bento-card:hover .bento-card-image-wrap img {
+    transform: scale(1.06);
+  }
+
   /* Card content details */
   .card-category-lbl {
     font-family: var(--font-mono);
@@ -504,7 +522,7 @@ get_header();
       <!-- Centered Logo same as home page -->
       <div class="hero-logo-wrapper" style="display: flex; justify-content: center; margin-bottom: 25px; margin-top: 10px;">
         <img
-          src="<?php echo esc_url( tatkhalsa_get_theme_logo_url() ); ?>"
+          src="<?php echo esc_url( tatkhalsa_get_logo_url() ); ?>"
           alt="Tatkhalsa Foundation Logo"
           class="hero-gurbani-logo"
           width="240"
@@ -609,6 +627,11 @@ get_header();
               <h3 class="card-title">General Charity & Rehabilitation Relief</h3>
               <div class="card-icon-sphere">🤝</div>
             </div>
+
+            <div class="bento-card-image-wrap">
+              <img src="https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?q=80&w=800&auto=format&fit=crop" alt="General Charity Support" />
+            </div>
+
             <p class="card-desc">
               We provide essential baseline support for vulnerable low-income families and single parent households. Our charity framework distributes winter blankets, hot weather relief items, monthly groceries, and covers basic shelter restoration in times of acute distress.
             </p>
@@ -647,6 +670,11 @@ get_header();
               <h3 class="card-title">Sikh Blood Contribution Network</h3>
               <div class="card-icon-sphere">❤️</div>
             </div>
+
+            <div class="bento-card-image-wrap">
+              <img src="https://images.unsplash.com/photo-1584515979956-d9f6e5d09982?q=80&w=800&auto=format&fit=crop" alt="Sikh Blood Contribution Network" />
+            </div>
+
             <p class="card-desc">
               A meticulously structured 24/7 rapid helpline matching blood donors with patients experiencing emergency health crises, surgeries, or cancer treatments across major Punjab hospitals.
             </p>
@@ -671,6 +699,11 @@ get_header();
               <h3 class="card-title">Disaster Rapid Response Squad</h3>
               <div class="card-icon-sphere">🚨</div>
             </div>
+
+            <div class="bento-card-image-wrap">
+              <img src="https://images.unsplash.com/photo-1547683905-f686c993aae5?q=80&w=800&auto=format&fit=crop" alt="Punjab flood response team" />
+            </div>
+
             <p class="card-desc">
               Our trained, local youth team standing ready to handle natural calamities, severe weather events, and community evacuations, working safely in coordination with local authorities.
             </p>
@@ -695,6 +728,11 @@ get_header();
               <h3 class="card-title">Sikh History & Heritage Review Board</h3>
               <div class="card-icon-sphere">🏛️</div>
             </div>
+
+            <div class="bento-card-image-wrap">
+              <img src="https://upload.wikimedia.org/wikipedia/commons/e/ee/Group_of_Nihang_Singhs.jpg" alt="Preserving Sikh Heritage" />
+            </div>
+
             <p class="card-desc">
               Dedicated to academic preservation, historical accuracy, and community education. We host dedicated panel roundtables, build peer-reviewed literature references, and archive ancient manuscripts to guarantee the exact and authentic representation of rich Sikh history and core principles globally.
             </p>
@@ -733,6 +771,11 @@ get_header();
               <h3 class="card-title">Youth Kabaddi & Sports Champions</h3>
               <div class="card-icon-sphere">🏆</div>
             </div>
+
+            <div class="bento-card-image-wrap">
+              <img src="https://images.unsplash.com/photo-1517649763962-0c623066013b?q=80&w=800&auto=format&fit=crop" alt="Kabaddi and Athletic support" />
+            </div>
+
             <p class="card-desc">
               Steering Punjab's bright youth away from drug abuse and screen isolation. We build local sports clubs, distribute fitness gears, and organize traditional Shashtar & sports championships.
             </p>
@@ -757,6 +800,11 @@ get_header();
               <h3 class="card-title">Eco-Sikh Environmental Stewardship</h3>
               <div class="card-icon-sphere">🌱</div>
             </div>
+
+            <div class="bento-card-image-wrap">
+              <img src="https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?q=80&w=800&auto=format&fit=crop" alt="Tree planting stewardship" />
+            </div>
+
             <p class="card-desc">
               Upholding the Gurbani vision of 'Pavan Guru Paani Pita' (Air as Guru, Water as Father). We carry out systematic local tree plantation drives, seed sharing, and pure clean-water filtration.
             </p>
@@ -861,6 +909,10 @@ get_header();
       <button class="modal-close-btn" onclick="closeDetailsModal(null)">&times;</button>
     </div>
     <div class="modal-body">
+      <!-- Dynamic modal image alignment -->
+      <div id="modalImageWrap" style="border-radius: 12px; overflow: hidden; margin-bottom: 25px; border: 1px solid rgba(255, 255, 255, 0.08); display: none;">
+        <img id="modalImage" src="" alt="Campaign" style="width: 100%; height: 260px; object-fit: cover;" />
+      </div>
       <p id="modalDesc1">Detailed description paragraph 1.</p>
       <p id="modalDesc2">Detailed description paragraph 2.</p>
       
@@ -934,6 +986,7 @@ get_header();
     charity: {
       category: "General Charity & Support",
       title: "Charitable Rehabilitation Seva",
+      image: "https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?q=80&w=800&auto=format&fit=crop",
       desc1: "At Tatkhalsa, we strictly believe in raising up families in sustained difficulty through targeted rehabilitation. Rather than giving just a transient token of help, we analyze long-term constraints. This includes helping underprivileged widows achieve self-employment by sponsoring sewing equipment, or setting up small community stores.",
       desc2: "Furthermore, during hostile extreme winter nights and summer heatwaves, our active teams travel directly into remote areas and urban pockets distributing thousands of premium quality warm blankets and water/electrolyte kits to those sleeping on pavements and underprotected huts.",
       basis: "Daya (Compassion), Vand Chhako, and Sarbat da Bhala",
@@ -942,6 +995,7 @@ get_header();
     blood: {
       category: "Healthcare Support",
       title: "Sikh Blood Contribution Network",
+      image: "https://images.unsplash.com/photo-1584515979956-d9f6e5d09982?q=80&w=800&auto=format&fit=crop",
       desc1: "When immediate urgent health crises occur, finding the exact blood type becomes a frantic race against the clock. Our Tatkhalsa Sikh Blood network lists vetted, registered, non-commercial donors across major cities who stand fully mobilized to travel immediately to save a patient.",
       desc2: "We maintain close regular audits of patients in need to prevent exploitation, while regularly hosting community blood collection drives in coordination with municipal hospitals and approved medical practitioners.",
       basis: "Tan-Man-Dhan Seva (Physical & Spiritual service)",
@@ -950,6 +1004,7 @@ get_header();
     disaster: {
       category: "Emergency Response",
       title: "Disaster Rapid Response Squad",
+      image: "https://images.unsplash.com/photo-1547683905-f686c993aae5?q=80&w=800&auto=format&fit=crop",
       desc1: "Our trained local response team is structured for peak speed and efficiency. Ready to act synchronously during seasonal floods, earthquakes, and emergency calamities, the team moves swiftly with essential rescue assets, inflatables, and temporary food storage setups.",
       desc2: "By coordinating directly with public officials, we bypass bureaucratic gaps to immediately establish functional Langars, field healthcare cabins, and supply lines to safely feed, house, and protect local residents.",
       basis: "Nirbhau Nirvair (Without Fear, Without Hatred)",
@@ -958,6 +1013,7 @@ get_header();
     heritage: {
       category: "Preservation Board",
       title: "Sikh History & Heritage Board",
+      image: "https://upload.wikimedia.org/wikipedia/commons/e/ee/Group_of_Nihang_Singhs.jpg",
       desc1: "Preserving ancient Sikh values, original historical documents, and correct theological analysis requires active and continuous scholarly oversight. Our Review Board consists of respected academic consultants, language experts, and research historians working in tandem.",
       desc2: "We digitize fragile, ancient Gurmukhi scripts, translate historical manuscripts into correct modern English, and correct any distorted mainstream narratives to keep the brilliant, inspiring historical legacy of the Sikh panth authentic and universally accessible.",
       basis: "Dharam de Rakha (Preservation of Righteousness)",
@@ -966,6 +1022,7 @@ get_header();
     youth: {
       category: "Development Programs",
       title: "Kabaddi, Gatka & Youth Athletic Clubs",
+      image: "https://images.unsplash.com/photo-1517649763962-0c623066013b?q=80&w=800&auto=format&fit=crop",
       desc1: "With modern digital distractions and the devastating rise of substance abuse, we engage and vitalize local youth through robust traditional athletic sports. By creating well-equipped local wrestling arenas (Alkhadas), Gatka training centers, and sports fields, we channel youthful energy productively.",
       desc2: "We organize annual grand level sports championships, giving rewarding awards and encouraging healthy eating habits, clean living, and absolute mental toughness aligned with top moral disciplines.",
       basis: "Charhdi Kala (Dynamic high spirits and positivity)",
@@ -974,6 +1031,7 @@ get_header();
     eco: {
       category: "Community Welfare",
       title: "Eco-Sikh Environmental Stewardship",
+      image: "https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?q=80&w=800&auto=format&fit=crop",
       desc1: "The eternal teachings of Guru Nanak Dev Ji state 'Air as Guru, Water as Father, and the Earth as Great Mother'. Our Eco-Sikh stewardship operates specifically to restore and respect soil health and pure resource access.",
       desc2: "Our campaigns plant massive indigenous trees across degraded school grounds and sterile village edges, while implementing durable micro-reverse-osmosis clean water filtration systems in central public zones deficient of clean water resources.",
       basis: "Sarbat Da Bhala (Universal Peace & Well-being)",
@@ -992,6 +1050,16 @@ get_header();
     document.getElementById('modalDesc2').textContent = data.desc2;
     document.getElementById('modalBasis').textContent = data.basis;
     document.getElementById('modalFunding').textContent = data.funding;
+
+    const modalImgWrap = document.getElementById('modalImageWrap');
+    if (data.image) {
+      const modalImg = document.getElementById('modalImage');
+      modalImg.src = data.image;
+      modalImg.alt = data.title;
+      modalImgWrap.style.display = 'block';
+    } else {
+      modalImgWrap.style.display = 'none';
+    }
 
     document.getElementById('projectModal').classList.add('active');
     document.body.style.overflow = 'hidden'; // Lock background scroll

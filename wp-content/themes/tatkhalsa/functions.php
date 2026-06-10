@@ -68,6 +68,13 @@ add_action( 'after_setup_theme', 'tatkhalsa_setup' );
  * Safely get the Tatkhalsa Logo URL, supporting Customizer Uploaded custom logo with an SSL-safe fallback to the theme's Logo.png
  */
 function tatkhalsa_get_logo_url() {
+	$custom_logo_id = get_theme_mod( 'custom_logo' );
+	if ( $custom_logo_id ) {
+		$logo_img = wp_get_attachment_image_src( $custom_logo_id, 'full' );
+		if ( ! empty( $logo_img[0] ) ) {
+			return set_url_scheme( $logo_img[0] );
+		}
+	}
 	return tatkhalsa_get_theme_logo_url();
 }
 

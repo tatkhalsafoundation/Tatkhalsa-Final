@@ -39,7 +39,7 @@ get_header();
     <div class="hero-logo-wrapper">
       <a href="<?php echo esc_url( home_url( '/' ) ); ?>" style="display: contents;">
         <img
-          src="<?php echo esc_url( tatkhalsa_get_theme_logo_url() ); ?>"
+          src="<?php echo esc_url( tatkhalsa_get_logo_url() ); ?>"
           alt="Tatkhalsa Foundation Logo"
           class="hero-gurbani-logo"
           width="240"
@@ -118,10 +118,10 @@ get_header();
     </div>
 
     <div class="hero-buttons">
-      <button class="btn" style="background: var(--accent-red); color: var(--primary);" onclick="openModal()">
-        Support Our Seva
+      <button class="btn" style="background: var(--accent-red); color: var(--primary); display: inline-flex; align-items: center; justify-content: center; height: 50px; padding: 0 30px; box-sizing: border-box; border: 2px solid transparent; font-weight: bold;" onclick="openModal()">
+        Contribute Now
       </button>
-      <a href="<?php echo esc_url( home_url( '/volunteer/' ) ); ?>" class="btn-outline">Become a Volunteer</a>
+      <a href="<?php echo esc_url( home_url( '/volunteer/' ) ); ?>" class="btn-outline" style="display: inline-flex; align-items: center; justify-content: center; height: 50px; padding: 0 30px; box-sizing: border-box; font-weight: bold;">Become a Volunteer</a>
     </div>
   </div>
 </section>
