@@ -991,7 +991,8 @@
       // Header and document body scroll state
       window.addEventListener("scroll", () => {
         const header = document.querySelector(".header");
-        if (window.scrollY > 50) {
+        const threshold = document.querySelector(".hero-gurbani-logo") ? 180 : 50;
+        if (window.scrollY > threshold) {
           document.body.classList.add("scrolled");
           if (header) {
             header.classList.add("scrolled");
@@ -1004,7 +1005,7 @@
             header.style.transform = "translateY(0)";
           }
         }
-      });
+      }, { passive: true });
 
       // Scroll to Top Logic with defensive null checks
       const backToTopBtn = document.getElementById("backToTop");
@@ -1025,15 +1026,16 @@
         });
       }
 
-      // Keep floating elements above footer
+      // Keep floating elements above footer bottom/copyright
       window.addEventListener("scroll", () => {
-        const footerInfo = document.getElementById("footer");
-        if (!footerInfo) return;
+        const copyrightSection = document.querySelector(".copyright");
+        if (!copyrightSection) return;
         
-        const footerRect = footerInfo.getBoundingClientRect();
+        const copyrightRect = copyrightSection.getBoundingClientRect();
         const windowHeight = window.innerHeight;
-        let lift = footerRect.top < windowHeight ? (windowHeight - footerRect.top) : 0;
+        let lift = copyrightRect.top < windowHeight ? (windowHeight - copyrightRect.top) : 0;
         
+        // Add dynamic margin-bottom specifically for the lowest point over the footer
         document.documentElement.style.setProperty('--footer-push', `${lift}px`);
       }, { passive: true });
 
@@ -1708,6 +1710,12 @@
           const origBigOpacity = bigLogo.style.opacity;
           const origSmallTransform = smallLogo.style.transform;
           const origSmallOpacity = smallLogo.style.opacity;
+          const hadScrolled = document.body.classList.contains('scrolled');
+          
+          if (hadScrolled) {
+            document.body.classList.remove('scrolled');
+            if (document.querySelector('.header')) document.querySelector('.header').classList.remove('scrolled');
+          }
           
           bigLogo.style.transform = 'none';
           bigLogo.style.opacity = '1';
@@ -1724,6 +1732,10 @@
             bigLogo.style.opacity = origBigOpacity;
             smallLogo.style.transform = origSmallTransform;
             smallLogo.style.opacity = origSmallOpacity;
+            if (hadScrolled) {
+              document.body.classList.add('scrolled');
+              if (document.querySelector('.header')) document.querySelector('.header').classList.add('scrolled');
+            }
             
             // Retry again once details are rendered
             setTimeout(measurePositions, 100);
@@ -1737,11 +1749,14 @@
             centerY: bigRect.top + bigRect.height / 2 + window.scrollY
           };
           
+          // Header is position:fixed, so getBoundingClientRect() is already the screen coordinate, 
+          // which is exactly where we want it to merge visually when at the top.
+          // We DO NOT add window.scrollY here, because we want the target to be its static viewport slot.
           targetRect = {
             width: smallRect.width,
             height: smallRect.height,
-            centerX: smallRect.left + smallRect.width / 2 + window.scrollX,
-            centerY: smallRect.top + smallRect.height / 2 + window.scrollY
+            centerX: smallRect.left + smallRect.width / 2, // horizontal scroll typically 0 for mobile, but better to keep relative to screen
+            centerY: smallRect.top + smallRect.height / 2  // absolute screen Y position
           };
           
           // Restore
@@ -1749,6 +1764,11 @@
           bigLogo.style.opacity = origBigOpacity;
           smallLogo.style.transform = origSmallTransform;
           smallLogo.style.opacity = origSmallOpacity;
+          
+          if (hadScrolled) {
+            document.body.classList.add('scrolled');
+            if (document.querySelector('.header')) document.querySelector('.header').classList.add('scrolled');
+          }
         }
 
         // Perform measurements on load & resize

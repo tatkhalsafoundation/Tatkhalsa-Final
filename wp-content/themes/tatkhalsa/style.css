@@ -476,7 +476,7 @@ h6 {
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+  transition: width 0.4s cubic-bezier(0.165, 0.84, 0.44, 1), height 0.4s cubic-bezier(0.165, 0.84, 0.44, 1), margin 0.4s cubic-bezier(0.165, 0.84, 0.44, 1), background 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
   overflow: visible;
   flex-shrink: 0;
 }
@@ -533,7 +533,8 @@ body.scrolled .header-logo-img-new {
   align-items: center;
   text-align: center;
   line-height: 1.1;
-  transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
+  transform-origin: left center;
+  transition: transform 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
 }
 
 /* Home Page Hero Logo Definition */
@@ -622,11 +623,8 @@ body.scrolled .header-logo-img-new {
     width: 28px !important;
     height: 28px !important;
   }
-  body.scrolled .logo-text-up {
-    font-size: 0.95rem !important;
-  }
-  body.scrolled .logo-text-down {
-    font-size: 0.5rem !important;
+  body.scrolled .logo-stack {
+    transform: scale(0.85);
   }
   .header-actions {
     gap: 8px !important;
@@ -649,12 +647,8 @@ body.scrolled .header {
   min-height: 68px;
   box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
 }
-body.scrolled .logo-text-up {
-  font-size: 1.25rem;
-}
-body.scrolled .logo-text-down {
-  font-size: 0.62rem;
-  letter-spacing: 0.28em;
+body.scrolled .logo-stack {
+  transform: scale(0.85);
 }
 .header-actions {
   display: flex;

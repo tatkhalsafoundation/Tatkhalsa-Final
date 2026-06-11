@@ -34,7 +34,7 @@
           width: 32px !important;
           height: 32px !important;
           margin-right: 8px !important;
-          transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1) !important;
+          transition: width 0.4s cubic-bezier(0.25, 0.8, 0.25, 1), height 0.4s cubic-bezier(0.25, 0.8, 0.25, 1), margin 0.4s cubic-bezier(0.25, 0.8, 0.25, 1) !important;
           will-change: width, height, margin;
         }
         .header-logo-img-new {
@@ -43,17 +43,15 @@
           transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1) !important;
           will-change: width, height, transform;
         }
-        .logo-text-up {
-          font-size: 1.1rem !important;
-          transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1) !important;
-          will-change: font-size;
+        .logo-stack {
+          transform-origin: left center;
+          transition: transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1) !important;
+          will-change: transform;
         }
-        .logo-text-down {
-          font-size: 0.55rem !important;
-          transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1) !important;
-          will-change: font-size;
+        body.scrolled .logo-stack {
+          transform: scale(0.7) !important;
         }
-
+        
         /* Scrolled States applied securely via inline CSS */
         body.scrolled .header-logo-badge {
           width: 28px !important;
@@ -63,12 +61,6 @@
         body.scrolled .header-logo-img-new {
           width: 18px !important;
           height: 18px !important;
-        }
-        body.scrolled .logo-text-up {
-          font-size: 0.95rem !important;
-        }
-        body.scrolled .logo-text-down {
-          font-size: 0.5rem !important;
         }
         .header {
           transition: padding 0.3s ease, min-height 0.3s ease, background 0.3s ease, transform 0.4s cubic-bezier(0.165, 0.84, 0.44, 1) !important;
