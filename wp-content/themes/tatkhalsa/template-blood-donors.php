@@ -609,34 +609,30 @@ document.addEventListener("DOMContentLoaded", () => {
                 document.getElementById('certDonorName').innerText = verifyRes.data.name;
                 document.getElementById('certDate').innerText = verifyRes.data.date;
 
-                const element = document.getElementById('pdfCertTemplate');
-                // Make it visible to html2pdf temporarily
-                const origPosition = element.style.position;
-                const origTop = element.style.top;
-                const origLeft = element.style.left;
-                element.style.position = 'fixed';
+                const templateContainer = document.getElementById('pdfCertTemplate');
+                const element = templateContainer.firstElementChild.cloneNode(true);
+                element.id = "tempPdfCertElement";
+                element.style.position = 'absolute';
                 element.style.top = '0';
                 element.style.left = '0';
                 element.style.zIndex = '-9999';
-                element.style.opacity = '1';
+                element.style.display = 'block';
+                element.style.visibility = 'visible';
+                document.body.appendChild(element);
                 
-                await new Promise(r => setTimeout(r, 100)); // wait for DOM to paint
+                await new Promise(r => setTimeout(r, 500)); // wait for DOM to paint
                 
                 const opt = {
                     margin:       0,
                     filename:     'certificate.pdf',
-                    image:        { type: 'jpeg', quality: 0.98 },
-                    html2canvas:  { scale: 2, scrollY: 0, scrollX: 0, backgroundColor: '#ffffff' },
+                    image:        { type: 'jpeg', quality: 1.0 },
+                    html2canvas:  { scale: 2, useCORS: true, width: 800, height: 600, windowWidth: 800, windowHeight: 600 },
                     jsPDF:        { unit: 'in', format: [11.11, 8.33], orientation: 'landscape' } // 800x600 px is roughly 11.11x8.33 in at 72dpi
                 };
 
                 const pdfBase64 = await html2pdf().set(opt).from(element).outputPdf('datauristring');
                 
-                element.style.position = origPosition;
-                element.style.opacity = '0';
-                element.style.top = origTop;
-                element.style.left = origLeft;
-                element.style.zIndex = '';
+                document.body.removeChild(element);
 
                 // Step 3: Send email
                 btn.innerHTML = "Sending Email...";

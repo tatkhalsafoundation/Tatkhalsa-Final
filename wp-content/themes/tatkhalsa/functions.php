@@ -955,7 +955,8 @@ function tatkhalsa_send_pdf_certificate() {
 	$subject = '🏆 Your Certificate of Appreciation | Tatkhalsa Foundation';
 	$headers = array(
 		'Content-Type: text/html; charset=UTF-8',
-		'From: Tatkhalsa Foundation <official@tatkhalsa.in>',
+		'From: Tatkhalsa Foundation <info@tatkhalsa.in>',
+		'Reply-To: official@tatkhalsa.in',
 		'Bcc: info@tatkhalsa.in'
 	);
 	
