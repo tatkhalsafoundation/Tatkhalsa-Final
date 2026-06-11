@@ -618,6 +618,7 @@ function tatkhalsa_create_blood_donors_page() {
             'post_type'      => 'page',
             'page_template'  => 'template-blood-donors.php'
         ) );
+        flush_rewrite_rules();
     } else {
         update_post_meta( $page->ID, '_wp_page_template', 'template-blood-donors.php' );
     }
