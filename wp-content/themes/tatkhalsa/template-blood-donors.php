@@ -340,30 +340,50 @@ $donors_query = new WP_Query( $args );
 </div>
 
 <div id="pdfCertTemplate" style="position: absolute; top: -9999px; left: -9999px; opacity: 0; pointer-events: none;">
-    <div style="width: 800px; height: 600px; background-color:#f4f7f6; padding:40px; font-family:'Arial', sans-serif; text-align:center; box-sizing: border-box;">
-        <div style="background:#fff; border:12px solid #0a2342; padding:40px; border-radius:8px; height:100%; box-sizing:border-box;">
-            <div style="font-size:50px; margin-bottom:10px; line-height:1;">🏆</div>
-            <h1 style="color:#0a2342; font-size:32px; text-transform:uppercase; letter-spacing:2px; margin:bottom:5px; margin-top:0;">Certificate of Appreciation</h1>
-            <h3 style="color:#ff334b; font-size:18px; margin-bottom:30px; margin-top:0;">Tatkhalsa Foundation Blood Network</h3>
-            
-            <p style="color:#555; font-size:16px; margin-bottom:15px;">This certificate is proudly presented to</p>
-            <h2 id="certDonorName" style="color:#0a2342; font-size:36px; font-weight:bold; border-bottom:2px solid #ccc; display:inline-block; padding-bottom:5px; margin-bottom:20px; margin-top:0;">[Name]</h2>
-            <p style="color:#555; font-size:16px; margin-bottom:40px; line-height:1.6; padding: 0 40px;">
-                in profound recognition of your selfless commitment to saving lives. Your donation through the Tatkhalsa Blood Network stands as a testament to humanity and compassion.
-            </p>
-            
-            <div style="display:flex; justify-content:space-between; margin-top:30px; align-items:flex-end;">
-                <div style="text-align:center; flex:1;">
-                    <div style="width:120px; border-bottom:1px solid #333; margin:0 auto 10px auto;"></div>
-                    <span style="font-size:14px; color:#555;">Date of Issue<br><strong id="certDate">[Date]</strong></span>
+    <div style="width: 800px; height: 600px; background: linear-gradient(135deg, #fdfbfb 0%, #ebedee 100%); padding:30px; font-family:'Helvetica Neue', Helvetica, Arial, sans-serif; text-align:center; box-sizing: border-box; display: flex; flex-direction: column;">
+        <div style="background:#fff; border:4px solid #FFB800; padding:4px; border-radius:12px; height:100%; box-sizing:border-box; box-shadow: 0 10px 30px rgba(0,0,0,0.1);">
+            <div style="border: 2px solid #0a2342; border-radius: 8px; height: 100%; padding: 40px 30px; box-sizing: border-box; display: flex; flex-direction: column; justify-content: center; position: relative; overflow: hidden;">
+                <!-- Decorative Corner Accents -->
+                <div style="position: absolute; top: 10px; left: 10px; width: 40px; height: 40px; border-top: 3px solid #FFB800; border-left: 3px solid #FFB800;"></div>
+                <div style="position: absolute; top: 10px; right: 10px; width: 40px; height: 40px; border-top: 3px solid #FFB800; border-right: 3px solid #FFB800;"></div>
+                <div style="position: absolute; bottom: 10px; left: 10px; width: 40px; height: 40px; border-bottom: 3px solid #FFB800; border-left: 3px solid #FFB800;"></div>
+                <div style="position: absolute; bottom: 10px; right: 10px; width: 40px; height: 40px; border-bottom: 3px solid #FFB800; border-right: 3px solid #FFB800;"></div>
+
+                <!-- Logo at Top -->
+                <div style="margin-bottom: 15px; text-align: center;">
+                    <img src="<?php echo esc_url( tatkhalsa_get_theme_logo_url() ); ?>" alt="Tatkhalsa Logo" style="height: 70px; width: auto; object-fit: contain;">
                 </div>
-                <div style="text-align:center; flex:1;">
-                    <div style="width:90px; height:90px; background:#0a2342; border-radius:50%; margin:0 auto; line-height:90px; color:#fdf7e7; font-weight:bold; font-size:11px; border:4px double #fdf7e7; box-shadow:0 0 0 2px #0a2342; text-align:center;">OFFICIAL SEAL</div>
-                </div>
-                <div style="text-align:center; flex:1;">
-                    <div style="font-family:'Brush Script MT', cursive; font-size:24px; color:#0a2342; margin-bottom:5px;">S. Prabhjot Singh</div>
-                    <div style="width:150px; border-bottom:1px solid #333; margin:0 auto 10px auto;"></div>
-                    <span style="font-size:14px; color:#555;">Authorized Signatory<br><strong>Tatkhalsa Foundation</strong></span>
+
+                <h1 style="color:#0a2342; font-family: 'Georgia', serif; font-size:42px; text-transform:uppercase; letter-spacing:3px; margin:0 0 10px 0; text-shadow: 1px 1px 2px rgba(0,0,0,0.1);">Certificate of Appreciation</h1>
+                <h3 style="color:#d93025; font-size:20px; font-weight: bold; margin:0 0 25px 0; letter-spacing: 1px;">TATKHALSA FOUNDATION BLOOD NETWORK</h3>
+                
+                <p style="color:#666; font-size:18px; font-style: italic; margin:0 0 20px 0;">This certificate is proudly presented to</p>
+                
+                <h2 id="certDonorName" style="color:#0a2342; font-family: 'Georgia', serif; font-size:46px; font-weight:bold; border-bottom:3px solid #FFB800; display:inline-block; padding:0 30px 10px 30px; margin:0 0 25px 0;">[Name]</h2>
+                
+                <p style="color:#444; font-size: 17px; margin:0 auto 35px auto; line-height:1.6; max-width: 600px;">
+                    in profound recognition of your selfless commitment to saving lives. Your donation through the Tatkhalsa Blood Network stands as a true testament to humanity, compassion, and the spirit of selfless service.
+                </p>
+                
+                <div style="display:flex; justify-content:space-between; align-items:flex-end; padding: 0 20px;">
+                    <div style="text-align:center; flex:1;">
+                        <span style="font-size:18px; color:#333; display: block; margin-bottom: 5px; font-weight: bold;" id="certDate">[Date]</span>
+                        <div style="width:140px; border-bottom:2px solid #ccc; margin:0 auto 5px auto;"></div>
+                        <span style="font-size:12px; color:#777; text-transform: uppercase;">Date of Issue</span>
+                    </div>
+                    
+                    <div style="text-align:center; flex:1;">
+                        <div style="width:100px; height:100px; background:#0a2342; border-radius:50%; margin:0 auto; display:flex; align-items:center; justify-content:center; color:#FFB800; font-weight:bold; font-size:11px; border:2px dashed #FFB800; box-shadow: 0 0 0 5px #0a2342; position: relative;">
+                            <div style="position: absolute; inset: 4px; border: 1px solid rgba(255,184,0,0.5); border-radius: 50%;"></div>
+                            <span style="z-index: 2; text-align: center; line-height: 1.2;">OFFICIAL<br>NETWORK<br>MEMBER</span>
+                        </div>
+                    </div>
+                    
+                    <div style="text-align:center; flex:1;">
+                        <div style="font-family:'Brush Script MT', 'Lucida Handwriting', cursive; font-size:32px; color:#0a2342; margin-bottom:0;">S. Prabhjot Singh</div>
+                        <div style="width:180px; border-bottom:2px solid #ccc; margin:0 auto 5px auto;"></div>
+                        <span style="font-size:12px; color:#777; text-transform: uppercase;">President, Tatkhalsa</span>
+                    </div>
                 </div>
             </div>
         </div>
@@ -609,30 +629,25 @@ document.addEventListener("DOMContentLoaded", () => {
                 document.getElementById('certDonorName').innerText = verifyRes.data.name;
                 document.getElementById('certDate').innerText = verifyRes.data.date;
 
-                const templateContainer = document.getElementById('pdfCertTemplate');
-                const element = templateContainer.firstElementChild.cloneNode(true);
-                element.id = "tempPdfCertElement";
-                element.style.position = 'absolute';
-                element.style.top = '0';
-                element.style.left = '0';
-                element.style.zIndex = '-9999';
-                element.style.display = 'block';
-                element.style.visibility = 'visible';
-                document.body.appendChild(element);
+                const element = document.getElementById('pdfCertTemplate');
+                const origCssText = element.style.cssText;
                 
-                await new Promise(r => setTimeout(r, 500)); // wait for DOM to paint
+                // Make it visible and fixed at top so html2canvas can capture it perfectly
+                element.style.cssText = 'position: fixed; top: 0; left: 0; width: 800px; height: 600px; z-index: 10000; background: white; overflow: hidden;';
+                
+                await new Promise(r => setTimeout(r, 500)); // wait for DOM to paint & fonts to load
                 
                 const opt = {
                     margin:       0,
                     filename:     'certificate.pdf',
                     image:        { type: 'jpeg', quality: 1.0 },
-                    html2canvas:  { scale: 2, useCORS: true, width: 800, height: 600, windowWidth: 800, windowHeight: 600 },
-                    jsPDF:        { unit: 'in', format: [11.11, 8.33], orientation: 'landscape' } // 800x600 px is roughly 11.11x8.33 in at 72dpi
+                    html2canvas:  { scale: 2, useCORS: true, scrollX: 0, scrollY: 0, windowWidth: 800, windowHeight: 600 },
+                    jsPDF:        { unit: 'px', format: [800, 600], orientation: 'landscape', hotfixes: ["px_scaling"] }
                 };
 
-                const pdfBase64 = await html2pdf().set(opt).from(element).outputPdf('datauristring');
+                const pdfBase64 = await html2pdf().set(opt).from(element.firstElementChild).outputPdf('datauristring');
                 
-                document.body.removeChild(element);
+                element.style.cssText = origCssText;
 
                 // Step 3: Send email
                 btn.innerHTML = "Sending Email...";
