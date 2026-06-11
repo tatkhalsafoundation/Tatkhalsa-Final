@@ -318,24 +318,36 @@ $donors_query = new WP_Query( $args );
   <div class="modal-content" style="background: var(--bg-shade-1); padding: 30px; border-radius: 16px; width: 100%; max-width: 400px; position: relative;  margin: auto;">
     <button class="modal-close" style="position: absolute; top: 15px; right: 15px; background: none; border: none; font-size: 1.5rem; cursor: pointer; color: var(--text-dark);" onclick="closeCertificateModal()">&times;</button>
     
-    <div style="text-align: center; margin-bottom: 20px;">
-        <span style="font-size: 3rem; display: block; margin-bottom: 10px;">🏆</span>
-        <h2 style="color: var(--text-dark); margin-bottom: 10px;">Claim Certificate</h2>
-        <p style="font-size: 0.85rem; color: var(--text-light); line-height: 1.4;">Did you recently donate blood? Enter your registered email address to receive your official Certificate of Appreciation.</p>
-    </div>
-    
-    <form id="certificateForm" method="POST" action="">
-      <div style="margin-bottom: 20px;">
-        <label style="display: block; margin-bottom: 8px; color: var(--text-dark); font-weight: bold;">Registered Email Address</label>
-        <input type="email" name="donorEmail" required placeholder="name@example.com" style="width: 100%; padding: 12px; border-radius: 6px; border: 1px solid rgba(0,0,0,0.2); background: #fff; color: #333;">
+    <div id="claimCertContainer">
+      <div style="text-align: center; margin-bottom: 20px;">
+          <span style="font-size: 3rem; display: block; margin-bottom: 10px;">🏆</span>
+          <h2 style="color: var(--text-dark); margin-bottom: 10px;">Claim Certificate</h2>
+          <p style="font-size: 0.85rem; color: var(--text-light); line-height: 1.4;">Did you recently donate blood? Enter your registered email address to receive your official Certificate of Appreciation.</p>
       </div>
-
-      <div id="certificateStatus" style="margin-bottom: 15px; font-size: 0.9rem; border-radius: 6px; display: none;"></div>
       
-      <button type="submit" id="certificateBtn" style="width: 100%; background: linear-gradient(135deg, #FFB800 0%, #F59E0B 100%); color: #fff; border: none; font-size: 1rem; font-weight: bold; padding: 12px; border-radius: 8px; cursor: pointer; box-shadow: 0 4px 15px rgba(245, 158, 11, 0.3);">
-        Email My Certificate
-      </button>
-    </form>
+      <form id="certificateForm" method="POST" action="">
+        <div style="margin-bottom: 20px;">
+          <label style="display: block; margin-bottom: 8px; color: var(--text-dark); font-weight: bold;">Registered Email Address</label>
+          <input type="email" id="donorEmail" name="donorEmail" required placeholder="name@example.com" style="width: 100%; padding: 12px; border-radius: 6px; border: 1px solid rgba(0,0,0,0.2); background: #fff; color: #333;">
+        </div>
+
+        <div id="certificateStatus" style="margin-bottom: 15px; font-size: 0.9rem; border-radius: 6px; display: none;"></div>
+        
+        <button type="submit" id="certificateBtn" style="width: 100%; background: linear-gradient(135deg, #FFB800 0%, #F59E0B 100%); color: #fff; border: none; font-size: 1rem; font-weight: bold; padding: 12px; border-radius: 8px; cursor: pointer; box-shadow: 0 4px 15px rgba(245, 158, 11, 0.3);">
+          View My Certificate
+        </button>
+      </form>
+    </div>
+
+    <div id="previewCertContainer" style="display: none; text-align: center;">
+        <h2 style="color: var(--text-dark); margin-bottom: 15px;">Your Certificate</h2>
+        <img id="certPreviewImg" src="" style="width: 100%; max-width: 800px; height: auto; border: 1px solid #ccc; border-radius: 8px; margin-bottom: 20px; box-shadow: 0 4px 10px rgba(0,0,0,0.1);">
+        <div style="display: flex; gap: 10px; justify-content: center; margin-bottom: 15px;">
+            <a id="downloadCertBtn" download="Tatkhalsa-Certificate.jpg" href="#" style="flex:1; background: #0a2342; color: #fff; text-decoration: none; padding: 12px; border-radius: 6px; font-weight: bold; text-align: center; display: inline-block;">⬇ Download</a>
+            <button id="sendEmailCertBtn" style="flex:1; background: #FFB800; color: #fff; border: none; padding: 12px; border-radius: 6px; font-weight: bold; cursor: pointer;">✉ Email to Me</button>
+        </div>
+        <div id="emailCertStatus" style="margin-top: 10px; font-size: 0.9rem; border-radius: 6px; display: none; padding: 10px; text-align: center;"></div>
+    </div>
   </div>
 </div>
 
@@ -440,6 +452,22 @@ function closeCertificateModal() {
     if(modal) {
         modal.style.display = "none";
         document.body.style.overflow = "auto";
+        
+        const claimContainer = document.getElementById("claimCertContainer");
+        const previewContainer = document.getElementById("previewCertContainer");
+        const emailStatus = document.getElementById("emailCertStatus");
+        const certBtn = document.getElementById("certificateBtn");
+        
+        if (claimContainer) claimContainer.style.display = "block";
+        if (previewContainer) previewContainer.style.display = "none";
+        if (emailStatus) {
+            emailStatus.style.display = "none";
+            emailStatus.innerText = "";
+        }
+        if (certBtn) {
+            certBtn.innerHTML = "View My Certificate";
+            certBtn.disabled = false;
+        }
     }
 }
 
@@ -675,34 +703,59 @@ document.addEventListener("DOMContentLoaded", () => {
                 
                 element.style.cssText = origCssText;
 
-                // Step 3: Send email
-                btn.innerHTML = "Sending Email...";
-                const sendParams = new URLSearchParams();
-                sendParams.append('action', 'send_pdf_certificate');
-                sendParams.append('donorEmail', donorEmail);
-                sendParams.append('pdfData', imageBase64);
+                // Step 3: Show Preview and Update Variables
+                document.getElementById('claimCertContainer').style.display = 'none';
+                
+                const previewContainer = document.getElementById('previewCertContainer');
+                previewContainer.style.display = 'block';
+                
+                const certPreviewImg = document.getElementById('certPreviewImg');
+                certPreviewImg.src = imageBase64;
+                
+                const downloadBtn = document.getElementById('downloadCertBtn');
+                downloadBtn.href = imageBase64;
+                downloadBtn.setAttribute('download', `Tatkhalsa-Certificate-${verifyRes.data.name.replace(/\s+/g, '-')}.jpg`);
+                
+                // Set up Send Email button
+                const sendEmailBtn = document.getElementById('sendEmailCertBtn');
+                sendEmailBtn.onclick = async () => {
+                    const emailStatus = document.getElementById('emailCertStatus');
+                    try {
+                        sendEmailBtn.innerHTML = "Sending...";
+                        sendEmailBtn.disabled = true;
+                        emailStatus.style.display = 'none';
+                        
+                        const sendParams = new URLSearchParams();
+                        sendParams.append('action', 'send_pdf_certificate');
+                        sendParams.append('donorEmail', donorEmail);
+                        sendParams.append('pdfData', imageBase64);
 
-                const sendRes = await fetch("<?php echo esc_url(admin_url('admin-ajax.php')); ?>", {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                    body: sendParams.toString()
-                }).then(r => r.json());
+                        const sendRes = await fetch("<?php echo esc_url(admin_url('admin-ajax.php')); ?>", {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                            body: sendParams.toString()
+                        }).then(r => r.json());
 
-                if (!sendRes.success) {
-                    throw new Error(sendRes.data.message || "Failed to send email.");
-                }
+                        if (!sendRes.success) {
+                            throw new Error(sendRes.data.message || "Failed to send email.");
+                        }
 
-                statusBox.style.display = "block";
-                statusBox.style.padding = "10px";
-                statusBox.style.backgroundColor = "rgba(40, 167, 69, 0.1)";
-                statusBox.style.borderColor = "rgba(40, 167, 69, 0.2)";
-                statusBox.style.color = "#28a745";
-                statusBox.innerHTML = sendRes.data.message;
+                        emailStatus.style.display = "block";
+                        emailStatus.style.backgroundColor = "rgba(40, 167, 69, 0.1)";
+                        emailStatus.style.color = "#28a745";
+                        emailStatus.innerText = "Certificate sent to your email!";
+                        sendEmailBtn.innerHTML = "✉ Sent Successfully";
+                    } catch (err) {
+                        emailStatus.style.display = "block";
+                        emailStatus.style.backgroundColor = "rgba(220, 53, 69, 0.1)";
+                        emailStatus.style.color = "#dc3545";
+                        emailStatus.innerText = err.message || "An error occurred.";
+                        sendEmailBtn.innerHTML = "✉ Try Again";
+                        sendEmailBtn.disabled = false;
+                    }
+                };
+                
                 certForm.reset();
-                setTimeout(() => {
-                    closeCertificateModal();
-                }, 3000);
-
             } catch (err) {
                 console.error(err);
                 statusBox.style.display = "block";
