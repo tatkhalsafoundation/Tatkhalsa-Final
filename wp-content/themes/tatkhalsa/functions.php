@@ -942,28 +942,28 @@ function tatkhalsa_send_pdf_certificate() {
 
 	$parts = explode( ',', $pdf_data );
 	if ( count( $parts ) < 2 ) {
-		wp_send_json_error( array( 'message' => 'Invalid PDF data format.' ) );
+		wp_send_json_error( array( 'message' => 'Invalid image data format.' ) );
 	}
-	$pdf_decoded = base64_decode( $parts[1] );
+	$image_decoded = base64_decode( $parts[1] );
 
 	$upload_dir = wp_upload_dir();
-	$filename = 'Certificate-of-Appreciation-' . time() . '.pdf';
+	$filename = 'Certificate-of-Appreciation-' . time() . '.jpg';
 	$filepath = $upload_dir['path'] . '/' . $filename;
 	
-	file_put_contents( $filepath, $pdf_decoded );
+	file_put_contents( $filepath, $image_decoded );
 
 	$subject = '🏆 Your Certificate of Appreciation | Tatkhalsa Foundation';
 	$headers = array(
 		'Content-Type: text/html; charset=UTF-8',
 		'From: Tatkhalsa Foundation <info@tatkhalsa.in>',
-		'Reply-To: official@tatkhalsa.in',
+		'Reply-To: noreply@tatkhalsa.in',
 		'Bcc: info@tatkhalsa.in'
 	);
 	
 	$body = "
 	<div style='background-color:#f4f7f6; padding:40px 20px; font-family:\"Arial\", sans-serif;'>
 		<p style='color:#0a2342; font-size:16px;'>Waheguru Ji Ka Khalsa, Waheguru Ji Ki Fateh.</p>
-		<p style='color:#555; font-size:16px;'>Thank you for your noble commitment. Please find attached your official Certificate of Appreciation from Tatkhalsa Foundation in PDF format.</p>
+		<p style='color:#555; font-size:16px;'>Thank you for your noble commitment. Please find attached your official Certificate of Appreciation from Tatkhalsa Foundation.</p>
 	</div>";
 
 	$attachments = array( $filepath );
