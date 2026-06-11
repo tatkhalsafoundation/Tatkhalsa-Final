@@ -180,6 +180,16 @@ $donors_query = new WP_Query( $args );
         <?php endif; ?>
         <?php wp_reset_postdata(); ?>
 
+        <!-- Gurbani Quote Section -->
+        <section class="gurbani-quote-section scroll-reveal" style="background: transparent; border: none; padding: 40px 0 20px; margin-top: 20px;">
+          <div class="gurbani-quote-container">
+            <div class="gurbani-ornament">✧ ✦ ✧</div>
+            <div class="gurbani-gurmukhi">ਮਾਨਸ ਕੀ ਜਾਤ ਸਬੈ ਏਕੈ ਪਹਿਚਾਨਬੋ ॥</div>
+            <div class="gurbani-translit">maanas kee jaat sabai aekai pehichaanabo ||</div>
+            <div class="gurbani-english">"Recognize all of the human race as one."</div>
+          </div>
+        </section>
+
         <!-- Disclaimer Section -->
         <div style="margin-top: 60px; padding: 25px; background: rgba(0,0,0,0.03); border-radius: 12px; border-left: 4px solid #ff334b; font-size: 0.85rem; color: var(--text-light); line-height: 1.6;">
             <strong>Disclaimer:</strong> Tatkhalsa Foundation operates purely as a voluntary community coordination network. We do not run physical blood banks or commercialize medical supplies. All verifications of donor eligibility must be independently validated by certified hospital practitioners at the time of transfusion.

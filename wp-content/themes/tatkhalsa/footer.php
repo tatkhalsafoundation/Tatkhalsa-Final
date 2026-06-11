@@ -1025,6 +1025,18 @@
         });
       }
 
+      // Keep floating elements above footer
+      window.addEventListener("scroll", () => {
+        const footerInfo = document.getElementById("footer");
+        if (!footerInfo) return;
+        
+        const footerRect = footerInfo.getBoundingClientRect();
+        const windowHeight = window.innerHeight;
+        let lift = footerRect.top < windowHeight ? (windowHeight - footerRect.top) : 0;
+        
+        document.documentElement.style.setProperty('--footer-push', `${lift}px`);
+      }, { passive: true });
+
       // Modal Display Mechanics with robust safety guards
       function openModal() {
         const modal = document.getElementById("contributionModal");

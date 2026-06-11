@@ -142,8 +142,15 @@ Tags: clean, gold, navy, ngo, sikh, seva, non-profit, responsive, custom-logo, t
   color: var(--text-dark) !important;
 }
 
-[data-theme="light"] .gurbani-text {
-  color: #9c7b16 !important; /* Darker yellow/gold for readability in light mode */
+[data-theme="light"] .gurbani-text,
+[data-theme="light"] .gurbani-ornament,
+[data-theme="light"] .gurbani-gurmukhi,
+[data-theme="light"] .gurbani-english {
+  background: linear-gradient(to right, #b5952f 0%, #7a651f 50%, #b5952f 100%) !important;
+  background-size: 200% auto !important;
+  -webkit-background-clip: text !important;
+  background-clip: text !important;
+  color: transparent !important;
 }
 
 [data-theme="light"] .stat-item h3 {
@@ -523,8 +530,8 @@ body.scrolled .header-logo-img-new {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: flex-start;
-  text-align: left;
+  align-items: center;
+  text-align: center;
   line-height: 1.1;
   transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
 }
@@ -550,7 +557,7 @@ body.scrolled .header-logo-img-new {
   text-transform: uppercase;
   color: var(--secondary); /* Premium solid gold fallback */
   display: block;
-  text-align: left;
+  text-align: center;
   margin-right: -0.12em;
   transition: all 0.3s ease;
 }
@@ -574,7 +581,7 @@ body.scrolled .header-logo-img-new {
   color: var(--text-light);
   margin-top: 1px;
   display: block;
-  text-align: left;
+  text-align: center;
   margin-right: -0.32em;
   transition: all 0.3s ease;
 }
@@ -896,7 +903,13 @@ body.scrolled .header-cta-btn {
 }
 .gurbani-text {
   font-size: 1.4rem;
-  color: var(--secondary);
+  color: transparent;
+  background: linear-gradient(to right, #d4af37 0%, #fdf7e7 50%, #d4af37 100%);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  animation: goldShine 3s linear infinite;
+  text-shadow: 0 0 10px rgba(212, 175, 55, 0.4);
   margin-top: 20px;
   margin-bottom: 35px;
   font-weight: 500;
@@ -1775,7 +1788,7 @@ footer .container {
 /* Floating theme toggle */
 .theme-toggle-floating {
   position: fixed;
-  bottom: 30px;
+  bottom: calc(30px + var(--footer-push, 0px));
   right: 30px;
   width: 50px;
   height: 50px;
@@ -1789,7 +1802,7 @@ footer .container {
   align-items: center;
   justify-content: center;
   z-index: 99;
-  transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+  transition: background-color 0.4s, color 0.4s, transform 0.4s, box-shadow 0.4s;
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
 }
 .theme-toggle-floating:hover {
@@ -1810,7 +1823,7 @@ footer .container {
 /* Scroll to top button */
 .back-to-top {
   position: fixed;
-  bottom: 90px;
+  bottom: calc(90px + var(--footer-push, 0px));
   right: 30px;
   width: 50px;
   height: 50px;
@@ -1826,7 +1839,7 @@ footer .container {
   opacity: 0;
   visibility: hidden;
   transform: translateY(20px);
-  transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+  transition: opacity 0.4s, visibility 0.4s, transform 0.4s, background-color 0.4s, box-shadow 0.4s;
   z-index: 999;
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
 }
@@ -1857,11 +1870,11 @@ footer .container {
 /* Mobile Responsive Hooks */
 @media (max-width: 900px) {
   .logo-stack {
-    align-items: flex-start;
+    align-items: center;
   }
   .header-actions {
     display: flex !important;
-    gap: 8px !important;
+    gap: 12px !important;
     margin-left: auto !important;
   }
   .header-actions .header-volunteer-btn {
@@ -1873,7 +1886,8 @@ footer .container {
   }
   .header .container {
     justify-content: space-between !important;
-    gap: 15px;
+    gap: 10px;
+    padding: 0 15px !important;
   }
   .nav-menu-container {
     display: none !important;
@@ -1884,7 +1898,7 @@ footer .container {
   .header-nav-selector {
     display: block !important;
     width: auto;
-    margin-left: auto !important;
+    margin-left: 0 !important;
   }
   .top-bar-btn {
     font-size: 0.8rem;
@@ -2018,16 +2032,28 @@ footer .container {
   z-index: 2;
 }
 .gurbani-ornament {
-  color: var(--secondary);
+  color: transparent;
+  background: linear-gradient(to right, #d4af37 0%, #fdf7e7 50%, #d4af37 100%);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  animation: goldShine 3s linear infinite;
+  text-shadow: 0 0 10px rgba(212, 175, 55, 0.4);
   font-size: 1.2rem;
   margin-bottom: 20px;
   letter-spacing: 0.2em;
-  opacity: 0.8;
+  opacity: 0.9;
 }
 .gurbani-gurmukhi {
   font-family: var(--font-serif);
   font-size: 1.8rem;
-  color: var(--secondary);
+  color: transparent;
+  background: linear-gradient(to right, #d4af37 0%, #fdf7e7 50%, #d4af37 100%);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  animation: goldShine 3s linear infinite;
+  text-shadow: 0 0 10px rgba(212, 175, 55, 0.4);
   font-weight: 700;
   margin-bottom: 15px;
   line-height: 1.5;
@@ -2045,11 +2071,22 @@ footer .container {
 .gurbani-english {
   font-family: var(--font-serif);
   font-size: 1.25rem;
-  color: var(--primary);
+  color: transparent;
+  background: linear-gradient(to right, #d4af37 0%, #fdf7e7 50%, #d4af37 100%);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  animation: goldShine 3s linear infinite;
+  text-shadow: 0 0 10px rgba(212, 175, 55, 0.4);
   line-height: 1.6;
   margin-bottom: 20px;
   font-weight: 500;
 }
+@keyframes goldShine {
+  0% { background-position: 0% center; }
+  100% { background-position: -200% center; }
+}
+
 .gurbani-source {
   font-family: var(--font-mono), monospace;
   font-size: 0.8rem;
@@ -2157,7 +2194,7 @@ footer .container {
 /* Floating Circular WhatsApp Seva Desk Button */
 .whatsapp-float-fab {
   position: fixed;
-  bottom: 30px;
+  bottom: calc(30px + var(--footer-push, 0px));
   left: 30px;
   width: 58px;
   height: 58px;
@@ -2170,7 +2207,7 @@ footer .container {
   box-shadow: 0 8px 32px rgba(37, 211, 102, 0.4);
   z-index: 9999;
   text-decoration: none;
-  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  transition: transform 0.3s, background-color 0.3s, box-shadow 0.3s, color 0.3s;
 }
 
 /* Pulsing background ring anim */
@@ -2251,7 +2288,7 @@ footer .container {
 /* Ensure the floating FAB responds well dynamically, lifting higher if a bottom banner or elements block it on smaller screens */
 @media (max-width: 480px) {
   .whatsapp-float-fab {
-    bottom: 20px;
+    bottom: calc(20px + var(--footer-push, 0px));
     left: 20px;
     width: 50px;
     height: 50px;
