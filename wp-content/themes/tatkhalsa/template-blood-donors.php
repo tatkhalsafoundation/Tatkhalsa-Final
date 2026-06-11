@@ -64,10 +64,10 @@ $donors_query = new WP_Query( $args );
         </div>
 
         <div style="display: flex; flex-wrap: wrap; gap: 20px; justify-content: center; margin-bottom: 40px;">
-            <button onclick="openDonorRegistrationModal()" class="btn-primary" style="background: linear-gradient(135deg, #ff334b 0%, #ff5d73 100%); color: #fff; border: none; padding: 12px 24px; border-radius: 8px; font-weight: bold; cursor: pointer; box-shadow: 0 4px 15px rgba(255,51,75,0.3);">
+            <button onclick="openDonorRegistrationModal()" class="btn-primary" style="background: linear-gradient(135deg, var(--secondary) 0%, #ffdf79 100%); color: #000; border: none; padding: 12px 24px; border-radius: 8px; font-weight: bold; cursor: pointer; box-shadow: 0 4px 15px rgba(212, 175, 55, 0.4);">
                 🩸 Register as a Donor
             </button>
-            <button onclick="openBloodRequestModal()" class="btn-secondary" style="background: var(--bg-dark); color: var(--text-dark); border: 1px solid var(--text-dark); padding: 12px 24px; border-radius: 8px; font-weight: bold; cursor: pointer;">
+            <button onclick="openBloodRequestModal()" class="btn-secondary" style="background: linear-gradient(135deg, #ff334b 0%, #ff5d73 100%); color: #fff; border: none; padding: 12px 24px; border-radius: 8px; font-weight: bold; cursor: pointer; box-shadow: 0 4px 15px rgba(255,51,75,0.3);">
                 🚨 Request Blood
             </button>
             <button onclick="openCertificateModal()" class="btn-secondary" style="background: var(--bg-dark); color: var(--primary); border: 1px solid var(--primary); padding: 12px 24px; border-radius: 8px; font-weight: bold; cursor: pointer;">

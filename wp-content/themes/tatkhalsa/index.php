@@ -44,6 +44,7 @@ get_header();
           class="hero-gurbani-logo"
           width="240"
           height="240"
+          fetchpriority="high"
           style="width: 240px; height: 240px; object-fit: contain;"
         />
       </a>

@@ -495,8 +495,9 @@ body:has(.hero-gurbani-logo) .header-logo-badge {
   width: 48px;
   height: 48px;
   object-fit: contain;
-  transition: width 0.3s ease-in-out, height 0.3s ease-in-out, transform 0.3s ease-in-out, filter 0.3s ease-in-out;
+  transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
   filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.3));
+  will-change: width, height, transform, filter;
 }
 .logo:hover .header-logo-badge {
   border-color: transparent;
@@ -2639,5 +2640,12 @@ footer#footer:nth-of-type(1) > div:nth-of-type(2) > div:nth-of-type(2) {
 [data-theme="light"] .modal-content select option {
   background: #fff;
   color: #111;
+}
+
+.designer-heart::before {
+  content: '🩵';
+}
+[data-theme="light"] .designer-heart::before {
+  content: '💙';
 }
 

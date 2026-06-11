@@ -6,6 +6,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="preconnect" href="https://images.unsplash.com" crossorigin>
     <link rel="preconnect" href="https://upload.wikimedia.org" crossorigin>
+    <link rel="preload" as="image" href="<?php echo esc_url( tatkhalsa_get_logo_url() ); ?>" />
     <link rel="icon" type="image/png" href="<?php echo esc_url( tatkhalsa_get_logo_url() ); ?>" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="format-detection" content="telephone=no, date=no, email=no, address=no" />
@@ -33,19 +34,24 @@
           width: 32px !important;
           height: 32px !important;
           margin-right: 8px !important;
-          transition: all 0.3s ease !important;
+          transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1) !important;
+          will-change: width, height, margin;
         }
         .header-logo-img-new {
           width: 20px !important;
           height: 20px !important;
+          transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1) !important;
+          will-change: width, height, transform;
         }
         .logo-text-up {
           font-size: 1.1rem !important;
-          transition: 0.3s ease !important;
+          transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1) !important;
+          will-change: font-size;
         }
         .logo-text-down {
           font-size: 0.55rem !important;
-          transition: 0.3s ease !important;
+          transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1) !important;
+          will-change: font-size;
         }
 
         /* Scrolled States applied securely via inline CSS */
@@ -145,7 +151,7 @@
                 <a href="<?php echo esc_url( home_url( '/about/' ) ); ?>">About</a>
                 <a href="<?php echo esc_url( home_url( '/projects/' ) ); ?>">Projects</a>
                 <a href="<?php echo esc_url( home_url( '/blog/' ) ); ?>">Blog</a>
-                <a href="<?php echo esc_url( home_url( '/blood-donors/' ) ); ?>">Blood Donors</a>
+                <a href="<?php echo esc_url( home_url( '/blood-donors/' ) ); ?>" style="color: #ff334b; font-weight: 700;">Blood Network</a>
               </div>
               <?php
           }
@@ -160,18 +166,16 @@
  
         <!-- Elegant Multi-Selection Dropdown for Mobile / Tablet (Instead of Hamburger Menu) -->
         <div class="header-nav-selector">
-            <select id="mobileNavSelect" onchange="if(this.value === 'donate') { openModal(); } else if(this.value === 'blood') { openBloodRequestModal(); } else if(this.value === 'flood') { openPunjabFloodReliefModal(); } else if(this.value === 'contact') { document.getElementById('footer').scrollIntoView({ behavior: 'smooth' }); } else if(this.value) { window.location.href=this.value; }" style="display: none;" aria-label="Select Seva Page">
+            <select id="mobileNavSelect" onchange="if(this.value === 'donate') { openModal(); } else if(this.value === 'contact') { document.getElementById('footer').scrollIntoView({ behavior: 'smooth' }); } else if(this.value) { window.location.href=this.value; }" style="display: none;" aria-label="Select Seva Page">
               <option value="" disabled selected>Explore Seva...</option>
               <option value="<?php echo esc_url( home_url( '/' ) ); ?>">Home Page</option>
               <option value="<?php echo esc_url( home_url( '/about/' ) ); ?>">About Tatkhalsa</option>
               <option value="<?php echo esc_url( home_url( '/projects/' ) ); ?>">Our Seva Projects</option>
               <option value="<?php echo esc_url( home_url( '/volunteer/' ) ); ?>">Join as Volunteer</option>
               <option value="<?php echo esc_url( home_url( '/blog/' ) ); ?>">Insights & Blog</option>
-              <option value="<?php echo esc_url( home_url( '/blood-donors/' ) ); ?>">❤️ Blood Donors</option>
-              <option value="flood">🌊 Punjab Flood Relief</option>
-              <option value="blood">🩸 Request Blood (Emergency)</option>
-              <option value="contact">☏ Contact Us</option>
-              <option value="donate">♥ Contribute Now</option>
+              <option value="<?php echo esc_url( home_url( '/blood-donors/' ) ); ?>">Blood Network</option>
+              <option value="contact">Contact Us</option>
+              <option value="donate">Contribute Now</option>
             </select>
             
             <div class="custom-select-wrapper" id="customMobileNavWrapper">
@@ -189,11 +193,9 @@
                 <a href="<?php echo esc_url( home_url( '/projects/' ) ); ?>" class="custom-dropdown-opt" role="option">Our Seva Projects</a>
                 <a href="<?php echo esc_url( home_url( '/volunteer/' ) ); ?>" class="custom-dropdown-opt" role="option">Join as Volunteer</a>
                 <a href="<?php echo esc_url( home_url( '/blog/' ) ); ?>" class="custom-dropdown-opt" role="option">Insights & Blog</a>
-                <a href="<?php echo esc_url( home_url( '/blood-donors/' ) ); ?>" class="custom-dropdown-opt" role="option">❤️ Blood Donors</a>
-                <a href="#" onclick="openPunjabFloodReliefModal(); document.getElementById('customMobileNavWrapper').classList.remove('open'); return false;" class="custom-dropdown-opt" role="option" style="color: #4da6ff !important; font-weight: 700;">🌊 Flood Relief</a>
-                <a href="#" onclick="openBloodRequestModal(); document.getElementById('customMobileNavWrapper').classList.remove('open'); return false;" class="custom-dropdown-opt" role="option" style="color: #ff334b !important; font-weight: 700;">🩸 Request Blood</a>
-                <a href="#" onclick="document.getElementById('footer').scrollIntoView({ behavior: 'smooth' }); document.getElementById('customMobileNavWrapper').classList.remove('open'); return false;" class="custom-dropdown-opt" role="option" style="color: #4da6ff !important; font-weight: 700;">☏ Contact Us</a>
-                <a href="#" onclick="openModal(); document.getElementById('customMobileNavWrapper').classList.remove('open'); return false;" class="custom-dropdown-opt header-mobile-contrib-opt" role="option" style="color: #ff5d73 !important; font-weight: 700;">♥ Contribute Now</a>
+                <a href="<?php echo esc_url( home_url( '/blood-donors/' ) ); ?>" class="custom-dropdown-opt" role="option" style="color: #ff334b !important; font-weight: 700;">Blood Network</a>
+                <a href="#" onclick="document.getElementById('footer').scrollIntoView({ behavior: 'smooth' }); document.getElementById('customMobileNavWrapper').classList.remove('open'); return false;" class="custom-dropdown-opt" role="option" style="color: #4da6ff !important; font-weight: 700;">Contact Us</a>
+                <a href="#" onclick="openModal(); document.getElementById('customMobileNavWrapper').classList.remove('open'); return false;" class="custom-dropdown-opt header-mobile-contrib-opt" role="option" style="color: #ff5d73 !important; font-weight: 700;">Contribute Now</a>
               </div>
             </div>
         </div>

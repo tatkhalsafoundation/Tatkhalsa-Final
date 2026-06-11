@@ -130,6 +130,7 @@
             <a href="<?php echo esc_url( home_url( '/terms-conditions/' ) ); ?>" style="color: var(--secondary); text-decoration: none; margin: 0 10px;">Terms & Conditions</a>
           </div>
           <div>&copy; <?php echo date('Y'); ?> <?php bloginfo( 'name' ); ?>. All Rights Reserved. Saved & Built dynamically via custom theme template.</div>
+          <div style="font-size: 0.85rem; color: var(--text-light); margin-top: 5px;">Designed with <span class="designer-heart"></span> by Prabhjot Singh (Team Tatkhalsa)</div>
         </div>
       </div>
     </footer>
