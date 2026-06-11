@@ -124,8 +124,12 @@
           </div>
         </div>
 
-        <div class="copyright">
-          &copy; <?php echo date('Y'); ?> <?php bloginfo( 'name' ); ?>. All Rights Reserved. Saved & Built dynamically via custom theme template.
+        <div class="copyright" style="display: flex; flex-direction: column; align-items: center; gap: 10px;">
+          <div style="font-size: 0.9rem;">
+            <a href="<?php echo esc_url( home_url( '/privacy-policy/' ) ); ?>" style="color: var(--secondary); text-decoration: none; margin: 0 10px;">Privacy Policy</a> | 
+            <a href="<?php echo esc_url( home_url( '/terms-conditions/' ) ); ?>" style="color: var(--secondary); text-decoration: none; margin: 0 10px;">Terms & Conditions</a>
+          </div>
+          <div>&copy; <?php echo date('Y'); ?> <?php bloginfo( 'name' ); ?>. All Rights Reserved. Saved & Built dynamically via custom theme template.</div>
         </div>
       </div>
     </footer>
@@ -1509,14 +1513,37 @@
               statusEl.style.color = "var(--accent-green)";
               statusEl.style.border = "1.2px solid rgba(0, 191, 117, 0.2)";
               statusEl.style.background = "rgba(0, 191, 117, 0.05)";
-              statusEl.innerHTML = `<strong>Success ✓</strong><br/>${result.data.message || "Emergency Blood Request submitted successfully!"}`;
+              statusEl.style.padding = "10px";
+              
+              let htmlContent = `<strong>Success ✓</strong><br/>${result.data.message || "Emergency Blood Request submitted successfully!"}`;
+              
+              if (result.data.matched_donors && result.data.matched_donors.length > 0) {
+                htmlContent += `<div style="margin-top: 15px; border-top: 1px solid rgba(0,0,0,0.1); padding-top: 10px;">
+                  <strong style="color: var(--text-dark);">Available Donors Found (${result.data.matched_donors.length}):</strong>
+                  <ul style="margin-top: 8px; list-style: none; padding-left: 0; color: var(--text-dark);">`;
+                
+                result.data.matched_donors.forEach(d => {
+                  htmlContent += `<li style="margin-bottom: 5px;">👤 ${d.name} &nbsp; 📞 <a href="tel:${d.contact}" style="color: #ff334b; font-weight: bold; text-decoration: none;">${d.contact}</a></li>`;
+                });
+                
+                htmlContent += `</ul></div>`;
+
+                // If donors match, don't close modal immediately so they can read/copy the numbers!
+                setTimeout(() => {
+                  // closeBloodRequestModal(); // Removed auto-close
+                }, 4000);
+              } else {
+                htmlContent += `<div style="margin-top: 10px; color: var(--text-dark);">No registered donors found for this blood group, but our sevadars have been alerted!</div>`;
+                // Re-enable close modal helper
+                setTimeout(() => {
+                  closeBloodRequestModal();
+                  statusEl.style.display = "none";
+                }, 4000);
+              }
+
+              statusEl.innerHTML = htmlContent;
               e.target.reset();
               
-              // Re-enable close modal helper
-              setTimeout(() => {
-                closeBloodRequestModal();
-                statusEl.style.display = "none";
-              }, 4000);
             } else {
               statusEl.style.color = "#ff334b";
               statusEl.style.border = "1.2px solid rgba(255, 51, 75, 0.2)";

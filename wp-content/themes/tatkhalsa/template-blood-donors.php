@@ -111,21 +111,14 @@ $donors_query = new WP_Query( $args );
                         </div>
                         <h3 style="color: var(--text-dark); margin-bottom: 15px; padding-right: 50px;"><?php echo esc_html( get_post_meta( $post_id, 'donor_name', true ) ); ?></h3>
                         
-                        <div style="margin-bottom: 10px; display: flex; align-items: flex-start; gap: 10px;">
-                            <span style="font-size: 1.2rem;">📍</span>
-                            <span style="color: var(--text-light); font-size: 0.95rem;"><?php echo esc_html( $address ); ?></span>
-                        </div>
-                        
-                        <div style="margin-bottom: 20px; display: flex; align-items: center; gap: 10px;">
-                            <span style="font-size: 1.2rem;">📞</span>
-                            <a href="tel:<?php echo esc_attr( $contact ); ?>" style="color: var(--text-dark); font-weight: bold; text-decoration: none; font-size: 0.95rem;"><?php echo esc_html( $contact ); ?></a>
+                        <div style="margin-bottom: 20px; font-size: 0.85rem; color: var(--text-light); line-height: 1.5; background: rgba(0,0,0,0.03); padding: 12px; border-radius: 6px;">
+                            <span style="font-size: 1rem; display: block; margin-bottom: 5px;">🔒 Privacy Protected</span>
+                            Contact details and exact location are private. To view contact information, please submit an Emergency Blood Request. Available donor contacts will be revealed.
                         </div>
 
-                        <?php if ( ! empty( $map ) ) : ?>
-                            <a href="<?php echo esc_url( $map ); ?>" target="_blank" style="display: block; text-align: center; background: rgba(0,0,0,0.05); padding: 8px; border-radius: 6px; font-size: 0.9rem; color: var(--text-dark); text-decoration: none; border: 1px solid rgba(0,0,0,0.1); transition: background 0.2s;">
-                                🗺️ View on Google Maps
-                            </a>
-                        <?php endif; ?>
+                        <button onclick="openBloodRequestModal()" style="display: block; width: 100%; text-align: center; background: rgba(255,51,75,0.1); padding: 10px; border-radius: 6px; font-weight: bold; font-size: 0.9rem; color: #ff334b; text-decoration: none; border: 1px solid rgba(255,51,75,0.2); cursor: pointer; transition: background 0.2s;">
+                            🚨 Submit Request to Connect
+                        </button>
                     </div>
                 <?php endwhile; ?>
             </div>
@@ -181,6 +174,12 @@ $donors_query = new WP_Query( $args );
             <option value="AB+">AB+</option>
             <option value="AB-">AB-</option>
         </select>
+      </div>
+
+      <div style="margin-bottom: 15px;">
+        <label style="display: block; margin-bottom: 8px; color: var(--text-dark); font-weight: bold;">Email Address *</label>
+        <p style="font-size: 0.8rem; color: var(--text-light); margin-bottom: 5px;">Required to receive blood request alerts from nearby patients.</p>
+        <input type="email" name="donorEmail" required placeholder="e.g. email@example.com" style="width: 100%; padding: 12px; border-radius: 6px; border: 1px solid rgba(0,0,0,0.2); background: #fff; color: #333;">
       </div>
       
       <div style="margin-bottom: 15px;">

@@ -599,7 +599,7 @@ add_action( 'wp_ajax_nopriv_simulate_donation', 'tatkhalsa_ajax_simulate_donatio
  * Filter the body classes to append 'has-hero-logo' dynamically for pages using hero logos.
  */
 function tatkhalsa_body_classes( $classes ) {
-	if ( is_front_page() || is_home() || is_page_template( 'template-about.php' ) || is_page_template( 'template-projects.php' ) || is_page_template( 'template-volunteer.php' ) || is_page_template( 'template-blog.php' ) || is_page_template( 'template-blood-donors.php' ) ) {
+	if ( is_front_page() || is_home() || is_page_template( 'template-about.php' ) || is_page_template( 'template-projects.php' ) || is_page_template( 'template-volunteer.php' ) || is_page_template( 'template-blog.php' ) || is_page_template( 'template-blood-donors.php' ) || is_page_template( 'template-privacy.php' ) || is_page_template( 'template-terms.php' ) ) {
 		$classes[] = 'has-hero-logo';
 	}
 	return $classes;
@@ -624,6 +624,37 @@ function tatkhalsa_create_blood_donors_page() {
     }
 }
 add_action( 'init', 'tatkhalsa_create_blood_donors_page' );
+
+function tatkhalsa_create_legal_pages() {
+    // Privacy Policy
+    $privacy_slug = 'privacy-policy';
+    if ( ! get_page_by_path( $privacy_slug ) ) {
+        wp_insert_post( array(
+            'post_title'     => 'Privacy Policy',
+            'post_name'      => $privacy_slug,
+            'post_status'    => 'publish',
+            'post_type'      => 'page',
+            'page_template'  => 'template-privacy.php'
+        ) );
+    } else {
+        update_post_meta( get_page_by_path( $privacy_slug )->ID, '_wp_page_template', 'template-privacy.php' );
+    }
+
+    // Terms & Conditions
+    $terms_slug = 'terms-conditions';
+    if ( ! get_page_by_path( $terms_slug ) ) {
+        wp_insert_post( array(
+            'post_title'     => 'Terms and Conditions',
+            'post_name'      => $terms_slug,
+            'post_status'    => 'publish',
+            'post_type'      => 'page',
+            'page_template'  => 'template-terms.php'
+        ) );
+    } else {
+        update_post_meta( get_page_by_path( $terms_slug )->ID, '_wp_page_template', 'template-terms.php' );
+    }
+}
+add_action( 'init', 'tatkhalsa_create_legal_pages' );
 
 /**
  * Handle Blood Request Form Submission & Direct Email Delivery to tatkhalsafoundation@gmail.com
@@ -672,7 +703,56 @@ function tatkhalsa_submit_blood_request() {
 	$sms_message = "URGENT BLOOD REQUEST:\nType: $blood_group\nUnits: $units\nHospital: $hospital_city\nContact: $contact_details";
 	tatkhalsa_send_whatsapp_alert( $sms_message );
 
-	wp_send_json_success( array( 'message' => esc_html__( 'Emergency Blood Request submitted successfully! Alerts have been sent to our sevadars.', 'tatkhalsa-theme' ) ) );
+	// Query matching donors
+	$matched_donors = array();
+	$donors_query = new WP_Query( array(
+		'post_type'      => 'blood_donor',
+		'posts_per_page' => -1,
+		'meta_query'     => array(
+			array(
+				'key'     => 'blood_group',
+				'value'   => $blood_group,
+				'compare' => '='
+			)
+		)
+	) );
+
+	if ( $donors_query->have_posts() ) {
+		while ( $donors_query->have_posts() ) {
+			$donors_query->the_post();
+			$post_id = get_the_ID();
+			$donor_name = get_post_meta( $post_id, 'donor_name', true );
+			$donor_email = get_post_meta( $post_id, 'donor_email', true );
+			$donor_contact = get_post_meta( $post_id, 'contact_details', true );
+
+			$matched_donors[] = array(
+				'name'    => $donor_name,
+				'contact' => $donor_contact
+			);
+
+			// Alert donor via email
+			if ( ! empty( $donor_email ) ) {
+				$donor_subject = 'URGENT: Blood Donation Request - ' . $blood_group;
+				$donor_body = "<h1>Urgent Blood Request</h1>
+					<p>Dear {$donor_name},</p>
+					<p>Someone near you requires urgent blood donation.</p>
+					<ul>
+						<li><strong>Blood Group:</strong> {$blood_group}</li>
+						<li><strong>Patient:</strong> {$patient_name}</li>
+						<li><strong>Hospital:</strong> {$hospital_name}</li>
+						<li><strong>Patient Contact:</strong> {$contact_details}</li>
+					</ul>
+					<p>If you are available, please contact the patient's family immediately.</p>";
+				wp_mail( $donor_email, $donor_subject, $donor_body, $headers );
+			}
+		}
+		wp_reset_postdata();
+	}
+
+	wp_send_json_success( array( 
+		'message' => esc_html__( 'Emergency Blood Request submitted successfully! Alerts have been sent to our sevadars and registered donors.', 'tatkhalsa-theme' ),
+		'matched_donors' => $matched_donors
+	) );
 }
 add_action( 'wp_ajax_submit_blood_request', 'tatkhalsa_submit_blood_request' );
 add_action( 'wp_ajax_nopriv_submit_blood_request', 'tatkhalsa_submit_blood_request' );
@@ -721,11 +801,12 @@ function tatkhalsa_submit_blood_donor() {
 
 	$name         = isset( $_POST['donorName'] ) ? sanitize_text_field( wp_unslash( $_POST['donorName'] ) ) : '';
 	$blood_group  = isset( $_POST['bloodGroup'] ) ? sanitize_text_field( wp_unslash( $_POST['bloodGroup'] ) ) : '';
+	$email        = isset( $_POST['donorEmail'] ) ? sanitize_email( wp_unslash( $_POST['donorEmail'] ) ) : '';
 	$contact      = isset( $_POST['contactDetails'] ) ? sanitize_text_field( wp_unslash( $_POST['contactDetails'] ) ) : '';
 	$address      = isset( $_POST['address'] ) ? sanitize_text_field( wp_unslash( $_POST['address'] ) ) : '';
 	$map_location = isset( $_POST['mapLocation'] ) ? sanitize_text_field( wp_unslash( $_POST['mapLocation'] ) ) : '';
 
-	if ( empty( $name ) || empty( $blood_group ) || empty( $contact ) || empty( $address ) ) {
+	if ( empty( $name ) || empty( $blood_group ) || empty( $contact ) || empty( $address ) || empty( $email ) ) {
 		wp_send_json_error( array( 'message' => 'Please fill in all required fields.' ) );
 	}
 
@@ -738,6 +819,7 @@ function tatkhalsa_submit_blood_donor() {
 	if ( $post_id ) {
 		update_post_meta( $post_id, 'donor_name', $name );
 		update_post_meta( $post_id, 'blood_group', $blood_group );
+		update_post_meta( $post_id, 'donor_email', $email );
 		update_post_meta( $post_id, 'contact_details', $contact );
 		update_post_meta( $post_id, 'address', $address );
 		update_post_meta( $post_id, 'map_location', $map_location );
