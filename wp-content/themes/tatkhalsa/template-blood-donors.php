@@ -62,6 +62,9 @@ $donors_query = new WP_Query( $args );
             <button onclick="openBloodRequestModal()" class="btn-secondary" style="background: var(--bg-dark); color: var(--text-dark); border: 1px solid var(--text-dark); padding: 12px 24px; border-radius: 8px; font-weight: bold; cursor: pointer;">
                 🚨 Request Blood
             </button>
+            <button onclick="openCertificateModal()" class="btn-secondary" style="background: var(--bg-dark); color: var(--primary); border: 1px solid var(--primary); padding: 12px 24px; border-radius: 8px; font-weight: bold; cursor: pointer;">
+                🏆 Claim Certificate
+            </button>
             <button onclick="openRemoveDonorModal()" class="btn-secondary" style="background: transparent; color: var(--text-light); border: 1px dashed rgba(255,51,75,0.5); padding: 12px 24px; border-radius: 8px; font-weight: bold; cursor: pointer; transition: all 0.3s;" onmouseover="this.style.borderColor='#ff334b'; this.style.color='#ff334b';" onmouseout="this.style.borderColor='rgba(255,51,75,0.5)'; this.style.color='var(--text-light)';">
                 🗑️ Remove My Name
             </button>
@@ -104,13 +107,23 @@ $donors_query = new WP_Query( $args );
                     $address = get_post_meta( $post_id, 'address', true );
                     $contact = get_post_meta( $post_id, 'contact_details', true );
                     $map = get_post_meta( $post_id, 'map_location', true );
+                    $availability = get_post_meta( $post_id, 'availability_status', true );
+                    if ( ! $availability ) $availability = 'Available Now';
                 ?>
                     <div style="background: var(--bg-dark); border-radius: 10px; padding: 15px; box-shadow: 0 3px 10px rgba(0,0,0,0.05); position: relative; border-top: 3px solid #ff334b;">
                         <div style="position: absolute; top: 15px; right: 15px; background: #ff334b; color: #fff; font-weight: bold; padding: 4px 10px; border-radius: 15px; font-size: 0.9rem; box-shadow: 0 2px 6px rgba(255,51,75,0.4);">
                             <?php echo esc_html( $bg ); ?>
                         </div>
-                        <h3 style="color: var(--text-dark); margin-bottom: 10px; padding-right: 40px; font-size: 1.1rem;"><?php echo esc_html( get_post_meta( $post_id, 'donor_name', true ) ); ?></h3>
+                        <h3 style="color: var(--text-dark); margin-bottom: 5px; padding-right: 40px; font-size: 1.1rem;"><?php echo esc_html( get_post_meta( $post_id, 'donor_name', true ) ); ?></h3>
                         
+                        <div style="margin-bottom: 10px; font-size: 0.8rem; color: var(--text-dark); font-weight: 500;">
+                            <?php 
+                                if ( $availability === 'On Standby' ) echo '🟡 On Standby';
+                                elseif ( $availability === 'Resting Phase' ) echo '🔴 Resting Phase';
+                                else echo '🟢 Available Now';
+                            ?>
+                        </div>
+
                         <div style="margin-bottom: 15px; font-size: 0.75rem; color: var(--text-light); line-height: 1.4; background: rgba(0,0,0,0.03); padding: 10px; border-radius: 6px;">
                             <span style="font-size: 0.85rem; display: block; margin-bottom: 3px;">🔒 Privacy Protected</span>
                             Contact details are private. Submit an Emergency Blood Request to view available donor contacts.
@@ -143,6 +156,11 @@ $donors_query = new WP_Query( $args );
             </div>
         <?php endif; ?>
         <?php wp_reset_postdata(); ?>
+
+        <!-- Disclaimer Section -->
+        <div style="margin-top: 60px; padding: 25px; background: rgba(0,0,0,0.03); border-radius: 12px; border-left: 4px solid #ff334b; font-size: 0.85rem; color: var(--text-light); line-height: 1.6;">
+            <strong>Disclaimer:</strong> Tatkhalsa Foundation operates purely as a voluntary community coordination network. We do not run physical blood banks or commercialize medical supplies. All verifications of donor eligibility must be independently validated by certified hospital practitioners at the time of transfusion.
+        </div>
     </div>
 </div>
 
@@ -192,7 +210,7 @@ $donors_query = new WP_Query( $args );
         <textarea name="address" required rows="2" placeholder="City, Area, Pin Code" style="width: 100%; padding: 12px; border-radius: 6px; border: 1px solid rgba(0,0,0,0.2); background: #fff; color: #333;"></textarea>
       </div>
 
-      <div style="margin-bottom: 25px;">
+      <div style="margin-bottom: 15px;">
         <label style="display: block; margin-bottom: 8px; color: var(--text-dark); font-weight: bold;">Google Maps Link (Optional)</label>
         <div style="display: flex; gap: 10px;">
           <input type="url" name="mapLocation" id="mapLocation" placeholder="Paste link or click icon to get location" style="width: 100%; padding: 12px; border-radius: 6px; border: 1px solid rgba(0,0,0,0.2); background: #fff; color: #333;">
@@ -201,6 +219,15 @@ $donors_query = new WP_Query( $args );
           </button>
         </div>
         <small id="locStatus" style="color: var(--text-light); font-size: 0.85rem; display: block; margin-top: 5px;"></small>
+      </div>
+
+      <div style="margin-bottom: 25px;">
+        <label style="display: block; margin-bottom: 8px; color: var(--text-dark); font-weight: bold;">Availability Status</label>
+        <select name="availabilityStatus" required style="width: 100%; padding: 12px; border-radius: 6px; border: 1px solid rgba(0,0,0,0.2); background: #fff; color: #333;">
+            <option value="Available Now">🟢 Available Now (Ready for immediate drives)</option>
+            <option value="On Standby">🟡 On Standby (Approaching eligibility/close-range only)</option>
+            <option value="Resting Phase">🔴 Resting Phase (Recovery period post-donation)</option>
+        </select>
       </div>
 
       <div id="donorRegStatus" style="margin-bottom: 15px; font-size: 0.9rem; border-radius: 6px; display: none;"></div>
@@ -237,6 +264,34 @@ $donors_query = new WP_Query( $args );
   </div>
 </div>
 
+<!-- Certificate Modal -->
+<div class="modal-overlay" id="certificateModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.7); z-index: 1000; overflow-y: auto; align-items: center; justify-content: center; padding: 20px;">
+  <div class="modal-content" style="background: var(--bg-shade-1); padding: 30px; border-radius: 16px; width: 100%; max-width: 400px; position: relative;  margin: auto;">
+    <button class="modal-close" style="position: absolute; top: 15px; right: 15px; background: none; border: none; font-size: 1.5rem; cursor: pointer; color: var(--text-dark);" onclick="closeCertificateModal()">&times;</button>
+    
+    <div style="text-align: center; margin-bottom: 20px;">
+        <span style="font-size: 3rem; display: block; margin-bottom: 10px;">🏆</span>
+        <h2 style="color: var(--text-dark); margin-bottom: 10px;">Claim Certificate</h2>
+        <p style="font-size: 0.85rem; color: var(--text-light); line-height: 1.4;">Did you recently donate blood? Enter your registered email address to receive your official Certificate of Appreciation.</p>
+    </div>
+    
+    <form id="certificateForm" method="POST" action="">
+      <input type="hidden" name="action" value="claim_blood_certificate">
+      
+      <div style="margin-bottom: 20px;">
+        <label style="display: block; margin-bottom: 8px; color: var(--text-dark); font-weight: bold;">Registered Email Address</label>
+        <input type="email" name="donorEmail" required placeholder="name@example.com" style="width: 100%; padding: 12px; border-radius: 6px; border: 1px solid rgba(0,0,0,0.2); background: #fff; color: #333;">
+      </div>
+
+      <div id="certificateStatus" style="margin-bottom: 15px; font-size: 0.9rem; border-radius: 6px; display: none;"></div>
+      
+      <button type="submit" id="certificateBtn" style="width: 100%; background: linear-gradient(135deg, #FFB800 0%, #F59E0B 100%); color: #fff; border: none; font-size: 1rem; font-weight: bold; padding: 12px; border-radius: 8px; cursor: pointer; box-shadow: 0 4px 15px rgba(245, 158, 11, 0.3);">
+        Email My Certificate
+      </button>
+    </form>
+  </div>
+</div>
+
 <script>
 function openDonorRegistrationModal() {
     const modal = document.getElementById("donorRegModal");
@@ -264,6 +319,22 @@ function openRemoveDonorModal() {
 
 function closeRemoveDonorModal() {
     const modal = document.getElementById("removeDonorModal");
+    if(modal) {
+        modal.style.display = "none";
+        document.body.style.overflow = "auto";
+    }
+}
+
+function openCertificateModal() {
+    const modal = document.getElementById("certificateModal");
+    if(modal) {
+        modal.style.display = "flex";
+        document.body.style.overflow = "hidden";
+    }
+}
+
+function closeCertificateModal() {
+    const modal = document.getElementById("certificateModal");
     if(modal) {
         modal.style.display = "none";
         document.body.style.overflow = "auto";
@@ -406,6 +477,64 @@ document.addEventListener("DOMContentLoaded", () => {
                         closeRemoveDonorModal();
                         window.location.reload(); // Reload to see the changes
                     }, 2000);
+                } else {
+                    statusBox.style.backgroundColor = "rgba(220, 53, 69, 0.1)";
+                    statusBox.style.borderColor = "rgba(220, 53, 69, 0.2)";
+                    statusBox.style.color = "#dc3545";
+                    statusBox.innerHTML = res.data.message || "An error occurred.";
+                }
+            } catch (err) {
+                console.error(err);
+                statusBox.style.display = "block";
+                statusBox.style.padding = "10px";
+                statusBox.style.backgroundColor = "rgba(220, 53, 69, 0.1)";
+                statusBox.style.color = "#dc3545";
+                statusBox.innerHTML = "Network error. Please try again.";
+            } finally {
+                btn.innerHTML = originalText;
+                btn.disabled = false;
+            }
+        });
+    }
+
+    const certForm = document.getElementById("certificateForm");
+    if(certForm) {
+        certForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const btn = document.getElementById("certificateBtn");
+            const statusBox = document.getElementById("certificateStatus");
+            const originalText = btn.innerHTML;
+            
+            btn.innerHTML = "Sending...";
+            btn.disabled = true;
+            statusBox.style.display = "none";
+            
+            const formData = new FormData(certForm);
+            const params = new URLSearchParams();
+            for(const pair of formData.entries()) {
+                params.append(pair[0], pair[1]);
+            }
+            
+            try {
+                const response = await fetch("<?php echo admin_url('admin-ajax.php'); ?>", {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                    body: params.toString()
+                });
+                
+                const res = await response.json();
+                statusBox.style.display = "block";
+                statusBox.style.padding = "10px";
+                
+                if(res.success) {
+                    statusBox.style.backgroundColor = "rgba(40, 167, 69, 0.1)";
+                    statusBox.style.borderColor = "rgba(40, 167, 69, 0.2)";
+                    statusBox.style.color = "#28a745";
+                    statusBox.innerHTML = res.data.message;
+                    certForm.reset();
+                    setTimeout(() => {
+                        closeCertificateModal();
+                    }, 3000);
                 } else {
                     statusBox.style.backgroundColor = "rgba(220, 53, 69, 0.1)";
                     statusBox.style.borderColor = "rgba(220, 53, 69, 0.2)";

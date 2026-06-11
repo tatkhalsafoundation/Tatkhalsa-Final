@@ -121,29 +121,31 @@ get_header();
       <button class="btn" style="background: var(--accent-red); color: var(--primary); display: inline-flex; align-items: center; justify-content: center; height: 50px; padding: 0 30px; box-sizing: border-box; border: 2px solid transparent; font-weight: bold;" onclick="openModal()">
         Contribute Now
       </button>
-      <button class="btn-outline" style="display: inline-flex; align-items: center; justify-content: center; height: 50px; padding: 0 30px; box-sizing: border-box; font-weight: bold; border-color: #ff334b; color: #ff334b; background: rgba(255, 51, 75, 0.05); cursor: pointer;" onclick="openBloodRequestModal()">
-        Request Blood 🩸
-      </button>
     </div>
   </div>
 </section>
 
-<!-- Hot Update Callout Section: Punjab Flood Relief -->
-<section class="sos-banner">
-  <div class="sos-banner-container scroll-reveal">
-    <div class="sos-indicator">
-      <span class="sos-dot"></span>
-      Emergency Update
+<!-- Blood Donation Call to Action Banner -->
+<section class="blood-cta-banner" style="background: linear-gradient(135deg, rgba(255,51,75,0.05) 0%, rgba(220,20,60,0.1) 100%); padding: 60px 20px; border-top: 1px solid rgba(255,51,75,0.1); border-bottom: 1px solid rgba(255,51,75,0.1); transition: transform 0.4s cubic-bezier(0.165, 0.84, 0.44, 1), box-shadow 0.4s cubic-bezier(0.165, 0.84, 0.44, 1); cursor: pointer;" onmouseover="this.style.transform='scale(1.015)'; this.style.boxShadow='0 15px 40px rgba(255,51,75,0.15)';" onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='none';">
+  <div class="blood-cta-container scroll-reveal" style="max-width: 900px; margin: 0 auto; text-align: center;">
+    <div style="display: inline-block; padding: 6px 14px; background: rgba(255,51,75,0.1); color: #ff334b; font-weight: bold; border-radius: 20px; font-size: 0.85rem; margin-bottom: 15px; text-transform: uppercase; letter-spacing: 1px;">
+      <span style="display: inline-block; width: 8px; height: 8px; background: #ff334b; border-radius: 50%; margin-right: 6px; box-shadow: 0 0 8px #ff334b;"></span>
+      Save Lives Today
     </div>
-    <h2 class="sos-banner-title">
-      Punjab Flood Relief 2025
+    <h2 style="font-size: 2.5rem; color: var(--text-dark); margin-bottom: 20px; font-weight: 800; font-family: var(--font-heading); line-height: 1.2;">
+      Take the Pledge.<br>Join the Blood Network.
     </h2>
-    <p class="sos-banner-desc">
-      Emergency response initiated. Our volunteer teams are actively providing medical aid, Langar, and rescue.
+    <p style="font-size: 1.1rem; color: var(--text-light); margin-bottom: 30px; line-height: 1.6; max-width: 700px; margin-left: auto; margin-right: auto;">
+      We call upon the youth and every compassionate soul to step forward. A single act of contribution can give a family their loved one back. Register your name today to become someone's emergency hero.
     </p>
-    <a href="<?php echo esc_url( home_url( '/punjab-flood-relief/' ) ); ?>" class="sos-banner-btn">
-      View & Support
-    </a>
+    <div style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap;">
+      <a href="<?php echo esc_url( home_url( '/blood-donors/' ) ); ?>" style="display: inline-flex; align-items: center; justify-content: center; background: linear-gradient(135deg, #ff334b 0%, #ff5d73 100%); color: #fff; text-decoration: none; padding: 14px 32px; border-radius: 8px; font-weight: 700; font-size: 1.1rem; box-shadow: 0 4px 15px rgba(255, 51, 75, 0.35); transition: transform 0.2s, box-shadow 0.2s;" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 6px 20px rgba(255, 51, 75, 0.45)';" onmouseout="this.style.transform='none'; this.style.boxShadow='0 4px 15px rgba(255, 51, 75, 0.35)';">
+        🩸 Register as a Donor
+      </a>
+      <button class="btn-outline" style="display: inline-flex; align-items: center; justify-content: center; padding: 14px 32px; border-radius: 8px; font-weight: bold; font-size: 1.1rem; border: 2px solid #ff334b; color: #ff334b; background: rgba(255, 51, 75, 0.05); cursor: pointer;" onclick="openBloodRequestModal()" onmouseover="this.style.background='rgba(255, 51, 75, 0.1)';" onmouseout="this.style.background='rgba(255, 51, 75, 0.05)';">
+        Request Blood 🚨
+      </button>
+    </div>
   </div>
 </section>
 
