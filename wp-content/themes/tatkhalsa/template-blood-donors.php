@@ -340,9 +340,9 @@ $donors_query = new WP_Query( $args );
 </div>
 
 <div id="pdfCertTemplate" style="position: absolute; top: -9999px; left: -9999px; opacity: 0; pointer-events: none;">
-    <div style="width: 800px; height: 600px; background: url('https://www.transparenttextures.com/patterns/stardust.png'), linear-gradient(135deg, #0a2342 0%, #173d6b 100%); padding:25px; font-family:'Helvetica Neue', Helvetica, Arial, sans-serif; text-align:center; box-sizing: border-box; display: flex; flex-direction: column;">
+    <div style="width: 800px; height: 600px; background: linear-gradient(135deg, #0a2342 0%, #173d6b 100%); padding:25px; font-family:'Helvetica Neue', Helvetica, Arial, sans-serif; text-align:center; box-sizing: border-box; display: flex; flex-direction: column;">
         <div style="background:#fff; border:8px solid #FFB800; padding:4px; border-radius:15px; height:100%; box-sizing:border-box; position: relative;">
-            <div style="border: 2px solid rgba(10,35,66,0.1); border-radius: 8px; height: 100%; padding: 40px 30px; box-sizing: border-box; display: flex; flex-direction: column; justify-content: center; position: relative; overflow: hidden; background: radial-gradient(circle, #ffffff 0%, #f9f9f9 100%);">
+            <div style="border: 2px solid rgba(10,35,66,0.1); border-radius: 8px; height: 100%; padding: 40px 30px; box-sizing: border-box; display: flex; flex-direction: column; justify-content: center; position: relative; overflow: hidden; background: #ffffff;">
                 
                 <!-- Decorative Corner Accents -->
                 <div style="position: absolute; top: 15px; left: 15px; width: 60px; height: 60px; border-top: 4px solid #0a2342; border-left: 4px solid #0a2342;"></div>
@@ -352,12 +352,12 @@ $donors_query = new WP_Query( $args );
 
                 <!-- Logo at Top -->
                 <div style="margin-bottom: 20px; text-align: center; position: relative; z-index: 2;">
-                    <img src="<?php echo esc_url( tatkhalsa_get_theme_logo_url() ); ?>" alt="Tatkhalsa Logo" style="height: 90px; width: auto; object-fit: contain; filter: drop-shadow(0 4px 6px rgba(0,0,0,0.1));">
+                    <img id="certLogoImg" src="<?php echo esc_url( tatkhalsa_get_theme_logo_url() ); ?>" alt="Tatkhalsa Logo" crossorigin="anonymous" style="height: 90px; width: auto; object-fit: contain;">
                 </div>
 
-                <h1 style="color:#0a2342; font-family: 'Georgia', serif; font-size:46px; text-transform:uppercase; letter-spacing:4px; margin:0 0 15px 0; text-shadow: 2px 2px 4px rgba(0,0,0,0.1);">Certificate of Appreciation</h1>
+                <h1 style="color:#0a2342; font-family: 'Georgia', serif; font-size:46px; text-transform:uppercase; letter-spacing:4px; margin:0 0 15px 0;">Certificate of Appreciation</h1>
                 
-                <div style="background: #e31837; color: #fff; display: inline-block; padding: 6px 20px; border-radius: 30px; font-size: 16px; font-weight: bold; letter-spacing: 2px; margin: 0 auto 30px auto; box-shadow: 0 4px 10px rgba(227, 24, 55, 0.3);">
+                <div style="background: #e31837; color: #fff; display: inline-block; padding: 6px 20px; border-radius: 30px; font-size: 16px; font-weight: bold; letter-spacing: 2px; margin: 0 auto 30px auto;">
                     TATKHALSA FOUNDATION BLOOD NETWORK
                 </div>
                 
@@ -377,14 +377,14 @@ $donors_query = new WP_Query( $args );
                     </div>
                     
                     <div style="text-align:center; flex:1;">
-                        <div style="width:110px; height:110px; background:linear-gradient(135deg, #0a2342 0%, #1a4270 100%); border-radius:50%; margin:0 auto; display:flex; align-items:center; justify-content:center; color:#FFB800; font-weight:bold; font-size:12px; border:3px solid #FFB800; box-shadow: 0 5px 15px rgba(0,0,0,0.2); position: relative;">
+                        <div style="width:110px; height:110px; background:#0a2342; border-radius:50%; margin:0 auto; display:flex; align-items:center; justify-content:center; color:#FFB800; font-weight:bold; font-size:12px; border:3px solid #FFB800; position: relative;">
                             <div style="position: absolute; inset: 6px; border: 1px dashed rgba(255,184,0,0.8); border-radius: 50%;"></div>
                             <span style="z-index: 2; text-align: center; line-height: 1.3;">OFFICIAL<br>NETWORK<br>MEMBER<br>★</span>
                         </div>
                     </div>
                     
                     <div style="text-align:center; flex:1;">
-                        <div style="font-family:'Brush Script MT', 'Lucida Handwriting', cursive; font-size:36px; color:#0a2342; margin-bottom:0;">S. Prabhjot Singh</div>
+                        <div style="font-family:'Georgia', serif; font-size:26px; font-style: italic; color:#0a2342; margin-bottom:5px;">S. Prabhjot Singh</div>
                         <div style="width:180px; border-bottom:2px solid #ccc; margin:0 auto 5px auto;"></div>
                         <span style="font-size:13px; color:#777; text-transform: uppercase;">President, Tatkhalsa</span>
                     </div>
@@ -633,16 +633,35 @@ document.addEventListener("DOMContentLoaded", () => {
                 document.getElementById('certDonorName').innerText = verifyRes.data.name;
                 document.getElementById('certDate').innerText = verifyRes.data.date;
 
+                // Convert the logo to base64 to ensure it renders in html2canvas without CORS/loading issues
+                const logoImg = document.getElementById('certLogoImg');
+                if (logoImg && !logoImg.src.startsWith('data:')) {
+                    try {
+                        const response = await fetch(logoImg.src, { mode: 'cors' });
+                        const blob = await response.blob();
+                        const b64 = await new Promise(r => {
+                            const reader = new FileReader();
+                            reader.onload = () => r(reader.result);
+                            reader.readAsDataURL(blob);
+                        });
+                        logoImg.src = b64;
+                    } catch(e) {
+                        console.warn("Failed to convert logo to base64: ", e);
+                    }
+                }
+
                 const element = document.getElementById('pdfCertTemplate');
                 const origCssText = element.style.cssText;
                 
                 // Make it visible and fixed at top so html2canvas can capture it perfectly
                 element.style.cssText = 'position: fixed; top: 0; left: 0; width: 800px; height: 600px; z-index: 10000; background: white; overflow: hidden;';
                 
-                await new Promise(r => setTimeout(r, 500)); // wait for DOM to paint & fonts to load
+                // Wait for all fonts and elements to settle
+                await document.fonts.ready;
+                await new Promise(r => setTimeout(r, 1000));
                 
                 const canvas = await html2canvas(element.firstElementChild, {
-                    scale: 2,
+                    scale: 4,
                     useCORS: true,
                     scrollX: 0,
                     scrollY: 0,
@@ -652,7 +671,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     windowHeight: 600
                 });
                 
-                const imageBase64 = canvas.toDataURL('image/jpeg', 0.95);
+                const imageBase64 = canvas.toDataURL('image/jpeg', 1.0);
                 
                 element.style.cssText = origCssText;
 
