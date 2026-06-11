@@ -4,9 +4,9 @@
  *
  * @package Tatkhalsa_Theme
  */
-
-get_header();
-
+?>
+<?php get_header(); ?>
+<?php
 // Fetch Blood Donors
 $paged = ( get_query_var( 'paged' ) ) ? get_query_var( 'paged' ) : 1;
 $args = array(
@@ -28,17 +28,25 @@ if ( isset( $_GET['blood_group'] ) && ! empty( $_GET['blood_group'] ) ) {
 }
 
 // Search by address
-if ( isset( $_GET['address'] ) && ! empty( $_GET['address'] ) ) {
-    $address_query = array(
-        'key'     => 'address',
-        'value'   => sanitize_text_field( $_GET['address'] ),
-        'compare' => 'LIKE'
-    );
-    if ( isset( $args['meta_query'] ) ) {
-        $args['meta_query']['relation'] = 'AND';
-        $args['meta_query'][] = $address_query;
+$address_terms = array();
+if ( isset( $_GET['country'] ) && ! empty( $_GET['country'] ) ) $address_terms[] = sanitize_text_field( $_GET['country'] );
+if ( isset( $_GET['state'] ) && ! empty( $_GET['state'] ) ) $address_terms[] = sanitize_text_field( $_GET['state'] );
+if ( isset( $_GET['district'] ) && ! empty( $_GET['district'] ) ) $address_terms[] = sanitize_text_field( $_GET['district'] );
+if ( isset( $_GET['address'] ) && ! empty( $_GET['address'] ) ) $address_terms[] = sanitize_text_field( $_GET['address'] );
+
+if ( ! empty( $address_terms ) ) {
+    if ( ! isset( $args['meta_query'] ) ) {
+        $args['meta_query'] = array( 'relation' => 'AND' );
     } else {
-        $args['meta_query'] = array( $address_query );
+        $args['meta_query']['relation'] = 'AND';
+    }
+    
+    foreach ( $address_terms as $term ) {
+        $args['meta_query'][] = array(
+            'key'     => 'address',
+            'value'   => $term,
+            'compare' => 'LIKE'
+        );
     }
 }
 
@@ -86,9 +94,27 @@ $donors_query = new WP_Query( $args );
                         <option value="AB-" <?php echo (isset($_GET['blood_group']) && $_GET['blood_group'] == 'AB-') ? 'selected' : ''; ?>>AB-</option>
                     </select>
                 </div>
+                <div style="flex: 1; min-width: 150px;">
+                    <label style="display: block; margin-bottom: 8px; font-size: 0.9rem; font-weight: bold; color: var(--text-dark);">Country</label>
+                    <select name="country" id="donorCountry" style="width: 100%; padding: 10px; border-radius: 6px; border: 1px solid rgba(0,0,0,0.1); background: #fff; color: #333;" onchange="updateStates()">
+                        <option value="">Any Country</option>
+                    </select>
+                </div>
+                <div style="flex: 1; min-width: 150px;">
+                    <label style="display: block; margin-bottom: 8px; font-size: 0.9rem; font-weight: bold; color: var(--text-dark);">State</label>
+                    <select name="state" id="donorState" style="width: 100%; padding: 10px; border-radius: 6px; border: 1px solid rgba(0,0,0,0.1); background: #fff; color: #333;" onchange="updateDistricts()">
+                        <option value="">Any State</option>
+                    </select>
+                </div>
+                <div style="flex: 1; min-width: 150px;">
+                    <label style="display: block; margin-bottom: 8px; font-size: 0.9rem; font-weight: bold; color: var(--text-dark);">District / City</label>
+                    <select name="district" id="donorDistrict" style="width: 100%; padding: 10px; border-radius: 6px; border: 1px solid rgba(0,0,0,0.1); background: #fff; color: #333;">
+                        <option value="">Any District</option>
+                    </select>
+                </div>
                 <div style="flex: 2; min-width: 250px;">
-                    <label style="display: block; margin-bottom: 8px; font-size: 0.9rem; font-weight: bold; color: var(--text-dark);">Location / Address</label>
-                    <input type="text" name="address" value="<?php echo isset($_GET['address']) ? esc_attr($_GET['address']) : ''; ?>" placeholder="Search by city, area, or zip code" style="width: 100%; padding: 10px; border-radius: 6px; border: 1px solid rgba(0,0,0,0.1); background: #fff; color: #333;">
+                    <label style="display: block; margin-bottom: 8px; font-size: 0.9rem; font-weight: bold; color: var(--text-dark);">Or Type Location</label>
+                    <input type="text" name="address" value="<?php echo isset($_GET['address']) ? esc_attr($_GET['address']) : ''; ?>" placeholder="Area, Zip Code, etc" style="width: 100%; padding: 10px; border-radius: 6px; border: 1px solid rgba(0,0,0,0.1); background: #fff; color: #333;">
                 </div>
                 <div style="margin-top: 28px;">
                     <button type="submit" style="background: var(--primary); color: var(--white); border: none; padding: 10px 20px; border-radius: 6px; font-weight: bold; cursor: pointer;">Search</button>
@@ -206,8 +232,29 @@ $donors_query = new WP_Query( $args );
       </div>
       
       <div style="margin-bottom: 15px;">
-        <label style="display: block; margin-bottom: 8px; color: var(--text-dark); font-weight: bold;">Full Address *</label>
-        <textarea name="address" required rows="2" placeholder="City, Area, Pin Code" style="width: 100%; padding: 12px; border-radius: 6px; border: 1px solid rgba(0,0,0,0.2); background: #fff; color: #333;"></textarea>
+        <label style="display: block; margin-bottom: 8px; color: var(--text-dark); font-weight: bold;">Country *</label>
+        <select name="country" id="regCountry" required style="width: 100%; padding: 12px; border-radius: 6px; border: 1px solid rgba(0,0,0,0.2); background: #fff; color: #333;" onchange="updateRegStates()">
+            <option value="">Select Country</option>
+        </select>
+      </div>
+
+      <div style="margin-bottom: 15px;">
+        <label style="display: block; margin-bottom: 8px; color: var(--text-dark); font-weight: bold;">State *</label>
+        <select name="state" id="regState" required style="width: 100%; padding: 12px; border-radius: 6px; border: 1px solid rgba(0,0,0,0.2); background: #fff; color: #333;" onchange="updateRegDistricts()">
+            <option value="">Select State</option>
+        </select>
+      </div>
+
+      <div style="margin-bottom: 15px;">
+        <label style="display: block; margin-bottom: 8px; color: var(--text-dark); font-weight: bold;">District / City *</label>
+        <select name="district" id="regDistrict" required style="width: 100%; padding: 12px; border-radius: 6px; border: 1px solid rgba(0,0,0,0.2); background: #fff; color: #333;">
+            <option value="">Select District</option>
+        </select>
+      </div>
+
+      <div style="margin-bottom: 15px;">
+        <label style="display: block; margin-bottom: 8px; color: var(--text-dark); font-weight: bold;">Street Address / Area *</label>
+        <textarea name="address" required rows="2" placeholder="Street, Area, Pin Code" style="width: 100%; padding: 12px; border-radius: 6px; border: 1px solid rgba(0,0,0,0.2); background: #fff; color: #333;"></textarea>
       </div>
 
       <div style="margin-bottom: 15px;">
@@ -618,6 +665,112 @@ document.addEventListener("DOMContentLoaded", () => {
                 btn.disabled = false;
             }
         });
+    }
+});
+</script>
+
+<script src="/assets/js/location-data.js"></script>
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    const countrySelect = document.getElementById("donorCountry");
+    const stateSelect = document.getElementById("donorState");
+    const districtSelect = document.getElementById("donorDistrict");
+
+    // Pre-selected values from PHP GET query
+    const selCountry = "<?php echo isset($_GET['country']) ? esc_js($_GET['country']) : ''; ?>";
+    const selState = "<?php echo isset($_GET['state']) ? esc_js($_GET['state']) : ''; ?>";
+    const selDistrict = "<?php echo isset($_GET['district']) ? esc_js($_GET['district']) : ''; ?>";
+
+    if (typeof locationData !== 'undefined') {
+        const regCountrySelect = document.getElementById("regCountry");
+        const regStateSelect = document.getElementById("regState");
+        const regDistrictSelect = document.getElementById("regDistrict");
+
+        // Populate Countries (Search & Registration)
+        Object.keys(locationData).forEach(country => {
+            // ... Search options ...
+            const optionSearch = document.createElement("option");
+            optionSearch.value = country;
+            optionSearch.textContent = country;
+            if (country === selCountry) optionSearch.selected = true;
+            countrySelect.appendChild(optionSearch);
+
+            // ... Registration options
+            const optionReg = document.createElement("option");
+            optionReg.value = country;
+            optionReg.textContent = country;
+            regCountrySelect.appendChild(optionReg);
+        });
+
+        // Initialize Search lists
+        window.updateStates = function() {
+            stateSelect.innerHTML = '<option value="">Any State</option>';
+            districtSelect.innerHTML = '<option value="">Any District</option>';
+            const country = countrySelect.value;
+            if (country && locationData[country]) {
+                Object.keys(locationData[country]).forEach(state => {
+                    const option = document.createElement("option");
+                    option.value = state;
+                    option.textContent = state;
+                    stateSelect.appendChild(option);
+                });
+            }
+        };
+
+        window.updateDistricts = function() {
+            districtSelect.innerHTML = '<option value="">Any District</option>';
+            const country = countrySelect.value;
+            const state = stateSelect.value;
+            if (country && state && locationData[country] && locationData[country][state]) {
+                locationData[country][state].forEach(district => {
+                    const option = document.createElement("option");
+                    option.value = district;
+                    option.textContent = district;
+                    districtSelect.appendChild(option);
+                });
+            }
+        };
+
+        // Initialize Reg lists
+        window.updateRegStates = function() {
+            regStateSelect.innerHTML = '<option value="">Select State</option>';
+            regDistrictSelect.innerHTML = '<option value="">Select District</option>';
+            const country = regCountrySelect.value;
+            if (country && locationData[country]) {
+                Object.keys(locationData[country]).forEach(state => {
+                    const option = document.createElement("option");
+                    option.value = state;
+                    option.textContent = state;
+                    regStateSelect.appendChild(option);
+                });
+            }
+        };
+
+        window.updateRegDistricts = function() {
+            regDistrictSelect.innerHTML = '<option value="">Select District</option>';
+            const country = regCountrySelect.value;
+            const state = regStateSelect.value;
+            if (country && state && locationData[country] && locationData[country][state]) {
+                locationData[country][state].forEach(district => {
+                    const option = document.createElement("option");
+                    option.value = district;
+                    option.textContent = district;
+                    regDistrictSelect.appendChild(option);
+                });
+            }
+        };
+
+        // If pre-selected, populate state and district
+        if (selCountry) {
+            updateStates();
+            if (selState) {
+                stateSelect.value = selState;
+                updateDistricts();
+                if (selDistrict) {
+                    districtSelect.value = selDistrict;
+                }
+            }
+        }
     }
 });
 </script>

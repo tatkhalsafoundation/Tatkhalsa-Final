@@ -823,7 +823,14 @@ function tatkhalsa_submit_blood_donor() {
 	$blood_group  = isset( $_POST['bloodGroup'] ) ? sanitize_text_field( wp_unslash( $_POST['bloodGroup'] ) ) : '';
 	$email        = isset( $_POST['donorEmail'] ) ? sanitize_email( wp_unslash( $_POST['donorEmail'] ) ) : '';
 	$contact      = isset( $_POST['contactDetails'] ) ? sanitize_text_field( wp_unslash( $_POST['contactDetails'] ) ) : '';
-	$address      = isset( $_POST['address'] ) ? sanitize_text_field( wp_unslash( $_POST['address'] ) ) : '';
+	$country      = isset( $_POST['country'] ) ? sanitize_text_field( wp_unslash( $_POST['country'] ) ) : '';
+	$state        = isset( $_POST['state'] ) ? sanitize_text_field( wp_unslash( $_POST['state'] ) ) : '';
+	$district     = isset( $_POST['district'] ) ? sanitize_text_field( wp_unslash( $_POST['district'] ) ) : '';
+	$address_line = isset( $_POST['address'] ) ? sanitize_text_field( wp_unslash( $_POST['address'] ) ) : '';
+	
+	$address_parts = array_filter(array( $address_line, $district, $state, $country ));
+	$address = implode( ', ', $address_parts );
+
 	$map_location = isset( $_POST['mapLocation'] ) ? sanitize_text_field( wp_unslash( $_POST['mapLocation'] ) ) : '';
 	$availability_status = isset( $_POST['availabilityStatus'] ) ? sanitize_text_field( wp_unslash( $_POST['availabilityStatus'] ) ) : 'Available Now';
 
