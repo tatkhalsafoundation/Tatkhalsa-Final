@@ -62,6 +62,31 @@
             <p style="color: rgba(255, 255, 255, 0.7); font-size: 0.9rem">
               Registered NGO<br />CIN: U88900PB2023NPL059225
             </p>
+            <div class="footer-social" style="display: flex; gap: 12px; margin-top: 15px;">
+              <a href="https://www.instagram.com/tatkhalsa.in/" target="_blank" rel="noopener noreferrer" title="Instagram" style="color: rgba(253, 247, 231, 0.7); background: rgba(255, 255, 255, 0.05); border-radius: 50%; padding: 8px; display: inline-flex; transition: all 0.3s; border: 1px solid rgba(255, 255, 255, 0.1);">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: #e1306c; stroke: #e1306c;">
+                  <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                  <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                  <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+                </svg>
+              </a>
+              <a href="https://www.facebook.com/tatkhalsain" target="_blank" rel="noopener noreferrer" title="Facebook Page" style="color: rgba(253, 247, 231, 0.7); background: rgba(255, 255, 255, 0.05); border-radius: 50%; padding: 8px; display: inline-flex; transition: all 0.3s; border: 1px solid rgba(255, 255, 255, 0.1);">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: #1877f2; stroke: #1877f2;">
+                  <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path>
+                </svg>
+              </a>
+              <a href="https://x.com/tatkhalsain" target="_blank" rel="noopener noreferrer" title="X (Twitter)" style="color: rgba(253, 247, 231, 0.7); background: rgba(255, 255, 255, 0.05); border-radius: 50%; padding: 8px; display: inline-flex; transition: all 0.3s; border: 1px solid rgba(255, 255, 255, 0.1);">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: var(--cream); stroke: var(--cream);">
+                  <path d="M4 4l11.733 16h4.267l-11.733 -16z"></path>
+                  <path d="M4 20l6.768 -6.768m2.46 -2.46l6.772 -6.772"></path>
+                </svg>
+              </a>
+              <a href="https://www.snapchat.com/add/tatkhalsa.in?" target="_blank" rel="noopener noreferrer" title="Snapchat" style="color: rgba(253, 247, 231, 0.7); background: rgba(255, 255, 255, 0.05); border-radius: 50%; padding: 8px; display: inline-flex; transition: all 0.3s; border: 1px solid rgba(255, 255, 255, 0.1);">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="color: #fffc00; fill: #fffc00;">
+                  <path d="M12.05 2c-1.54 0-3.12 0.38-4.22 1.56-1.02 1.1-.96 2.65-.96 3.86 0 1.2-.5 2.15-1.55 2.58-.28.12-.55.22-.65.5-.1.3-.02.6.2.82.7.67 1.7.9 2.58 1.13.1.03.14.15.08.24-.34.52-.75 1.13-1.6 1.34-.84.2-1.46.06-2.1-.22-.3-.13-.67.06-.58.4.15.57.85.95 1.33 1.18 1.48.73 3.3.47 4.9.47.16 0 .3-.1.35-.24.16-.48.4-.73.74-.73.34 0 .6.25.75.73.06.15.2.24.36.24 1.6 0 3.42.26 4.9-.47.48-.23 1.18-.6 1.33-1.18.1-.34-.26-.53-.58-.4-.64.28-1.26.42-2.1.22-.85-.2-1.26-.82-1.6-1.34-.06-.1-.02-.22.08-.24.88-.23 1.88-.46 2.58-1.13.22-.22.3-.52.2-.82-.1-.28-.37-.38-.65-.5-1.05-.43-1.55-1.38-1.55-2.58 0-1.2.06-2.76-.96-3.86C15.17 2.38 13.6 2 12.05 2z" />
+                </svg>
+              </a>
+            </div>
           </div>
 
           <!-- Column 2: Contact -->
@@ -94,7 +119,6 @@
               <li><a href="<?php echo esc_url( home_url( '/about/' ) ); ?>">About Us</a></li>
               <li><a href="<?php echo esc_url( home_url( '/projects/' ) ); ?>">Projects</a></li>
               <li><a href="<?php echo esc_url( home_url( '/volunteer/' ) ); ?>">Volunteer</a></li>
-              <li><a href="#" onclick="openPunjabFloodReliefModal(); return false;">Punjab Flood Relief</a></li>
               <li><a href="#" onclick="openModal(); return false;">Contribute Now</a></li>
             </ul>
           </div>

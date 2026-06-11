@@ -136,8 +136,24 @@ Tags: clean, gold, navy, ngo, sikh, seva, non-profit, responsive, custom-logo, t
   color: var(--text-dark) !important;
 }
 
+[data-theme="light"] .gurbani-text {
+  color: #9c7b16 !important; /* Darker yellow/gold for readability in light mode */
+}
+
 [data-theme="light"] .stat-item h3 {
   /* Let inline colors work for the stats numbers, they stand out fine */
+}
+[data-theme="light"] .stat-item:nth-child(1) h3 {
+  color: #c02d41 !important;
+}
+[data-theme="light"] .stat-item:nth-child(2) h3 {
+  color: #059669 !important;
+}
+[data-theme="light"] .stat-item:nth-child(3) h3 {
+  color: #2563eb !important;
+}
+[data-theme="light"] .stat-item:nth-child(4) h3 {
+  color: #9333ea !important;
 }
 
 [data-theme="light"] .stats-section::before {
@@ -365,6 +381,7 @@ h6 {
 .top-bar-social a[href*="snapchat.com"] svg,
 .footer-links a[href*="snapchat.com"] svg {
   color: #fffc00;
+  transform: scale(1.25);
 }
 .top-bar-btn {
   margin-left: 15px;
@@ -2101,6 +2118,7 @@ footer .container {
   .top-bar-social a[href*="snapchat.com"] svg {
     color: #fffc00 !important;
     fill: #fffc00 !important;
+    transform: scale(1.25) !important;
   }
 }
 @media (max-width: 520px) {
