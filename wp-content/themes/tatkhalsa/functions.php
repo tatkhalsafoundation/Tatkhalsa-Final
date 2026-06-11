@@ -969,9 +969,7 @@ function tatkhalsa_send_pdf_certificate() {
 add_action( 'wp_ajax_send_pdf_certificate', 'tatkhalsa_send_pdf_certificate' );
 add_action( 'wp_ajax_nopriv_send_pdf_certificate', 'tatkhalsa_send_pdf_certificate' );
 
-function tatkhalsa_claim_blood_certificate_legacy() {
-add_action( 'wp_ajax_claim_blood_certificate', 'tatkhalsa_claim_blood_certificate' );
-add_action( 'wp_ajax_nopriv_claim_blood_certificate', 'tatkhalsa_claim_blood_certificate' );
+
 
 /**
  * Register Customizer Settings for Images
