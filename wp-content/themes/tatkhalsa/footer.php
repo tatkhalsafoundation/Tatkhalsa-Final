@@ -1325,58 +1325,112 @@
         }
       });
 
-      // Mobile Navigation Panel Logic
-      const mobileMenuToggle = document.getElementById("mobileMenuToggle");
-      const mobileNavPanel = document.getElementById("mobileNavPanel");
+      // Synchronize and manage Mobile Dropdown Selector on ALL Pages with multi-permalink normalization
+      const mobileNavSelect = document.getElementById("mobileNavSelect");
+      const customWrapper = document.getElementById("customMobileNavWrapper");
+      const customBtn = document.getElementById("customMobileNavBtn");
+      const customLabel = document.getElementById("customMobileNavLabel");
+      const customOpts = document.querySelectorAll(".custom-dropdown-opt");
 
-      function toggleMobileMenu() {
-        if (!mobileNavPanel || !mobileMenuToggle) return;
-        
-        mobileMenuToggle.classList.toggle("active");
-        mobileNavPanel.classList.toggle("active");
-        
-        const isExpanded = mobileMenuToggle.getAttribute("aria-expanded") === "true";
-        mobileMenuToggle.setAttribute("aria-expanded", !isExpanded);
-        
-        // Prevent body scroll when nav is open
-        if (!isExpanded) {
-          document.body.style.overflow = "hidden";
-        } else {
-          document.body.style.overflow = "";
+      if (customBtn && customWrapper) {
+        customBtn.addEventListener("click", (e) => {
+          e.stopPropagation();
+          const isOpen = customWrapper.classList.contains("open");
+          if (isOpen) {
+            customWrapper.classList.remove("open");
+            customBtn.setAttribute("aria-expanded", "false");
+          } else {
+            customWrapper.classList.add("open");
+            customBtn.setAttribute("aria-expanded", "true");
+          }
+        });
+
+        // Close when clicking outside
+        document.addEventListener("click", (e) => {
+          if (!customWrapper.contains(e.target)) {
+            customWrapper.classList.remove("open");
+            customBtn.setAttribute("aria-expanded", "false");
+          }
+        });
+      }
+
+      // Fully normalize URLs for comparison (handling trailing slashes, index.php, clean/plain query-params)
+      function getNormalizedMatchKey(urlStr) {
+        try {
+          const urlObj = new URL(urlStr, window.location.origin);
+          let pathname = urlObj.pathname.toLowerCase().replace(/\/$/, "");
+          if (pathname === "" || pathname === "/index.php") {
+            pathname = "/";
+          }
+          const searchParams = new URLSearchParams(urlObj.search);
+          const pageId = searchParams.get("page_id") || searchParams.get("p") || "";
+          const pageName = searchParams.get("pagename") || "";
+          
+          return {
+            path: pathname,
+            pageId: pageId,
+            pageName: pageName.toLowerCase()
+          };
+        } catch (err) {
+          return { path: urlStr.toLowerCase(), pageId: "", pageName: "" };
         }
       }
 
-      if (mobileMenuToggle) {
-        mobileMenuToggle.addEventListener("click", toggleMobileMenu);
-      }
+      if (customOpts.length > 0) {
+        const currentLoc = getNormalizedMatchKey(window.location.href);
+        let matchedIndex = -1;
 
-      // Smooth scrolling for anchor links
-      document.querySelectorAll('a.smooth-scroll').forEach(anchor => {
-        anchor.addEventListener('click', function (e) {
-          // Check if link connects to current page
-          const url = new URL(this.href);
-          if (url.pathname === window.location.pathname || url.pathname + '/' === window.location.pathname || url.pathname === window.location.pathname + '/') {
-            const hash = url.hash;
-            if (hash) {
-              const target = document.querySelector(hash);
-              if (target) {
-                e.preventDefault();
-                const headerOffset = document.querySelector('.header') ? document.querySelector('.header').offsetHeight : 80;
-                const elementPosition = target.getBoundingClientRect().top;
-                const offsetPosition = elementPosition + window.pageYOffset - headerOffset - 20; // 20px extra padding
-                
-                window.scrollTo({
-                  top: offsetPosition,
-                  behavior: "smooth"
-                });
-                
-                // Update URL hash
-                history.pushState(null, null, hash);
-              }
-            }
+        // Try exact keys first
+        customOpts.forEach((opt, idx) => {
+          const optLoc = getNormalizedMatchKey(opt.href);
+          
+          // Match by query strings (page_id etc.) if both present
+          if (currentLoc.pageId && optLoc.pageId && currentLoc.pageId === optLoc.pageId) {
+            matchedIndex = idx;
+          } else if (currentLoc.pageName && optLoc.pageName && currentLoc.pageName === optLoc.pageName) {
+            matchedIndex = idx;
+          } else if (!currentLoc.pageId && !optLoc.pageId && currentLoc.path === optLoc.path) {
+            matchedIndex = idx;
           }
         });
-      });
+
+        // Fallback checks (e.g., if we are looking at subpages or partial matching)
+        if (matchedIndex === -1) {
+          customOpts.forEach((opt, idx) => {
+            const optLoc = getNormalizedMatchKey(opt.href);
+            if (currentLoc.path.includes(optLoc.path) && optLoc.path !== "/") {
+              matchedIndex = idx;
+            }
+          });
+        }
+
+        // Apply active class, labels, and select index if custom dropdown matched
+        if (matchedIndex !== -1 && customOpts[matchedIndex]) {
+          customOpts.forEach(o => o.classList.remove("active"));
+          customOpts[matchedIndex].classList.add("active");
+          
+          if (customLabel) {
+            customLabel.innerText = customOpts[matchedIndex].innerText;
+          }
+
+          if (mobileNavSelect) {
+            mobileNavSelect.selectedIndex = matchedIndex + 1; // account for placeholder at index 0
+          }
+        }
+      }
+
+      // Mobile Hamburg setup
+      const hamburger = document.getElementById("hamburger");
+      const navLinks = document.getElementById("nav-links");
+      if (hamburger) {
+        hamburger.addEventListener("click", () => {
+          navLinks.classList.toggle("active");
+          const innerNav = navLinks.querySelector(".nav-links");
+          if (innerNav) {
+            innerNav.classList.toggle("active");
+          }
+        });
+      }
 
       // Interactive badges hover and touch popup logic
       const badgeContainers = document.querySelectorAll(".badge-container");

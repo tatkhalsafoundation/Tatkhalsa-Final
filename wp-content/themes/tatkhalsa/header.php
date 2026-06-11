@@ -136,11 +136,10 @@
               // Custom default semantic layout
               ?>
               <div class="nav-links">
-                <a href="<?php echo esc_url( home_url( '/' ) ); ?>" class="smooth-scroll">Home</a>
-                <a href="<?php echo esc_url( home_url( '/' ) ); ?>#current-campaigns" class="smooth-scroll">Campaigns</a>
-                <a href="<?php echo esc_url( home_url( '/' ) ); ?>#transparency" class="smooth-scroll">Transparency</a>
+                <a href="<?php echo esc_url( home_url( '/' ) ); ?>">Home</a>
                 <a href="<?php echo esc_url( home_url( '/about/' ) ); ?>">About</a>
                 <a href="<?php echo esc_url( home_url( '/projects/' ) ); ?>">Projects</a>
+                <a href="<?php echo esc_url( home_url( '/blog/' ) ); ?>">Blog</a>
                 <a href="<?php echo esc_url( home_url( '/blood-donors/' ) ); ?>" style="color: #ff334b; font-weight: 700;">Blood Network</a>
               </div>
               <?php
@@ -154,30 +153,42 @@
           <a href="<?php echo esc_url( home_url( '/volunteer/' ) ); ?>" class="header-cta-btn header-volunteer-btn">Join Seva</a>
         </div>
  
-        <!-- Hamburger Toggle -->
-        <button class="hamburger-btn" id="mobileMenuToggle" aria-label="Toggle Navigation">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="hamburger-icon">
-            <line x1="3" y1="12" x2="21" y2="12"></line>
-            <line x1="3" y1="6" x2="21" y2="6"></line>
-            <line x1="3" y1="18" x2="21" y2="18"></line>
-          </svg>
-        </button>
+        <!-- Elegant Multi-Selection Dropdown for Mobile / Tablet (Instead of Hamburger Menu) -->
+        <div class="header-nav-selector">
+            <select id="mobileNavSelect" onchange="if(this.value === 'donate') { openModal(); } else if(this.value === 'contact') { document.getElementById('footer').scrollIntoView({ behavior: 'smooth' }); } else if(this.value) { window.location.href=this.value; }" style="display: none;" aria-label="Select Seva Page">
+              <option value="" disabled selected>Explore Seva...</option>
+              <option value="<?php echo esc_url( home_url( '/' ) ); ?>">Home Page</option>
+              <option value="<?php echo esc_url( home_url( '/about/' ) ); ?>">About Tatkhalsa</option>
+              <option value="<?php echo esc_url( home_url( '/projects/' ) ); ?>">Our Seva Projects</option>
+              <option value="<?php echo esc_url( home_url( '/volunteer/' ) ); ?>">Join as Volunteer</option>
+              <option value="<?php echo esc_url( home_url( '/blog/' ) ); ?>">Insights & Blog</option>
+              <option value="<?php echo esc_url( home_url( '/blood-donors/' ) ); ?>">Blood Network</option>
+              <option value="contact">Contact Us</option>
+              <option value="donate">Contribute Now</option>
+            </select>
+            
+            <div class="custom-select-wrapper" id="customMobileNavWrapper">
+              <button class="custom-select-btn icon-only-btn" id="customMobileNavBtn" aria-haspopup="listbox" aria-expanded="false" aria-label="Explore Seva Page Menu">
+                <span id="customMobileNavLabel" style="display:none;"></span>
+                <span class="select-chevron icon-circle">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="6 9 12 15 18 9"></polyline>
+                  </svg>
+                </span>
+              </button>
+              <div class="custom-select-dropdown" id="customMobileNavDropdown" role="listbox">
+                <a href="<?php echo esc_url( home_url( '/' ) ); ?>" class="custom-dropdown-opt" role="option">Home Page</a>
+                <a href="<?php echo esc_url( home_url( '/about/' ) ); ?>" class="custom-dropdown-opt" role="option">About Tatkhalsa</a>
+                <a href="<?php echo esc_url( home_url( '/projects/' ) ); ?>" class="custom-dropdown-opt" role="option">Our Seva Projects</a>
+                <a href="<?php echo esc_url( home_url( '/volunteer/' ) ); ?>" class="custom-dropdown-opt" role="option">Join as Volunteer</a>
+                <a href="<?php echo esc_url( home_url( '/blog/' ) ); ?>" class="custom-dropdown-opt" role="option">Insights & Blog</a>
+                <a href="<?php echo esc_url( home_url( '/blood-donors/' ) ); ?>" class="custom-dropdown-opt" role="option" style="color: #ff334b !important; font-weight: 700;">Blood Network</a>
+                <a href="#" onclick="document.getElementById('footer').scrollIntoView({ behavior: 'smooth' }); document.getElementById('customMobileNavWrapper').classList.remove('open'); return false;" class="custom-dropdown-opt" role="option" style="color: #4da6ff !important; font-weight: 700;">Contact Us</a>
+                <a href="#" onclick="openModal(); document.getElementById('customMobileNavWrapper').classList.remove('open'); return false;" class="custom-dropdown-opt header-mobile-contrib-opt" role="option" style="color: #ff5d73 !important; font-weight: 700;">Contribute Now</a>
+              </div>
+            </div>
+        </div>
       </div>
     </header>
-
-    <!-- Full-Screen Mobile Navigation Panel -->
-    <div class="mobile-nav-panel" id="mobileNavPanel">
-      <div class="mobile-nav-links">
-        <a href="<?php echo esc_url( home_url( '/' ) ); ?>" class="mobile-nav-link" onclick="toggleMobileMenu()">Home</a>
-        <a href="<?php echo esc_url( home_url( '/' ) ); ?>#current-campaigns" class="mobile-nav-link smooth-scroll" onclick="toggleMobileMenu()">Campaigns</a>
-        <a href="<?php echo esc_url( home_url( '/' ) ); ?>#transparency" class="mobile-nav-link smooth-scroll" onclick="toggleMobileMenu()">Transparency</a>
-        <a href="<?php echo esc_url( home_url( '/about/' ) ); ?>" class="mobile-nav-link" onclick="toggleMobileMenu()">About</a>
-        <a href="<?php echo esc_url( home_url( '/projects/' ) ); ?>" class="mobile-nav-link" onclick="toggleMobileMenu()">Projects</a>
-        <a href="<?php echo esc_url( home_url( '/blog/' ) ); ?>" class="mobile-nav-link" onclick="toggleMobileMenu()">Blog</a>
-        <a href="<?php echo esc_url( home_url( '/blood-donors/' ) ); ?>" class="mobile-nav-link" style="color: #ff334b !important; font-weight: 700;" onclick="toggleMobileMenu()">Blood Network</a>
-        <a href="#footer" class="mobile-nav-link smooth-scroll" onclick="toggleMobileMenu()">Contact Us</a>
-        <button onclick="openModal(); toggleMobileMenu();" class="mobile-nav-link" style="color: #ffdf79 !important; font-weight: 700; background:none; border:none; text-align:left; padding:0; cursor:pointer;">Contribute Now</button>
-      </div>
-    </div>
  
 
