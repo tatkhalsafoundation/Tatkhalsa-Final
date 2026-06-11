@@ -795,18 +795,32 @@ document.addEventListener("DOMContentLoaded", function() {
     const regDistrictSelect = document.getElementById("regDistrict");
 
     let cachedCountries = [];
+    let indiaData = null;
 
-    async function loadCountries() {
+    async function loadResources() {
         try {
-            const response = await fetch('https://countriesnow.space/api/v0.1/countries/states');
-            const data = await response.json();
-            if(!data.error) {
-                cachedCountries = data.data;
-                populateCountries();
+            // Load countries
+            const cRes = await fetch('https://countriesnow.space/api/v0.1/countries/states');
+            const cData = await cRes.json();
+            if(!cData.error) {
+                cachedCountries = cData.data;
             }
         } catch (e) {
             console.error('Error fetching countries:', e);
         }
+
+        try {
+            // Load India pure district data
+            const iRes = await fetch('https://raw.githubusercontent.com/sab99r/Indian-States-And-Districts/master/states-and-districts.json');
+            const iData = await iRes.json();
+            if(iData && iData.states) {
+                indiaData = iData.states;
+            }
+        } catch (e) {
+            console.error('Error fetching India districts:', e);
+        }
+        
+        populateCountries();
     }
 
     function populateCountries() {
@@ -861,14 +875,24 @@ document.addEventListener("DOMContentLoaded", function() {
         stateSelect.innerHTML = '<option value="">Any State</option>';
         if (districtSelect) districtSelect.innerHTML = '<option value="">Any District</option>';
         const countryName = countrySelect.value;
-        const countryData = cachedCountries.find(c => c.name === countryName);
-        if (countryData && countryData.states) {
-            countryData.states.forEach(state => {
+        
+        if (countryName === 'India' && indiaData) {
+            indiaData.forEach(state => {
                 const option = document.createElement("option");
-                option.value = state.name;
-                option.textContent = state.name;
+                option.value = state.state;
+                option.textContent = state.state;
                 stateSelect.appendChild(option);
             });
+        } else {
+            const countryData = cachedCountries.find(c => c.name === countryName);
+            if (countryData && countryData.states) {
+                countryData.states.forEach(state => {
+                    const option = document.createElement("option");
+                    option.value = state.name;
+                    option.textContent = state.name;
+                    stateSelect.appendChild(option);
+                });
+            }
         }
     };
 
@@ -877,6 +901,20 @@ document.addEventListener("DOMContentLoaded", function() {
         districtSelect.innerHTML = '<option value="">Any District</option>';
         const country = countrySelect.value;
         const state = stateSelect.value;
+        
+        if (country === 'India' && indiaData) {
+            const stateData = indiaData.find(s => s.state === state);
+            if (stateData && stateData.districts) {
+                stateData.districts.forEach(district => {
+                    const option = document.createElement("option");
+                    option.value = district;
+                    option.textContent = district;
+                    districtSelect.appendChild(option);
+                });
+            }
+            return;
+        }
+
         if (country && state) {
             try {
                 const response = await fetch('https://countriesnow.space/api/v0.1/countries/state/cities', {
@@ -904,15 +942,24 @@ document.addEventListener("DOMContentLoaded", function() {
         regStateSelect.innerHTML = '<option value="">Select State</option>';
         if (regDistrictSelect) regDistrictSelect.innerHTML = '<option value="">Select District</option>';
         const countryName = regCountrySelect.value;
-        const countryData = cachedCountries.find(c => c.name === countryName);
-        if (countryData && countryData.states) {
-            countryData.states.forEach(state => {
+        
+        if (countryName === 'India' && indiaData) {
+            indiaData.forEach(state => {
                 const option = document.createElement("option");
-                // Country API states sometimes end in "State", we keep the exact string returned
-                option.value = state.name;
-                option.textContent = state.name;
+                option.value = state.state;
+                option.textContent = state.state;
                 regStateSelect.appendChild(option);
             });
+        } else {
+            const countryData = cachedCountries.find(c => c.name === countryName);
+            if (countryData && countryData.states) {
+                countryData.states.forEach(state => {
+                    const option = document.createElement("option");
+                    option.value = state.name;
+                    option.textContent = state.name;
+                    regStateSelect.appendChild(option);
+                });
+            }
         }
     };
 
@@ -921,6 +968,20 @@ document.addEventListener("DOMContentLoaded", function() {
         regDistrictSelect.innerHTML = '<option value="">Select District</option>';
         const country = regCountrySelect.value;
         const state = regStateSelect.value;
+        
+        if (country === 'India' && indiaData) {
+            const stateData = indiaData.find(s => s.state === state);
+            if (stateData && stateData.districts) {
+                stateData.districts.forEach(district => {
+                    const option = document.createElement("option");
+                    option.value = district;
+                    option.textContent = district;
+                    regDistrictSelect.appendChild(option);
+                });
+            }
+            return;
+        }
+
         if (country && state) {
             try {
                 const response = await fetch('https://countriesnow.space/api/v0.1/countries/state/cities', {
@@ -943,7 +1004,7 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     };
 
-    loadCountries();
+    loadResources();
 });
 </script>
 
