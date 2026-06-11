@@ -1434,7 +1434,7 @@
           e.preventDefault();
           const statusEl = document.getElementById("vStatus");
           statusEl.style.color = "var(--text-light)";
-          statusEl.textContent = "Sending application directly to tatkhalsafoundation@gmail.com...";
+          statusEl.textContent = "Sending application directly to our team...";
 
           const params = new URLSearchParams();
           params.append("action", "submit_volunteer");
@@ -1463,7 +1463,7 @@
           } catch (error) {
             console.error("Submission error:", error);
             statusEl.style.color = "var(--accent-red)";
-            statusEl.textContent = "Network error. Please email us directly at tatkhalsafoundation@gmail.com";
+            statusEl.textContent = "Network error. Please email us directly at info@tatkhalsa.in";
           }
         });
       }
@@ -1481,7 +1481,7 @@
           statusEl.style.background = "rgba(255,255,255,0.03)";
           statusEl.style.border = "1px solid rgba(255,255,255,0.08)";
           statusEl.style.color = "var(--text-light)";
-          statusEl.textContent = "⚙️ Registering emergency details and broadcasting alert emails to tatkhalsafoundation@gmail.com...";
+          statusEl.textContent = "⚙️ Registering emergency details and broadcasting alert emails...";
           
           if (submitBtn) {
             submitBtn.textContent = "⏳ Broadcasting alert...";

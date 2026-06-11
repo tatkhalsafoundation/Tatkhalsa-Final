@@ -73,7 +73,7 @@ get_header();
             
             <h2 style="font-size: 1.8rem; margin-bottom: 20px; color: var(--primary);">6. Contact Us</h2>
             <p style="margin-bottom: 20px; color: var(--text-light); line-height: 1.8;">
-                If you have any questions about these Terms, please contact us at: <a href="mailto:tatkhalsafoundation@gmail.com" style="color: var(--secondary);">tatkhalsafoundation@gmail.com</a>.
+                If you have any questions about these Terms, please contact us at: <a href="mailto:info@tatkhalsa.in" style="color: var(--secondary);">info@tatkhalsa.in</a>.
             </p>
         </div>
       </div>
