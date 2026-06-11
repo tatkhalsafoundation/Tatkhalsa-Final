@@ -66,6 +66,9 @@ async function startServer() {
     content = content.replace(/<\?php\s*echo\s*esc_url\(\s*home_url\(\s*['"]\/volunteer\/['"]\s*\)\s*\);\s*\?>/g, '/volunteer');
     content = content.replace(/<\?php\s*echo\s*esc_url\(\s*home_url\(\s*['"]\/blog\/['"]\s*\)\s*\);\s*\?>/g, '/blog');
     content = content.replace(/<\?php\s*echo\s*esc_url\(\s*home_url\(\s*['"]\/punjab-flood-relief\/['"]\s*\)\s*\);\s*\?>/g, '/punjab-flood-relief');
+    content = content.replace(/<\?php\s*echo\s*esc_url\(\s*home_url\(\s*['"]\/privacy-policy\/['"]\s*\)\s*\);\s*\?>/g, '/privacy-policy');
+    content = content.replace(/<\?php\s*echo\s*esc_url\(\s*home_url\(\s*['"]\/terms-conditions\/['"]\s*\)\s*\);\s*\?>/g, '/terms-conditions');
+    content = content.replace(/<\?php\s*echo\s*esc_url\(\s*home_url\(\s*['"]\/blood-donors\/['"]\s*\)\s*\);\s*\?>/g, '/blood-donors');
 
     // Any remaining dynamic template directory calls
     content = content.replace(/<\?php\s*echo\s*esc_url\(\s*get_template_directory_uri\(\)\s*\);\s*\?>/g, '/');
@@ -289,7 +292,13 @@ async function startServer() {
     "volunteer": "template-volunteer.php",
     "volunteer.php": "template-volunteer.php",
     "blog": "template-blog.php",
-    "blog.php": "template-blog.php"
+    "blog.php": "template-blog.php",
+    "blood-donors": "template-blood-donors.php",
+    "blood-donors.php": "template-blood-donors.php",
+    "privacy-policy": "template-privacy.php",
+    "privacy-policy.php": "template-privacy.php",
+    "terms-conditions": "template-terms.php",
+    "terms-conditions.php": "template-terms.php"
   };
 
   // Redirect former standalone flood relief page requests to the home page with automated modal trigger

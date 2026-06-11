@@ -156,7 +156,7 @@
           </a>
         </div>
 
-        <form id="bloodRequestForm" method="POST" action="">
+        <form id="bloodRequestForm" method="POST" action="" enctype="multipart/form-data">
           <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px;">
             <div>
               <label style="display: block; font-size: 0.78rem; text-transform: uppercase; color: var(--primary); font-weight: 700; margin-bottom: 6px;">Patient Full Name <span style="color:#ff334b;">*</span></label>
@@ -166,6 +166,7 @@
               <label style="display: block; font-size: 0.78rem; text-transform: uppercase; color: var(--primary); font-weight: 700; margin-bottom: 6px;">Blood Group <span style="color:#ff334b;">*</span></label>
               <select name="bloodGroup" required style="width: 100%; padding: 10px 12px; background: #0c1a30; border: 1.2px solid rgba(255,255,255,0.1); border-radius: 6px; color: #fff; font-size: 0.9rem; box-sizing: border-box; outline: none; transition: border-color 0.2s;" onfocus="this.style.borderColor='#ff334b'">
                 <option value="" disabled selected>Select Group</option>
+                <option value="Any">Any Blood Group</option>
                 <option value="A+">A+ (A Positive)</option>
                 <option value="A-">A- (A Negative)</option>
                 <option value="B+">B+ (B Positive)</option>
@@ -187,6 +188,12 @@
           <div style="margin-bottom: 15px;">
             <label style="display: block; font-size: 0.78rem; text-transform: uppercase; color: var(--primary); font-weight: 700; margin-bottom: 6px;">Hospital Name & Detail <span style="color:#ff334b;">*</span></label>
             <input type="text" name="hospitalName" required placeholder="e.g. PGIMER Ward 4, Fortis Hospital Amritsar" style="width: 100%; padding: 10px 12px; background: rgba(255,255,255,0.03); border: 1.2px solid rgba(255,255,255,0.1); border-radius: 6px; color: #fff; font-size: 0.9rem; box-sizing: border-box; outline: none;" onfocus="this.style.borderColor='#ff334b'">
+          </div>
+
+          <div style="margin-bottom: 15px;">
+            <label style="display: block; font-size: 0.78rem; text-transform: uppercase; color: var(--primary); font-weight: 700; margin-bottom: 6px;">Doctor's Request Slip / Form Photo <span style="color:#ff334b;">*</span></label>
+            <p style="font-size: 0.75rem; color: rgba(255,255,255,0.6); margin-bottom: 8px;">Please upload a clear photo of the doctor's prescription or hospital blood request form to verify emergency.</p>
+            <input type="file" name="doctorSlip" id="doctorSlipInput" required accept="image/*" capture="environment" style="width: 100%; padding: 8px; background: rgba(255,255,255,0.03); border: 1.2px dashed rgba(255,255,255,0.2); border-radius: 6px; color: #fff; font-size: 0.85rem; box-sizing: border-box; outline: none; cursor: pointer;" onfocus="this.style.borderColor='#ff334b'" onchange="this.style.borderColor='rgba(0,191,117,0.5)'">
           </div>
 
           <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px;">
@@ -1489,24 +1496,13 @@
             submitBtn.style.opacity = "0.7";
           }
 
-          const params = new URLSearchParams();
-          params.append("action", "submit_blood_request");
-          params.append("patientName", bloodForm.querySelector('[name="patientName"]').value);
-          params.append("bloodGroup", bloodForm.querySelector('[name="bloodGroup"]').value);
-          params.append("patientLocation", bloodForm.querySelector('[name="patientLocation"]').value);
-          params.append("hospitalName", bloodForm.querySelector('[name="hospitalName"]').value);
-          params.append("unitsRequired", bloodForm.querySelector('[name="unitsRequired"]').value);
-          params.append("urgency", bloodForm.querySelector('[name="urgency"]').value);
-          params.append("contactDetails", bloodForm.querySelector('[name="contactDetails"]').value);
-          params.append("additionalInfo", bloodForm.querySelector('[name="additionalInfo"]').value);
+          const formData = new FormData(bloodForm);
+          formData.append("action", "submit_blood_request");
 
           try {
             const response = await fetch("<?php echo esc_url( admin_url( 'admin-ajax.php' ) ); ?>", {
               method: "POST",
-              headers: {
-                "Content-Type": "application/x-www-form-urlencoded"
-              },
-              body: params
+              body: formData
             });
             const result = await response.json();
             if (result.success) {

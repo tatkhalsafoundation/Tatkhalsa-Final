@@ -674,8 +674,28 @@ function tatkhalsa_submit_blood_request() {
 		wp_send_json_error( array( 'message' => esc_html__( 'Please fill in all required fields.', 'tatkhalsa-theme' ) ) );
 	}
 
+	$attachments = array();
+	if ( ! empty( $_FILES['doctorSlip']['name'] ) ) {
+		$uploaded_file = $_FILES['doctorSlip'];
+
+		if ( ! function_exists( 'wp_handle_upload' ) ) {
+			require_once( ABSPATH . 'wp-admin/includes/file.php' );
+		}
+
+		$upload_overrides = array( 'test_form' => false );
+		$movefile = wp_handle_upload( $uploaded_file, $upload_overrides );
+
+		if ( $movefile && ! isset( $movefile['error'] ) ) {
+			$attachments[] = $movefile['file'];
+		} else {
+			wp_send_json_error( array( 'message' => esc_html__( 'Failed to upload doctor\'s slip: ', 'tatkhalsa-theme' ) . $movefile['error'] ) );
+		}
+	} else {
+		wp_send_json_error( array( 'message' => esc_html__( 'Please upload the doctor\'s request slip or form.', 'tatkhalsa-theme' ) ) );
+	}
+
 	// Email config
-	$to      = 'tatkhalsafoundation@gmail.com';
+	$to      = 'info@tatkhalsa.in';
 	$subject = '🔴 EMERGENCY BLOOD REQUEST: ' . $blood_group . ' Group needed';
 	
 	$body  = "<h2>🔴 Emergency Blood Request Details</h2>";
@@ -697,10 +717,10 @@ function tatkhalsa_submit_blood_request() {
 	);
 
 	// Try sending email
-	$sent = wp_mail( $to, $subject, $body, $headers );
+	$sent = wp_mail( $to, $subject, $body, $headers, $attachments );
 
 	// Send WhatsApp Alert
-	$sms_message = "URGENT BLOOD REQUEST:\nType: $blood_group\nUnits: $units\nHospital: $hospital_city\nContact: $contact_details";
+	$sms_message = "URGENT BLOOD REQUEST:\nType: $blood_group\nUnits: $units\nHospital: $hospital_name\nContact: $contact_details";
 	tatkhalsa_send_whatsapp_alert( $sms_message );
 
 	// Query matching donors
@@ -743,7 +763,7 @@ function tatkhalsa_submit_blood_request() {
 						<li><strong>Patient Contact:</strong> {$contact_details}</li>
 					</ul>
 					<p>If you are available, please contact the patient's family immediately.</p>";
-				wp_mail( $donor_email, $donor_subject, $donor_body, $headers );
+				wp_mail( $donor_email, $donor_subject, $donor_body, $headers, $attachments );
 			}
 		}
 		wp_reset_postdata();

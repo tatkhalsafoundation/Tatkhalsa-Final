@@ -12,7 +12,7 @@ $paged = ( get_query_var( 'paged' ) ) ? get_query_var( 'paged' ) : 1;
 $args = array(
     'post_type'      => 'blood_donor',
     'post_status'    => 'publish',
-    'posts_per_page' => 12,
+    'posts_per_page' => 10,
     'paged'          => $paged,
 );
 
@@ -88,7 +88,7 @@ $donors_query = new WP_Query( $args );
                     <input type="text" name="address" value="<?php echo isset($_GET['address']) ? esc_attr($_GET['address']) : ''; ?>" placeholder="Search by city, area, or zip code" style="width: 100%; padding: 10px; border-radius: 6px; border: 1px solid rgba(0,0,0,0.1); background: #fff; color: #333;">
                 </div>
                 <div style="margin-top: 28px;">
-                    <button type="submit" style="background: var(--primary); color: #fff; border: none; padding: 10px 20px; border-radius: 6px; font-weight: bold; cursor: pointer;">Search</button>
+                    <button type="submit" style="background: var(--primary); color: var(--white); border: none; padding: 10px 20px; border-radius: 6px; font-weight: bold; cursor: pointer;">Search</button>
                     <?php if ( isset($_GET['blood_group']) || isset($_GET['address']) ): ?>
                         <a href="<?php echo esc_url( get_permalink() ); ?>" style="margin-left: 10px; color: var(--text-light); text-decoration: none; font-size: 0.9rem;">Clear</a>
                     <?php endif; ?>
@@ -97,7 +97,7 @@ $donors_query = new WP_Query( $args );
         </div>
 
         <?php if ( $donors_query->have_posts() ) : ?>
-            <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px;">
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 15px; max-width: 800px; margin: 0 auto;">
                 <?php while ( $donors_query->have_posts() ) : $donors_query->the_post(); 
                     $post_id = get_the_ID();
                     $bg = get_post_meta( $post_id, 'blood_group', true );
@@ -105,19 +105,19 @@ $donors_query = new WP_Query( $args );
                     $contact = get_post_meta( $post_id, 'contact_details', true );
                     $map = get_post_meta( $post_id, 'map_location', true );
                 ?>
-                    <div style="background: var(--bg-dark); border-radius: 12px; padding: 25px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); position: relative; border-top: 4px solid #ff334b;">
-                        <div style="position: absolute; top: 20px; right: 20px; background: #ff334b; color: #fff; font-weight: bold; padding: 5px 12px; border-radius: 20px; font-size: 1.1rem; box-shadow: 0 2px 8px rgba(255,51,75,0.4);">
+                    <div style="background: var(--bg-dark); border-radius: 10px; padding: 15px; box-shadow: 0 3px 10px rgba(0,0,0,0.05); position: relative; border-top: 3px solid #ff334b;">
+                        <div style="position: absolute; top: 15px; right: 15px; background: #ff334b; color: #fff; font-weight: bold; padding: 4px 10px; border-radius: 15px; font-size: 0.9rem; box-shadow: 0 2px 6px rgba(255,51,75,0.4);">
                             <?php echo esc_html( $bg ); ?>
                         </div>
-                        <h3 style="color: var(--text-dark); margin-bottom: 15px; padding-right: 50px;"><?php echo esc_html( get_post_meta( $post_id, 'donor_name', true ) ); ?></h3>
+                        <h3 style="color: var(--text-dark); margin-bottom: 10px; padding-right: 40px; font-size: 1.1rem;"><?php echo esc_html( get_post_meta( $post_id, 'donor_name', true ) ); ?></h3>
                         
-                        <div style="margin-bottom: 20px; font-size: 0.85rem; color: var(--text-light); line-height: 1.5; background: rgba(0,0,0,0.03); padding: 12px; border-radius: 6px;">
-                            <span style="font-size: 1rem; display: block; margin-bottom: 5px;">🔒 Privacy Protected</span>
-                            Contact details and exact location are private. To view contact information, please submit an Emergency Blood Request. Available donor contacts will be revealed.
+                        <div style="margin-bottom: 15px; font-size: 0.75rem; color: var(--text-light); line-height: 1.4; background: rgba(0,0,0,0.03); padding: 10px; border-radius: 6px;">
+                            <span style="font-size: 0.85rem; display: block; margin-bottom: 3px;">🔒 Privacy Protected</span>
+                            Contact details are private. Submit an Emergency Blood Request to view available donor contacts.
                         </div>
 
-                        <button onclick="openBloodRequestModal()" style="display: block; width: 100%; text-align: center; background: rgba(255,51,75,0.1); padding: 10px; border-radius: 6px; font-weight: bold; font-size: 0.9rem; color: #ff334b; text-decoration: none; border: 1px solid rgba(255,51,75,0.2); cursor: pointer; transition: background 0.2s;">
-                            🚨 Submit Request to Connect
+                        <button onclick="openBloodRequestModal()" style="display: block; width: 100%; text-align: center; background: rgba(255,51,75,0.1); padding: 8px; border-radius: 6px; font-weight: bold; font-size: 0.8rem; color: #ff334b; text-decoration: none; border: 1px solid rgba(255,51,75,0.2); cursor: pointer; transition: background 0.2s;">
+                            🚨 Request to Connect
                         </button>
                     </div>
                 <?php endwhile; ?>
@@ -148,7 +148,7 @@ $donors_query = new WP_Query( $args );
 
 <!-- Donor Registration Modal -->
 <div class="modal-overlay" id="donorRegModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.7); z-index: 1000; overflow-y: auto; align-items: center; justify-content: center; padding: 20px;">
-  <div class="modal-content" style="background: var(--bg-dark); padding: 30px; border-radius: 16px; width: 100%; max-width: 500px; position: relative;  margin: auto;">
+  <div class="modal-content" style="background: var(--bg-shade-1); padding: 30px; border-radius: 16px; width: 100%; max-width: 500px; position: relative;  margin: auto;">
     <button class="modal-close" style="position: absolute; top: 15px; right: 15px; background: none; border: none; font-size: 1.5rem; cursor: pointer; color: var(--text-dark);" onclick="closeDonorRegistrationModal()">&times;</button>
     
     <h2 style="color: var(--text-dark); margin-bottom: 20px; text-align: center;">Register as Blood Donor</h2>
@@ -214,7 +214,7 @@ $donors_query = new WP_Query( $args );
 
 <!-- Remove Donor Modal -->
 <div class="modal-overlay" id="removeDonorModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.7); z-index: 1000; overflow-y: auto; align-items: center; justify-content: center; padding: 20px;">
-  <div class="modal-content" style="background: var(--bg-dark); padding: 30px; border-radius: 16px; width: 100%; max-width: 400px; position: relative;  margin: auto;">
+  <div class="modal-content" style="background: var(--bg-shade-1); padding: 30px; border-radius: 16px; width: 100%; max-width: 400px; position: relative;  margin: auto;">
     <button class="modal-close" style="position: absolute; top: 15px; right: 15px; background: none; border: none; font-size: 1.5rem; cursor: pointer; color: var(--text-dark);" onclick="closeRemoveDonorModal()">&times;</button>
     
     <h2 style="color: var(--text-dark); margin-bottom: 20px; text-align: center;">Remove My Registration</h2>
