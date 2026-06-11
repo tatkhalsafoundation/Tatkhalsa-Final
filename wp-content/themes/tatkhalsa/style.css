@@ -1099,7 +1099,12 @@ section {
   border-top: 3px solid var(--accent-red);
 }
 
-/* About Us */
+.about-hero-overlay {
+  background: rgba(5, 10, 20, 0.85);
+}
+[data-theme="light"] .about-hero-overlay {
+  background: rgba(220, 240, 255, 0.85); /* Light blue tint matching the theme */
+}
 .about-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -1146,6 +1151,13 @@ section {
   font-size: 1.1rem;
   color: var(--text-light);
   line-height: 1.8;
+}
+
+[data-theme="light"] section#about:nth-of-type(2) > div:nth-of-type(2) > p:nth-of-type(1) {
+    color: #060034 !important;
+}
+[data-theme="light"] section#about:nth-of-type(2) > div:nth-of-type(2) > h2:nth-of-type(1) {
+    color: #060034 !important;
 }
 
 /* What We Do Services */

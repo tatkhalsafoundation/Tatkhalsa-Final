@@ -146,6 +146,7 @@
                 <a href="<?php echo esc_url( home_url( '/about/' ) ); ?>">About</a>
                 <a href="<?php echo esc_url( home_url( '/projects/' ) ); ?>">Projects</a>
                 <a href="<?php echo esc_url( home_url( '/blog/' ) ); ?>">Blog</a>
+                <a href="<?php echo esc_url( home_url( '/blood-donors/' ) ); ?>">Blood Donors</a>
                 <a href="#" onclick="openBloodRequestModal(); return false;" style="color: #ff4d61; font-weight: 700; display: inline-flex; align-items: center; gap: 4px;">🩸 Request Blood</a>
               </div>
               <?php
@@ -168,6 +169,7 @@
               <option value="<?php echo esc_url( home_url( '/projects/' ) ); ?>">Our Seva Projects</option>
               <option value="<?php echo esc_url( home_url( '/volunteer/' ) ); ?>">Join as Volunteer</option>
               <option value="<?php echo esc_url( home_url( '/blog/' ) ); ?>">Insights & Blog</option>
+              <option value="<?php echo esc_url( home_url( '/blood-donors/' ) ); ?>">❤️ Blood Donors</option>
               <option value="blood">🩸 Request Blood (Emergency)</option>
               <option value="contact">☏ Contact Us</option>
               <option value="donate">♥ Contribute Now</option>
@@ -188,6 +190,7 @@
                 <a href="<?php echo esc_url( home_url( '/projects/' ) ); ?>" class="custom-dropdown-opt" role="option">Our Seva Projects</a>
                 <a href="<?php echo esc_url( home_url( '/volunteer/' ) ); ?>" class="custom-dropdown-opt" role="option">Join as Volunteer</a>
                 <a href="<?php echo esc_url( home_url( '/blog/' ) ); ?>" class="custom-dropdown-opt" role="option">Insights & Blog</a>
+                <a href="<?php echo esc_url( home_url( '/blood-donors/' ) ); ?>" class="custom-dropdown-opt" role="option">❤️ Blood Donors</a>
                 <a href="#" onclick="openBloodRequestModal(); document.getElementById('customMobileNavWrapper').classList.remove('open'); return false;" class="custom-dropdown-opt" role="option" style="color: #ff334b !important; font-weight: 700;">🩸 Request Blood</a>
                 <a href="#" onclick="document.getElementById('footer').scrollIntoView({ behavior: 'smooth' }); document.getElementById('customMobileNavWrapper').classList.remove('open'); return false;" class="custom-dropdown-opt" role="option" style="color: #4da6ff !important; font-weight: 700;">☏ Contact Us</a>
                 <a href="#" onclick="openModal(); document.getElementById('customMobileNavWrapper').classList.remove('open'); return false;" class="custom-dropdown-opt header-mobile-contrib-opt" role="option" style="color: #ff5d73 !important; font-weight: 700;">♥ Contribute Now</a>

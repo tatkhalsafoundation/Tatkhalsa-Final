@@ -599,12 +599,30 @@ add_action( 'wp_ajax_nopriv_simulate_donation', 'tatkhalsa_ajax_simulate_donatio
  * Filter the body classes to append 'has-hero-logo' dynamically for pages using hero logos.
  */
 function tatkhalsa_body_classes( $classes ) {
-	if ( is_front_page() || is_home() || is_page_template( 'template-about.php' ) || is_page_template( 'template-projects.php' ) || is_page_template( 'template-volunteer.php' ) || is_page_template( 'template-blog.php' ) ) {
+	if ( is_front_page() || is_home() || is_page_template( 'template-about.php' ) || is_page_template( 'template-projects.php' ) || is_page_template( 'template-volunteer.php' ) || is_page_template( 'template-blog.php' ) || is_page_template( 'template-blood-donors.php' ) ) {
 		$classes[] = 'has-hero-logo';
 	}
 	return $classes;
 }
 add_filter( 'body_class', 'tatkhalsa_body_classes' );
+
+function tatkhalsa_create_blood_donors_page() {
+    $page_slug = 'blood-donors';
+    
+    $page = get_page_by_path( $page_slug );
+    if ( ! $page ) {
+        wp_insert_post( array(
+            'post_title'     => 'Blood Donors',
+            'post_name'      => $page_slug,
+            'post_status'    => 'publish',
+            'post_type'      => 'page',
+            'page_template'  => 'template-blood-donors.php'
+        ) );
+    } else {
+        update_post_meta( $page->ID, '_wp_page_template', 'template-blood-donors.php' );
+    }
+}
+add_action( 'init', 'tatkhalsa_create_blood_donors_page' );
 
 /**
  * Handle Blood Request Form Submission & Direct Email Delivery to tatkhalsafoundation@gmail.com
@@ -657,6 +675,79 @@ function tatkhalsa_submit_blood_request() {
 }
 add_action( 'wp_ajax_submit_blood_request', 'tatkhalsa_submit_blood_request' );
 add_action( 'wp_ajax_nopriv_submit_blood_request', 'tatkhalsa_submit_blood_request' );
+
+function tatkhalsa_register_blood_donor_cpt() {
+	$labels = array(
+		'name'               => _x( 'Blood Donors', 'post type general name', 'tatkhalsa-theme' ),
+		'singular_name'      => _x( 'Blood Donor', 'post type singular name', 'tatkhalsa-theme' ),
+		'menu_name'          => _x( 'Blood Donors', 'admin menu', 'tatkhalsa-theme' ),
+		'name_admin_bar'     => _x( 'Blood Donor', 'add new on admin bar', 'tatkhalsa-theme' ),
+		'add_new'            => _x( 'Add New', 'blood donor', 'tatkhalsa-theme' ),
+		'add_new_item'       => __( 'Add New Blood Donor', 'tatkhalsa-theme' ),
+		'new_item'           => __( 'New Blood Donor', 'tatkhalsa-theme' ),
+		'edit_item'          => __( 'Edit Blood Donor', 'tatkhalsa-theme' ),
+		'view_item'          => __( 'View Blood Donor', 'tatkhalsa-theme' ),
+		'all_items'          => __( 'All Blood Donors', 'tatkhalsa-theme' ),
+		'search_items'       => __( 'Search Blood Donors', 'tatkhalsa-theme' ),
+		'not_found'          => __( 'No blood donors found.', 'tatkhalsa-theme' ),
+		'not_found_in_trash' => __( 'No blood donors found in Trash.', 'tatkhalsa-theme' )
+	);
+
+	$args = array(
+		'labels'             => $labels,
+		'public'             => true,
+		'publicly_queryable' => true,
+		'show_ui'            => true,
+		'show_in_menu'       => true,
+		'query_var'          => true,
+		'rewrite'            => array( 'slug' => 'blood-donor' ),
+		'capability_type'    => 'post',
+		'has_archive'        => true,
+		'hierarchical'       => false,
+		'menu_position'      => null,
+		'menu_icon'          => 'dashicons-heart',
+		'supports'           => array( 'title' )
+	);
+
+	register_post_type( 'blood_donor', $args );
+}
+add_action( 'init', 'tatkhalsa_register_blood_donor_cpt' );
+
+function tatkhalsa_submit_blood_donor() {
+	if ( ! isset( $_POST['action'] ) || $_POST['action'] !== 'submit_blood_donor' ) {
+		wp_send_json_error( array( 'message' => 'Invalid request.' ) );
+	}
+
+	$name         = isset( $_POST['donorName'] ) ? sanitize_text_field( wp_unslash( $_POST['donorName'] ) ) : '';
+	$blood_group  = isset( $_POST['bloodGroup'] ) ? sanitize_text_field( wp_unslash( $_POST['bloodGroup'] ) ) : '';
+	$contact      = isset( $_POST['contactDetails'] ) ? sanitize_text_field( wp_unslash( $_POST['contactDetails'] ) ) : '';
+	$address      = isset( $_POST['address'] ) ? sanitize_text_field( wp_unslash( $_POST['address'] ) ) : '';
+	$map_location = isset( $_POST['mapLocation'] ) ? sanitize_text_field( wp_unslash( $_POST['mapLocation'] ) ) : '';
+
+	if ( empty( $name ) || empty( $blood_group ) || empty( $contact ) || empty( $address ) ) {
+		wp_send_json_error( array( 'message' => 'Please fill in all required fields.' ) );
+	}
+
+	$post_id = wp_insert_post( array(
+		'post_title'  => $name . ' - ' . $blood_group,
+		'post_type'   => 'blood_donor',
+		'post_status' => 'publish'
+	) );
+
+	if ( $post_id ) {
+		update_post_meta( $post_id, 'donor_name', $name );
+		update_post_meta( $post_id, 'blood_group', $blood_group );
+		update_post_meta( $post_id, 'contact_details', $contact );
+		update_post_meta( $post_id, 'address', $address );
+		update_post_meta( $post_id, 'map_location', $map_location );
+
+		wp_send_json_success( array( 'message' => 'Thank you for registering as a blood donor!' ) );
+	} else {
+		wp_send_json_error( array( 'message' => 'Failed to register. Please try again.' ) );
+	}
+}
+add_action( 'wp_ajax_submit_blood_donor', 'tatkhalsa_submit_blood_donor' );
+add_action( 'wp_ajax_nopriv_submit_blood_donor', 'tatkhalsa_submit_blood_donor' );
 
 /**
  * Register Customizer Settings for Images

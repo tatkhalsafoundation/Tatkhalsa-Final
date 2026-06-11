@@ -145,6 +145,13 @@
           Our 24/7 Tatkhalsa Blood Network coordinates rapid mobilizations of nearby registered donors. Direct email and SMS alerts will be triggered immediately.
         </p>
 
+        <div style="background: rgba(255,51,75,0.05); border: 1px solid rgba(255,51,75,0.2); padding: 12px; border-radius: 8px; margin-bottom: 20px; text-align: center;">
+          <p style="margin-bottom: 8px; font-size: 0.85rem; color: var(--text-light);">Looking for donors right now?</p>
+          <a href="<?php echo esc_url( home_url( '/blood-donors/' ) ); ?>" style="display: inline-block; background: #ff334b; color: white; padding: 8px 16px; border-radius: 6px; font-weight: bold; font-size: 0.85rem; text-decoration: none; box-shadow: 0 2px 8px rgba(255,51,75,0.3);">
+            🔍 Browse Available Donors
+          </a>
+        </div>
+
         <form id="bloodRequestForm" method="POST" action="">
           <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px;">
             <div>
