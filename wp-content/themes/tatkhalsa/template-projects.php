@@ -517,8 +517,9 @@ get_header();
 
 <div class="projects-page">
   
-  <section class="hero" style="padding: 40px 0 35px 0; background: linear-gradient(135deg, rgba(8, 17, 35, 0.96) 0%, rgba(5, 10, 20, 0.99) 100%);">
-    <div class="container scroll-reveal" style="text-align: center">
+  <section class="hero" style="padding: 40px 0 35px 0;">
+    <div class="hero-overlay"></div>
+    <div class="container scroll-reveal" style="text-align: center; position: relative; z-index: 2;">
       <!-- Centered Logo same as home page -->
       <div class="hero-logo-wrapper" style="display: flex; justify-content: center; margin-bottom: 25px; margin-top: 10px;">
         <img

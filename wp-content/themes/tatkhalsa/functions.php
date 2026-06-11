@@ -847,11 +847,17 @@ function tatkhalsa_customizer_css() {
 	$home_hero_img = get_theme_mod( 'tatkhalsa_home_hero_img', 'https://images.unsplash.com/photo-1543332143-4e8c27e3256f?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80' );
 	?>
 	<style type="text/css">
-		.hero {
+		.home .hero {
+			background: linear-gradient( 135deg, rgba(10, 46, 109, 0.98), rgba(5, 26, 64, 0.95) ), url("<?php echo esc_url( $home_hero_img ); ?>") center/cover !important;
+		}
+		[data-theme="light"] .home .hero {
 			background: linear-gradient( 135deg, rgba(220, 240, 255, 0.92), rgba(235, 248, 255, 0.96) ), url("<?php echo esc_url( $home_hero_img ); ?>") center/cover !important;
 		}
-		[data-theme="dark"] .hero {
-			background: linear-gradient( 135deg, rgba(10, 46, 109, 0.98), rgba(5, 26, 64, 0.95) ), url("<?php echo esc_url( $home_hero_img ); ?>") center/cover !important;
+		.hero {
+			background: linear-gradient( 135deg, rgba(10, 46, 109, 0.98), rgba(5, 26, 64, 0.95) ) !important;
+		}
+		[data-theme="light"] .hero {
+			background: linear-gradient( 135deg, rgba(220, 240, 255, 0.92), rgba(235, 248, 255, 0.96) ) !important;
 		}
 	</style>
 	<?php

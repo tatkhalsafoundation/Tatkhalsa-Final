@@ -16,10 +16,8 @@
     
     <script>
       (function() {
-        const savedTheme = localStorage.getItem("tatkhalsa-theme");
-        if (savedTheme === "light") {
-          document.documentElement.setAttribute("data-theme", "light");
-        }
+        const savedTheme = localStorage.getItem("tatkhalsa-theme") || "dark";
+        document.documentElement.setAttribute("data-theme", savedTheme);
       })();
     </script>
 

@@ -1250,13 +1250,16 @@
 
       // Check on load for Icons only (body already handled in head)
       function initTheme() {
-        const savedTheme = localStorage.getItem("tatkhalsa-theme");
-        if (savedTheme === "light") {
-          const iconDark = document.getElementById("themeIconDark");
-          const iconLight = document.getElementById("themeIconLight");
-          if (iconDark && iconLight) {
+        const savedTheme = localStorage.getItem("tatkhalsa-theme") || "dark";
+        const iconDark = document.getElementById("themeIconDark");
+        const iconLight = document.getElementById("themeIconLight");
+        if (iconDark && iconLight) {
+          if (savedTheme === "light") {
             iconDark.style.display = "none";
             iconLight.style.display = "block";
+          } else {
+            iconDark.style.display = "block";
+            iconLight.style.display = "none";
           }
         }
       }

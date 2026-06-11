@@ -8,18 +8,8 @@
 get_header();
 ?>
 
-    <section
-      class="hero"
-      style="
-        padding: 40px 0 60px 0;
-        background: linear-gradient(
-          135deg,
-          rgba(10, 20, 40, 0.95),
-          rgba(5, 10, 20, 0.98)
-        );
-      "
-    >
-      <div class="hero-overlay" style="background: none"></div>
+    <section class="hero" style="padding: 40px 0 60px 0;">
+      <div class="hero-overlay"></div>
       <div
         class="container scroll-reveal"
         style="position: relative; z-index: 2; text-align: center"
@@ -62,13 +52,13 @@ get_header();
       "
     >
       <div
+        class="about-hero-overlay"
         style="
           position: absolute;
           top: 0;
           left: 0;
           right: 0;
           bottom: 0;
-          background: rgba(5, 10, 20, 0.85);
           z-index: 1;
         "
       ></div>

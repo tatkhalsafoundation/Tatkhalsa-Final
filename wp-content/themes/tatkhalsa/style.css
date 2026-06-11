@@ -36,6 +36,9 @@ Tags: clean, gold, navy, ngo, sikh, seva, non-profit, responsive, custom-logo, t
   --font-sans: "Inter", sans-serif;
   --font-serif: "Cinzel", "Playfair Display", serif;
   --body-bg: #040914;
+  --hero-bg: linear-gradient(135deg, rgba(10, 46, 109, 0.98), rgba(5, 26, 64, 0.95));
+  --hero-text: var(--cream);
+  --hero-overlay-bg: linear-gradient(135deg, rgba(10, 20, 40, 0.85), rgba(5, 10, 20, 0.95));
 }
 
 [data-theme="light"] {
@@ -52,6 +55,9 @@ Tags: clean, gold, navy, ngo, sikh, seva, non-profit, responsive, custom-logo, t
   --white: #ffffff; 
   --cream: #081a30; /* Used as opposite of cream in light mode for borders/buttons */
   --body-bg: #e0f2fe; /* solid light sky blue */
+  --hero-bg: linear-gradient(135deg, rgba(220, 240, 255, 0.92), rgba(235, 248, 255, 0.96));
+  --hero-text: var(--text-dark);
+  --hero-overlay-bg: linear-gradient(135deg, rgba(220, 240, 255, 0.85), rgba(235, 248, 255, 0.95));
 }
 
 /* Light Theme Inline Style Overrides */
@@ -860,7 +866,8 @@ body.scrolled .header-cta-btn {
 /* Hero Section */
 .hero {
   position: relative;
-  color: var(--cream);
+  background: var(--hero-bg);
+  color: var(--hero-text);
   padding: 40px 0 80px 0;
   text-align: center;
   overflow: hidden;
@@ -883,11 +890,7 @@ body.scrolled .header-cta-btn {
   left: 0;
   width: 100%;
   height: 100%;
-  background: linear-gradient(
-    135deg,
-    rgba(10, 20, 40, 0.85),
-    rgba(5, 10, 20, 0.95)
-  );
+  background: var(--hero-overlay-bg);
   z-index: 1;
 }
 .gurbani-text {
@@ -900,13 +903,14 @@ body.scrolled .header-cta-btn {
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
 }
 .hero h1 {
-  color: var(--cream);
+  color: var(--hero-text);
   font-size: 3.5rem;
   max-width: 900px;
   margin: 35px auto 20px;
   line-height: 1.2;
 }
 .hero p {
+  color: var(--hero-text);
   font-size: 1.2rem;
   max-width: 800px;
   margin: 0 auto 40px;
