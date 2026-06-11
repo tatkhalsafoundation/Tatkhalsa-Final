@@ -202,7 +202,7 @@ $donors_query = new WP_Query( $args );
       
       <div style="margin-bottom: 15px;">
         <label style="display: block; margin-bottom: 8px; color: var(--text-dark); font-weight: bold;">Full Name *</label>
-        <input type="text" name="donorName" required style="width: 100%; padding: 12px; border-radius: 6px; border: 1px solid rgba(0,0,0,0.2); background: #fff; color: #333;">
+        <input type="text" name="donorName" required placeholder="e.g. John Doe" style="width: 100%; padding: 12px; border-radius: 6px; border: 1px solid rgba(0,0,0,0.2); background: #fff; color: #333;">
       </div>
       
       <div style="margin-bottom: 15px;">
@@ -476,7 +476,7 @@ document.addEventListener("DOMContentLoaded", () => {
             }
             
             try {
-                const response = await fetch("<?php echo admin_url('admin-ajax.php'); ?>", {
+                const response = await fetch("<?php echo esc_url(admin_url('admin-ajax.php')); ?>", {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                     body: params.toString()
@@ -535,7 +535,7 @@ document.addEventListener("DOMContentLoaded", () => {
             }
             
             try {
-                const response = await fetch("<?php echo admin_url('admin-ajax.php'); ?>", {
+                const response = await fetch("<?php echo esc_url(admin_url('admin-ajax.php')); ?>", {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                     body: params.toString()
@@ -594,7 +594,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 verifyParams.append('action', 'verify_donor_email');
                 verifyParams.append('donorEmail', donorEmail);
 
-                const verifyRes = await fetch("<?php echo admin_url('admin-ajax.php'); ?>", {
+                const verifyRes = await fetch("<?php echo esc_url(admin_url('admin-ajax.php')); ?>", {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                     body: verifyParams.toString()
@@ -611,19 +611,32 @@ document.addEventListener("DOMContentLoaded", () => {
 
                 const element = document.getElementById('pdfCertTemplate');
                 // Make it visible to html2pdf temporarily
+                const origPosition = element.style.position;
+                const origTop = element.style.top;
+                const origLeft = element.style.left;
+                element.style.position = 'fixed';
+                element.style.top = '0';
+                element.style.left = '0';
+                element.style.zIndex = '-9999';
                 element.style.opacity = '1';
+                
+                await new Promise(r => setTimeout(r, 100)); // wait for DOM to paint
                 
                 const opt = {
                     margin:       0,
                     filename:     'certificate.pdf',
                     image:        { type: 'jpeg', quality: 0.98 },
-                    html2canvas:  { scale: 2 },
+                    html2canvas:  { scale: 2, scrollY: 0, scrollX: 0, backgroundColor: '#ffffff' },
                     jsPDF:        { unit: 'in', format: [11.11, 8.33], orientation: 'landscape' } // 800x600 px is roughly 11.11x8.33 in at 72dpi
                 };
 
                 const pdfBase64 = await html2pdf().set(opt).from(element).outputPdf('datauristring');
                 
+                element.style.position = origPosition;
                 element.style.opacity = '0';
+                element.style.top = origTop;
+                element.style.left = origLeft;
+                element.style.zIndex = '';
 
                 // Step 3: Send email
                 btn.innerHTML = "Sending Email...";
@@ -632,7 +645,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 sendParams.append('donorEmail', donorEmail);
                 sendParams.append('pdfData', pdfBase64);
 
-                const sendRes = await fetch("<?php echo admin_url('admin-ajax.php'); ?>", {
+                const sendRes = await fetch("<?php echo esc_url(admin_url('admin-ajax.php')); ?>", {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                     body: sendParams.toString()
@@ -669,7 +682,6 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 </script>
 
-<script src="/assets/js/location-data.js"></script>
 <script>
 document.addEventListener("DOMContentLoaded", function() {
     const countrySelect = document.getElementById("donorCountry");
@@ -681,97 +693,145 @@ document.addEventListener("DOMContentLoaded", function() {
     const selState = "<?php echo isset($_GET['state']) ? esc_js($_GET['state']) : ''; ?>";
     const selDistrict = "<?php echo isset($_GET['district']) ? esc_js($_GET['district']) : ''; ?>";
 
-    if (typeof locationData !== 'undefined') {
-        const regCountrySelect = document.getElementById("regCountry");
-        const regStateSelect = document.getElementById("regState");
-        const regDistrictSelect = document.getElementById("regDistrict");
+    const regCountrySelect = document.getElementById("regCountry");
+    const regStateSelect = document.getElementById("regState");
+    const regDistrictSelect = document.getElementById("regDistrict");
 
-        // Populate Countries (Search & Registration)
-        Object.keys(locationData).forEach(country => {
-            // ... Search options ...
+    let cachedCountries = [];
+
+    async function loadCountries() {
+        try {
+            const response = await fetch('https://countriesnow.space/api/v0.1/countries/states');
+            const data = await response.json();
+            if(!data.error) {
+                cachedCountries = data.data;
+                populateCountries();
+            }
+        } catch (e) {
+            console.error('Error fetching countries:', e);
+        }
+    }
+
+    function populateCountries() {
+        cachedCountries.forEach(countryData => {
+            const countryName = countryData.name;
+            
+            // Search options
             const optionSearch = document.createElement("option");
-            optionSearch.value = country;
-            optionSearch.textContent = country;
-            if (country === selCountry) optionSearch.selected = true;
-            countrySelect.appendChild(optionSearch);
+            optionSearch.value = countryName;
+            optionSearch.textContent = countryName;
+            if (countryName === selCountry) optionSearch.selected = true;
+            if (countrySelect) countrySelect.appendChild(optionSearch);
 
-            // ... Registration options
+            // Registration options
             const optionReg = document.createElement("option");
-            optionReg.value = country;
-            optionReg.textContent = country;
-            regCountrySelect.appendChild(optionReg);
+            optionReg.value = countryName;
+            optionReg.textContent = countryName;
+            if (regCountrySelect) regCountrySelect.appendChild(optionReg);
         });
 
-        // Initialize Search lists
-        window.updateStates = function() {
-            stateSelect.innerHTML = '<option value="">Any State</option>';
-            districtSelect.innerHTML = '<option value="">Any District</option>';
-            const country = countrySelect.value;
-            if (country && locationData[country]) {
-                Object.keys(locationData[country]).forEach(state => {
-                    const option = document.createElement("option");
-                    option.value = state;
-                    option.textContent = state;
-                    stateSelect.appendChild(option);
-                });
-            }
-        };
-
-        window.updateDistricts = function() {
-            districtSelect.innerHTML = '<option value="">Any District</option>';
-            const country = countrySelect.value;
-            const state = stateSelect.value;
-            if (country && state && locationData[country] && locationData[country][state]) {
-                locationData[country][state].forEach(district => {
-                    const option = document.createElement("option");
-                    option.value = district;
-                    option.textContent = district;
-                    districtSelect.appendChild(option);
-                });
-            }
-        };
-
-        // Initialize Reg lists
-        window.updateRegStates = function() {
-            regStateSelect.innerHTML = '<option value="">Select State</option>';
-            regDistrictSelect.innerHTML = '<option value="">Select District</option>';
-            const country = regCountrySelect.value;
-            if (country && locationData[country]) {
-                Object.keys(locationData[country]).forEach(state => {
-                    const option = document.createElement("option");
-                    option.value = state;
-                    option.textContent = state;
-                    regStateSelect.appendChild(option);
-                });
-            }
-        };
-
-        window.updateRegDistricts = function() {
-            regDistrictSelect.innerHTML = '<option value="">Select District</option>';
-            const country = regCountrySelect.value;
-            const state = regStateSelect.value;
-            if (country && state && locationData[country] && locationData[country][state]) {
-                locationData[country][state].forEach(district => {
-                    const option = document.createElement("option");
-                    option.value = district;
-                    option.textContent = district;
-                    regDistrictSelect.appendChild(option);
-                });
-            }
-        };
-
-        // If pre-selected, populate state and district
         if (selCountry) {
             updateStates();
             if (selState) {
                 stateSelect.value = selState;
-                updateDistricts();
-                if (selDistrict) {
-                    districtSelect.value = selDistrict;
-                }
+                // Async update for districts
+                updateDistricts().then(() => {
+                    if (selDistrict) {
+                        districtSelect.value = selDistrict;
+                    }
+                });
             }
         }
     }
+
+    window.updateStates = function() {
+        if (!stateSelect) return;
+        stateSelect.innerHTML = '<option value="">Any State</option>';
+        if (districtSelect) districtSelect.innerHTML = '<option value="">Any District</option>';
+        const countryName = countrySelect.value;
+        const countryData = cachedCountries.find(c => c.name === countryName);
+        if (countryData && countryData.states) {
+            countryData.states.forEach(state => {
+                const option = document.createElement("option");
+                option.value = state.name;
+                option.textContent = state.name;
+                stateSelect.appendChild(option);
+            });
+        }
+    };
+
+    window.updateDistricts = async function() {
+        if (!districtSelect) return;
+        districtSelect.innerHTML = '<option value="">Any District</option>';
+        const country = countrySelect.value;
+        const state = stateSelect.value;
+        if (country && state) {
+            try {
+                const response = await fetch('https://countriesnow.space/api/v0.1/countries/state/cities', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ country: country, state: state })
+                });
+                const data = await response.json();
+                if (!data.error && data.data) {
+                    data.data.forEach(city => {
+                        const option = document.createElement("option");
+                        option.value = city;
+                        option.textContent = city;
+                        districtSelect.appendChild(option);
+                    });
+                }
+            } catch (e) {
+                console.error("Error fetching cities", e);
+            }
+        }
+    };
+
+    window.updateRegStates = function() {
+        if (!regStateSelect) return;
+        regStateSelect.innerHTML = '<option value="">Select State</option>';
+        if (regDistrictSelect) regDistrictSelect.innerHTML = '<option value="">Select District</option>';
+        const countryName = regCountrySelect.value;
+        const countryData = cachedCountries.find(c => c.name === countryName);
+        if (countryData && countryData.states) {
+            countryData.states.forEach(state => {
+                const option = document.createElement("option");
+                // Country API states sometimes end in "State", we keep the exact string returned
+                option.value = state.name;
+                option.textContent = state.name;
+                regStateSelect.appendChild(option);
+            });
+        }
+    };
+
+    window.updateRegDistricts = async function() {
+        if (!regDistrictSelect) return;
+        regDistrictSelect.innerHTML = '<option value="">Select District</option>';
+        const country = regCountrySelect.value;
+        const state = regStateSelect.value;
+        if (country && state) {
+            try {
+                const response = await fetch('https://countriesnow.space/api/v0.1/countries/state/cities', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ country: country, state: state })
+                });
+                const data = await response.json();
+                if (!data.error && data.data) {
+                    data.data.forEach(city => {
+                        const option = document.createElement("option");
+                        option.value = city;
+                        option.textContent = city;
+                        regDistrictSelect.appendChild(option);
+                    });
+                }
+            } catch (e) {
+                console.error("Error fetching cities", e);
+            }
+        }
+    };
+
+    loadCountries();
 });
 </script>
 

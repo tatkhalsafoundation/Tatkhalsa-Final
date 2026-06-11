@@ -7,8 +7,8 @@ async function startServer() {
   const app = express();
   const PORT = 3000;
 
-  app.use(express.json());
-  app.use(express.urlencoded({ extended: true }));
+  app.use(express.json({ limit: '50mb' }));
+  app.use(express.urlencoded({ extended: true, limit: '50mb' }));
 
   const THEME_PATH = path.join(process.cwd(), "wp-content", "themes", "tatkhalsa");
 
@@ -234,6 +234,38 @@ async function startServer() {
       });
     }
 
+    if (action === "submit_blood_donor") {
+      return res.json({
+        success: true,
+        data: {
+          message: "Thank you! You have been successfully registered as a blood donor."
+        }
+      });
+    }
+
+    if (action === "verify_donor_email") {
+      const email = req.body?.donorEmail;
+      if (!email) {
+        return res.json({ success: false, data: { message: "Please provide an email address." } });
+      }
+      return res.json({
+        success: true,
+        data: {
+          name: email.split('@')[0].replace(/[^a-zA-Z]/g, ' '),
+          date: new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })
+        }
+      });
+    }
+
+    if (action === "send_pdf_certificate") {
+      return res.json({
+        success: true,
+        data: {
+          message: "Certificate generated and sent! Please check your email inbox."
+        }
+      });
+    }
+
     res.status(404).json({ success: false, data: { message: `Unknown AJAX action: ${action}` } });
   });
 
@@ -259,6 +291,8 @@ async function startServer() {
       res.sendFile(path.join(THEME_PATH, "Logo.png"));
     }
   });
+
+  app.use('/assets', express.static(path.join(THEME_PATH, 'assets')));
 
   // Intercept requests to / or index.php
   app.get("/", (req, res) => {
