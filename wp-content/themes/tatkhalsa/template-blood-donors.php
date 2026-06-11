@@ -70,9 +70,6 @@ $donors_query = new WP_Query( $args );
             <button onclick="openBloodRequestModal()" class="btn-secondary" style="background: linear-gradient(135deg, #ff334b 0%, #ff5d73 100%); color: #fff; border: none; padding: 12px 24px; border-radius: 8px; font-weight: bold; cursor: pointer; box-shadow: 0 4px 15px rgba(255,51,75,0.3);">
                 🚨 Request Blood
             </button>
-            <button onclick="openCertificateModal()" class="btn-secondary" style="background: var(--bg-dark); color: var(--primary); border: 1px solid var(--primary); padding: 12px 24px; border-radius: 8px; font-weight: bold; cursor: pointer;">
-                🏆 Claim Certificate
-            </button>
             <button onclick="openRemoveDonorModal()" class="btn-secondary" style="background: transparent; color: var(--text-light); border: 1px dashed rgba(255,51,75,0.5); padding: 12px 24px; border-radius: 8px; font-weight: bold; cursor: pointer; transition: all 0.3s;" onmouseover="this.style.borderColor='#ff334b'; this.style.color='#ff334b';" onmouseout="this.style.borderColor='rgba(255,51,75,0.5)'; this.style.color='var(--text-light)';">
                 🗑️ Remove My Name
             </button>
@@ -810,13 +807,18 @@ document.addEventListener("DOMContentLoaded", function() {
             const optionSearch = document.createElement("option");
             optionSearch.value = countryName;
             optionSearch.textContent = countryName;
-            if (countryName === selCountry) optionSearch.selected = true;
+            if (selCountry) {
+                if (countryName === selCountry) optionSearch.selected = true;
+            } else {
+                if (countryName === 'India') optionSearch.selected = true;
+            }
             if (countrySelect) countrySelect.appendChild(optionSearch);
 
             // Registration options
             const optionReg = document.createElement("option");
             optionReg.value = countryName;
             optionReg.textContent = countryName;
+            if (countryName === 'India') optionReg.selected = true;
             if (regCountrySelect) regCountrySelect.appendChild(optionReg);
         });
 
@@ -831,6 +833,16 @@ document.addEventListener("DOMContentLoaded", function() {
                     }
                 });
             }
+        } else {
+            if (countrySelect) {
+                countrySelect.value = 'India';
+                updateStates();
+            }
+        }
+
+        if (regCountrySelect) {
+            regCountrySelect.value = 'India';
+            updateRegStates();
         }
     }
 
