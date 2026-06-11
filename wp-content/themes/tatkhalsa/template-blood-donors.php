@@ -264,6 +264,8 @@ $donors_query = new WP_Query( $args );
   </div>
 </div>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
 <!-- Certificate Modal -->
 <div class="modal-overlay" id="certificateModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.7); z-index: 1000; overflow-y: auto; align-items: center; justify-content: center; padding: 20px;">
   <div class="modal-content" style="background: var(--bg-shade-1); padding: 30px; border-radius: 16px; width: 100%; max-width: 400px; position: relative;  margin: auto;">
@@ -276,8 +278,6 @@ $donors_query = new WP_Query( $args );
     </div>
     
     <form id="certificateForm" method="POST" action="">
-      <input type="hidden" name="action" value="claim_blood_certificate">
-      
       <div style="margin-bottom: 20px;">
         <label style="display: block; margin-bottom: 8px; color: var(--text-dark); font-weight: bold;">Registered Email Address</label>
         <input type="email" name="donorEmail" required placeholder="name@example.com" style="width: 100%; padding: 12px; border-radius: 6px; border: 1px solid rgba(0,0,0,0.2); background: #fff; color: #333;">
@@ -290,6 +290,37 @@ $donors_query = new WP_Query( $args );
       </button>
     </form>
   </div>
+</div>
+
+<div id="pdfCertTemplate" style="position: absolute; top: -9999px; left: -9999px; opacity: 0; pointer-events: none;">
+    <div style="width: 800px; height: 600px; background-color:#f4f7f6; padding:40px; font-family:'Arial', sans-serif; text-align:center; box-sizing: border-box;">
+        <div style="background:#fff; border:12px solid #0a2342; padding:40px; border-radius:8px; height:100%; box-sizing:border-box;">
+            <div style="font-size:50px; margin-bottom:10px; line-height:1;">🏆</div>
+            <h1 style="color:#0a2342; font-size:32px; text-transform:uppercase; letter-spacing:2px; margin:bottom:5px; margin-top:0;">Certificate of Appreciation</h1>
+            <h3 style="color:#ff334b; font-size:18px; margin-bottom:30px; margin-top:0;">Tatkhalsa Foundation Blood Network</h3>
+            
+            <p style="color:#555; font-size:16px; margin-bottom:15px;">This certificate is proudly presented to</p>
+            <h2 id="certDonorName" style="color:#0a2342; font-size:36px; font-weight:bold; border-bottom:2px solid #ccc; display:inline-block; padding-bottom:5px; margin-bottom:20px; margin-top:0;">[Name]</h2>
+            <p style="color:#555; font-size:16px; margin-bottom:40px; line-height:1.6; padding: 0 40px;">
+                in profound recognition of your selfless commitment to saving lives. Your donation through the Tatkhalsa Blood Network stands as a testament to humanity and compassion.
+            </p>
+            
+            <div style="display:flex; justify-content:space-between; margin-top:30px; align-items:flex-end;">
+                <div style="text-align:center; flex:1;">
+                    <div style="width:120px; border-bottom:1px solid #333; margin:0 auto 10px auto;"></div>
+                    <span style="font-size:14px; color:#555;">Date of Issue<br><strong id="certDate">[Date]</strong></span>
+                </div>
+                <div style="text-align:center; flex:1;">
+                    <div style="width:90px; height:90px; background:#0a2342; border-radius:50%; margin:0 auto; line-height:90px; color:#fdf7e7; font-weight:bold; font-size:11px; border:4px double #fdf7e7; box-shadow:0 0 0 2px #0a2342; text-align:center;">OFFICIAL SEAL</div>
+                </div>
+                <div style="text-align:center; flex:1;">
+                    <div style="font-family:'Brush Script MT', cursive; font-size:24px; color:#0a2342; margin-bottom:5px;">S. Prabhjot Singh</div>
+                    <div style="width:150px; border-bottom:1px solid #333; margin:0 auto 10px auto;"></div>
+                    <span style="font-size:14px; color:#555;">Authorized Signatory<br><strong>Tatkhalsa Foundation</strong></span>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 <script>
@@ -504,50 +535,84 @@ document.addEventListener("DOMContentLoaded", () => {
             const btn = document.getElementById("certificateBtn");
             const statusBox = document.getElementById("certificateStatus");
             const originalText = btn.innerHTML;
+            const donorEmail = certForm.querySelector('[name="donorEmail"]').value;
             
-            btn.innerHTML = "Sending...";
+            btn.innerHTML = "Verifying...";
             btn.disabled = true;
             statusBox.style.display = "none";
             
-            const formData = new FormData(certForm);
-            const params = new URLSearchParams();
-            for(const pair of formData.entries()) {
-                params.append(pair[0], pair[1]);
-            }
-            
             try {
-                const response = await fetch("<?php echo admin_url('admin-ajax.php'); ?>", {
+                // Step 1: Verify email and get name
+                const verifyParams = new URLSearchParams();
+                verifyParams.append('action', 'verify_donor_email');
+                verifyParams.append('donorEmail', donorEmail);
+
+                const verifyRes = await fetch("<?php echo admin_url('admin-ajax.php'); ?>", {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                    body: params.toString()
-                });
+                    body: verifyParams.toString()
+                }).then(r => r.json());
+
+                if (!verifyRes.success) {
+                    throw new Error(verifyRes.data.message || "Email verification failed.");
+                }
+
+                // Step 2: Generate PDF
+                btn.innerHTML = "Generating PDF...";
+                document.getElementById('certDonorName').innerText = verifyRes.data.name;
+                document.getElementById('certDate').innerText = verifyRes.data.date;
+
+                const element = document.getElementById('pdfCertTemplate');
+                // Make it visible to html2pdf temporarily
+                element.style.opacity = '1';
                 
-                const res = await response.json();
+                const opt = {
+                    margin:       0,
+                    filename:     'certificate.pdf',
+                    image:        { type: 'jpeg', quality: 0.98 },
+                    html2canvas:  { scale: 2 },
+                    jsPDF:        { unit: 'in', format: [11.11, 8.33], orientation: 'landscape' } // 800x600 px is roughly 11.11x8.33 in at 72dpi
+                };
+
+                const pdfBase64 = await html2pdf().set(opt).from(element).outputPdf('datauristring');
+                
+                element.style.opacity = '0';
+
+                // Step 3: Send email
+                btn.innerHTML = "Sending Email...";
+                const sendParams = new URLSearchParams();
+                sendParams.append('action', 'send_pdf_certificate');
+                sendParams.append('donorEmail', donorEmail);
+                sendParams.append('pdfData', pdfBase64);
+
+                const sendRes = await fetch("<?php echo admin_url('admin-ajax.php'); ?>", {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                    body: sendParams.toString()
+                }).then(r => r.json());
+
+                if (!sendRes.success) {
+                    throw new Error(sendRes.data.message || "Failed to send email.");
+                }
+
                 statusBox.style.display = "block";
                 statusBox.style.padding = "10px";
-                
-                if(res.success) {
-                    statusBox.style.backgroundColor = "rgba(40, 167, 69, 0.1)";
-                    statusBox.style.borderColor = "rgba(40, 167, 69, 0.2)";
-                    statusBox.style.color = "#28a745";
-                    statusBox.innerHTML = res.data.message;
-                    certForm.reset();
-                    setTimeout(() => {
-                        closeCertificateModal();
-                    }, 3000);
-                } else {
-                    statusBox.style.backgroundColor = "rgba(220, 53, 69, 0.1)";
-                    statusBox.style.borderColor = "rgba(220, 53, 69, 0.2)";
-                    statusBox.style.color = "#dc3545";
-                    statusBox.innerHTML = res.data.message || "An error occurred.";
-                }
+                statusBox.style.backgroundColor = "rgba(40, 167, 69, 0.1)";
+                statusBox.style.borderColor = "rgba(40, 167, 69, 0.2)";
+                statusBox.style.color = "#28a745";
+                statusBox.innerHTML = sendRes.data.message;
+                certForm.reset();
+                setTimeout(() => {
+                    closeCertificateModal();
+                }, 3000);
+
             } catch (err) {
                 console.error(err);
                 statusBox.style.display = "block";
                 statusBox.style.padding = "10px";
                 statusBox.style.backgroundColor = "rgba(220, 53, 69, 0.1)";
                 statusBox.style.color = "#dc3545";
-                statusBox.innerHTML = "Network error. Please try again.";
+                statusBox.innerHTML = err.message || "Network error. Please try again.";
             } finally {
                 btn.innerHTML = originalText;
                 btn.disabled = false;

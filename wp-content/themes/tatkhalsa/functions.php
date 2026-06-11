@@ -888,8 +888,8 @@ function tatkhalsa_remove_blood_donor() {
 add_action( 'wp_ajax_remove_blood_donor', 'tatkhalsa_remove_blood_donor' );
 add_action( 'wp_ajax_nopriv_remove_blood_donor', 'tatkhalsa_remove_blood_donor' );
 
-function tatkhalsa_claim_blood_certificate() {
-	if ( ! isset( $_POST['action'] ) || $_POST['action'] !== 'claim_blood_certificate' ) {
+function tatkhalsa_verify_donor_email() {
+	if ( ! isset( $_POST['action'] ) || $_POST['action'] !== 'verify_donor_email' ) {
 		wp_send_json_error( array( 'message' => 'Invalid request.' ) );
 	}
 
@@ -913,48 +913,63 @@ function tatkhalsa_claim_blood_certificate() {
 		$donor_name = get_post_meta( get_the_ID(), 'donor_name', true );
 		wp_reset_postdata();
 
-		// Generate HTML Certificate Email
-		$subject = '🏆 Your Certificate of Appreciation | Tatkhalsa Foundation';
-		$headers = array('Content-Type: text/html; charset=UTF-8');
-		
-		$body = "
-		<div style='background-color:#f4f7f6; padding:40px 20px; font-family:\"Arial\", sans-serif; text-align:center;'>
-			<div style='max-width:700px; margin:0 auto; background:#fff; border:12px solid #0a2342; padding:40px; border-radius:8px; position:relative;'>
-				<div style='position:absolute; top:30px; right:30px; opacity:0.1; font-size:100px;'>🏆</div>
-				<h1 style='color:#0a2342; font-size:32px; text-transform:uppercase; letter-spacing:2px; margin-bottom:10px;'>Certificate of Appreciation</h1>
-				<h3 style='color:#ff334b; font-size:18px; margin-bottom:40px;'>Tatkhalsa Foundation Blood Network</h3>
-				
-				<p style='color:#555; font-size:16px; margin-bottom:20px;'>This certificate is proudly resented to</p>
-				<h2 style='color:#0a2342; font-size:36px; font-weight:bold; border-bottom:2px solid #ccc; display:inline-block; padding-bottom:10px; margin-bottom:30px;'>{$donor_name}</h2>
-				<p style='color:#555; font-size:16px; margin-bottom:50px; line-height:1.6;'>
-					in profound recognition of your selfless commitment to saving lives. Your donation through the Tatkhalsa Blood Network stands as a testament to humanity and compassion.
-				</p>
-				
-				<div style='display:table; width:100%; margin-top:40px;'>
-					<div style='display:table-cell; width:33%; text-align:center; vertical-align:bottom;'>
-						<span style='display:block; width:120px; border-bottom:1px solid #333; margin:0 auto 10px auto;'></span>
-						<span style='font-size:14px; color:#555;'>Date of Issue<br><strong>" . date('F j, Y') . "</strong></span>
-					</div>
-					<div style='display:table-cell; width:33%; text-align:center; vertical-align:middle;'>
-						<div style='width:90px; height:90px; background:#0a2342; border-radius:50%; margin:0 auto; line-height:90px; color:#fdf7e7; font-weight:bold; font-size:11px; border:4px double #fdf7e7; display:block; box-shadow:0 0 0 2px #0a2342;'>OFFICIAL SEAL</div>
-					</div>
-					<div style='display:table-cell; width:33%; text-align:center; vertical-align:bottom;'>
-						<span style='display:block; font-family:\"Brush Script MT\", cursive; font-size:24px; color:#0a2342; margin-bottom:5px;'>S. Prabhjot Singh</span>
-						<span style='display:block; width:150px; border-bottom:1px solid #333; margin:0 auto 10px auto;'></span>
-						<span style='font-size:14px; color:#555;'>Authorized Signatory<br><strong>Tatkhalsa Foundation</strong></span>
-					</div>
-				</div>
-			</div>
-			<p style='margin-top:20px; font-size:12px; color:#888;'>This is an electronically generated certificate and requires no physical signature.</p>
-		</div>";
-
-		wp_mail( $email, $subject, $body, $headers );
-
-		wp_send_json_success( array( 'message' => 'Certificate sent! Please check your email inbox.' ) );
+		wp_send_json_success( array( 'name' => $donor_name, 'date' => date('F j, Y') ) );
 	} else {
 		wp_send_json_error( array( 'message' => 'No registration found with this email address.' ) );
 	}
 }
+add_action( 'wp_ajax_verify_donor_email', 'tatkhalsa_verify_donor_email' );
+add_action( 'wp_ajax_nopriv_verify_donor_email', 'tatkhalsa_verify_donor_email' );
+
+function tatkhalsa_send_pdf_certificate() {
+	if ( ! isset( $_POST['action'] ) || $_POST['action'] !== 'send_pdf_certificate' ) {
+		wp_send_json_error( array( 'message' => 'Invalid request.' ) );
+	}
+
+	$email = isset( $_POST['donorEmail'] ) ? sanitize_email( wp_unslash( $_POST['donorEmail'] ) ) : '';
+	$pdf_data = isset( $_POST['pdfData'] ) ? wp_unslash( $_POST['pdfData'] ) : '';
+
+	if ( empty( $email ) || empty( $pdf_data ) ) {
+		wp_send_json_error( array( 'message' => 'Missing email or PDF data.' ) );
+	}
+
+	$parts = explode( ',', $pdf_data );
+	if ( count( $parts ) < 2 ) {
+		wp_send_json_error( array( 'message' => 'Invalid PDF data format.' ) );
+	}
+	$pdf_decoded = base64_decode( $parts[1] );
+
+	$upload_dir = wp_upload_dir();
+	$filename = 'Certificate-of-Appreciation-' . time() . '.pdf';
+	$filepath = $upload_dir['path'] . '/' . $filename;
+	
+	file_put_contents( $filepath, $pdf_decoded );
+
+	$subject = '🏆 Your Certificate of Appreciation | Tatkhalsa Foundation';
+	$headers = array('Content-Type: text/html; charset=UTF-8');
+	
+	$body = "
+	<div style='background-color:#f4f7f6; padding:40px 20px; font-family:\"Arial\", sans-serif;'>
+		<p style='color:#0a2342; font-size:16px;'>Waheguru Ji Ka Khalsa, Waheguru Ji Ki Fateh.</p>
+		<p style='color:#555; font-size:16px;'>Thank you for your noble commitment. Please find attached your official Certificate of Appreciation from Tatkhalsa Foundation in PDF format.</p>
+	</div>";
+
+	$attachments = array( $filepath );
+
+	$sent = wp_mail( $email, $subject, $body, $headers, $attachments );
+
+	unlink( $filepath );
+
+	if ( $sent ) {
+		wp_send_json_success( array( 'message' => 'Certificate sent! Please check your email inbox.' ) );
+	} else {
+		wp_send_json_error( array( 'message' => 'Failed to send the email. Please try again later.' ) );
+	}
+}
+add_action( 'wp_ajax_send_pdf_certificate', 'tatkhalsa_send_pdf_certificate' );
+add_action( 'wp_ajax_nopriv_send_pdf_certificate', 'tatkhalsa_send_pdf_certificate' );
+
+function tatkhalsa_claim_blood_certificate_legacy() {
 add_action( 'wp_ajax_claim_blood_certificate', 'tatkhalsa_claim_blood_certificate' );
 add_action( 'wp_ajax_nopriv_claim_blood_certificate', 'tatkhalsa_claim_blood_certificate' );
 
