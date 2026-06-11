@@ -495,7 +495,7 @@ body:has(.hero-gurbani-logo) .header-logo-badge {
   width: 48px;
   height: 48px;
   object-fit: contain;
-  transition: all 0.5s cubic-bezier(0.165, 0.84, 0.44, 1);
+  transition: width 0.3s ease-in-out, height 0.3s ease-in-out, transform 0.3s ease-in-out, filter 0.3s ease-in-out;
   filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.3));
 }
 .logo:hover .header-logo-badge {
@@ -508,7 +508,7 @@ body:has(.hero-gurbani-logo) .header-logo-badge {
   filter: blur(20px);
 }
 .logo:hover .header-logo-img-new {
-  transform: scale(1.12) rotate(6deg);
+  transform: scale(1.05);
 }
 body.scrolled .header-logo-badge {
   width: 52px;

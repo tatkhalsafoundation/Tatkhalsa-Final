@@ -38,7 +38,6 @@
         .header-logo-img-new {
           width: 20px !important;
           height: 20px !important;
-          transition: all 0.3s ease !important;
         }
         .logo-text-up {
           font-size: 1.1rem !important;
@@ -147,7 +146,7 @@
                 <a href="<?php echo esc_url( home_url( '/projects/' ) ); ?>">Projects</a>
                 <a href="<?php echo esc_url( home_url( '/blog/' ) ); ?>">Blog</a>
                 <a href="<?php echo esc_url( home_url( '/blood-donors/' ) ); ?>">Blood Donors</a>
-                <a href="#" onclick="openBloodRequestModal(); return false;" style="color: #ff4d61; font-weight: 700; display: inline-flex; align-items: center; gap: 4px;">🩸 Request Blood</a>
+                <a href="#" onclick="openPunjabFloodReliefModal(); return false;" style="color: #4da6ff; font-weight: 700; display: inline-flex; align-items: center; gap: 4px;">🌊 Flood Relief</a>
               </div>
               <?php
           }
@@ -162,7 +161,7 @@
  
         <!-- Elegant Multi-Selection Dropdown for Mobile / Tablet (Instead of Hamburger Menu) -->
         <div class="header-nav-selector">
-            <select id="mobileNavSelect" onchange="if(this.value === 'donate') { openModal(); } else if(this.value === 'blood') { openBloodRequestModal(); } else if(this.value === 'contact') { document.getElementById('footer').scrollIntoView({ behavior: 'smooth' }); } else if(this.value) { window.location.href=this.value; }" style="display: none;" aria-label="Select Seva Page">
+            <select id="mobileNavSelect" onchange="if(this.value === 'donate') { openModal(); } else if(this.value === 'blood') { openBloodRequestModal(); } else if(this.value === 'flood') { openPunjabFloodReliefModal(); } else if(this.value === 'contact') { document.getElementById('footer').scrollIntoView({ behavior: 'smooth' }); } else if(this.value) { window.location.href=this.value; }" style="display: none;" aria-label="Select Seva Page">
               <option value="" disabled selected>Explore Seva...</option>
               <option value="<?php echo esc_url( home_url( '/' ) ); ?>">Home Page</option>
               <option value="<?php echo esc_url( home_url( '/about/' ) ); ?>">About Tatkhalsa</option>
@@ -170,6 +169,7 @@
               <option value="<?php echo esc_url( home_url( '/volunteer/' ) ); ?>">Join as Volunteer</option>
               <option value="<?php echo esc_url( home_url( '/blog/' ) ); ?>">Insights & Blog</option>
               <option value="<?php echo esc_url( home_url( '/blood-donors/' ) ); ?>">❤️ Blood Donors</option>
+              <option value="flood">🌊 Punjab Flood Relief</option>
               <option value="blood">🩸 Request Blood (Emergency)</option>
               <option value="contact">☏ Contact Us</option>
               <option value="donate">♥ Contribute Now</option>
@@ -191,6 +191,7 @@
                 <a href="<?php echo esc_url( home_url( '/volunteer/' ) ); ?>" class="custom-dropdown-opt" role="option">Join as Volunteer</a>
                 <a href="<?php echo esc_url( home_url( '/blog/' ) ); ?>" class="custom-dropdown-opt" role="option">Insights & Blog</a>
                 <a href="<?php echo esc_url( home_url( '/blood-donors/' ) ); ?>" class="custom-dropdown-opt" role="option">❤️ Blood Donors</a>
+                <a href="#" onclick="openPunjabFloodReliefModal(); document.getElementById('customMobileNavWrapper').classList.remove('open'); return false;" class="custom-dropdown-opt" role="option" style="color: #4da6ff !important; font-weight: 700;">🌊 Flood Relief</a>
                 <a href="#" onclick="openBloodRequestModal(); document.getElementById('customMobileNavWrapper').classList.remove('open'); return false;" class="custom-dropdown-opt" role="option" style="color: #ff334b !important; font-weight: 700;">🩸 Request Blood</a>
                 <a href="#" onclick="document.getElementById('footer').scrollIntoView({ behavior: 'smooth' }); document.getElementById('customMobileNavWrapper').classList.remove('open'); return false;" class="custom-dropdown-opt" role="option" style="color: #4da6ff !important; font-weight: 700;">☏ Contact Us</a>
                 <a href="#" onclick="openModal(); document.getElementById('customMobileNavWrapper').classList.remove('open'); return false;" class="custom-dropdown-opt header-mobile-contrib-opt" role="option" style="color: #ff5d73 !important; font-weight: 700;">♥ Contribute Now</a>
