@@ -146,7 +146,6 @@
                 <a href="<?php echo esc_url( home_url( '/projects/' ) ); ?>">Projects</a>
                 <a href="<?php echo esc_url( home_url( '/blog/' ) ); ?>">Blog</a>
                 <a href="<?php echo esc_url( home_url( '/blood-donors/' ) ); ?>">Blood Donors</a>
-                <a href="#" onclick="openPunjabFloodReliefModal(); return false;" style="color: #4da6ff; font-weight: 700; display: inline-flex; align-items: center; gap: 4px;">🌊 Flood Relief</a>
               </div>
               <?php
           }
