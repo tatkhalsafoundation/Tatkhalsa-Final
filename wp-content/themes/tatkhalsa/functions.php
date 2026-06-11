@@ -750,6 +750,40 @@ function tatkhalsa_submit_blood_donor() {
 add_action( 'wp_ajax_submit_blood_donor', 'tatkhalsa_submit_blood_donor' );
 add_action( 'wp_ajax_nopriv_submit_blood_donor', 'tatkhalsa_submit_blood_donor' );
 
+function tatkhalsa_remove_blood_donor() {
+	if ( ! isset( $_POST['action'] ) || $_POST['action'] !== 'remove_blood_donor' ) {
+		wp_send_json_error( array( 'message' => 'Invalid request.' ) );
+	}
+
+	$contact = isset( $_POST['contactNumber'] ) ? sanitize_text_field( wp_unslash( $_POST['contactNumber'] ) ) : '';
+
+	if ( empty( $contact ) ) {
+		wp_send_json_error( array( 'message' => 'Please provide the registered contact number.' ) );
+	}
+
+	$args = array(
+		'post_type'  => 'blood_donor',
+		'meta_key'   => 'contact_details',
+		'meta_value' => $contact,
+		'posts_per_page' => -1
+	);
+
+	$query = new WP_Query( $args );
+
+	if ( $query->have_posts() ) {
+		while ( $query->have_posts() ) {
+			$query->the_post();
+			wp_trash_post( get_the_ID() );
+		}
+		wp_reset_postdata();
+		wp_send_json_success( array( 'message' => 'Your registration has been removed successfully.' ) );
+	} else {
+		wp_send_json_error( array( 'message' => 'No registration found with this contact number.' ) );
+	}
+}
+add_action( 'wp_ajax_remove_blood_donor', 'tatkhalsa_remove_blood_donor' );
+add_action( 'wp_ajax_nopriv_remove_blood_donor', 'tatkhalsa_remove_blood_donor' );
+
 /**
  * Register Customizer Settings for Images
  */

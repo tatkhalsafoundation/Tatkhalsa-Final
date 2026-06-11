@@ -62,6 +62,9 @@ $donors_query = new WP_Query( $args );
             <button onclick="openBloodRequestModal()" class="btn-secondary" style="background: var(--bg-dark); color: var(--text-dark); border: 1px solid var(--text-dark); padding: 12px 24px; border-radius: 8px; font-weight: bold; cursor: pointer;">
                 🚨 Request Blood
             </button>
+            <button onclick="openRemoveDonorModal()" class="btn-secondary" style="background: transparent; color: var(--text-light); border: 1px dashed rgba(255,51,75,0.5); padding: 12px 24px; border-radius: 8px; font-weight: bold; cursor: pointer; transition: all 0.3s;" onmouseover="this.style.borderColor='#ff334b'; this.style.color='#ff334b';" onmouseout="this.style.borderColor='rgba(255,51,75,0.5)'; this.style.color='var(--text-light)';">
+                🗑️ Remove My Name
+            </button>
         </div>
 
         <div style="background: var(--bg-dark); padding: 20px; border-radius: 12px; margin-bottom: 40px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); border: 1px solid rgba(0,0,0,0.05);">
@@ -210,6 +213,31 @@ $donors_query = new WP_Query( $args );
   </div>
 </div>
 
+<!-- Remove Donor Modal -->
+<div class="modal-overlay" id="removeDonorModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.7); z-index: 1000; overflow-y: auto; align-items: center; justify-content: center; padding: 20px;">
+  <div class="modal-content" style="background: var(--bg-dark); padding: 30px; border-radius: 16px; width: 100%; max-width: 400px; position: relative;  margin: auto;">
+    <button class="modal-close" style="position: absolute; top: 15px; right: 15px; background: none; border: none; font-size: 1.5rem; cursor: pointer; color: var(--text-dark);" onclick="closeRemoveDonorModal()">&times;</button>
+    
+    <h2 style="color: var(--text-dark); margin-bottom: 20px; text-align: center;">Remove My Registration</h2>
+    
+    <form id="removeDonorForm" method="POST" action="">
+      <input type="hidden" name="action" value="remove_blood_donor">
+      
+      <div style="margin-bottom: 20px;">
+        <label style="display: block; margin-bottom: 8px; color: var(--text-dark); font-weight: bold;">Registered Contact Number</label>
+        <p style="font-size: 0.85rem; color: var(--text-light); margin-bottom: 10px;">Enter the exact contact number you used while registering.</p>
+        <input type="tel" name="contactNumber" required placeholder="e.g. +91 9876543210" style="width: 100%; padding: 12px; border-radius: 6px; border: 1px solid rgba(0,0,0,0.2); background: #fff; color: #333;">
+      </div>
+
+      <div id="removeDonorStatus" style="margin-bottom: 15px; font-size: 0.9rem; border-radius: 6px; display: none;"></div>
+      
+      <button type="submit" id="removeDonorBtn" style="width: 100%; background: transparent; color: #ff334b; border: 2px solid #ff334b; font-size: 1rem; font-weight: bold; padding: 12px; border-radius: 8px; cursor: pointer; transition: all 0.3s;" onmouseover="this.style.background='#ff334b'; this.style.color='#fff';" onmouseout="this.style.background='transparent'; this.style.color='#ff334b';">
+        Remove My Name
+      </button>
+    </form>
+  </div>
+</div>
+
 <script>
 function openDonorRegistrationModal() {
     const modal = document.getElementById("donorRegModal");
@@ -221,6 +249,22 @@ function openDonorRegistrationModal() {
 
 function closeDonorRegistrationModal() {
     const modal = document.getElementById("donorRegModal");
+    if(modal) {
+        modal.style.display = "none";
+        document.body.style.overflow = "auto";
+    }
+}
+
+function openRemoveDonorModal() {
+    const modal = document.getElementById("removeDonorModal");
+    if(modal) {
+        modal.style.display = "flex";
+        document.body.style.overflow = "hidden";
+    }
+}
+
+function closeRemoveDonorModal() {
+    const modal = document.getElementById("removeDonorModal");
     if(modal) {
         modal.style.display = "none";
         document.body.style.overflow = "auto";
@@ -303,6 +347,65 @@ document.addEventListener("DOMContentLoaded", () => {
                     setTimeout(() => {
                         closeDonorRegistrationModal();
                         window.location.reload(); // Reload to see the new entry
+                    }, 2000);
+                } else {
+                    statusBox.style.backgroundColor = "rgba(220, 53, 69, 0.1)";
+                    statusBox.style.borderColor = "rgba(220, 53, 69, 0.2)";
+                    statusBox.style.color = "#dc3545";
+                    statusBox.innerHTML = res.data.message || "An error occurred.";
+                }
+            } catch (err) {
+                console.error(err);
+                statusBox.style.display = "block";
+                statusBox.style.padding = "10px";
+                statusBox.style.backgroundColor = "rgba(220, 53, 69, 0.1)";
+                statusBox.style.color = "#dc3545";
+                statusBox.innerHTML = "Network error. Please try again.";
+            } finally {
+                btn.innerHTML = originalText;
+                btn.disabled = false;
+            }
+        });
+    }
+
+    const removeForm = document.getElementById("removeDonorForm");
+    if(removeForm) {
+        removeForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const btn = document.getElementById("removeDonorBtn");
+            const statusBox = document.getElementById("removeDonorStatus");
+            const originalText = btn.innerHTML;
+            
+            btn.innerHTML = "Removing...";
+            btn.disabled = true;
+            statusBox.style.display = "none";
+            
+            const formData = new FormData(removeForm);
+            const params = new URLSearchParams();
+            for(const pair of formData.entries()) {
+                params.append(pair[0], pair[1]);
+            }
+            
+            try {
+                const response = await fetch("<?php echo admin_url('admin-ajax.php'); ?>", {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                    body: params.toString()
+                });
+                
+                const res = await response.json();
+                statusBox.style.display = "block";
+                statusBox.style.padding = "10px";
+                
+                if(res.success) {
+                    statusBox.style.backgroundColor = "rgba(40, 167, 69, 0.1)";
+                    statusBox.style.borderColor = "rgba(40, 167, 69, 0.2)";
+                    statusBox.style.color = "#28a745";
+                    statusBox.innerHTML = res.data.message;
+                    removeForm.reset();
+                    setTimeout(() => {
+                        closeRemoveDonorModal();
+                        window.location.reload(); // Reload to see the changes
                     }, 2000);
                 } else {
                     statusBox.style.backgroundColor = "rgba(220, 53, 69, 0.1)";
