@@ -113,6 +113,107 @@ function tatkhalsa_scripts() {
 add_action( 'wp_enqueue_scripts', 'tatkhalsa_scripts' );
 
 /**
+ * Common Input Anti-Spam / Anti-Fake Data Validator
+ */
+function tatkhalsa_validate_common_inputs( $name = '', $email = '', $phone = '' ) {
+	// 1. Validate full name field
+	if ( ! empty( $name ) ) {
+		$name = trim( $name );
+		if ( strlen( $name ) < 3 ) {
+			return 'Please enter a valid full name (minimum 3 characters required).';
+		}
+		$lower_name = strtolower( $name );
+		$fake_names = array( 'test', 'fake', 'dummy', 'none', 'unknown', 'nobody', 'abc', 'xyz', 'qwer', 'asdf', 'zxcv', 'foo', 'bar', 'something', 'placeholder', 'asdfasdf' );
+		foreach ( $fake_names as $fn ) {
+			if ( $lower_name === $fn || strpos( $lower_name, 'asdf' ) !== false || strpos( $lower_name, 'qwer' ) !== false ) {
+				return 'Please enter your real full name. Placeholder or junk text is not permitted.';
+			}
+		}
+		// Regular expression to check repetitive sequential identical letters (e.g. "aaaa")
+		if ( preg_match( '/(.)\1{3,}/', $name ) ) {
+			return 'Real name cannot contain repetitive sequential identical characters (e.g. "aaaa").';
+		}
+		// Keyboard mash check (e.g. 5+ consecutive consonants)
+		if ( preg_match( '/[bcdfghjklmnpqrstvwxyzBCDFGHJKLMNPQRSTVWXYZ]{5,}/', $name ) ) {
+			return 'The name contains an invalid keyboard mashing pattern. Please provide a real name.';
+		}
+	}
+
+	// 2. Validate email address
+	if ( ! empty( $email ) ) {
+		$email = trim( $email );
+		if ( ! is_email( $email ) ) {
+			return 'Please enter a valid, well-formed email address.';
+		}
+		$parts  = explode( '@', $email );
+		$prefix = isset( $parts[0] ) ? strtolower( $parts[0] ) : '';
+		$domain = isset( $parts[1] ) ? strtolower( $parts[1] ) : '';
+
+		$fake_prefixes = array( 'test', 'abc', 'xyz', 'fake', 'dummy', 'none', 'noemail', 'null', 'temp', 'admin' );
+		if ( in_array( $prefix, $fake_prefixes, true ) || strlen( $prefix ) < 3 ) {
+			return 'This email prefix looks invalid or fake. Please use your real email address.';
+		}
+
+		$fake_domains = array( 'test.com', 'example.com', 'invalid.com', 'fake.com', 'dummy.com', 'abc.com', 'xyz.com', 'tempmail.com', 'dispostable.com', 'mailinator.com', 'yopmail.com', 'temp-mail.org', 'guerrillamail.com', 'sharklasers.com', '10minutemail.com' );
+		if ( in_array( $domain, $fake_domains, true ) || strpos( $domain, 'temp' ) !== false || strpos( $domain, 'disposable' ) !== false || strpos( $domain, 'mailinator' ) !== false ) {
+			return 'Temporary, disposable, or test email domains are blocked. Please provide a real, active email address.';
+		}
+	}
+
+	// 3. Validate contact phone number
+	if ( ! empty( $phone ) ) {
+		$digits = preg_replace( '/[^0-9]/', '', $phone );
+		$len    = strlen( $digits );
+		if ( $len < 8 || $len > 15 ) {
+			return 'Mobile or phone number format is invalid. Must contain between 8 and 15 digits.';
+		}
+
+		// Repetitive identical digit check (e.g. 000000)
+		if ( preg_match( '/(.)\1{5,}/', $digits ) ) {
+			return 'Your mobile number cannot contain repetitive identical digits (e.g. 000000). Please provide your real active number.';
+		}
+
+		// Diverse digits check (avoid patterns with only 2 unique numbers like 1212121212)
+		$unique_digits = count( array_unique( str_split( $digits ) ) );
+		if ( $unique_digits < 3 ) {
+			return 'This number has too few unique digits and looks like placeholder or fake data.';
+		}
+
+		// Check for consecutive sequential patterns (e.g. 1234567, 9876543)
+		$seq_up_count   = 0;
+		$seq_down_count = 0;
+		for ( $i = 0; $i < $len - 1; $i++ ) {
+			$curr = intval( $digits[ $i ] );
+			$next = intval( $digits[ $i + 1 ] );
+			if ( $next === $curr + 1 ) {
+				$seq_up_count++;
+			} else {
+				$seq_up_count = 0;
+			}
+			if ( $next === $curr - 1 ) {
+				$seq_down_count++;
+			} else {
+				$seq_down_count = 0;
+			}
+
+			if ( $seq_up_count >= 5 || $seq_down_count >= 5 ) {
+				return 'Sequential numbers (e.g., "123456" or "987654") are not accepted. Please provide your actual active number.';
+			}
+		}
+
+		// Frequently targeted fake lists
+		$common_fakes = array( '1234567890', '0987654321', '9876543210', '12345678', '87654321', '0123456789' );
+		foreach ( $common_fakes as $cf ) {
+			if ( strpos( $digits, $cf ) !== false ) {
+				return 'Common placeholder or test phone numbers (e.g., 1234567890) are not allowed.';
+			}
+		}
+	}
+
+	return true;
+}
+
+/**
  * Handle Volunteer Form Submission & Direct Email Delivery to tatkhalsafoundation@gmail.com
  */
 function tatkhalsa_submit_volunteer() {
@@ -124,6 +225,12 @@ function tatkhalsa_submit_volunteer() {
 
 	if ( empty( $name ) || empty( $email ) || empty( $phone ) || empty( $message ) ) {
 		wp_send_json_error( array( 'message' => esc_html__( 'Please fill in all layout fields.', 'tatkhalsa-theme' ) ) );
+	}
+
+	// Dynamic fake / spam protection checks
+	$validation_check = tatkhalsa_validate_common_inputs( $name, $email, $phone );
+	if ( true !== $validation_check ) {
+		wp_send_json_error( array( 'message' => $validation_check ) );
 	}
 
 	// Email config
@@ -693,6 +800,12 @@ function tatkhalsa_submit_blood_request() {
 		wp_send_json_error( array( 'message' => esc_html__( 'Please fill in all required fields.', 'tatkhalsa-theme' ) ) );
 	}
 
+	// Dynamic fake / spam protection checks
+	$validation_check = tatkhalsa_validate_common_inputs( $patient_name, '', $contact_details );
+	if ( true !== $validation_check ) {
+		wp_send_json_error( array( 'message' => $validation_check ) );
+	}
+
 	$attachments = array();
 	if ( ! empty( $_FILES['doctorSlip']['name'] ) ) {
 		$uploaded_file = $_FILES['doctorSlip'];
@@ -1062,6 +1175,12 @@ function tatkhalsa_submit_blood_donor() {
 
 	if ( empty( $name ) || empty( $blood_group ) || empty( $contact ) || empty( $address ) || empty( $email ) ) {
 		wp_send_json_error( array( 'message' => 'Please fill in all required fields.' ) );
+	}
+
+	// Dynamic fake / spam protection checks
+	$validation_check = tatkhalsa_validate_common_inputs( $name, $email, $contact );
+	if ( true !== $validation_check ) {
+		wp_send_json_error( array( 'message' => $validation_check ) );
 	}
 
 	$post_id = wp_insert_post( array(

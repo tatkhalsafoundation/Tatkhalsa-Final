@@ -1624,6 +1624,84 @@
         badgeContainers.forEach(c => c.classList.remove("active"));
       });
 
+      // Global Anti-Fake / Anti-Spam Input Validator
+      window.validateCommonFormInput = function(name, email, phone) {
+        if (name) {
+          name = name.trim();
+          if (name.length < 3) {
+            return "Please enter a valid full name (minimum 3 characters).";
+          }
+          const lowerName = name.toLowerCase();
+          const fakeNames = ['test', 'fake', 'dummy', 'none', 'unknown', 'nobody', 'abc', 'xyz', 'qwer', 'asdf', 'zxcv', 'foo', 'bar', 'something', 'placeholder', 'asdfasdf'];
+          for (let fn of fakeNames) {
+            if (lowerName === fn || lowerName.includes('asdf') || lowerName.includes('qwer')) {
+              return "Please enter your real full name. Placeholder or junk text is not permitted.";
+            }
+          }
+          if (/(.)\1{3,}/.test(name)) {
+            return "Real name cannot contain repetitive sequential identical characters (e.g. \"aaaa\").";
+          }
+          if (/[bcdfghjklmnpqrstvwxyz]{5,}/i.test(name)) {
+            return "Name contains an invalid keyboard mashing pattern. Please provide your real name.";
+          }
+        }
+
+        if (email) {
+          email = email.trim();
+          const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+          if (!emailRegex.test(email)) {
+            return "Please enter a valid, well-formed email address.";
+          }
+          const parts = email.split('@');
+          const prefix = parts[0] ? parts[0].toLowerCase() : '';
+          const domain = parts[1] ? parts[1].toLowerCase() : '';
+          
+          const fakePrefixes = ['test', 'abc', 'xyz', 'fake', 'dummy', 'none', 'noemail', 'null', 'temp', 'admin'];
+          if (fakePrefixes.includes(prefix) || prefix.length < 3) {
+            return "Your email prefix looks invalid/fake. Please use a real active email address.";
+          }
+
+          const fakeDomains = ['test.com', 'example.com', 'invalid.com', 'fake.com', 'dummy.com', 'abc.com', 'xyz.com', 'tempmail.com', 'dispostable.com', 'mailinator.com', 'yopmail.com', 'temp-mail.org', 'guerrillamail.com', 'sharklasers.com', '10minutemail.com'];
+          if (fakeDomains.includes(domain) || domain.includes('temp') || domain.includes('disposable') || domain.includes('mailinator')) {
+            return "Temporary, disposable, or test email domains are blocked. Please provide a real email address.";
+          }
+        }
+
+        if (phone) {
+          const digits = phone.replace(/[^0-9]/g, '');
+          if (digits.length < 8 || digits.length > 15) {
+            return "Please enter a valid active mobile number (8 to 15 digits required).";
+          }
+          if (/(.)\1{5,}/.test(digits)) {
+            return "Your mobile number cannot contain repetitive identical digits (e.g. 000000). Please provide your real active number.";
+          }
+          const uniqueDigits = new Set(digits.split('')).size;
+          if (uniqueDigits < 3) {
+            return "This mobile number has too few unique digits and looks like fake or placeholder data.";
+          }
+
+          let seqUp = 0;
+          let seqDown = 0;
+          for (let i = 0; i < digits.length - 1; i++) {
+            const curr = parseInt(digits[i], 10);
+            const next = parseInt(digits[i+1], 10);
+            if (next === curr + 1) seqUp++; else seqUp = 0;
+            if (next === curr - 1) seqDown++; else seqDown = 0;
+            if (seqUp >= 5 || seqDown >= 5) {
+              return "Sequential numbers (e.g. \"123456\" or \"987654\") are not accepted. Please provide your actual active number.";
+            }
+          }
+
+          const commonFakes = ['1234567890', '0987654321', '9876543210', '12345678', '87654321', '0123456789'];
+          for (const cf of commonFakes) {
+            if (digits.includes(cf)) {
+              return "Common placeholder or test phone numbers (e.g., 1234567890) are not allowed.";
+            }
+          }
+        }
+        return true;
+      };
+
       // Real dynamic Form submission connected to WordPress backend for direct email delivery
       const vForm = document.getElementById("volunteerForm");
       if (vForm) {
@@ -1632,6 +1710,17 @@
           const statusEl = document.getElementById("vStatus");
           statusEl.style.color = "var(--text-light)";
           statusEl.textContent = "Sending application directly to our team...";
+
+          const nameVal = document.getElementById("vName").value;
+          const emailVal = document.getElementById("vEmail").value;
+          const phoneVal = document.getElementById("vPhone").value;
+
+          const validationErr = window.validateCommonFormInput(nameVal, emailVal, phoneVal);
+          if (validationErr !== true) {
+            statusEl.style.color = "var(--accent-red)";
+            statusEl.textContent = "⚠️ " + validationErr;
+            return;
+          }
 
           const params = new URLSearchParams();
           params.append("action", "submit_volunteer");
@@ -1686,6 +1775,25 @@
           e.preventDefault();
           const statusEl = document.getElementById("bloodSubmitStatus");
           const submitBtn = document.getElementById("bloodSubmitBtn");
+
+          const patientNameVal = bloodForm.querySelector('[name="patientName"]').value;
+          const contactDetailsVal = bloodForm.querySelector('[name="contactDetails"]').value;
+
+          const validationErr = window.validateCommonFormInput(patientNameVal, null, contactDetailsVal);
+          if (validationErr !== true) {
+            statusEl.style.display = "block";
+            statusEl.style.color = "var(--accent-red)";
+            statusEl.style.border = "1.2px solid rgba(255, 51, 75, 0.2)";
+            statusEl.style.background = "rgba(255, 51, 75, 0.05)";
+            statusEl.style.padding = "10px";
+            statusEl.textContent = "⚠️ " + validationErr;
+            if (submitBtn) {
+              submitBtn.textContent = "📢 Broadcast Blood Request";
+              submitBtn.disabled = false;
+              submitBtn.style.opacity = "1";
+            }
+            return;
+          }
           
           statusEl.style.display = "block";
           statusEl.style.padding = "10px 12px";

@@ -747,7 +747,7 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    // Ajax Submission
+     // Ajax Submission
     const form = document.getElementById("donorRegForm");
     if(form) {
         form.addEventListener('submit', async (e) => {
@@ -756,6 +756,26 @@ document.addEventListener("DOMContentLoaded", () => {
             const statusBox = document.getElementById("donorRegStatus");
             const originalText = btn.innerHTML;
             
+            const nameVal = form.querySelector('[name="donorName"]').value;
+            const emailVal = form.querySelector('[name="donorEmail"]').value;
+            const phoneVal = form.querySelector('[name="contactDetails"]').value;
+
+            const validationErr = typeof window.validateCommonFormInput === "function" 
+                ? window.validateCommonFormInput(nameVal, emailVal, phoneVal) 
+                : true;
+
+            if (validationErr !== true) {
+                statusBox.style.display = "block";
+                statusBox.style.padding = "10px";
+                statusBox.style.backgroundColor = "rgba(220, 53, 69, 0.1)";
+                statusBox.style.borderColor = "rgba(220, 53, 69, 0.2)";
+                statusBox.style.color = "#dc3545";
+                statusBox.innerHTML = "⚠️ " + validationErr;
+                btn.innerHTML = originalText;
+                btn.disabled = false;
+                return;
+            }
+
             btn.innerHTML = "Registering...";
             btn.disabled = true;
             statusBox.style.display = "none";
