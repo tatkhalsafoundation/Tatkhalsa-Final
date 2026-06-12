@@ -1771,6 +1771,16 @@ function tatkhalsa_add_blood_master_data_menu() {
 add_action( 'admin_menu', 'tatkhalsa_add_blood_master_data_menu' );
 
 function tatkhalsa_render_blood_master_data_page() {
+	if ( isset( $_GET['action'] ) && $_GET['action'] === 'delete' && isset( $_GET['id'] ) ) {
+		if ( current_user_can( 'manage_options' ) ) {
+			$post_id = intval( $_GET['id'] );
+			$post_type = get_post_type( $post_id );
+			if ( $post_type === 'blood_donor' || $post_type === 'blood_request' ) {
+				wp_delete_post( $post_id, true );
+				echo '<div class="notice notice-success is-dismissible" style="padding: 12px; background: #d4edda; color: #155724; border-left: 4px solid #28a745; margin: 15px 0; border-radius: 4px;"><p style="margin: 0; font-weight: bold;">✓ Record #' . $post_id . ' was permanently deleted from the WordPress Master Data secure database.</p></div>';
+			}
+		}
+	}
 	?>
 	<div class="wrap" style="font-family: 'Inter', sans-serif;">
 		<h1 style="color: #ff334b; font-weight: bold; margin-bottom: 20px;">📌 Tatkhalsa Blood On Call - Master Admin Records</h1>
@@ -1790,6 +1800,7 @@ function tatkhalsa_render_blood_master_data_page() {
 					<th>Address & Location</th>
 					<th>Status</th>
 					<th>IP Address (30 days retention)</th>
+					<th style="width: 100px; text-align: center;">Actions</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -1824,11 +1835,14 @@ function tatkhalsa_render_blood_master_data_page() {
 							<td><?php echo esc_html( $address ); ?></td>
 							<td><?php echo esc_html( $status ); ?></td>
 							<td><?php echo $ip_display; ?></td>
+							<td style="text-align: center;">
+								<a href="<?php echo esc_url( admin_url( 'admin.php?page=blood-master-data&action=delete&id=' . $p_id ) ); ?>" class="button button-small" onclick="return confirm('Are you sure you want to permanently delete this donor?');" style="color: #ff334b; border-color: #ff334b; background: rgba(255,51,75,0.05); font-weight: bold; text-decoration: none;">✕ Delete</a>
+							</td>
 						</tr>
 						<?php
 					}
 				} else {
-					echo '<tr><td colspan="7">No registered donors found.</td></tr>';
+					echo '<tr><td colspan="8">No registered donors found.</td></tr>';
 				}
 				?>
 			</tbody>
@@ -1845,6 +1859,7 @@ function tatkhalsa_render_blood_master_data_page() {
 					<th>Contact Details</th>
 					<th>Required Units & Urgency</th>
 					<th>Request IP (30 days retention)</th>
+					<th style="width: 100px; text-align: center;">Actions</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -1880,11 +1895,14 @@ function tatkhalsa_render_blood_master_data_page() {
 							<td><code><?php echo esc_html( $contact ); ?></code></td>
 							<td><strong><?php echo esc_html( $units ); ?> Units</strong> (<?php echo esc_html( $urgency ); ?>)</td>
 							<td><?php echo $ip_display; ?></td>
+							<td style="text-align: center;">
+								<a href="<?php echo esc_url( admin_url( 'admin.php?page=blood-master-data&action=delete&id=' . $p_id ) ); ?>" class="button button-small" onclick="return confirm('Are you sure you want to permanently delete this blood request?');" style="color: #ff334b; border-color: #ff334b; background: rgba(255,51,75,0.05); font-weight: bold; text-decoration: none;">✕ Delete</a>
+							</td>
 						</tr>
 						<?php
 					}
 				} else {
-					echo '<tr><td colspan="7">No active blood requests found.</td></tr>';
+					echo '<tr><td colspan="8">No active blood requests found.</td></tr>';
 				}
 				?>
 			</tbody>

@@ -1475,6 +1475,11 @@ document.addEventListener("DOMContentLoaded", function() {
     // We run loadPublicDirectory on load
     setTimeout(() => {
         window.loadPublicDirectory();
+        // Dynamically make "Admin Master Data" button visible in preview and dev mode
+        const adminBtn = document.getElementById('adminMasterBtn');
+        if (adminBtn) {
+            adminBtn.style.display = 'inline-block';
+        }
     }, 500);
 
     loadResources();
