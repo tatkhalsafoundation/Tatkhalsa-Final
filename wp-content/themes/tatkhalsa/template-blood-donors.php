@@ -216,7 +216,19 @@ $donors_query = new WP_Query( $args );
                         <div style="position: absolute; top: 15px; right: 15px; background: #ff334b; color: #fff; font-weight: bold; padding: 4px 10px; border-radius: 15px; font-size: 0.9rem; box-shadow: 0 2px 6px rgba(255,51,75,0.4);">
                             <?php echo esc_html( $bg ); ?>
                         </div>
-                        <h3 style="color: var(--text-dark); margin-bottom: 5px; padding-right: 40px; font-size: 1.1rem;"><?php echo esc_html( get_post_meta( $post_id, 'donor_name', true ) ); ?></h3>
+                        <h3 style="color: var(--text-dark); margin-bottom: 5px; padding-right: 40px; font-size: 1.1rem; display: flex; align-items: center; gap: 6px; flex-wrap: wrap; justify-content: flex-start;">
+                            <?php echo esc_html( get_post_meta( $post_id, 'donor_name', true ) ); ?>
+                        </h3>
+                        
+                        <!-- Visual Verification Badge for Sevadar status -->
+                        <div style="display: flex; align-items: center; gap: 6px; margin-bottom: 8px; flex-wrap: wrap;">
+                            <span style="display: inline-flex; align-items: center; gap: 4px; font-size: 0.72rem; font-weight: 700; background: rgba(212, 175, 55, 0.12); color: #d4af37; padding: 3px 8px; border-radius: 12px; border: 1.1px solid rgba(212, 175, 55, 0.4); text-transform: uppercase; letter-spacing: 0.5px;">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" style="width: 12px; height: 12px; color: #d4af37; flex-shrink: 0;">
+                                    <path fill-rule="evenodd" d="M8.603 3.799A4.49 4.49 0 0112 2.25c1.357 0 2.573.6 3.397 1.549a4.49 4.49 0 013.498 1.307 4.491 4.491 0 011.307 3.497A4.49 4.49 0 0121.75 12c0 1.357-.6 2.573-1.549 3.397a4.49 4.49 0 01-1.307 3.498 4.49 4.49 0 01-3.497 1.307A4.491 4.491 0 0112 21.75c-1.357 0-2.573-.6-3.397-1.549a4.49 4.49 0 01-3.498-1.307a4.49 4.49 0 01-1.307-3.497A4.491 4.491 0 012.25 12c0-1.357.6-2.573 1.549-3.397a4.49 4.49 0 011.307-3.498a4.49 4.49 0 013.497-1.307zm7.007 6.387a.75.75 0 00-1.22-.872l-3.236 4.53L9.53 12.22a.75.75 0 00-1.06 1.06l2.25 2.25a.75.75 0 001.14-.094l3.75-5.25z" clip-rule="evenodd" />
+                                </svg>
+                                Verified Sevadar ✓
+                            </span>
+                        </div>
                         
                         <div style="margin-bottom: 10px; font-size: 0.8rem; color: var(--text-dark); font-weight: 500;">
                             <?php 
