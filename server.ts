@@ -118,6 +118,7 @@ async function startServer() {
     urgency: string;
     ip: string;
     timestamp: number;
+    doctorSlipUrl?: string;
   }
 
   let mockDonors: Donor[] = [
@@ -178,7 +179,8 @@ async function startServer() {
       unitsRequired: "2",
       urgency: "Urgent",
       ip: "192.168.1.200",
-      timestamp: Date.now() - 1 * 24 * 3600 * 1000
+      timestamp: Date.now() - 1 * 24 * 3600 * 1000,
+      doctorSlipUrl: "https://images.unsplash.com/photo-1576091160550-2173dba999ef?auto=format&fit=crop&w=800&q=80"
     },
     {
       id: "req_2",
@@ -190,7 +192,8 @@ async function startServer() {
       unitsRequired: "3",
       urgency: "Immediate",
       ip: "192.168.1.201",
-      timestamp: Date.now() - 4 * 3600 * 1000
+      timestamp: Date.now() - 4 * 3600 * 1000,
+      doctorSlipUrl: "https://images.unsplash.com/photo-1584515979956-d9f6e5d09982?auto=format&fit=crop&w=800&q=80"
     }
   ];
 
@@ -381,6 +384,7 @@ async function startServer() {
       const contactDetails = req.body?.contactDetails || req.query?.contactDetails;
       const unitsRequired = req.body?.unitsRequired || req.query?.unitsRequired || "1";
       const urgency = req.body?.urgency || req.query?.urgency || "Urgent";
+      const doctorSlipBase64 = req.body?.doctorSlipBase64 || req.query?.doctorSlipBase64;
 
       if (!patientName || !bloodGroup || !contactDetails) {
         return res.json({ success: false, data: { message: "Please fill in all required fields." } });
@@ -396,7 +400,8 @@ async function startServer() {
         unitsRequired,
         urgency,
         ip: "127.0.0.1",
-        timestamp: Date.now()
+        timestamp: Date.now(),
+        doctorSlipUrl: doctorSlipBase64 || "https://images.unsplash.com/photo-1576091160550-2173dba999ef?auto=format&fit=crop&w=800&q=80"
       };
 
       mockRequests.unshift(newRequest);
@@ -490,21 +495,23 @@ async function startServer() {
   });
 
   app.post("/api/admin/delete-donor", (req, res) => {
-    const id = req.body?.id;
-    if (!id) {
-      return res.status(400).json({ success: false, message: "ID is required." });
+    const { id, ids } = req.body || {};
+    if (!id && (!ids || !Array.isArray(ids))) {
+      return res.status(400).json({ success: false, message: "ID or list of IDs is required." });
     }
-    mockDonors = mockDonors.filter(d => d.id !== id);
-    return res.json({ success: true, message: "Donor profile deleted from directory." });
+    const toDelete = ids ? ids : [id];
+    mockDonors = mockDonors.filter(d => !toDelete.includes(d.id));
+    return res.json({ success: true, message: "Donor profile(s) deleted from directory." });
   });
 
   app.post("/api/admin/delete-request", (req, res) => {
-    const id = req.body?.id;
-    if (!id) {
-      return res.status(400).json({ success: false, message: "ID is required." });
+    const { id, ids } = req.body || {};
+    if (!id && (!ids || !Array.isArray(ids))) {
+      return res.status(400).json({ success: false, message: "ID or list of IDs is required." });
     }
-    mockRequests = mockRequests.filter(r => r.id !== id);
-    return res.json({ success: true, message: "Emergency query deleted successfully." });
+    const toDelete = ids ? ids : [id];
+    mockRequests = mockRequests.filter(r => !toDelete.includes(r.id));
+    return res.json({ success: true, message: "Emergency query logs deleted successfully." });
   });
 
   // Support direct static serving of style.css and Logo.jpg/Logo.png from theme path

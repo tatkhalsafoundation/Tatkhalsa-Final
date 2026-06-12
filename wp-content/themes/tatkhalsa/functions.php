@@ -764,6 +764,9 @@ function tatkhalsa_submit_blood_request() {
 		if ( ! empty( $attachments[0] ) ) {
 			// Save reference to physician request file
 			update_post_meta( $request_post_id, 'doctor_slip_path', esc_url_raw( $attachments[0] ) );
+			if ( isset( $movefile['url'] ) ) {
+				update_post_meta( $request_post_id, 'doctor_slip_url', esc_url_raw( $movefile['url'] ) );
+			}
 		}
 	}
 
@@ -1781,6 +1784,23 @@ function tatkhalsa_render_blood_master_data_page() {
 			}
 		}
 	}
+
+	if ( isset( $_POST['bulk_action'] ) && $_POST['bulk_action'] === 'bulk_delete' && isset( $_POST['bulk_ids'] ) && is_array( $_POST['bulk_ids'] ) ) {
+		if ( current_user_can( 'manage_options' ) ) {
+			$deleted_count = 0;
+			foreach ( $_POST['bulk_ids'] as $id ) {
+				$post_id = intval( $id );
+				$post_type = get_post_type( $post_id );
+				if ( $post_type === 'blood_donor' || $post_type === 'blood_request' ) {
+					wp_delete_post( $post_id, true );
+					$deleted_count++;
+				}
+			}
+			if ( $deleted_count > 0 ) {
+				echo '<div class="notice notice-success is-dismissible" style="padding: 12px; background: #d4edda; color: #155724; border-left: 4px solid #28a745; margin: 15px 0; border-radius: 4px;"><p style="margin: 0; font-weight: bold;">✓ Successfully deleted ' . $deleted_count . ' selected record(s) permanently from the secure WordPress database.</p></div>';
+			}
+		}
+	}
 	?>
 	<div class="wrap" style="font-family: 'Inter', sans-serif;">
 		<h1 style="color: #ff334b; font-weight: bold; margin-bottom: 20px;">📌 Tatkhalsa Blood On Call - Master Admin Records</h1>
@@ -1789,125 +1809,174 @@ function tatkhalsa_render_blood_master_data_page() {
 			<p><strong>🔒 IP Logging Status:</strong> Active (Strict rolling 30-day storage system for security checks and anti-spam verification).</p>
 		</div>
 
-		<h2 style="margin-top: 30px;">🩸 Blood On Call Entries</h2>
-		<table class="wp-list-table widefat fixed striped" style="margin-bottom: 30px;">
-			<thead>
-				<tr>
-					<th>Donor Name</th>
-					<th>Blood Group</th>
-					<th>Email Address</th>
-					<th>Contact Details</th>
-					<th>Address & Location</th>
-					<th>Status</th>
-					<th>IP Address (30 days retention)</th>
-					<th style="width: 100px; text-align: center;">Actions</th>
-				</tr>
-			</thead>
-			<tbody>
-				<?php
-				$donors = get_posts( array(
-					'post_type'      => 'blood_donor',
-					'posts_per_page' => -1,
-				) );
-				if ( ! empty( $donors ) ) {
-					foreach ( $donors as $donor ) {
-						$p_id = $donor->ID;
-						$name = get_post_meta( $p_id, 'donor_name', true );
-						$group = get_post_meta( $p_id, 'blood_group', true );
-						$email = get_post_meta( $p_id, 'donor_email', true );
-						$contact = get_post_meta( $p_id, 'contact_details', true );
-						$address = get_post_meta( $p_id, 'address', true );
-						$status = get_post_meta( $p_id, 'availability_status', true );
-						$ip = get_post_meta( $p_id, 'donor_ip', true );
-						$purged = get_post_meta( $p_id, 'ip_purged_after_30_days', true );
+		<h2 style="margin-top: 30px; display: flex; align-items: center; gap: 8px;">🩸 Registered Donors List</h2>
+		<form method="POST" action="" onsubmit="return confirm('Are you sure you want to permanently delete all selected registered donors?');" style="margin-bottom: 40px;">
+			<input type="hidden" name="bulk_action" value="bulk_delete" />
+			<div style="margin-bottom: 12px; display: flex; align-items: center; gap: 10px;">
+				<input type="submit" class="button button-secondary" value="🗑️ Delete Selected Donors" style="color: #ff334b; border-color: #ff334b; background: rgba(255,51,75,0.03); font-weight: bold;" />
+			</div>
+			<table class="wp-list-table widefat fixed striped">
+				<thead>
+					<tr>
+						<th style="width: 40px; text-align: center; vertical-align: middle;"><input type="checkbox" onclick="toggleAllCheckboxes(this, 'chk-donor')" /></th>
+						<th>Donor Name</th>
+						<th>Blood Group</th>
+						<th>Email Address</th>
+						<th>Contact Details</th>
+						<th>Address & Location</th>
+						<th>Status</th>
+						<th>IP Address (30 days retention)</th>
+						<th style="width: 100px; text-align: center;">Actions</th>
+					</tr>
+				</thead>
+				<tbody>
+					<?php
+					$donors = get_posts( array(
+						'post_type'      => 'blood_donor',
+						'posts_per_page' => -1,
+					) );
+					if ( ! empty( $donors ) ) {
+						foreach ( $donors as $donor ) {
+							$p_id = $donor->ID;
+							$name = get_post_meta( $p_id, 'donor_name', true );
+							$group = get_post_meta( $p_id, 'blood_group', true );
+							$email = get_post_meta( $p_id, 'donor_email', true );
+							$contact = get_post_meta( $p_id, 'contact_details', true );
+							$address = get_post_meta( $p_id, 'address', true );
+							$status = get_post_meta( $p_id, 'availability_status', true );
+							$ip = get_post_meta( $p_id, 'donor_ip', true );
+							$purged = get_post_meta( $p_id, 'ip_purged_after_30_days', true );
 
-						if ( empty( $ip ) ) {
-							$ip_display = ( $purged === 'yes' ) ? '<span style="color:#aa6666; font-style:italic;">[Purged after 30 days]</span>' : '<span style="color:#777;">unknown</span>';
-						} else {
-							$ip_display = '<code>' . esc_html( $ip ) . '</code> <span style="font-size:0.8rem; color:#22aa22;">(Active)</span>';
+							if ( empty( $ip ) ) {
+								$ip_display = ( $purged === 'yes' ) ? '<span style="color:#aa6666; font-style:italic;">[Purged after 30 days]</span>' : '<span style="color:#777;">unknown</span>';
+							} else {
+								$ip_display = '<code>' . esc_html( $ip ) . '</code> <span style="font-size:0.8rem; color:#22aa22;">(Active)</span>';
+							}
+							?>
+							<tr>
+								<td style="text-align: center; vertical-align: middle;"><input type="checkbox" name="bulk_ids[]" value="<?php echo $p_id; ?>" class="chk-donor" /></td>
+								<td><strong><?php echo esc_html( $name ); ?></strong></td>
+								<td><span style="background:#ff334b; color:#fff; font-weight:bold; padding:2px 8px; border-radius:10px;"><?php echo esc_html( $group ); ?></span></td>
+								<td><?php echo esc_html( $email ); ?></td>
+								<td><code><?php echo esc_html( $contact ); ?></code></td>
+								<td><?php echo esc_html( $address ); ?></td>
+								<td><?php echo esc_html( $status ); ?></td>
+								<td><?php echo $ip_display; ?></td>
+								<td style="text-align: center;">
+									<a href="<?php echo esc_url( admin_url( 'admin.php?page=blood-master-data&action=delete&id=' . $p_id ) ); ?>" class="button button-small" onclick="return confirm('Are you sure you want to permanently delete this donor?');" style="color: #ff334b; border-color: #ff334b; background: rgba(255,51,75,0.05); font-weight: bold; text-decoration: none;">✕ Delete</a>
+								</td>
+							</tr>
+							<?php
 						}
-						?>
-						<tr>
-							<td><strong><?php echo esc_html( $name ); ?></strong></td>
-							<td><span style="background:#ff334b; color:#fff; font-weight:bold; padding:2px 8px; border-radius:10px;"><?php echo esc_html( $group ); ?></span></td>
-							<td><?php echo esc_html( $email ); ?></td>
-							<td><code><?php echo esc_html( $contact ); ?></code></td>
-							<td><?php echo esc_html( $address ); ?></td>
-							<td><?php echo esc_html( $status ); ?></td>
-							<td><?php echo $ip_display; ?></td>
-							<td style="text-align: center;">
-								<a href="<?php echo esc_url( admin_url( 'admin.php?page=blood-master-data&action=delete&id=' . $p_id ) ); ?>" class="button button-small" onclick="return confirm('Are you sure you want to permanently delete this donor?');" style="color: #ff334b; border-color: #ff334b; background: rgba(255,51,75,0.05); font-weight: bold; text-decoration: none;">✕ Delete</a>
-							</td>
-						</tr>
-						<?php
+					} else {
+						echo '<tr><td colspan="9">No registered donors found.</td></tr>';
 					}
-				} else {
-					echo '<tr><td colspan="8">No registered donors found.</td></tr>';
-				}
-				?>
-			</tbody>
-		</table>
+					?>
+				</tbody>
+			</table>
+		</form>
 
-		<h2>🚨 Emergency Blood Requests</h2>
-		<table class="wp-list-table widefat fixed striped">
-			<thead>
-				<tr>
-					<th>Patient Name</th>
-					<th>Blood Group</th>
-					<th>Hospital Name</th>
-					<th>Patient Location</th>
-					<th>Contact Details</th>
-					<th>Required Units & Urgency</th>
-					<th>Request IP (30 days retention)</th>
-					<th style="width: 100px; text-align: center;">Actions</th>
-				</tr>
-			</thead>
-			<tbody>
-				<?php
-				$requests = get_posts( array(
-					'post_type'      => 'blood_request',
-					'posts_per_page' => -1,
-				) );
-				if ( ! empty( $requests ) ) {
-					foreach ( $requests as $req_post ) {
-						$p_id = $req_post->ID;
-						$pat_name = get_post_meta( $p_id, 'patient_name', true );
-						$group = get_post_meta( $p_id, 'blood_group', true );
-						$hospital = get_post_meta( $p_id, 'hospital_name', true );
-						$loc = get_post_meta( $p_id, 'patient_location', true );
-						$contact = get_post_meta( $p_id, 'contact_details', true );
-						$units = get_post_meta( $p_id, 'units_required', true );
-						$urgency = get_post_meta( $p_id, 'urgency', true );
-						$ip = get_post_meta( $p_id, 'request_ip', true );
-						$purged = get_post_meta( $p_id, 'ip_purged_after_30_days', true );
+		<h2 style="margin-top: 30px; display: flex; align-items: center; gap: 8px;">🚨 Urgent Family Blood Requests</h2>
+		<form method="POST" action="" onsubmit="return confirm('Are you sure you want to permanently delete all selected blood requests?');">
+			<input type="hidden" name="bulk_action" value="bulk_delete" />
+			<div style="margin-bottom: 12px; display: flex; align-items: center; gap: 10px;">
+				<input type="submit" class="button button-secondary" value="🗑️ Delete Selected Requests" style="color: #ff334b; border-color: #ff334b; background: rgba(255,51,75,0.03); font-weight: bold;" />
+			</div>
+			<table class="wp-list-table widefat fixed striped">
+				<thead>
+					<tr>
+						<th style="width: 40px; text-align: center; vertical-align: middle;"><input type="checkbox" onclick="toggleAllCheckboxes(this, 'chk-request')" /></th>
+						<th>Patient Name</th>
+						<th>Blood Group</th>
+						<th>Hospital Name</th>
+						<th>Patient Location</th>
+						<th>Contact Details</th>
+						<th>Required Units / Urgency</th>
+						<th style="text-align: center; width: 110px;">Doctor\'s Slip</th>
+						<th>Request IP (30 days retention)</th>
+						<th style="width: 100px; text-align: center;">Actions</th>
+					</tr>
+				</thead>
+				<tbody>
+					<?php
+					$requests = get_posts( array(
+						'post_type'      => 'blood_request',
+						'posts_per_page' => -1,
+					) );
+					if ( ! empty( $requests ) ) {
+						foreach ( $requests as $req_post ) {
+							$p_id = $req_post->ID;
+							$pat_name = get_post_meta( $p_id, 'patient_name', true );
+							$group = get_post_meta( $p_id, 'blood_group', true );
+							$hospital = get_post_meta( $p_id, 'hospital_name', true );
+							$loc = get_post_meta( $p_id, 'patient_location', true );
+							$contact = get_post_meta( $p_id, 'contact_details', true );
+							$units = get_post_meta( $p_id, 'units_required', true );
+							$urgency = get_post_meta( $p_id, 'urgency', true );
+							$ip = get_post_meta( $p_id, 'request_ip', true );
+							$purged = get_post_meta( $p_id, 'ip_purged_after_30_days', true );
 
-						if ( empty( $ip ) ) {
-							$ip_display = ( $purged === 'yes' ) ? '<span style="color:#aa6666; font-style:italic;">[Purged after 30 days]</span>' : '<span style="color:#777;">unknown</span>';
-						} else {
-							$ip_display = '<code>' . esc_html( $ip ) . '</code> <span style="font-size:0.8rem; color:#22aa22;">(Active)</span>';
+							if ( empty( $ip ) ) {
+								$ip_display = ( $purged === 'yes' ) ? '<span style="color:#aa6666; font-style:italic;">[Purged after 30 days]</span>' : '<span style="color:#777;">unknown</span>';
+							} else {
+								$ip_display = '<code>' . esc_html( $ip ) . '</code> <span style="font-size:0.8rem; color:#22aa22;">(Active)</span>';
+							}
+
+							// Fetch Doctor Slip with backward compatible conversions
+							$slip_url = get_post_meta( $p_id, 'doctor_slip_url', true );
+							if ( empty( $slip_url ) ) {
+								$slip_path = get_post_meta( $p_id, 'doctor_slip_path', true );
+								if ( ! empty( $slip_path ) ) {
+									if ( filter_var( $slip_path, FILTER_VALIDATE_URL ) ) {
+										$slip_url = $slip_path;
+									} else {
+										$uploads = wp_upload_dir();
+										$slip_url = str_replace( $uploads['basedir'], $uploads['baseurl'], $slip_path );
+									}
+								}
+							}
+							?>
+							<tr>
+								<td style="text-align: center; vertical-align: middle;"><input type="checkbox" name="bulk_ids[]" value="<?php echo $p_id; ?>" class="chk-request" /></td>
+								<td><strong><?php echo esc_html( $pat_name ); ?></strong></td>
+								<td><span style="background:#ff334b; color:#fff; font-weight:bold; padding:2px 8px; border-radius:10px;"><?php echo esc_html( $group ); ?></span></td>
+								<td><?php echo esc_html( $hospital ); ?></td>
+								<td><?php echo esc_html( $loc ); ?></td>
+								<td><code><?php echo esc_html( $contact ); ?></code></td>
+								<td><strong><?php echo esc_html( $units ); ?> Units</strong> (<?php echo esc_html( $urgency ); ?>)</td>
+								<td style="text-align: center; vertical-align: middle;">
+									<?php if ( ! empty( $slip_url ) ) : ?>
+										<a href="<?php echo esc_url( $slip_url ); ?>" target="_blank" title="Click to view physician request prescription form">
+											<img src="<?php echo esc_url( $slip_url ); ?>" style="width: 48px; height: 48px; border-radius: 6px; object-fit: cover; border: 1.5px solid #ff334b; box-shadow: 0 2px 4px rgba(0,0,0,0.1); transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.2)';" onmouseout="this.style.transform='scale(1)';" />
+										</a>
+									<?php else : ?>
+										<span style="color: #999; font-size: 0.8rem; font-style: italic;">No attachment</span>
+									<?php endif; ?>
+								</td>
+								<td><?php echo $ip_display; ?></td>
+								<td style="text-align: center;">
+									<a href="<?php echo esc_url( admin_url( 'admin.php?page=blood-master-data&action=delete&id=' . $p_id ) ); ?>" class="button button-small" onclick="return confirm('Are you sure you want to permanently delete this blood request?');" style="color: #ff334b; border-color: #ff334b; background: rgba(255,51,75,0.05); font-weight: bold; text-decoration: none;">✕ Delete</a>
+								</td>
+							</tr>
+							<?php
 						}
-						?>
-						<tr>
-							<td><strong><?php echo esc_html( $pat_name ); ?></strong></td>
-							<td><span style="background:#ff334b; color:#fff; font-weight:bold; padding:2px 8px; border-radius:10px;"><?php echo esc_html( $group ); ?></span></td>
-							<td><?php echo esc_html( $hospital ); ?></td>
-							<td><?php echo esc_html( $loc ); ?></td>
-							<td><code><?php echo esc_html( $contact ); ?></code></td>
-							<td><strong><?php echo esc_html( $units ); ?> Units</strong> (<?php echo esc_html( $urgency ); ?>)</td>
-							<td><?php echo $ip_display; ?></td>
-							<td style="text-align: center;">
-								<a href="<?php echo esc_url( admin_url( 'admin.php?page=blood-master-data&action=delete&id=' . $p_id ) ); ?>" class="button button-small" onclick="return confirm('Are you sure you want to permanently delete this blood request?');" style="color: #ff334b; border-color: #ff334b; background: rgba(255,51,75,0.05); font-weight: bold; text-decoration: none;">✕ Delete</a>
-							</td>
-						</tr>
-						<?php
+					} else {
+						echo '<tr><td colspan="10">No active blood requests found.</td></tr>';
 					}
-				} else {
-					echo '<tr><td colspan="8">No active blood requests found.</td></tr>';
-				}
-				?>
-			</tbody>
-		</table>
+					?>
+				</tbody>
+			</table>
+		</form>
 	</div>
+
+	<script type="text/javascript">
+	function toggleAllCheckboxes(master, targetClass) {
+		const checkboxes = document.querySelectorAll('.' + targetClass);
+		for (let i = 0; i < checkboxes.length; i++) {
+			checkboxes[i].checked = master.checked;
+		}
+	}
+	</script>
 	<?php
 }
 

@@ -111,11 +111,25 @@ $donors_query = new WP_Query( $args );
                 Loading secure administrator records...
             </div>
 
+            <!-- Bulk Action Bar -->
+            <div id="bulkActionBar" style="display: none; align-items: center; justify-content: space-between; background: rgba(255,51,75,0.12); border: 1px solid rgba(255,51,75,0.25); padding: 12px 16px; border-radius: 8px; margin-bottom: 20px; transition: all 0.3s ease;">
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <span style="font-size: 1.1rem; filter: drop-shadow(0 2px 4px rgba(255,51,75,0.25));">🗑️</span>
+                    <span id="bulkActionText" style="color: #ff4d61; font-weight: bold; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.5px;">0 items selected</span>
+                </div>
+                <button onclick="window.performBulkDelete()" style="background: #ff334b; color: #fff; border: none; padding: 6px 14px; border-radius: 6px; font-weight: bold; font-size: 0.82rem; cursor: pointer; display: flex; align-items: center; gap: 5px; box-shadow: 0 2px 6px rgba(255,51,75,0.3); transition: all 0.2s;" onmouseover="this.style.background='#ff4d61'" onmouseout="this.style.background='#ff334b'">
+                    Delete Selected
+                </button>
+            </div>
+
             <!-- Active Donors Master Data -->
             <div id="tblDonorsContainer" style="display: none; overflow-x: auto;">
-                <table style="width: 100%; border-collapse: collapse; min-width: 800px; text-align: left; font-size: 0.85rem;">
+                <table style="width: 100%; border-collapse: collapse; min-width: 850px; text-align: left; font-size: 0.85rem;">
                     <thead>
                         <tr style="border-bottom: 2px solid rgba(255,255,255,0.1); color: var(--secondary);">
+                            <th style="padding: 12px 10px; width: 45px; text-align: center; vertical-align: middle;">
+                                <input type="checkbox" id="chkSelectAllDonors" onchange="window.toggleSelectAll(this, 'donors')" style="cursor: pointer; transform: scale(1.15);" />
+                            </th>
                             <th style="padding: 12px 10px;">Name</th>
                             <th style="padding: 12px 10px; text-align: center;">Group</th>
                             <th style="padding: 12px 10px;">Email</th>
@@ -133,9 +147,12 @@ $donors_query = new WP_Query( $args );
 
             <!-- Active Requests Master Data -->
             <div id="tblRequestsContainer" style="display: none; overflow-x: auto;">
-                <table style="width: 100%; border-collapse: collapse; min-width: 800px; text-align: left; font-size: 0.85rem;">
+                <table style="width: 100%; border-collapse: collapse; min-width: 950px; text-align: left; font-size: 0.85rem;">
                     <thead>
                         <tr style="border-bottom: 2px solid rgba(255,255,255,0.1); color: #ff334b;">
+                            <th style="padding: 12px 10px; width: 45px; text-align: center; vertical-align: middle;">
+                                <input type="checkbox" id="chkSelectAllRequests" onchange="window.toggleSelectAll(this, 'requests')" style="cursor: pointer; transform: scale(1.15);" />
+                            </th>
                             <th style="padding: 12px 10px;">Patient Name</th>
                             <th style="padding: 12px 10px; text-align: center;">Group</th>
                             <th style="padding: 12px 10px;">Hospital Name</th>
@@ -143,6 +160,7 @@ $donors_query = new WP_Query( $args );
                             <th style="padding: 12px 10px;">Contact Details</th>
                             <th style="padding: 12px 10px;">Units Required</th>
                             <th style="padding: 12px 10px;">Urgency</th>
+                            <th style="padding: 12px 10px; text-align: center; width: 100px;">Doctor's Slip</th>
                             <th style="padding: 12px 10px; text-align: center;">Actions</th>
                         </tr>
                     </thead>
@@ -1236,7 +1254,111 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     };
 
+    window.selectedIds = [];
+
+    window.toggleSelectAll = function(masterCheckbox, type) {
+        const containerId = type === 'donors' ? 'tblDonorsBody' : 'tblRequestsBody';
+        const container = document.getElementById(containerId);
+        if (!container) return;
+        const checkboxes = container.querySelectorAll('.row-select-checkbox');
+        checkboxes.forEach(cb => {
+            cb.checked = masterCheckbox.checked;
+        });
+        window.updateSelectedIds();
+    };
+
+    window.updateSelectedIds = function() {
+        const activeContainerId = adminTab === 'donors' ? 'tblDonorsBody' : 'tblRequestsBody';
+        const container = document.getElementById(activeContainerId);
+        const selected = [];
+        if (container) {
+            const checkboxes = container.querySelectorAll('.row-select-checkbox');
+            checkboxes.forEach(cb => {
+                if (cb.checked) {
+                    selected.push(cb.getAttribute('data-id'));
+                }
+            });
+        }
+        window.selectedIds = selected;
+        
+        const bar = document.getElementById('bulkActionBar');
+        const txt = document.getElementById('bulkActionText');
+        if (bar && txt) {
+            if (window.selectedIds.length > 0) {
+                bar.style.display = 'flex';
+                txt.innerText = `${window.selectedIds.length} ${adminTab === 'donors' ? 'donor(s)' : 'request(s)'} selected`;
+            } else {
+                bar.style.display = 'none';
+            }
+        }
+        
+        const masterDonorCb = document.getElementById('chkSelectAllDonors');
+        const masterRequestCb = document.getElementById('chkSelectAllRequests');
+        if (container) {
+            const checkboxes = container.querySelectorAll('.row-select-checkbox');
+            const checkedCount = Array.from(checkboxes).filter(cb => cb.checked).length;
+            const isAllChecked = checkboxes.length > 0 && checkedCount === checkboxes.length;
+            if (adminTab === 'donors' && masterDonorCb) {
+                masterDonorCb.checked = isAllChecked;
+            } else if (adminTab === 'requests' && masterRequestCb) {
+                masterRequestCb.checked = isAllChecked;
+            }
+        }
+    };
+
+    window.performBulkDelete = async function() {
+        if (window.selectedIds.length === 0) return;
+        const count = window.selectedIds.length;
+        const confirmMsg = adminTab === 'donors' 
+            ? `Are you sure you want to permanently delete all ${count} selected registered donors?`
+            : `Are you sure you want to permanently delete all ${count} selected emergency blood requests?`;
+            
+        if (confirm(confirmMsg)) {
+            const endpoint = adminTab === 'donors' ? '/api/admin/delete-donor' : '/api/admin/delete-request';
+            try {
+                const res = await fetch(endpoint, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ ids: window.selectedIds })
+                });
+                const r = await res.json();
+                if (r.success) {
+                    window.selectedIds = [];
+                    const bar = document.getElementById('bulkActionBar');
+                    if (bar) bar.style.display = 'none';
+                    
+                    const mDonors = document.getElementById('chkSelectAllDonors');
+                    const mRequests = document.getElementById('chkSelectAllRequests');
+                    if (mDonors) mDonors.checked = false;
+                    if (mRequests) mRequests.checked = false;
+                    
+                    window.fetchMasterData();
+                    window.loadPublicDirectory();
+                } else {
+                    alert(r.message || "Bulk deletion failed.");
+                }
+            } catch(e) {
+                console.error("Bulk deletion error:", e);
+                alert("An error occurred during bulk deletion.");
+            }
+        }
+    };
+
     window.switchAdminTab = function(tab) {
+        // Clear selection state before switching
+        window.selectedIds = [];
+        const bar = document.getElementById('bulkActionBar');
+        if (bar) bar.style.display = 'none';
+        
+        const mDonors = document.getElementById('chkSelectAllDonors');
+        const mRequests = document.getElementById('chkSelectAllRequests');
+        if (mDonors) mDonors.checked = false;
+        if (mRequests) mRequests.checked = false;
+        
+        // Reset row checkboxes
+        const allCheckboxes = document.querySelectorAll('.row-select-checkbox');
+        allCheckboxes.forEach(cb => { cb.checked = false; });
+
         adminTab = tab;
         const btnDonors = document.getElementById('tabDonorsBtn');
         const btnRequests = document.getElementById('tabRequestsBtn');
@@ -1299,11 +1421,14 @@ document.addEventListener("DOMContentLoaded", function() {
                 if (tblDonorsBody) {
                     tblDonorsBody.innerHTML = '';
                     if (data.donors.length === 0) {
-                        tblDonorsBody.innerHTML = `<tr><td colspan="7" style="padding: 24px; text-align: center; color: var(--text-light);">No registered blood donors found.</td></tr>`;
+                        tblDonorsBody.innerHTML = `<tr><td colspan="8" style="padding: 24px; text-align: center; color: var(--text-light);">No registered blood donors found.</td></tr>`;
                     } else {
                         data.donors.forEach(donor => {
                             tblDonorsBody.innerHTML += `
                                 <tr style="border-bottom: 1px solid rgba(255,255,255,0.05); transition: background 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.01)'" onmouseout="this.style.background='transparent'">
+                                    <td style="padding: 14px 10px; text-align: center; vertical-align: middle;">
+                                        <input type="checkbox" class="row-select-checkbox animate-pulse" data-id="${donor.id}" onchange="window.updateSelectedIds()" style="cursor: pointer; transform: scale(1.1);" />
+                                    </td>
                                     <td style="padding: 14px 10px; font-weight: bold; color: #fff;">${donor.name}</td>
                                     <td style="padding: 14px 10px; text-align: center;"><span style="background: #ff334b; color:#fff; font-weight:bold; padding:3px 10px; border-radius:12px; font-size:0.75rem;">${donor.bloodGroup}</span></td>
                                     <td style="padding: 14px 10px;"><a href="mailto:${donor.email}" style="color:var(--secondary); text-decoration:none;">${donor.email}</a></td>
@@ -1323,11 +1448,14 @@ document.addEventListener("DOMContentLoaded", function() {
                 if (tblRequestsBody) {
                     tblRequestsBody.innerHTML = '';
                     if (data.requests.length === 0) {
-                        tblRequestsBody.innerHTML = `<tr><td colspan="8" style="padding: 24px; text-align: center; color: var(--text-light);">No emergency blood requests found.</td></tr>`;
+                        tblRequestsBody.innerHTML = `<tr><td colspan="10" style="padding: 24px; text-align: center; color: var(--text-light);">No emergency blood requests found.</td></tr>`;
                     } else {
                         data.requests.forEach(req => {
                             tblRequestsBody.innerHTML += `
                                 <tr style="border-bottom: 1px solid rgba(255,255,255,0.05); transition: background 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.01)'" onmouseout="this.style.background='transparent'">
+                                    <td style="padding: 14px 10px; text-align: center; vertical-align: middle;">
+                                        <input type="checkbox" class="row-select-checkbox" data-id="${req.id}" onchange="window.updateSelectedIds()" style="cursor: pointer; transform: scale(1.1);" />
+                                    </td>
                                     <td style="padding: 14px 10px; font-weight: bold; color: #fff;">${req.patientName}</td>
                                     <td style="padding: 14px 10px; text-align: center;"><span style="background: #ff334b; color:#fff; font-weight:bold; padding:3px 10px; border-radius:12px; font-size:0.75rem;">${req.bloodGroup}</span></td>
                                     <td style="padding: 14px 10px;">${req.hospitalName}</td>
@@ -1335,6 +1463,15 @@ document.addEventListener("DOMContentLoaded", function() {
                                     <td style="padding: 14px 10px;"><code>${req.contactDetails}</code></td>
                                     <td style="padding: 14px 10px; font-weight:bold;">${req.unitsRequired} Unit(s)</td>
                                     <td style="padding: 14px 10px;"><span style="color:#ff334b; font-weight:bold; font-size:0.8rem;">🚨 ${req.urgency}</span></td>
+                                    <td style="padding: 14px 10px; text-align: center; vertical-align: middle;">
+                                        ${req.doctorSlipUrl ? `
+                                            <a href="${req.doctorSlipUrl}" target="_blank" title="Click to view physician request slip photo">
+                                                <img src="${req.doctorSlipUrl}" style="width: 42px; height: 42px; border-radius: 6px; object-fit: cover; border: 1.5px solid #ff334b; cursor: pointer; transition: transform 0.2s; box-shadow: 0 2px 4px rgba(0,0,0,0.3);" onmouseover="this.style.transform='scale(1.25)'" onmouseout="this.style.transform='scale(1)'" />
+                                            </a>
+                                        ` : `
+                                            <span style="color: var(--text-light); font-size: 0.75rem; font-style: italic;">No attachment</span>
+                                        `}
+                                    </td>
                                     <td style="padding: 14px 10px; text-align: center;">
                                         <button onclick="window.deleteRequest('${req.id}')" style="background: rgba(255,51,75,0.1); color: #ff334b; border: 1px solid rgba(255,51,75,0.25); padding: 5px 10px; border-radius: 6px; cursor: pointer; font-size: 0.75rem; font-weight: bold; transition: all 0.2s;" onmouseover="this.style.background='#ff334b'; this.style.color='#fff';">Delete</button>
                                     </td>

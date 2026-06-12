@@ -1667,6 +1667,20 @@
 
       // Real dynamic Blood Request Form submission connected to WordPress backend for direct email alert
       const bloodForm = document.getElementById("bloodRequestForm");
+      let doctorSlipBase64 = "";
+      const slipInput = document.getElementById("doctorSlipInput");
+      if (slipInput) {
+        slipInput.addEventListener("change", (e) => {
+          const file = e.target.files[0];
+          if (file) {
+            const reader = new FileReader();
+            reader.onload = (evt) => {
+              doctorSlipBase64 = evt.target.result;
+            };
+            reader.readAsDataURL(file);
+          }
+        });
+      }
       if (bloodForm) {
         bloodForm.addEventListener("submit", async (e) => {
           e.preventDefault();
@@ -1688,6 +1702,9 @@
 
           const formData = new FormData(bloodForm);
           formData.append("action", "submit_blood_request");
+          if (doctorSlipBase64) {
+            formData.append("doctorSlipBase64", doctorSlipBase64);
+          }
 
           try {
             const response = await fetch("<?php echo esc_url( admin_url( 'admin-ajax.php' ) ); ?>", {
