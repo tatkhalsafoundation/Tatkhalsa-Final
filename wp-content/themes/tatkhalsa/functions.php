@@ -676,7 +676,13 @@ function tatkhalsa_submit_blood_request() {
 	// Sanitize form inputs
 	$patient_name     = isset( $_POST['patientName'] ) ? sanitize_text_field( wp_unslash( $_POST['patientName'] ) ) : '';
 	$blood_group      = isset( $_POST['bloodGroup'] ) ? sanitize_text_field( wp_unslash( $_POST['bloodGroup'] ) ) : '';
-	$patient_location = isset( $_POST['patientLocation'] ) ? sanitize_text_field( wp_unslash( $_POST['patientLocation'] ) ) : '';
+	$country          = isset( $_POST['country'] ) ? sanitize_text_field( wp_unslash( $_POST['country'] ) ) : '';
+	$state            = isset( $_POST['state'] ) ? sanitize_text_field( wp_unslash( $_POST['state'] ) ) : '';
+	$district         = isset( $_POST['district'] ) ? sanitize_text_field( wp_unslash( $_POST['district'] ) ) : '';
+	
+	$location_parts   = array_filter( array( $district, $state, $country ) );
+	$patient_location = implode( ', ', $location_parts );
+
 	$contact_details  = isset( $_POST['contactDetails'] ) ? sanitize_text_field( wp_unslash( $_POST['contactDetails'] ) ) : '';
 	$hospital_name    = isset( $_POST['hospitalName'] ) ? sanitize_text_field( wp_unslash( $_POST['hospitalName'] ) ) : '';
 	$units_required   = isset( $_POST['unitsRequired'] ) ? sanitize_text_field( wp_unslash( $_POST['unitsRequired'] ) ) : '1';
@@ -714,7 +720,10 @@ function tatkhalsa_submit_blood_request() {
 	$body  = "<h2>🔴 Emergency Blood Request Details</h2>";
 	$body .= "<p><strong>Patient Name:</strong> " . esc_html( $patient_name ) . "</p>";
 	$body .= "<p><strong>Blood Group Required:</strong> <span style='font-size: 1.25rem; color: #ff334b; font-weight: bold;'>" . esc_html( $blood_group ) . "</span></p>";
-	$body .= "<p><strong>Exact Patient Location:</strong> " . esc_html( $patient_location ) . "</p>";
+	$body .= "<p><strong>Location:</strong> " . esc_html( $patient_location ) . "</p>";
+	$body .= "<p><strong>Country:</strong> " . esc_html( $country ) . "</p>";
+	$body .= "<p><strong>State:</strong> " . esc_html( $state ) . "</p>";
+	$body .= "<p><strong>District:</strong> " . esc_html( $district ) . "</p>";
 	$body .= "<p><strong>Hospital Name:</strong> " . esc_html( $hospital_name ) . "</p>";
 	$body .= "<p><strong>Contact Details:</strong> " . esc_html( $contact_details ) . "</p>";
 	$body .= "<p><strong>Units Required:</strong> " . esc_html( $units_required ) . "</p>";
@@ -725,8 +734,8 @@ function tatkhalsa_submit_blood_request() {
 
 	$headers = array(
 		'Content-Type: text/html; charset=UTF-8',
-		'From: Tatkhalsa Blood Network <info@tatkhalsa.in>',
-		'Reply-To: ' . $contact_details
+		'From: Tatkhalsa Blood On Call <bloodoncall@tatkhalsa.in>',
+		'Reply-To: Tatkhalsa Blood On Call <noreply@tatkhalsa.in>'
 	);
 
 	// Try sending email
@@ -741,6 +750,9 @@ function tatkhalsa_submit_blood_request() {
 	if ( $request_post_id ) {
 		update_post_meta( $request_post_id, 'patient_name', $patient_name );
 		update_post_meta( $request_post_id, 'blood_group', $blood_group );
+		update_post_meta( $request_post_id, 'country', $country );
+		update_post_meta( $request_post_id, 'state', $state );
+		update_post_meta( $request_post_id, 'district', $district );
 		update_post_meta( $request_post_id, 'patient_location', $patient_location );
 		update_post_meta( $request_post_id, 'contact_details', $contact_details );
 		update_post_meta( $request_post_id, 'hospital_name', $hospital_name );
@@ -756,22 +768,40 @@ function tatkhalsa_submit_blood_request() {
 	}
 
 	// Send WhatsApp Alert
-	$sms_message = "URGENT BLOOD REQUEST:\nType: $blood_group\nUnits: $units\nHospital: $hospital_name\nContact: $contact_details";
+	$sms_message = "URGENT BLOOD REQUEST:\nType: $blood_group\nUnits: $units_required\nHospital: $hospital_name\nContact: $contact_details";
 	tatkhalsa_send_whatsapp_alert( $sms_message );
 
-	// Query matching donors
+	// Query matching donors in same state
 	$matched_donors = array();
+	$state_meta_query = array(
+		'relation' => 'AND',
+		array(
+			'key'     => 'blood_group',
+			'value'   => $blood_group,
+			'compare' => '='
+		),
+		array(
+			'relation' => 'OR',
+			array(
+				'key'     => 'state',
+				'value'   => $state,
+				'compare' => '='
+			),
+			array(
+				'key'     => 'address',
+				'value'   => $state,
+				'compare' => 'LIKE'
+			)
+		)
+	);
+
 	$donors_query = new WP_Query( array(
 		'post_type'      => 'blood_donor',
 		'posts_per_page' => -1,
-		'meta_query'     => array(
-			array(
-				'key'     => 'blood_group',
-				'value'   => $blood_group,
-				'compare' => '='
-			)
-		)
+		'meta_query'     => $state_meta_query
 	) );
+
+	$mailed_some_donors = false;
 
 	if ( $donors_query->have_posts() ) {
 		while ( $donors_query->have_posts() ) {
@@ -786,27 +816,78 @@ function tatkhalsa_submit_blood_request() {
 				'contact' => $donor_contact
 			);
 
-			// Alert donor via email
+			// Alert donor via email since they are in the same state
 			if ( ! empty( $donor_email ) ) {
 				$donor_subject = 'URGENT: Blood Donation Request - ' . $blood_group;
 				$donor_body = "<h1>Urgent Blood Request</h1>
 					<p>Dear {$donor_name},</p>
-					<p>Someone near you requires urgent blood donation.</p>
+					<p>Someone near you in your state requires urgent blood donation.</p>
 					<ul>
 						<li><strong>Blood Group:</strong> {$blood_group}</li>
 						<li><strong>Patient:</strong> {$patient_name}</li>
 						<li><strong>Hospital:</strong> {$hospital_name}</li>
+						<li><strong>Location:</strong> {$patient_location}</li>
 						<li><strong>Patient Contact:</strong> {$contact_details}</li>
 					</ul>
 					<p>If you are available, please contact the patient's family immediately.</p>";
 				wp_mail( $donor_email, $donor_subject, $donor_body, $headers, $attachments );
+				$mailed_some_donors = true;
 			}
 		}
 		wp_reset_postdata();
 	}
 
+	// If no donors matched in same state, query country-wide/all matching donors of the requested blood group but DO NOT email them
+	if ( empty( $matched_donors ) ) {
+		$country_meta_query = array(
+			'relation' => 'AND',
+			array(
+				'key'     => 'blood_group',
+				'value'   => $blood_group,
+				'compare' => '='
+			)
+		);
+
+		if ( ! empty( $country ) ) {
+			$country_meta_query[] = array(
+				'relation' => 'OR',
+				array(
+					'key'     => 'country',
+					'value'   => $country,
+					'compare' => '='
+				),
+				array(
+					'key'     => 'address',
+					'value'   => $country,
+					'compare' => 'LIKE'
+				)
+			);
+		}
+
+		$country_donors_query = new WP_Query( array(
+			'post_type'      => 'blood_donor',
+			'posts_per_page' => -1,
+			'meta_query'     => $country_meta_query
+		) );
+
+		if ( $country_donors_query->have_posts() ) {
+			while ( $country_donors_query->have_posts() ) {
+				$country_donors_query->the_post();
+				$post_id = get_the_ID();
+				$donor_name = get_post_meta( $post_id, 'donor_name', true );
+				$donor_contact = get_post_meta( $post_id, 'contact_details', true );
+
+				$matched_donors[] = array(
+					'name'    => $donor_name,
+					'contact' => $donor_contact
+				);
+			}
+			wp_reset_postdata();
+		}
+	}
+
 	wp_send_json_success( array( 
-		'message' => esc_html__( 'Emergency Blood Request submitted successfully! Alerts have been sent to our sevadars and registered donors.', 'tatkhalsa-theme' ),
+		'message' => esc_html__( 'Emergency Blood Request submitted successfully! Alerts have been sent to our state sevadars.', 'tatkhalsa-theme' ),
 		'matched_donors' => $matched_donors
 	) );
 }
@@ -885,6 +966,9 @@ function tatkhalsa_submit_blood_donor() {
 		update_post_meta( $post_id, 'blood_group', $blood_group );
 		update_post_meta( $post_id, 'donor_email', $email );
 		update_post_meta( $post_id, 'contact_details', $contact );
+		update_post_meta( $post_id, 'country', $country );
+		update_post_meta( $post_id, 'state', $state );
+		update_post_meta( $post_id, 'district', $district );
 		update_post_meta( $post_id, 'address', $address );
 		update_post_meta( $post_id, 'map_location', $map_location );
 		update_post_meta( $post_id, 'availability_status', $availability_status );

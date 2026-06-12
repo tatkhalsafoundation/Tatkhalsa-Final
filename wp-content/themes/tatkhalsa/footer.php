@@ -181,9 +181,26 @@
             </div>
           </div>
 
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px;">
+            <div>
+              <label style="display: block; font-size: 0.78rem; text-transform: uppercase; color: var(--primary); font-weight: 700; margin-bottom: 6px;">Country <span style="color:#ff334b;">*</span></label>
+              <select name="country" id="reqCountry" required style="width: 100%; padding: 10px 12px; background: #0c1a30; border: 1.2px solid rgba(255,255,255,0.1); border-radius: 6px; color: #fff; font-size: 0.9rem; box-sizing: border-box; outline: none; transition: border-color 0.2s;" onfocus="this.style.borderColor='#ff334b'" onblur="this.style.borderColor='rgba(255,255,255,0.1)'" onchange="updateReqStates()">
+                <option value="">Select Country</option>
+              </select>
+            </div>
+            <div>
+              <label style="display: block; font-size: 0.78rem; text-transform: uppercase; color: var(--primary); font-weight: 700; margin-bottom: 6px;">State <span style="color:#ff334b;">*</span></label>
+              <select name="state" id="reqState" required style="width: 100%; padding: 10px 12px; background: #0c1a30; border: 1.2px solid rgba(255,255,255,0.1); border-radius: 6px; color: #fff; font-size: 0.9rem; box-sizing: border-box; outline: none; transition: border-color 0.2s;" onfocus="this.style.borderColor='#ff334b'" onblur="this.style.borderColor='rgba(255,255,255,0.1)'" onchange="updateReqDistricts()">
+                <option value="">Select State</option>
+              </select>
+            </div>
+          </div>
+
           <div style="margin-bottom: 15px;">
-            <label style="display: block; font-size: 0.78rem; text-transform: uppercase; color: var(--primary); font-weight: 700; margin-bottom: 6px;">Exact Location of Patient <span style="color:#ff334b;">*</span></label>
-            <input type="text" name="patientLocation" required placeholder="e.g. Sector 15, Chandigarh / Civil Lines, Ludhiana" style="width: 100%; padding: 10px 12px; background: rgba(255,255,255,0.03); border: 1.2px solid rgba(255,255,255,0.1); border-radius: 6px; color: #fff; font-size: 0.9rem; box-sizing: border-box; outline: none;" onfocus="this.style.borderColor='#ff334b'">
+            <label style="display: block; font-size: 0.78rem; text-transform: uppercase; color: var(--primary); font-weight: 700; margin-bottom: 6px;">District / City <span style="color:#ff334b;">*</span></label>
+            <select name="district" id="reqDistrict" required style="width: 100%; padding: 10px 12px; background: #0c1a30; border: 1.2px solid rgba(255,255,255,0.1); border-radius: 6px; color: #fff; font-size: 0.9rem; box-sizing: border-box; outline: none; transition: border-color 0.2s;" onfocus="this.style.borderColor='#ff334b'" onblur="this.style.borderColor='rgba(255,255,255,0.1)'">
+              <option value="">Select District</option>
+            </select>
           </div>
 
           <div style="margin-bottom: 15px;">
@@ -1740,6 +1757,144 @@
           }
         });
       }
+
+      // Populate Country, State, District in Emergency Blood Request modal dynamically on all pages
+      (function() {
+        let cachedReqCountries = [];
+        let reqIndiaData = null;
+
+        async function loadReqResources() {
+          const reqCountrySelect = document.getElementById("reqCountry");
+          const reqStateSelect = document.getElementById("reqState");
+          const reqDistrictSelect = document.getElementById("reqDistrict");
+
+          if (!reqCountrySelect) return;
+
+          try {
+            // Load countries
+            const cRes = await fetch('https://countriesnow.space/api/v0.1/countries/states');
+            const cData = await cRes.json();
+            if(!cData.error) {
+              cachedReqCountries = cData.data;
+            }
+          } catch (e) {
+            console.error('Error fetching countries:', e);
+          }
+
+          try {
+            // Load India pure district data
+            const iRes = await fetch('https://raw.githubusercontent.com/sab99r/Indian-States-And-Districts/master/states-and-districts.json');
+            const iData = await iRes.json();
+            if(iData && iData.states) {
+               reqIndiaData = iData.states;
+            }
+          } catch (e) {
+            console.error('Error fetching India districts:', e);
+          }
+          
+          populateReqCountries();
+        }
+
+        function populateReqCountries() {
+          const reqCountrySelect = document.getElementById("reqCountry");
+          if (!reqCountrySelect) return;
+
+          reqCountrySelect.innerHTML = '<option value="">Select Country</option>';
+          cachedReqCountries.forEach(countryData => {
+            const countryName = countryData.name;
+            const option = document.createElement("option");
+            option.value = countryName;
+            option.textContent = countryName;
+            if (countryName === 'India') option.selected = true;
+            reqCountrySelect.appendChild(option);
+          });
+
+          reqCountrySelect.value = 'India';
+          updateReqStates();
+        }
+
+        window.updateReqStates = function() {
+          const reqCountrySelect = document.getElementById("reqCountry");
+          const reqStateSelect = document.getElementById("reqState");
+          const reqDistrictSelect = document.getElementById("reqDistrict");
+
+          if (!reqCountrySelect || !reqStateSelect) return;
+          reqStateSelect.innerHTML = '<option value="">Select State</option>';
+          if (reqDistrictSelect) reqDistrictSelect.innerHTML = '<option value="">Select District</option>';
+          const countryName = reqCountrySelect.value;
+          
+          if (countryName === 'India' && reqIndiaData) {
+            reqIndiaData.forEach(state => {
+              const option = document.createElement("option");
+              option.value = state.state;
+              option.textContent = state.state;
+              reqStateSelect.appendChild(option);
+            });
+          } else {
+            const countryData = cachedReqCountries.find(c => c.name === countryName);
+            if (countryData && countryData.states) {
+              countryData.states.forEach(state => {
+                const option = document.createElement("option");
+                option.value = state.name;
+                option.textContent = state.name;
+                reqStateSelect.appendChild(option);
+              });
+            }
+          }
+        };
+
+        window.updateReqDistricts = async function() {
+          const reqCountrySelect = document.getElementById("reqCountry");
+          const reqStateSelect = document.getElementById("reqState");
+          const reqDistrictSelect = document.getElementById("reqDistrict");
+
+          if (!reqCountrySelect || !reqStateSelect || !reqDistrictSelect) return;
+          reqDistrictSelect.innerHTML = '<option value="">Select District</option>';
+          const country = reqCountrySelect.value;
+          const state = reqStateSelect.value;
+          
+          if (country === 'India' && reqIndiaData) {
+            const stateData = reqIndiaData.find(s => s.state === state);
+            if (stateData && stateData.districts) {
+              stateData.districts.forEach(district => {
+                const option = document.createElement("option");
+                option.value = district;
+                option.textContent = district;
+                reqDistrictSelect.appendChild(option);
+              });
+            }
+            return;
+          }
+
+          if (country && state) {
+            try {
+              const response = await fetch('https://countriesnow.space/api/v0.1/countries/state/cities', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ country: country, state: state })
+              });
+              const data = await response.json();
+              if (!data.error && data.data) {
+                data.data.forEach(city => {
+                  const option = document.createElement("option");
+                  option.value = city;
+                  option.textContent = city;
+                  reqDistrictSelect.appendChild(option);
+                });
+              }
+            } catch (e) {
+              console.error("Error fetching cities", e);
+            }
+          }
+        };
+
+        // Initialize loading
+        if (document.readyState === "loading") {
+          window.addEventListener("DOMContentLoaded", loadReqResources);
+        } else {
+          loadReqResources();
+        }
+      })();
     </script>
 
     <!-- Global Dynamic Liquid Background Canvas and SVG Gooey filter -->

@@ -2827,3 +2827,60 @@ footer#footer:nth-of-type(1) > div:nth-of-type(2) > div:nth-of-type(2) {
   color: #ff334b;
 }
 
+/* Warm text color in dark mode for the registration modal */
+:root:not([data-theme="light"]) #donorRegModal .modal-content,
+body:not([data-theme="light"]) #donorRegModal .modal-content {
+  border-color: rgba(212, 175, 55, 0.5) !important;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5), 0 0 40px rgba(212, 175, 55, 0.2) !important;
+}
+
+:root:not([data-theme="light"]) #donorRegModal .modal-content h2,
+body:not([data-theme="light"]) #donorRegModal .modal-content h2 {
+  color: #ffe38f !important;
+}
+
+:root:not([data-theme="light"]) #donorRegModal .modal-content label,
+body:not([data-theme="light"]) #donorRegModal .modal-content label {
+  color: #ffd275 !important;
+}
+
+:root:not([data-theme="light"]) #donorRegModal .modal-content p,
+body:not([data-theme="light"]) #donorRegModal .modal-content p,
+:root:not([data-theme="light"]) #donorRegModal .modal-content small,
+body:not([data-theme="light"]) #donorRegModal .modal-content small {
+  color: #d1bba4 !important;
+}
+
+:root:not([data-theme="light"]) #donorRegModal .modal-close,
+body:not([data-theme="light"]) #donorRegModal .modal-close {
+  color: #ffd275 !important;
+}
+
+:root:not([data-theme="light"]) #donorRegModal .modal-content input,
+body:not([data-theme="light"]) #donorRegModal .modal-content input,
+:root:not([data-theme="light"]) #donorRegModal .modal-content select,
+body:not([data-theme="light"]) #donorRegModal .modal-content select,
+:root:not([data-theme="light"]) #donorRegModal .modal-content textarea,
+body:not([data-theme="light"]) #donorRegModal .modal-content textarea {
+  background: rgba(253, 247, 231, 0.05) !important;
+  color: #ffeed6 !important;
+  border-color: rgba(212, 175, 55, 0.25) !important;
+}
+
+:root:not([data-theme="light"]) #donorRegModal .modal-content input:focus,
+body:not([data-theme="light"]) #donorRegModal .modal-content input:focus,
+:root:not([data-theme="light"]) #donorRegModal .modal-content select:focus,
+body:not([data-theme="light"]) #donorRegModal .modal-content select:focus,
+:root:not([data-theme="light"]) #donorRegModal .modal-content textarea:focus,
+body:not([data-theme="light"]) #donorRegModal .modal-content textarea:focus {
+  border-color: #ffd275 !important;
+  box-shadow: 0 0 8px rgba(212, 175, 55, 0.3) !important;
+}
+
+:root:not([data-theme="light"]) #donorRegModal .modal-content input::placeholder,
+body:not([data-theme="light"]) #donorRegModal .modal-content input::placeholder,
+:root:not([data-theme="light"]) #donorRegModal .modal-content textarea::placeholder,
+body:not([data-theme="light"]) #donorRegModal .modal-content textarea::placeholder {
+  color: rgba(212, 175, 55, 0.45) !important;
+}
+
