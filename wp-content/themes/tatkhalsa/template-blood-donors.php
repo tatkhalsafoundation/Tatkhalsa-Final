@@ -70,9 +70,6 @@ $donors_query = new WP_Query( $args );
             <button onclick="openBloodRequestModal()" class="btn-donor-request">
                 🚨 Request Blood
             </button>
-            <button id="adminMasterBtn" onclick="toggleMasterDataView()" class="btn-donor-admin" style="display: none;">
-                📊 Admin Master Data
-            </button>
             <button onclick="openUpdateStatusModal()" class="btn-donor-status">
                 🔄 Update My Status
             </button>
@@ -1612,11 +1609,6 @@ document.addEventListener("DOMContentLoaded", function() {
     // We run loadPublicDirectory on load
     setTimeout(() => {
         window.loadPublicDirectory();
-        // Dynamically make "Admin Master Data" button visible in preview and dev mode
-        const adminBtn = document.getElementById('adminMasterBtn');
-        if (adminBtn) {
-            adminBtn.style.display = 'inline-block';
-        }
     }, 500);
 
     loadResources();
