@@ -573,6 +573,30 @@ async function startServer() {
     "terms-conditions.php": "template-terms.php"
   };
 
+  // Serve robots.txt dynamically to match the live server configuration
+  app.get("/robots.txt", (req, res) => {
+    const robotsPath = path.join(process.cwd(), "robots.txt");
+    if (fs.existsSync(robotsPath)) {
+      res.setHeader("Content-Type", "text/plain");
+      res.sendFile(robotsPath);
+    } else {
+      res.setHeader("Content-Type", "text/plain");
+      res.send("User-agent: *\nAllow: /\nDisallow: /wp-admin/\nDisallow: /wp-includes/\nDisallow: /xmlrpc.php\n\nSitemap: https://tatkhalsa.in/wp-sitemap.xml\nSitemap: https://tatkhalsa.in/sitemap_index.xml");
+    }
+  });
+
+  // Serve the 404 page template directly if requested
+  app.get("/404", (req, res) => {
+    const errorPath = path.join(THEME_PATH, "404.php");
+    if (fs.existsSync(errorPath)) {
+      const parsedHTML = renderPHP(errorPath);
+      res.status(404).setHeader("Content-Type", "text/html");
+      res.send(parsedHTML);
+    } else {
+      res.status(404).send("Page Not Found");
+    }
+  });
+
   // Redirect former standalone flood relief page requests to the home page with automated modal trigger
   app.get(["/punjab-flood-relief", "/punjab-flood-relief/", "/punjab-flood-relief.php", "/punjab-flood-relief.html"], (req, res) => {
     res.redirect("/?openModal=flood");
@@ -595,7 +619,15 @@ async function startServer() {
       }
     }
     
-    next();
+    // Serve our elegant 404 template instead of passing through to general assets if the path doesn't exist
+    const errorPath = path.join(THEME_PATH, "404.php");
+    if (fs.existsSync(errorPath)) {
+      const parsedHTML = renderPHP(errorPath);
+      res.status(404).setHeader("Content-Type", "text/html");
+      res.send(parsedHTML);
+    } else {
+      next();
+    }
   });
 
   if (process.env.NODE_ENV !== "production") {

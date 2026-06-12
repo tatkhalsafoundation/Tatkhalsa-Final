@@ -1,0 +1,9 @@
+User-agent: *
+Allow: /
+Disallow: /wp-admin/
+Disallow: /wp-includes/
+Disallow: /xmlrpc.php
+
+# Sitemaps
+Sitemap: https://tatkhalsa.in/wp-sitemap.xml
+Sitemap: https://tatkhalsa.in/sitemap_index.xml

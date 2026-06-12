@@ -657,6 +657,19 @@ function tatkhalsa_create_legal_pages() {
 add_action( 'init', 'tatkhalsa_create_legal_pages' );
 
 /**
+ * Helper to retrieve client IP even through proxies and load balancers.
+ */
+function tatkhalsa_get_client_ip() {
+	if ( ! empty( $_SERVER['HTTP_X_FORWARDED_FOR'] ) ) {
+		$ip_list = explode( ',', $_SERVER['HTTP_X_FORWARDED_FOR'] );
+		return trim( $ip_list[0] );
+	} elseif ( ! empty( $_SERVER['HTTP_CLIENT_IP'] ) ) {
+		return $_SERVER['HTTP_CLIENT_IP'];
+	}
+	return isset( $_SERVER['REMOTE_ADDR'] ) ? $_SERVER['REMOTE_ADDR'] : '127.0.0.1';
+}
+
+/**
  * Handle Blood Request Form Submission & Direct Email Delivery to tatkhalsafoundation@gmail.com
  */
 function tatkhalsa_submit_blood_request() {
@@ -734,7 +747,7 @@ function tatkhalsa_submit_blood_request() {
 		update_post_meta( $request_post_id, 'units_required', $units_required );
 		update_post_meta( $request_post_id, 'urgency', $urgency );
 		update_post_meta( $request_post_id, 'additional_info', $additional_info );
-		update_post_meta( $request_post_id, 'request_ip', $_SERVER['REMOTE_ADDR'] );
+		update_post_meta( $request_post_id, 'request_ip', tatkhalsa_get_client_ip() );
 		update_post_meta( $request_post_id, 'request_time', current_time( 'mysql' ) );
 		if ( ! empty( $attachments[0] ) ) {
 			// Save reference to physician request file
@@ -875,7 +888,7 @@ function tatkhalsa_submit_blood_donor() {
 		update_post_meta( $post_id, 'address', $address );
 		update_post_meta( $post_id, 'map_location', $map_location );
 		update_post_meta( $post_id, 'availability_status', $availability_status );
-		update_post_meta( $post_id, 'donor_ip', $_SERVER['REMOTE_ADDR'] );
+		update_post_meta( $post_id, 'donor_ip', tatkhalsa_get_client_ip() );
 		update_post_meta( $post_id, 'registration_time', current_time( 'mysql' ) );
 
 		wp_send_json_success( array( 'message' => 'Thank you for registering as a blood donor!' ) );
@@ -1689,4 +1702,42 @@ function tatkhalsa_render_blood_master_data_page() {
 	</div>
 	<?php
 }
+
+/**
+ * =========================================================================
+ * TATKHALSA ADVANCED SEO OPTIMIZATION & GOOGLE SEARCH CONSOLE RESOLUTIONS
+ * =========================================================================
+ * 1. Force Search Engine Indexing (Overrides unintended noindex tags from database settings/plugins)
+ * 2. Purges/disables programmatic blockages like 'wp_no_robots' in wp_head
+ * 3. Builds a direct dynamic Robots.txt optimizer for sitemaps and indexing
+ */
+
+// 1. Overrides the "Discourage search engines from indexing this site" option dynamically
+add_filter( 'pre_option_blog_public', '__return_true', 999 );
+
+// 2. Remove standard WP 'noindex' hook functions completely from indexing pipelines
+remove_action( 'wp_head', 'wp_no_robots' );
+
+// 3. Dynamically sanitize the output of wp_robots tag to strictly favor indexing
+add_filter( 'wp_robots', function( $robots ) {
+    $robots['index']  = true;
+    $robots['follow'] = true;
+    unset( $robots['noindex'] );
+    unset( $robots['nofollow'] );
+    return $robots;
+}, 999 );
+
+// 4. Clean dynamic Robots.txt configuration to bypass file blockage
+add_filter( 'robots_txt', function( $output, $public ) {
+    $clean_robots  = "User-agent: *\n";
+    $clean_robots .= "Allow: /\n";
+    $clean_robots .= "Disallow: /wp-admin/\n";
+    $clean_robots .= "Disallow: /wp-includes/\n";
+    $clean_robots .= "Disallow: /xmlrpc.php\n";
+    $clean_robots .= "\n# Sitemaps\n";
+    $clean_robots .= "Sitemap: https://tatkhalsa.in/wp-sitemap.xml\n";
+    $clean_robots .= "Sitemap: https://tatkhalsa.in/sitemap_index.xml\n";
+    return $clean_robots;
+}, 999, 2 );
+
 ?>

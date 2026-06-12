@@ -70,7 +70,7 @@ $donors_query = new WP_Query( $args );
             <button onclick="openBloodRequestModal()" class="btn-secondary" style="background: linear-gradient(135deg, #ff334b 0%, #ff5d73 100%); color: #fff; border: none; padding: 12px 24px; border-radius: 8px; font-weight: bold; cursor: pointer; box-shadow: 0 4px 15px rgba(255,51,75,0.3);">
                 🚨 Request Blood
             </button>
-            <button onclick="toggleMasterDataView()" class="btn-secondary" style="background: linear-gradient(135deg, #2a2a2a 0%, #444444 100%); color: #fff; border: 1px solid rgba(255,255,255,0.15); padding: 12px 24px; border-radius: 8px; font-weight: bold; cursor: pointer; box-shadow: 0 4px 15px rgba(0,0,0,0.25);">
+            <button onclick="toggleMasterDataView()" class="btn-secondary" style="display: none; background: linear-gradient(135deg, #2a2a2a 0%, #444444 100%); color: #fff; border: 1px solid rgba(255,255,255,0.15); padding: 12px 24px; border-radius: 8px; font-weight: bold; cursor: pointer; box-shadow: 0 4px 15px rgba(0,0,0,0.25);">
                 📊 Admin Master Data
             </button>
             <button onclick="openUpdateStatusModal()" class="btn-secondary" style="background: transparent; color: var(--secondary); border: 1px dashed rgba(212, 175, 55, 0.6); padding: 12px 24px; border-radius: 8px; font-weight: bold; cursor: pointer; transition: all 0.3s;" onmouseover="this.style.borderColor='var(--secondary)'; this.style.color='#fff'; this.style.background='rgba(212,175,55,0.05)';" onmouseout="this.style.borderColor='rgba(212, 175, 55, 0.6)'; this.style.color='var(--secondary)'; this.style.background='transparent';">
@@ -89,23 +89,12 @@ $donors_query = new WP_Query( $args );
                         <span>📂</span> Blood Directory - Administrative Master Data
                     </h2>
                     <p style="color: var(--text-light); font-size: 0.85rem; margin: 5px 0 0 0;">
-                        Full donor credentials, live request logs, and secure rolling 30-day spam-protection IP tracking.
+                        Full donor credentials and live emergency request records.
                     </p>
                 </div>
                 <button onclick="toggleMasterDataView()" style="background: rgba(255,255,255,0.1); color: #fff; border: none; padding: 6px 12px; border-radius: 5px; cursor: pointer; font-size: 0.85rem; font-weight: bold;">
                     ✕ Close Panel
                 </button>
-            </div>
-
-            <!-- Active Shield Notice -->
-            <div style="background: rgba(46, 213, 115, 0.1); border: 1px solid rgba(46, 213, 115, 0.3); padding: 15px 20px; border-radius: 8px; margin-bottom: 25px; display: flex; align-items: center; gap: 15px;">
-                <span style="font-size: 1.8rem;">🛡️</span>
-                <div>
-                     <h4 style="color: #2ed573; margin: 0; font-size: 0.95rem; font-weight: bold;">Rolling 30-Day Security Cache Enabled</h4>
-                     <p style="color: rgba(255,255,255,0.7); margin: 3px 0 0 0; font-size: 0.8rem; line-height: 1.4;">
-                         Client IP records are logged solely for request limits and anti-spam verification. Any data points exceeding 30 days are automatically pruned, as outlined in our active <a href="/privacy-policy" style="color: var(--secondary); text-decoration: underline; font-weight: bold;">Privacy Policy</a> and <a href="/terms-conditions" style="color: var(--secondary); text-decoration: underline; font-weight: bold;">Terms and Conditions</a>.
-                     </p>
-                </div>
             </div>
 
             <!-- Tabs Header -->
@@ -133,7 +122,6 @@ $donors_query = new WP_Query( $args );
                             <th style="padding: 12px 10px;">Contact Number</th>
                             <th style="padding: 12px 10px;">Address</th>
                             <th style="padding: 12px 10px;">Status</th>
-                            <th style="padding: 12px 10px;">IP / Safe Retention</th>
                             <th style="padding: 12px 10px; text-align: center;">Actions</th>
                         </tr>
                     </thead>
@@ -155,7 +143,6 @@ $donors_query = new WP_Query( $args );
                             <th style="padding: 12px 10px;">Contact Details</th>
                             <th style="padding: 12px 10px;">Units Required</th>
                             <th style="padding: 12px 10px;">Urgency</th>
-                            <th style="padding: 12px 10px;">IP / Safe Retention</th>
                             <th style="padding: 12px 10px; text-align: center;">Actions</th>
                         </tr>
                     </thead>
@@ -1300,14 +1287,9 @@ document.addEventListener("DOMContentLoaded", function() {
                 if (tblDonorsBody) {
                     tblDonorsBody.innerHTML = '';
                     if (data.donors.length === 0) {
-                        tblDonorsBody.innerHTML = `<tr><td colspan="8" style="padding: 24px; text-align: center; color: var(--text-light);">No registered blood donors found.</td></tr>`;
+                        tblDonorsBody.innerHTML = `<tr><td colspan="7" style="padding: 24px; text-align: center; color: var(--text-light);">No registered blood donors found.</td></tr>`;
                     } else {
                         data.donors.forEach(donor => {
-                            const retentionDesc = window.getRetentionBadge(donor.timestamp);
-                            const ipLabel = donor.ip && !donor.ip.startsWith('[') 
-                              ? `<code style="display:block; font-size:0.8rem; background:rgba(255,255,255,0.05); padding:2px 6px; border-radius:4px; margin-bottom:4px; max-width:fit-content;">${donor.ip}</code>` 
-                              : `<span style="color:#aa6666; font-style:italic;">[Purged after 30 days]</span>`;
-                            
                             tblDonorsBody.innerHTML += `
                                 <tr style="border-bottom: 1px solid rgba(255,255,255,0.05); transition: background 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.01)'" onmouseout="this.style.background='transparent'">
                                     <td style="padding: 14px 10px; font-weight: bold; color: #fff;">${donor.name}</td>
@@ -1316,10 +1298,6 @@ document.addEventListener("DOMContentLoaded", function() {
                                     <td style="padding: 14px 10px;"><code>${donor.contact}</code></td>
                                     <td style="padding: 14px 10px; max-width: 220px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" title="${donor.address}">${donor.address}</td>
                                     <td style="padding: 14px 10px; font-size:0.8rem;"><span style="color:#2ed573;">🟢 ${donor.availabilityStatus || 'Available Now'}</span></td>
-                                    <td style="padding: 14px 10px;">
-                                        ${ipLabel}
-                                        ${retentionDesc}
-                                    </td>
                                     <td style="padding: 14px 10px; text-align: center;">
                                         <button onclick="window.deleteDonor('${donor.id}')" style="background: rgba(255,51,75,0.1); color: #ff334b; border: 1px solid rgba(255,51,75,0.25); padding: 5px 10px; border-radius: 6px; cursor: pointer; font-size: 0.75rem; font-weight: bold; transition: all 0.2s;" onmouseover="this.style.background='#ff334b'; this.style.color='#fff';">Delete</button>
                                     </td>
@@ -1333,14 +1311,9 @@ document.addEventListener("DOMContentLoaded", function() {
                 if (tblRequestsBody) {
                     tblRequestsBody.innerHTML = '';
                     if (data.requests.length === 0) {
-                        tblRequestsBody.innerHTML = `<tr><td colspan="9" style="padding: 24px; text-align: center; color: var(--text-light);">No emergency blood requests found.</td></tr>`;
+                        tblRequestsBody.innerHTML = `<tr><td colspan="8" style="padding: 24px; text-align: center; color: var(--text-light);">No emergency blood requests found.</td></tr>`;
                     } else {
                         data.requests.forEach(req => {
-                            const retentionDesc = window.getRetentionBadge(req.timestamp);
-                            const ipLabel = req.ip && !req.ip.startsWith('[') 
-                              ? `<code style="display:block; font-size:0.8rem; background:rgba(255,255,255,0.05); padding:2px 6px; border-radius:4px; margin-bottom:4px; max-width:fit-content;">${req.ip}</code>` 
-                              : `<span style="color:#aa6666; font-style:italic;">[Purged after 30 days]</span>`;
-                            
                             tblRequestsBody.innerHTML += `
                                 <tr style="border-bottom: 1px solid rgba(255,255,255,0.05); transition: background 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.01)'" onmouseout="this.style.background='transparent'">
                                     <td style="padding: 14px 10px; font-weight: bold; color: #fff;">${req.patientName}</td>
@@ -1350,10 +1323,6 @@ document.addEventListener("DOMContentLoaded", function() {
                                     <td style="padding: 14px 10px;"><code>${req.contactDetails}</code></td>
                                     <td style="padding: 14px 10px; font-weight:bold;">${req.unitsRequired} Unit(s)</td>
                                     <td style="padding: 14px 10px;"><span style="color:#ff334b; font-weight:bold; font-size:0.8rem;">🚨 ${req.urgency}</span></td>
-                                    <td style="padding: 14px 10px;">
-                                        ${ipLabel}
-                                        ${retentionDesc}
-                                    </td>
                                     <td style="padding: 14px 10px; text-align: center;">
                                         <button onclick="window.deleteRequest('${req.id}')" style="background: rgba(255,51,75,0.1); color: #ff334b; border: 1px solid rgba(255,51,75,0.25); padding: 5px 10px; border-radius: 6px; cursor: pointer; font-size: 0.75rem; font-weight: bold; transition: all 0.2s;" onmouseover="this.style.background='#ff334b'; this.style.color='#fff';">Delete</button>
                                     </td>
