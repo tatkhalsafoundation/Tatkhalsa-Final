@@ -11,9 +11,81 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="format-detection" content="telephone=no, date=no, email=no, address=no" />
     
-    <!-- Fallback SEO tags if no custom plugin is installed -->
+    <?php
+    // Dynamically resolve SEO metadata for Tatkhalsa Foundation Pages
+    $current_url = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+    
+    // Default Fallbacks
+    $seo_title       = "Tatkhalsa Foundation | Uplifting Humanity via Modern Seva & Heritage";
+    $seo_description = "Tatkhalsa Foundation is a non-profit registered organization dedicated to human education, community relief, emergency gurbani access, tree planting stewardship, volunteer networks, and blood donor systems.";
+    $seo_keywords    = "Tatkhalsa, Tatkhalsa Foundation, Tat Khalsa, Sikh Seva, Volunteer Punjab, Blood Donor Network India, Gurbani Search API, Tree Planting Punjab, Sikh Charity, Human Upliftment, Punjab NGO, Seva Updates";
+    $seo_image       = esc_url( tatkhalsa_get_logo_url() );
+
+    if ( is_front_page() || is_home() ) {
+        $seo_title       = "Tatkhalsa Foundation | Direct Seva, Volunteerism, and Gurbani Heritage";
+        $seo_description = "Tatkhalsa Foundation powers direct humanitarian aid. Register as a blood donor, join volunteer missions, search Gurbani Scriptures, and participate in active community tree planting stewardship.";
+    } elseif ( is_page_template( 'template-about.php' ) ) {
+        $seo_title       = "About Tatkhalsa Foundation | Our Mission, Vision & Values";
+        $seo_description = "Learn about the core values of Tatkhalsa Foundation. Discover our history of transparency, and how we empower Punjab communities through organized volunteerism and trust.";
+        $seo_keywords    = "About Tatkhalsa, Tatkhalsa Mission, Sikh volunteers, Gurmat principles, transparent NGO Punjab, human service";
+    } elseif ( is_page_template( 'template-projects.php' ) ) {
+        $seo_title       = "Our Seva Projects | Environmental, Healthcare, and Spiritual Initiatives";
+        $seo_description = "Explore our active global programs: Emergency Medical Aid, Dynamic Gurbani Search API, Tree Planting Stewardship, and educational support systems for underrepresented youths.";
+        $seo_keywords    = "Tatkhalsa projects, Tree planting initiative Punjab, Gurbani Search Engine, Gurbani API, Medical Seva, NGO tasks";
+    } elseif ( is_page_template( 'template-blood-donors.php' ) ) {
+        $seo_title       = "Emergency Blood Donor Network | Save Lives with Tatkhalsa Foundation";
+        $seo_description = "Join or request help from our secure, rapid response blood donor directory. Real-time availability tracking for all blood groups (A+, O-, B+, etc.) in Punjab and across India.";
+        $seo_keywords    = "Blood Donor India, Registered Blood Donor Punjab, Emergency Blood Group A B O, Sikh blood drive, donor directory, request blood";
+    } elseif ( is_page_template( 'template-volunteer.php' ) ) {
+        $seo_title       = "Become a Sevadar | Join the Tatkhalsa Foundation Volunteer Force";
+        $seo_description = "Uplift humanity through physical seva. Register as a certified Tatkhalsa volunteer to assist with medical help desk setup, administrative tasks, and local plantation drives.";
+        $seo_keywords    = "Sikh Volunteer Registration, Live Sevadar registration, volunteering in India, local tree planting team, community seva";
+    } elseif ( is_page_template( 'template-blog.php' ) || is_singular('post') ) {
+        $seo_title       = ( get_the_title() ? get_the_title() : "Insights & Updates" ) . " | Tatkhalsa Foundation";
+        $seo_description = has_excerpt() ? wp_strip_all_tags( get_the_excerpt() ) : "Read the latest news, detailed updates, and informative articles from our volunteer networks and global project trackers.";
+        $seo_keywords    = "Tatkhalsa blog, Sikh updates, NGO Punjab posts, Seva articles, volunteer news, foundation blog";
+    } elseif ( is_page_template( 'template-privacy.php' ) ) {
+        $seo_title       = "Privacy Policy | Transparent Data & Secure Storage Guidelines";
+        $seo_description = "Read our strict rolling 30-day security storage policies, fully GDPR client-anonymizing systems, and cryptographic user security standards on tatkhalsa.in.";
+        $seo_keywords    = "privacy policy Tatkhalsa, data protection, secure server, 30-day purge, local secure cache";
+    } elseif ( is_page_template( 'template-terms.php' ) ) {
+        $seo_title       = "Terms and Conditions | Community Code of Conduct";
+        $seo_description = "Understand our user guidelines, interactive volunteer registry standards, emergency medical aid validation requirements, and acceptable usage rules.";
+        $seo_keywords    = "Terms of service, usage code, volunteer terms, donation safety, medical aid validation";
+    } elseif ( is_404() ) {
+        $seo_title       = "Page Not Found | Error Code 404 - Tatkhalsa Foundation";
+        $seo_description = "We apologize, but the requested Seva portal route has moved or changed. Search for volunteer roles, active blood directories, and Gurbani databases.";
+        $seo_keywords    = "404 not found, Seva portal, Tatkhalsa error, invalid URL, page missing";
+    }
+    ?>
+
+    <!-- Primary Search Engine Optimization Tags -->
+    <meta name="description" content="<?php echo esc_attr( $seo_description ); ?>" />
+    <meta name="keywords" content="<?php echo esc_attr( $seo_keywords ); ?>" />
     <meta name="author" content="Tatkhalsa Foundation" />
-    <meta name="robots" content="index, follow" />
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+    <link rel="canonical" href="<?php echo esc_url( $current_url ); ?>" />
+
+    <!-- Open Graph Meta Tags (Facebook & LinkedIn Optimizations) -->
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:type" content="<?php echo (is_singular('post') ? 'article' : 'website'); ?>" />
+    <meta property="og:title" content="<?php echo esc_attr( $seo_title ); ?>" />
+    <meta property="og:description" content="<?php echo esc_attr( $seo_description ); ?>" />
+    <meta property="og:url" content="<?php echo esc_url( $current_url ); ?>" />
+    <meta property="og:site_name" content="Tatkhalsa Foundation" />
+    <meta property="og:image" content="<?php echo esc_url( $seo_image ); ?>" />
+    <meta property="og:image:secure_url" content="<?php echo esc_url( $seo_image ); ?>" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:type" content="image/jpeg" />
+
+    <!-- Twitter Card Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="<?php echo esc_attr( $seo_title ); ?>" />
+    <meta name="twitter:description" content="<?php echo esc_attr( $seo_description ); ?>" />
+    <meta name="twitter:image" content="<?php echo esc_url( $seo_image ); ?>" />
+    <meta name="twitter:site" content="@tatkhalsain" />
+    <meta name="twitter:creator" content="@tatkhalsain" />
     
     <script>
       (function() {

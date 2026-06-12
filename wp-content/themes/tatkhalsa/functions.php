@@ -1740,4 +1740,26 @@ add_filter( 'robots_txt', function( $output, $public ) {
     return $clean_robots;
 }, 999, 2 );
 
+// 5. Dynamic WordPress Page Document Title filter for elegant search result snippets
+add_filter( 'pre_get_document_title', function() {
+    if ( is_front_page() || is_home() ) {
+        return "Tatkhalsa Foundation | Direct Seva, Volunteerism, and Gurbani Heritage";
+    } elseif ( is_page_template( 'template-about.php' ) ) {
+        return "About Tatkhalsa Foundation | Our Mission, Vision & Values";
+    } elseif ( is_page_template( 'template-projects.php' ) ) {
+        return "Our Seva Projects | Environmental, Healthcare, and Spiritual Initiatives";
+    } elseif ( is_page_template( 'template-blood-donors.php' ) ) {
+        return "Emergency Blood Donor Network | Save Lives with Tatkhalsa Foundation";
+    } elseif ( is_page_template( 'template-volunteer.php' ) ) {
+        return "Become a Sevadar | Join the Tatkhalsa Foundation Volunteer Force";
+    } elseif ( is_page_template( 'template-privacy.php' ) ) {
+        return "Privacy Policy | Transparent Data & Secure Storage Guidelines";
+    } elseif ( is_page_template( 'template-terms.php' ) ) {
+        return "Terms and Conditions | Community Code of Conduct";
+    } elseif ( is_404() ) {
+        return "Page Not Found | Error Code 404 - Tatkhalsa Foundation";
+    }
+    return ''; // Let WordPress handle dynamic posts or category titles
+}, 999 );
+
 ?>
