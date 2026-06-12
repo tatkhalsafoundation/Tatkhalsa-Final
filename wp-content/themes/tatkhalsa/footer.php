@@ -63,7 +63,7 @@
               Registered NGO<br />CIN: U88900PB2023NPL059225
             </p>
             <div class="footer-social" style="display: flex; gap: 12px; margin-top: 15px;">
-              <a href="https://www.instagram.com/tatkhalsa.in/" target="_blank" rel="noopener noreferrer" title="Instagram" style="color: rgba(253, 247, 231, 0.7); background: rgba(255, 255, 255, 0.05); border-radius: 50%; padding: 8px; display: inline-flex; transition: all 0.3s; border: 1px solid rgba(255, 255, 255, 0.1);">
+              <a href="https://instagram.com/tatkhalsa.in/" target="_blank" rel="noopener noreferrer" title="Instagram" style="color: rgba(253, 247, 231, 0.7); background: rgba(255, 255, 255, 0.05); border-radius: 50%; padding: 8px; display: inline-flex; transition: all 0.3s; border: 1px solid rgba(255, 255, 255, 0.1);">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: #e1306c; stroke: #e1306c;">
                   <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
                   <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
@@ -1298,32 +1298,190 @@
       }
       initTheme();
 
-      // Stats Counters triggering
-      let statsAnimated = false;
-      function animateCounters() {
-        const counters = document.querySelectorAll(".counter");
-        counters.forEach((counter) => {
-          const target = +counter.getAttribute("data-target");
-          const count = +counter.innerText;
-          const inc = target / 100;
-          if (count < target) {
-            counter.innerText = Math.ceil(count + inc);
-            setTimeout(animateCounters, 15);
-          } else {
-            counter.innerText = target + (target >= 50 ? "+" : "");
-          }
-        });
-      }
-      
-      window.addEventListener("scroll", () => {
-        if (statsAnimated) return;
+      // Stats Counters triggering with high-fidelity scroll progressive tracking
+      (function() {
         const statsSection = document.getElementById("stats");
         if (!statsSection) return;
-        if (statsSection.getBoundingClientRect().top < window.innerHeight) {
-          animateCounters();
-          statsAnimated = true;
+        
+        const counters = document.querySelectorAll(".counter");
+        const counterData = Array.from(counters).map(counter => ({
+          element: counter,
+          target: +counter.getAttribute("data-target") || 0,
+          current: 0
+        }));
+
+        function updateProgressiveStats() {
+          const rect = statsSection.getBoundingClientRect();
+          const windowHeight = window.innerHeight;
+          
+          if (rect.top < windowHeight && rect.bottom > 0) {
+            // Stats section is in view.
+            // Calculate progress: starts at 0% when entering from bottom, up to 100% when nearing upper middle scroll depth
+            const enterPoint = windowHeight;
+            const fullPoint = windowHeight * 0.25;
+            
+            let progress = (enterPoint - rect.top) / (enterPoint - fullPoint);
+            if (progress < 0) progress = 0;
+            if (progress > 1) progress = 1;
+            
+            counterData.forEach(data => {
+              const targetVal = progress * data.target;
+              // Only update if targetVal is greater than current to prevent decreasing when scrolling backwards
+              if (targetVal > data.current) {
+                // Smooth easing toward the targeted progress value
+                data.current += (targetVal - data.current) * 0.15;
+                if (Math.abs(data.current - targetVal) < 0.5) {
+                  data.current = targetVal;
+                }
+              }
+              
+              const roundedVal = Math.round(data.current);
+              const labelSuffix = data.target >= 50 ? "+" : "";
+              
+              if (roundedVal >= data.target) {
+                data.element.innerText = data.target + labelSuffix;
+              } else if (roundedVal <= 0) {
+                data.element.innerText = "0";
+              } else {
+                data.element.innerText = roundedVal + (data.target >= 50 && roundedVal > data.target * 0.2 ? labelSuffix : "");
+              }
+            });
+          } else if (rect.top >= windowHeight) {
+            // Off-screen downwards: reset count
+            counterData.forEach(data => {
+              data.current = 0;
+              data.element.innerText = "0";
+            });
+          } else if (rect.bottom <= 0) {
+            // Off-screen upwards: lock at full targets
+            counterData.forEach(data => {
+              data.current = data.target;
+              const labelSuffix = data.target >= 50 ? "+" : "";
+              data.element.innerText = data.target + labelSuffix;
+            });
+          }
+          
+          requestAnimationFrame(updateProgressiveStats);
         }
-      });
+        
+        requestAnimationFrame(updateProgressiveStats);
+      })();
+
+      // Financial Transparency Scroll-Progressive Animation
+      (function() {
+        const transparencySection = document.getElementById("transparency");
+        if (!transparencySection) return;
+
+        const pieWrapper = transparencySection.querySelector(".pie-wrapper");
+        const pieValue = transparencySection.querySelector(".pie-inner span:nth-of-type(2)");
+        const barFills = transparencySection.querySelectorAll(".bar-fill");
+
+        // Save target widths of the bar fills to animate them in lockstep
+        const barData = Array.from(barFills).map(bar => {
+          const styleAttr = bar.getAttribute("style") || "";
+          const widthMatch = styleAttr.match(/width:\s*(\d+)%/);
+          const targetW = widthMatch ? +widthMatch[1] : 0;
+          return {
+            element: bar,
+            targetWidth: targetW,
+            currentWidth: 0
+          };
+        });
+
+        let maxProgress = 0; // Don't decrease, only increase!
+
+        function updateProgressiveTransparency() {
+          const rect = transparencySection.getBoundingClientRect();
+          const windowHeight = window.innerHeight;
+
+          if (rect.top < windowHeight && rect.bottom > 0) {
+            // Section is visible
+            const enterPoint = windowHeight;
+            const fullPoint = windowHeight * 0.25;
+
+            let progress = (enterPoint - rect.top) / (enterPoint - fullPoint);
+            if (progress < 0) progress = 0;
+            if (progress > 1) progress = 1;
+
+            // Only increase progress, never decrease!
+            if (progress > maxProgress) {
+              maxProgress = progress;
+            }
+
+            // Animate pie-wrapper conic-gradient
+            if (pieWrapper) {
+              const end1 = maxProgress * 45;
+              const end2 = maxProgress * 70;
+              const end3 = maxProgress * 85;
+              const end4 = maxProgress * 100;
+
+              pieWrapper.style.background = `conic-gradient(
+                var(--accent-red) 0% ${end1}%,
+                var(--accent-green) ${end1}% ${end2}%,
+                var(--accent-blue) ${end2}% ${end3}%,
+                var(--accent-purple) ${end3}% ${end4}%,
+                rgba(255, 255, 255, 0.05) ${end4}% 100%
+              )`;
+            }
+
+            // Animate 2.4M money counter
+            if (pieValue) {
+              const currentMoney = (maxProgress * 2.4).toFixed(1);
+              pieValue.innerText = `${currentMoney}M`;
+            }
+
+            // Animate progress bar widths
+            barData.forEach(data => {
+              const targetW = maxProgress * data.targetWidth;
+              data.currentWidth += (targetW - data.currentWidth) * 0.15;
+              if (Math.abs(data.currentWidth - targetW) < 0.2) {
+                data.currentWidth = targetW;
+              }
+              data.element.style.width = `${data.currentWidth}%`;
+            });
+
+          } else if (rect.top >= windowHeight) {
+            // Off-screen downwards: reset if not yet completed (or we can keep progress 0)
+            if (maxProgress < 1) {
+              maxProgress = 0;
+              if (pieWrapper) {
+                pieWrapper.style.background = `conic-gradient(
+                  rgba(255, 255, 255, 0.05) 0% 100%
+                )`;
+              }
+              if (pieValue) {
+                pieValue.innerText = "0.0M";
+              }
+              barData.forEach(data => {
+                data.currentWidth = 0;
+                data.element.style.width = "0%";
+              });
+            }
+          } else if (rect.bottom <= 0) {
+            // Off-screen upwards: lock at full targets
+            maxProgress = 1;
+            if (pieWrapper) {
+              pieWrapper.style.background = `conic-gradient(
+                var(--accent-red) 0% 45%,
+                var(--accent-green) 45% 70%,
+                var(--accent-blue) 70% 85%,
+                var(--accent-purple) 85% 100%
+              )`;
+            }
+            if (pieValue) {
+              pieValue.innerText = "2.4M";
+            }
+            barData.forEach(data => {
+              data.currentWidth = data.targetWidth;
+              data.element.style.width = `${data.targetWidth}%`;
+            });
+          }
+
+          requestAnimationFrame(updateProgressiveTransparency);
+        }
+
+        requestAnimationFrame(updateProgressiveTransparency);
+      })();
 
       // Synchronize and manage Mobile Dropdown Selector on ALL Pages with multi-permalink normalization
       const mobileNavSelect = document.getElementById("mobileNavSelect");
