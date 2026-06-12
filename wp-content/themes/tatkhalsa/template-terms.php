@@ -65,6 +65,9 @@ get_header();
             <p style="margin-bottom: 20px; color: var(--text-light); line-height: 1.8;">
                 Our platform and community operate on the principles of Seva. Any misuse of the contact information provided (such as spamming donors), abusive behavior, or fraudulent requests will result in an immediate and permanent ban from accessing our services.
             </p>
+            <p style="margin-bottom: 20px; color: var(--text-light); line-height: 1.8;">
+                <strong>Anti-Spam Verification:</strong> To secure our digital directory, every blood donor registration and emergency request records the user's active IP address. These records are retained strictly for a rolling period of 30 days to identify, check, and ban spam. No IP data is sold, repurposed, or stored beyond this safety timeframe.
+            </p>
 
             <h2 style="font-size: 1.8rem; margin-bottom: 20px; color: var(--primary);">5. Changes to Terms</h2>
             <p style="margin-bottom: 20px; color: var(--text-light); line-height: 1.8;">

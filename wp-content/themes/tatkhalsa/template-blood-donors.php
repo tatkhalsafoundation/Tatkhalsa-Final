@@ -70,9 +70,100 @@ $donors_query = new WP_Query( $args );
             <button onclick="openBloodRequestModal()" class="btn-secondary" style="background: linear-gradient(135deg, #ff334b 0%, #ff5d73 100%); color: #fff; border: none; padding: 12px 24px; border-radius: 8px; font-weight: bold; cursor: pointer; box-shadow: 0 4px 15px rgba(255,51,75,0.3);">
                 🚨 Request Blood
             </button>
+            <button onclick="toggleMasterDataView()" class="btn-secondary" style="background: linear-gradient(135deg, #2a2a2a 0%, #444444 100%); color: #fff; border: 1px solid rgba(255,255,255,0.15); padding: 12px 24px; border-radius: 8px; font-weight: bold; cursor: pointer; box-shadow: 0 4px 15px rgba(0,0,0,0.25);">
+                📊 Admin Master Data
+            </button>
+            <button onclick="openUpdateStatusModal()" class="btn-secondary" style="background: transparent; color: var(--secondary); border: 1px dashed rgba(212, 175, 55, 0.6); padding: 12px 24px; border-radius: 8px; font-weight: bold; cursor: pointer; transition: all 0.3s;" onmouseover="this.style.borderColor='var(--secondary)'; this.style.color='#fff'; this.style.background='rgba(212,175,55,0.05)';" onmouseout="this.style.borderColor='rgba(212, 175, 55, 0.6)'; this.style.color='var(--secondary)'; this.style.background='transparent';">
+                🔄 Update My Status
+            </button>
             <button onclick="openRemoveDonorModal()" class="btn-secondary" style="background: transparent; color: var(--text-light); border: 1px dashed rgba(255,51,75,0.5); padding: 12px 24px; border-radius: 8px; font-weight: bold; cursor: pointer; transition: all 0.3s;" onmouseover="this.style.borderColor='#ff334b'; this.style.color='#ff334b';" onmouseout="this.style.borderColor='rgba(255,51,75,0.5)'; this.style.color='var(--text-light)';">
                 🗑️ Remove My Name
             </button>
+        </div>
+
+        <!-- Admin Master Data Panel -->
+        <div id="masterDataPanel" style="display: none; min-height: 200px; padding: 25px; background: #1a1a1a; border: 2px solid #ff334b; border-radius: 12px; margin-bottom: 45px; position: relative; box-shadow: 0 10px 30px rgba(0,0,0,0.5);">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 15px;">
+                <div>
+                    <h2 style="color: var(--secondary); margin: 0; font-size: 1.5rem; display: flex; align-items: center; gap: 10px;">
+                        <span>📂</span> Blood Directory - Administrative Master Data
+                    </h2>
+                    <p style="color: var(--text-light); font-size: 0.85rem; margin: 5px 0 0 0;">
+                        Full donor credentials, live request logs, and secure rolling 30-day spam-protection IP tracking.
+                    </p>
+                </div>
+                <button onclick="toggleMasterDataView()" style="background: rgba(255,255,255,0.1); color: #fff; border: none; padding: 6px 12px; border-radius: 5px; cursor: pointer; font-size: 0.85rem; font-weight: bold;">
+                    ✕ Close Panel
+                </button>
+            </div>
+
+            <!-- Active Shield Notice -->
+            <div style="background: rgba(46, 213, 115, 0.1); border: 1px solid rgba(46, 213, 115, 0.3); padding: 15px 20px; border-radius: 8px; margin-bottom: 25px; display: flex; align-items: center; gap: 15px;">
+                <span style="font-size: 1.8rem;">🛡️</span>
+                <div>
+                     <h4 style="color: #2ed573; margin: 0; font-size: 0.95rem; font-weight: bold;">Rolling 30-Day Security Cache Enabled</h4>
+                     <p style="color: rgba(255,255,255,0.7); margin: 3px 0 0 0; font-size: 0.8rem; line-height: 1.4;">
+                         Client IP records are logged solely for request limits and anti-spam verification. Any data points exceeding 30 days are automatically pruned, as outlined in our active <a href="/privacy-policy" style="color: var(--secondary); text-decoration: underline; font-weight: bold;">Privacy Policy</a> and <a href="/terms-conditions" style="color: var(--secondary); text-decoration: underline; font-weight: bold;">Terms and Conditions</a>.
+                     </p>
+                </div>
+            </div>
+
+            <!-- Tabs Header -->
+            <div style="display: flex; gap: 10px; margin-bottom: 25px;">
+                <button id="tabDonorsBtn" onclick="switchAdminTab('donors')" style="padding: 10px 18px; border-radius: 6px; border: none; font-weight: bold; cursor: pointer; font-size: 0.85rem; background: var(--secondary); color: #000; transition: all 0.2s;">
+                    🩸 Registered Donors List (<span id="countDonors">0</span>)
+                </button>
+                <button id="tabRequestsBtn" onclick="switchAdminTab('requests')" style="padding: 10px 18px; border-radius: 6px; border: none; font-weight: bold; cursor: pointer; font-size: 0.85rem; background: rgba(255,255,255,0.05); color: var(--text-light); transition: all 0.2s;">
+                    🚨 Urgent Blood Requests (<span id="countRequests">0</span>)
+                </button>
+            </div>
+
+            <div id="adminLoading" style="text-align: center; padding: 40px; color: var(--text-light);">
+                Loading secure administrator records...
+            </div>
+
+            <!-- Active Donors Master Data -->
+            <div id="tblDonorsContainer" style="display: none; overflow-x: auto;">
+                <table style="width: 100%; border-collapse: collapse; min-width: 800px; text-align: left; font-size: 0.85rem;">
+                    <thead>
+                        <tr style="border-bottom: 2px solid rgba(255,255,255,0.1); color: var(--secondary);">
+                            <th style="padding: 12px 10px;">Name</th>
+                            <th style="padding: 12px 10px; text-align: center;">Group</th>
+                            <th style="padding: 12px 10px;">Email</th>
+                            <th style="padding: 12px 10px;">Contact Number</th>
+                            <th style="padding: 12px 10px;">Address</th>
+                            <th style="padding: 12px 10px;">Status</th>
+                            <th style="padding: 12px 10px;">IP / Safe Retention</th>
+                            <th style="padding: 12px 10px; text-align: center;">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tblDonorsBody" style="color: #fff;">
+                        <!-- Dynamic Rows -->
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Active Requests Master Data -->
+            <div id="tblRequestsContainer" style="display: none; overflow-x: auto;">
+                <table style="width: 100%; border-collapse: collapse; min-width: 800px; text-align: left; font-size: 0.85rem;">
+                    <thead>
+                        <tr style="border-bottom: 2px solid rgba(255,255,255,0.1); color: #ff334b;">
+                            <th style="padding: 12px 10px;">Patient Name</th>
+                            <th style="padding: 12px 10px; text-align: center;">Group</th>
+                            <th style="padding: 12px 10px;">Hospital Name</th>
+                            <th style="padding: 12px 10px;">Location Details</th>
+                            <th style="padding: 12px 10px;">Contact Details</th>
+                            <th style="padding: 12px 10px;">Units Required</th>
+                            <th style="padding: 12px 10px;">Urgency</th>
+                            <th style="padding: 12px 10px;">IP / Safe Retention</th>
+                            <th style="padding: 12px 10px; text-align: center;">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tblRequestsBody" style="color: #fff;">
+                        <!-- Dynamic Rows -->
+                    </tbody>
+                </table>
+            </div>
         </div>
 
         <div style="background: var(--bg-dark); padding: 20px; border-radius: 12px; margin-bottom: 40px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); border: 1px solid rgba(0,0,0,0.05);">
@@ -122,6 +213,7 @@ $donors_query = new WP_Query( $args );
             </form>
         </div>
 
+        <div id="donorListAnchor">
         <?php if ( $donors_query->have_posts() ) : ?>
             <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 15px; max-width: 800px; margin: 0 auto;">
                 <?php while ( $donors_query->have_posts() ) : $donors_query->the_post(); 
@@ -171,7 +263,7 @@ $donors_query = new WP_Query( $args );
             </div>
 
         <?php else : ?>
-            <div style="text-align: center; padding: 50px; background: rgba(0,0,0,0.02); border-radius: 12px;">
+            <div style="text-align: center; padding: 50px; background: rgba(0,0,0,0.02); border-radius: 12px; grid-column: 1 / -1;">
                 <p style="font-size: 1.2rem; color: var(--text-light); margin-bottom: 20px;">No donors found matching your criteria.</p>
                 <button onclick="window.location.href='<?php echo esc_url( get_permalink() ); ?>'" style="background: var(--bg-dark); color: var(--text-dark); border: 1px solid var(--text-dark); padding: 10px 20px; border-radius: 6px; cursor: pointer;">
                     Clear Filters
@@ -179,6 +271,7 @@ $donors_query = new WP_Query( $args );
             </div>
         <?php endif; ?>
         <?php wp_reset_postdata(); ?>
+        </div>
 
         <!-- Gurbani Quote Section -->
         <section class="gurbani-quote-section scroll-reveal" style="background: transparent; border: none; padding: 40px 0 20px; margin-top: 20px;">
@@ -198,8 +291,8 @@ $donors_query = new WP_Query( $args );
 </div>
 
 <!-- Donor Registration Modal -->
-<div class="modal-overlay" id="donorRegModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.7); z-index: 1000; overflow-y: auto; align-items: center; justify-content: center; padding: 20px;">
-  <div class="modal-content" style="background: var(--bg-shade-1); padding: 30px; border-radius: 16px; width: 100%; max-width: 500px; position: relative;  margin: auto;">
+<div class="modal-overlay" id="donorRegModal" style="display: none;">
+  <div class="modal-content">
     <button class="modal-close" style="position: absolute; top: 15px; right: 15px; background: none; border: none; font-size: 1.5rem; cursor: pointer; color: var(--text-dark);" onclick="closeDonorRegistrationModal()">&times;</button>
     
     <h2 style="color: var(--text-dark); margin-bottom: 20px; text-align: center;">Register as Blood Donor</h2>
@@ -294,8 +387,8 @@ $donors_query = new WP_Query( $args );
 </div>
 
 <!-- Remove Donor Modal -->
-<div class="modal-overlay" id="removeDonorModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.7); z-index: 1000; overflow-y: auto; align-items: center; justify-content: center; padding: 20px;">
-  <div class="modal-content" style="background: var(--bg-shade-1); padding: 30px; border-radius: 16px; width: 100%; max-width: 400px; position: relative;  margin: auto;">
+<div class="modal-overlay" id="removeDonorModal" style="display: none;">
+  <div class="modal-content">
     <button class="modal-close" style="position: absolute; top: 15px; right: 15px; background: none; border: none; font-size: 1.5rem; cursor: pointer; color: var(--text-dark);" onclick="closeRemoveDonorModal()">&times;</button>
     
     <h2 style="color: var(--text-dark); margin-bottom: 20px; text-align: center;">Remove My Registration</h2>
@@ -318,11 +411,45 @@ $donors_query = new WP_Query( $args );
   </div>
 </div>
 
+<!-- Update Status Modal -->
+<div class="modal-overlay" id="updateStatusModal" style="display: none;">
+  <div class="modal-content">
+    <button class="modal-close" style="position: absolute; top: 15px; right: 15px; background: none; border: none; font-size: 1.5rem; cursor: pointer; color: var(--text-dark);" onclick="closeUpdateStatusModal()">&times;</button>
+    
+    <h2 style="color: var(--text-dark); margin-bottom: 20px; text-align: center;">Update My Availability</h2>
+    
+    <form id="updateStatusForm" method="POST" action="">
+      <input type="hidden" name="action" value="update_donor_status">
+      
+      <div style="margin-bottom: 15px;">
+        <label style="display: block; margin-bottom: 8px; color: var(--text-dark); font-weight: bold;">Registered Contact Number</label>
+        <p style="font-size: 0.82rem; color: var(--text-light); margin-bottom: 8px;">Enter the exact contact number you used while registering.</p>
+        <input type="tel" name="contactNumber" required placeholder="e.g. +91 9876543210" style="width: 100%; padding: 12px; border-radius: 6px; border: 1px solid rgba(0,0,0,0.2); background: #fff; color: #333;">
+      </div>
+
+      <div style="margin-bottom: 20px;">
+        <label style="display: block; margin-bottom: 8px; color: var(--text-dark); font-weight: bold;">New Availability Status</label>
+        <select name="availabilityStatus" required style="width: 100%; padding: 12px; border-radius: 6px; border: 1px solid rgba(0,0,0,0.2); background: #fff; color: #333;">
+            <option value="Available Now">🟢 Available Now</option>
+            <option value="On Standby">🟡 On Standby</option>
+            <option value="Resting Phase">🔴 Resting Phase</option>
+        </select>
+      </div>
+
+      <div id="updateStatusStatus" style="margin-bottom: 15px; font-size: 0.9rem; border-radius: 6px; display: none;"></div>
+      
+      <button type="submit" id="updateStatusBtn" style="width: 100%; background: linear-gradient(135deg, var(--secondary) 0%, #ffdf79 100%); color: #000; border: none; font-size: 1rem; font-weight: bold; padding: 12px; border-radius: 8px; cursor: pointer; box-shadow: 0 4px 15px rgba(212, 175, 55, 0.4); transition: all 0.3s;">
+        Update Status
+      </button>
+    </form>
+  </div>
+</div>
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 
 <!-- Certificate Modal -->
-<div class="modal-overlay" id="certificateModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.7); z-index: 1000; overflow-y: auto; align-items: center; justify-content: center; padding: 20px;">
-  <div class="modal-content" style="background: var(--bg-shade-1); padding: 30px; border-radius: 16px; width: 100%; max-width: 400px; position: relative;  margin: auto;">
+<div class="modal-overlay" id="certificateModal" style="display: none;">
+  <div class="modal-content">
     <button class="modal-close" style="position: absolute; top: 15px; right: 15px; background: none; border: none; font-size: 1.5rem; cursor: pointer; color: var(--text-dark);" onclick="closeCertificateModal()">&times;</button>
     
     <div id="claimCertContainer">
@@ -446,6 +573,22 @@ function closeRemoveDonorModal() {
     }
 }
 
+function openUpdateStatusModal() {
+    const modal = document.getElementById("updateStatusModal");
+    if(modal) {
+        modal.style.display = "flex";
+        document.body.style.overflow = "hidden";
+    }
+}
+
+function closeUpdateStatusModal() {
+    const modal = document.getElementById("updateStatusModal");
+    if(modal) {
+        modal.style.display = "none";
+        document.body.style.overflow = "auto";
+    }
+}
+
 function openCertificateModal() {
     const modal = document.getElementById("certificateModal");
     if(modal) {
@@ -511,6 +654,81 @@ document.addEventListener("DOMContentLoaded", () => {
         dModal.addEventListener("click", (e) => {
             if (e.target === dModal) {
                 closeDonorRegistrationModal();
+            }
+        });
+    }
+
+    // For Update Status modal background click
+    const uModal = document.getElementById("updateStatusModal");
+    if(uModal) {
+        uModal.addEventListener("click", (e) => {
+            if (e.target === uModal) {
+                closeUpdateStatusModal();
+            }
+        });
+    }
+
+    // Update Status Form Ajax Submission
+    const updateForm = document.getElementById("updateStatusForm");
+    if(updateForm) {
+        updateForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const btn = document.getElementById("updateStatusBtn");
+            const statusBox = document.getElementById("updateStatusStatus");
+            const originalText = btn.innerHTML;
+            
+            btn.innerHTML = "Updating...";
+            btn.disabled = true;
+            statusBox.style.display = "none";
+            
+            const formData = new FormData(updateForm);
+            const params = new URLSearchParams();
+            for(const pair of formData.entries()) {
+                params.append(pair[0], pair[1]);
+            }
+            
+            try {
+                const response = await fetch("<?php echo esc_url(admin_url('admin-ajax.php')); ?>", {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                    body: params.toString()
+                });
+                
+                const res = await response.json();
+                statusBox.style.display = "block";
+                statusBox.style.padding = "10px";
+                
+                if(res.success) {
+                    statusBox.style.backgroundColor = "rgba(40, 167, 69, 0.1)";
+                    statusBox.style.borderColor = "rgba(40, 167, 69, 0.2)";
+                    statusBox.style.color = "#28a745";
+                    statusBox.innerHTML = res.data.message;
+                    updateForm.reset();
+                    setTimeout(() => {
+                        closeUpdateStatusModal();
+                        if (typeof window.loadPublicDirectory === "function") {
+                            window.loadPublicDirectory();
+                            window.fetchMasterData();
+                        } else {
+                            window.location.reload();
+                        }
+                    }, 2000);
+                } else {
+                    statusBox.style.backgroundColor = "rgba(220, 53, 69, 0.1)";
+                    statusBox.style.borderColor = "rgba(220, 53, 69, 0.2)";
+                    statusBox.style.color = "#dc3545";
+                    statusBox.innerHTML = res.data.message || "An error occurred.";
+                }
+            } catch (err) {
+                console.error(err);
+                statusBox.style.display = "block";
+                statusBox.style.padding = "10px";
+                statusBox.style.backgroundColor = "rgba(220, 53, 69, 0.1)";
+                statusBox.style.color = "#dc3545";
+                statusBox.innerHTML = "Network error. Please try again.";
+            } finally {
+                btn.innerHTML = originalText;
+                btn.disabled = false;
             }
         });
     }
@@ -1003,6 +1221,280 @@ document.addEventListener("DOMContentLoaded", function() {
             }
         }
     };
+
+    // --- Blood Network Custom Admin Portal & dynamic UI ---
+    let adminTab = 'donors';
+
+    window.toggleMasterDataView = function() {
+        const panel = document.getElementById('masterDataPanel');
+        if (!panel) return;
+        if (panel.style.display === 'none') {
+            panel.style.display = 'block';
+            panel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            window.fetchMasterData();
+        } else {
+            panel.style.display = 'none';
+        }
+    };
+
+    window.switchAdminTab = function(tab) {
+        adminTab = tab;
+        const btnDonors = document.getElementById('tabDonorsBtn');
+        const btnRequests = document.getElementById('tabRequestsBtn');
+        const divDonors = document.getElementById('tblDonorsContainer');
+        const divRequests = document.getElementById('tblRequestsContainer');
+
+        if (!btnDonors || !btnRequests || !divDonors || !divRequests) return;
+
+        if (tab === 'donors') {
+            btnDonors.style.background = 'var(--secondary)';
+            btnDonors.style.color = '#000';
+            btnRequests.style.background = 'rgba(255,255,255,0.05)';
+            btnRequests.style.color = 'var(--text-light)';
+            divDonors.style.display = 'block';
+            divRequests.style.display = 'none';
+        } else {
+            btnRequests.style.background = '#ff334b';
+            btnRequests.style.color = '#fff';
+            btnDonors.style.background = 'rgba(255,255,255,0.05)';
+            btnDonors.style.color = 'var(--text-light)';
+            divDonors.style.display = 'none';
+            divRequests.style.display = 'block';
+        }
+    };
+
+    window.getRetentionBadge = function(timestamp) {
+        const ageMs = Date.now() - timestamp;
+        const daysLeft = Math.max(0, Math.ceil((30 * 24 * 3600 * 1000 - ageMs) / (24 * 3600 * 1000)));
+        if (daysLeft <= 0) {
+            return `<span style="display:inline-block; font-size:0.75rem; color:#ee5253; padding:2px 8px; border-radius:10px; background:rgba(238,82,83,0.15); font-weight:bold;">Anonymized</span>`;
+        } else if (daysLeft < 5) {
+            return `<span style="display:inline-block; font-size:0.75rem; color:#ff9f43; padding:2px 8px; border-radius:10px; background:rgba(255,159,67,0.15); font-weight:bold; margin-top:4px;">Expires: ${daysLeft} days</span>`;
+        } else {
+            return `<span style="display:inline-block; font-size:0.75rem; color:#10ac84; padding:2px 8px; border-radius:10px; background:rgba(16,172,132,0.15); font-weight:bold; margin-top:4px;">Safe: ${daysLeft} days</span>`;
+        }
+    };
+
+    window.fetchMasterData = async function() {
+        const loading = document.getElementById('adminLoading');
+        const countDonorsEl = document.getElementById('countDonors');
+        const countRequestsEl = document.getElementById('countRequests');
+        const tblDonorsBody = document.getElementById('tblDonorsBody');
+        const tblRequestsBody = document.getElementById('tblRequestsBody');
+
+        if (!loading) return;
+        loading.style.display = 'block';
+        document.getElementById('tblDonorsContainer').style.display = 'none';
+        document.getElementById('tblRequestsContainer').style.display = 'none';
+
+        try {
+            const res = await fetch('/api/admin/master-data');
+            const data = await res.json();
+            
+            if (data.success) {
+                loading.style.display = 'none';
+                if (countDonorsEl) countDonorsEl.innerText = data.donors.length;
+                if (countRequestsEl) countRequestsEl.innerText = data.requests.length;
+                
+                // Build Donors Rows
+                if (tblDonorsBody) {
+                    tblDonorsBody.innerHTML = '';
+                    if (data.donors.length === 0) {
+                        tblDonorsBody.innerHTML = `<tr><td colspan="8" style="padding: 24px; text-align: center; color: var(--text-light);">No registered blood donors found.</td></tr>`;
+                    } else {
+                        data.donors.forEach(donor => {
+                            const retentionDesc = window.getRetentionBadge(donor.timestamp);
+                            const ipLabel = donor.ip && !donor.ip.startsWith('[') 
+                              ? `<code style="display:block; font-size:0.8rem; background:rgba(255,255,255,0.05); padding:2px 6px; border-radius:4px; margin-bottom:4px; max-width:fit-content;">${donor.ip}</code>` 
+                              : `<span style="color:#aa6666; font-style:italic;">[Purged after 30 days]</span>`;
+                            
+                            tblDonorsBody.innerHTML += `
+                                <tr style="border-bottom: 1px solid rgba(255,255,255,0.05); transition: background 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.01)'" onmouseout="this.style.background='transparent'">
+                                    <td style="padding: 14px 10px; font-weight: bold; color: #fff;">${donor.name}</td>
+                                    <td style="padding: 14px 10px; text-align: center;"><span style="background: #ff334b; color:#fff; font-weight:bold; padding:3px 10px; border-radius:12px; font-size:0.75rem;">${donor.bloodGroup}</span></td>
+                                    <td style="padding: 14px 10px;"><a href="mailto:${donor.email}" style="color:var(--secondary); text-decoration:none;">${donor.email}</a></td>
+                                    <td style="padding: 14px 10px;"><code>${donor.contact}</code></td>
+                                    <td style="padding: 14px 10px; max-width: 220px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" title="${donor.address}">${donor.address}</td>
+                                    <td style="padding: 14px 10px; font-size:0.8rem;"><span style="color:#2ed573;">🟢 ${donor.availabilityStatus || 'Available Now'}</span></td>
+                                    <td style="padding: 14px 10px;">
+                                        ${ipLabel}
+                                        ${retentionDesc}
+                                    </td>
+                                    <td style="padding: 14px 10px; text-align: center;">
+                                        <button onclick="window.deleteDonor('${donor.id}')" style="background: rgba(255,51,75,0.1); color: #ff334b; border: 1px solid rgba(255,51,75,0.25); padding: 5px 10px; border-radius: 6px; cursor: pointer; font-size: 0.75rem; font-weight: bold; transition: all 0.2s;" onmouseover="this.style.background='#ff334b'; this.style.color='#fff';">Delete</button>
+                                    </td>
+                                </tr>
+                            `;
+                        });
+                    }
+                }
+
+                // Build Requests Rows
+                if (tblRequestsBody) {
+                    tblRequestsBody.innerHTML = '';
+                    if (data.requests.length === 0) {
+                        tblRequestsBody.innerHTML = `<tr><td colspan="9" style="padding: 24px; text-align: center; color: var(--text-light);">No emergency blood requests found.</td></tr>`;
+                    } else {
+                        data.requests.forEach(req => {
+                            const retentionDesc = window.getRetentionBadge(req.timestamp);
+                            const ipLabel = req.ip && !req.ip.startsWith('[') 
+                              ? `<code style="display:block; font-size:0.8rem; background:rgba(255,255,255,0.05); padding:2px 6px; border-radius:4px; margin-bottom:4px; max-width:fit-content;">${req.ip}</code>` 
+                              : `<span style="color:#aa6666; font-style:italic;">[Purged after 30 days]</span>`;
+                            
+                            tblRequestsBody.innerHTML += `
+                                <tr style="border-bottom: 1px solid rgba(255,255,255,0.05); transition: background 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.01)'" onmouseout="this.style.background='transparent'">
+                                    <td style="padding: 14px 10px; font-weight: bold; color: #fff;">${req.patientName}</td>
+                                    <td style="padding: 14px 10px; text-align: center;"><span style="background: #ff334b; color:#fff; font-weight:bold; padding:3px 10px; border-radius:12px; font-size:0.75rem;">${req.bloodGroup}</span></td>
+                                    <td style="padding: 14px 10px;">${req.hospitalName}</td>
+                                    <td style="padding: 14px 10px; max-width:180px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" title="${req.patientLocation}">${req.patientLocation}</td>
+                                    <td style="padding: 14px 10px;"><code>${req.contactDetails}</code></td>
+                                    <td style="padding: 14px 10px; font-weight:bold;">${req.unitsRequired} Unit(s)</td>
+                                    <td style="padding: 14px 10px;"><span style="color:#ff334b; font-weight:bold; font-size:0.8rem;">🚨 ${req.urgency}</span></td>
+                                    <td style="padding: 14px 10px;">
+                                        ${ipLabel}
+                                        ${retentionDesc}
+                                    </td>
+                                    <td style="padding: 14px 10px; text-align: center;">
+                                        <button onclick="window.deleteRequest('${req.id}')" style="background: rgba(255,51,75,0.1); color: #ff334b; border: 1px solid rgba(255,51,75,0.25); padding: 5px 10px; border-radius: 6px; cursor: pointer; font-size: 0.75rem; font-weight: bold; transition: all 0.2s;" onmouseover="this.style.background='#ff334b'; this.style.color='#fff';">Delete</button>
+                                    </td>
+                                </tr>
+                            `;
+                        });
+                    }
+                }
+
+                window.switchAdminTab(adminTab);
+            }
+        } catch(err) {
+            console.error(err);
+            if (loading) loading.innerText = 'Failed to load credentials directory. Please try again.';
+        }
+    };
+
+    window.deleteDonor = async function(id) {
+        if (confirm('Are you sure you want to permanently delete this donor from directory?')) {
+            try {
+                const res = await fetch('/api/admin/delete-donor', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ id })
+                });
+                const r = await res.json();
+                if (r.success) {
+                    window.fetchMasterData();
+                    window.loadPublicDirectory();
+                }
+            } catch(e) { alert("Error deleting donor."); }
+        }
+    };
+
+    window.deleteRequest = async function(id) {
+        if (confirm('Are you sure you want to permanently delete this blood request log?')) {
+            try {
+                const res = await fetch('/api/admin/delete-request', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ id })
+                });
+                const r = await res.json();
+                if (r.success) {
+                    window.fetchMasterData();
+                }
+            } catch(e) { alert("Error deleting request."); }
+        }
+    };
+
+    window.loadPublicDirectory = async function() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const filterGroup = urlParams.get('blood_group') || '';
+        const filterDistrict = urlParams.get('district') || '';
+        const filterAddress = (urlParams.get('address') || '').toLowerCase();
+
+        try {
+            const res = await fetch('/api/admin/master-data');
+            const data = await res.json();
+            
+            if (data.success && data.donors) {
+                let filtered = data.donors;
+                
+                if (filterGroup) {
+                    filtered = filtered.filter(d => d.bloodGroup === filterGroup);
+                }
+                if (filterDistrict) {
+                    filtered = filtered.filter(d => d.address.includes(filterDistrict));
+                }
+                if (filterAddress) {
+                    filtered = filtered.filter(d => d.address.toLowerCase().includes(filterAddress) || d.name.toLowerCase().includes(filterAddress));
+                }
+
+                const anchor = document.getElementById('donorListAnchor');
+                if (anchor) {
+                    anchor.innerHTML = '';
+                    if (filtered.length === 0) {
+                        anchor.style.display = 'block';
+                        anchor.innerHTML = `
+                            <div style="text-align: center; padding: 50px; background: rgba(0,0,0,0.02); border-radius: 12px; grid-column: 1 / -1; width:100%;">
+                                <p style="font-size: 1.2rem; color: var(--text-light); margin-bottom: 20px;">No donors found matching your criteria.</p>
+                                <button onclick="window.location.href='/blood-donors'" style="background: var(--bg-dark); color: var(--text-dark); border: 1px solid var(--text-dark); padding: 10px 20px; border-radius: 6px; cursor: pointer;">
+                                    Reset Search
+                                </button>
+                            </div>
+                        `;
+                    } else {
+                        anchor.style.display = 'grid';
+                        anchor.style.gridTemplateColumns = 'repeat(auto-fit, minmax(280px, 1fr))';
+                        anchor.style.gap = '15px';
+                        anchor.style.maxWidth = '800px';
+                        anchor.style.margin = '0 auto';
+                        
+                        filtered.forEach(donor => {
+                            let statusText = '🟢 Available Now';
+                            if (donor.availabilityStatus === 'On Standby') {
+                                statusText = '🟡 On Standby';
+                            } else if (donor.availabilityStatus === 'Resting Phase') {
+                                statusText = '🔴 Resting Phase';
+                            }
+                            
+                            anchor.innerHTML += `
+                                <div style="background: var(--bg-dark); border-radius: 10px; padding: 15px; box-shadow: 0 3px 10px rgba(0,0,0,0.05); position: relative; border-top: 3px solid #ff334b;">
+                                    <div style="position: absolute; top: 15px; right: 15px; background: #ff334b; color: #fff; font-weight: bold; padding: 4px 10px; border-radius: 15px; font-size: 0.9rem; box-shadow: 0 2px 6px rgba(255,51,75,0.4);">
+                                        ${donor.bloodGroup}
+                                    </div>
+                                    <h3 style="color: var(--text-dark); margin-bottom: 5px; padding-right: 40px; font-size: 1.1rem;">${donor.name}</h3>
+                                    
+                                    <div style="margin-bottom: 10px; font-size: 0.8rem; color: var(--text-dark); font-weight: 500;">
+                                        ${statusText}
+                                    </div>
+
+                                    <div style="margin-bottom: 10px; font-size: 0.8rem; color: var(--text-light); line-height: 1.4;">
+                                        📍 <strong>Location:</strong> ${donor.address}
+                                    </div>
+
+                                    <div style="margin-bottom: 15px; font-size: 0.75rem; color: var(--text-light); line-height: 1.4; background: rgba(0,0,0,0.03); padding: 10px; border-radius: 6px;">
+                                        <span style="font-size: 0.85rem; display: block; margin-bottom: 3px;">🔒 Privacy Protected</span>
+                                        Contact details are private. Submit an Emergency Blood Request to view available donor contacts.
+                                    </div>
+
+                                    <button onclick="openBloodRequestModal()" style="display: block; width: 100%; text-align: center; background: rgba(255,51,75,0.1); padding: 8px; border-radius: 6px; font-weight: bold; font-size: 0.8rem; color: #ff334b; text-decoration: none; border: 1px solid rgba(255,51,75,0.2); cursor: pointer; transition: background 0.2s;">
+                                        🚨 Request to Connect
+                                    </button>
+                                </div>
+                            `;
+                        });
+                    }
+                }
+            }
+        } catch(e) {
+            console.error("Error loading directory", e);
+        }
+    };
+
+    // Override public submission refresh logic
+    const oldOnSubmit = window.submitDonorRegistration;
+    // We run loadPublicDirectory on load
+    setTimeout(() => {
+        window.loadPublicDirectory();
+    }, 500);
 
     loadResources();
 });

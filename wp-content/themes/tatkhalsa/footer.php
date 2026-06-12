@@ -1554,6 +1554,12 @@
 
               statusEl.innerHTML = htmlContent;
               e.target.reset();
+              if (typeof window.loadPublicDirectory === "function") {
+                window.loadPublicDirectory();
+              }
+              if (typeof window.fetchMasterData === "function") {
+                window.fetchMasterData();
+              }
               
             } else {
               statusEl.style.color = "#ff334b";

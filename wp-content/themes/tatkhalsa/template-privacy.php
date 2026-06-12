@@ -45,6 +45,9 @@ get_header();
             <p style="margin-bottom: 20px; color: var(--text-light); line-height: 1.8;">
                 We collect information you provide directly to us, such as when you volunteer, donate, register as a blood donor, submit an emergency blood request, or contact us. The types of personal information we may collect include your name, email address, physical address, and phone number.
             </p>
+            <p style="margin-bottom: 20px; color: var(--text-light); line-height: 1.8;">
+                <strong>IP Address Logging & Anti-Spam Security:</strong> To prevent spam, fraudulent entries, and misuse of our community blood network, we securely log the IP address and registration timestamp associated with all blood donor registrations and emergency blood requests. To protect user privacy, IP address data is automatically and permanently purged or anonymized after exactly 30 days.
+            </p>
 
             <h2 style="font-size: 1.8rem; margin-bottom: 20px; color: var(--primary);">2. How We Use Information</h2>
             <p style="margin-bottom: 20px; color: var(--text-light); line-height: 1.8;">

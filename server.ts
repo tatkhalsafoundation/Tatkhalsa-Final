@@ -95,6 +95,105 @@ async function startServer() {
     return content;
   }
 
+  interface Donor {
+    id: string;
+    name: string;
+    bloodGroup: string;
+    email: string;
+    contact: string;
+    address: string;
+    availabilityStatus: string;
+    ip: string;
+    timestamp: number;
+  }
+
+  interface BloodRequest {
+    id: string;
+    patientName: string;
+    bloodGroup: string;
+    hospitalName: string;
+    patientLocation: string;
+    contactDetails: string;
+    unitsRequired: string;
+    urgency: string;
+    ip: string;
+    timestamp: number;
+  }
+
+  let mockDonors: Donor[] = [
+    {
+      id: "donor_1",
+      name: "S. Prabhjot Singh Khalsa",
+      bloodGroup: "O+",
+      email: "prabhjot@tatkhalsa.org",
+      contact: "+91 98765 43210",
+      address: "Amritsar, Punjab, India",
+      availabilityStatus: "Available Now",
+      ip: "192.168.1.100",
+      timestamp: Date.now() - 2 * 24 * 3600 * 1000
+    },
+    {
+      id: "donor_2",
+      name: "Sardarni Sharanjit Kaur",
+      bloodGroup: "A+",
+      email: "sharanjit@gmail.com",
+      contact: "+91 87654 32109",
+      address: "Ludhiana, Punjab, India",
+      availabilityStatus: "On Standby",
+      ip: "192.168.1.101",
+      timestamp: Date.now() - 5 * 24 * 3600 * 1000
+    },
+    {
+      id: "donor_3",
+      name: "Bhai Jagdeep Singh",
+      bloodGroup: "B+",
+      email: "jagdeep@tatkhalsa.org",
+      contact: "+91 76543 21098",
+      address: "Jalandhar, Punjab, India",
+      availabilityStatus: "Resting Phase",
+      ip: "192.168.1.102",
+      timestamp: Date.now() - 10 * 24 * 3600 * 1000
+    },
+    {
+      id: "donor_4",
+      name: "S. Amrik Singh",
+      bloodGroup: "AB-",
+      email: "amrik.singh@yahoo.com",
+      contact: "+91 99887 76655",
+      address: "Chandigarh, India",
+      availabilityStatus: "Available Now",
+      ip: "192.168.1.103",
+      timestamp: Date.now() - 15 * 24 * 3600 * 1000
+    }
+  ];
+
+  let mockRequests: BloodRequest[] = [
+    {
+      id: "req_1",
+      patientName: "Bibi Daljit Kaur",
+      bloodGroup: "A+",
+      hospitalName: "SGPC Sri Guru Ram Das Charitable Hospital",
+      patientLocation: "Vallah, Amritsar, Punjab",
+      contactDetails: "+91 98123 45678",
+      unitsRequired: "2",
+      urgency: "Urgent",
+      ip: "192.168.1.200",
+      timestamp: Date.now() - 1 * 24 * 3600 * 1000
+    },
+    {
+      id: "req_2",
+      patientName: "S. Joginder Singh",
+      bloodGroup: "O+",
+      hospitalName: "Max Super Speciality Hospital",
+      patientLocation: "Phase 6, Mohali, Punjab",
+      contactDetails: "+91 94321 09876",
+      unitsRequired: "3",
+      urgency: "Immediate",
+      ip: "192.168.1.201",
+      timestamp: Date.now() - 4 * 3600 * 1000
+    }
+  ];
+
   // Mock transaction data to support previews of the automated ledger board
   let mockTransactions = [
     {
@@ -235,12 +334,124 @@ async function startServer() {
     }
 
     if (action === "submit_blood_donor") {
+      const name = req.body?.donorName || req.query?.donorName || "";
+      const bloodGroup = req.body?.bloodGroup || req.query?.bloodGroup || "";
+      const email = req.body?.donorEmail || req.query?.donorEmail || "";
+      const contact = req.body?.contactDetails || req.query?.contactDetails || "";
+      const country = req.body?.country || req.query?.country || "";
+      const state = req.body?.state || req.query?.state || "";
+      const district = req.body?.district || req.query?.district || "";
+      const addressLine = req.body?.address || req.query?.address || "";
+      
+      const addrParts = [addressLine, district, state, country].filter(p => p.trim() !== "");
+      const fullAddress = addrParts.join(", ") || "Punjab, India";
+      const availabilityStatus = req.body?.availabilityStatus || req.query?.availabilityStatus || "Available Now";
+
+      if (!name || !bloodGroup || !contact || !email) {
+        return res.json({ success: false, data: { message: "Please fill in all required fields." } });
+      }
+
+      const newDonor = {
+        id: "donor_" + Date.now(),
+        name,
+        bloodGroup,
+        email,
+        contact,
+        address: fullAddress,
+        availabilityStatus,
+        ip: "127.0.0.1",
+        timestamp: Date.now()
+      };
+
+      mockDonors.unshift(newDonor);
+
       return res.json({
         success: true,
         data: {
           message: "Thank you! You have been successfully registered as a blood donor."
         }
       });
+    }
+
+    if (action === "submit_blood_request") {
+      const patientName = req.body?.patientName || req.query?.patientName;
+      const bloodGroup = req.body?.bloodGroup || req.query?.bloodGroup;
+      const hospitalName = req.body?.hospitalName || req.query?.hospitalName;
+      const patientLocation = req.body?.patientLocation || req.query?.patientLocation;
+      const contactDetails = req.body?.contactDetails || req.query?.contactDetails;
+      const unitsRequired = req.body?.unitsRequired || req.query?.unitsRequired || "1";
+      const urgency = req.body?.urgency || req.query?.urgency || "Urgent";
+
+      if (!patientName || !bloodGroup || !contactDetails) {
+        return res.json({ success: false, data: { message: "Please fill in all required fields." } });
+      }
+
+      const newRequest = {
+        id: "req_" + Date.now(),
+        patientName,
+        bloodGroup,
+        hospitalName: hospitalName || "N/A",
+        patientLocation: patientLocation || "N/A",
+        contactDetails,
+        unitsRequired,
+        urgency,
+        ip: "127.0.0.1",
+        timestamp: Date.now()
+      };
+
+      mockRequests.unshift(newRequest);
+
+      return res.json({
+        success: true,
+        data: {
+          message: "Emergency Blood Request submitted successfully and logged!"
+        }
+      });
+    }
+
+    if (action === "update_donor_status") {
+      const contact = req.body?.contactNumber || req.query?.contactNumber;
+      const status = req.body?.availabilityStatus || req.query?.availabilityStatus;
+
+      if (!contact || !status) {
+        return res.json({ success: false, data: { message: "Please enter your registered contact number and select a new status." } });
+      }
+
+      const normalizedSearch = contact.replace(/[^0-9]/g, '');
+      const foundDonors = mockDonors.filter(d => {
+        const normalizedDonorContact = d.contact.replace(/[^0-9]/g, '');
+        return normalizedDonorContact.endsWith(normalizedSearch) || normalizedSearch.endsWith(normalizedDonorContact);
+      });
+
+      if (foundDonors.length > 0) {
+        foundDonors.forEach(d => {
+          d.availabilityStatus = status;
+        });
+        return res.json({ success: true, data: { message: `Successfully updated availability status to ${status}!` } });
+      } else {
+        return res.json({ success: false, data: { message: "No registration found with this contact number in our directory." } });
+      }
+    }
+
+    if (action === "remove_blood_donor") {
+      const contact = req.body?.contactNumber || req.query?.contactNumber;
+
+      if (!contact) {
+        return res.json({ success: false, data: { message: "Please enter your registered contact number." } });
+      }
+
+      const normalizedSearch = contact.replace(/[^0-9]/g, '');
+      const initialCount = mockDonors.length;
+      mockDonors = mockDonors.filter(d => {
+        const normalizedDonorContact = d.contact.replace(/[^0-9]/g, '');
+        return !(normalizedDonorContact.endsWith(normalizedSearch) || normalizedSearch.endsWith(normalizedDonorContact));
+      });
+
+      if (mockDonors.length < initialCount) {
+        return res.json({ success: true, data: { message: "Your registration has been removed successfully." } });
+      } else {
+        return res.json({ success: false, data: { message: "No registration found with this contact number." } });
+      }
     }
 
     if (action === "verify_donor_email") {
@@ -267,6 +478,33 @@ async function startServer() {
     }
 
     res.status(404).json({ success: false, data: { message: `Unknown AJAX action: ${action}` } });
+  });
+
+  // Admin Master Data and Deletion Endpoints for local simulation
+  app.get("/api/admin/master-data", (req, res) => {
+    return res.json({
+      success: true,
+      donors: mockDonors,
+      requests: mockRequests
+    });
+  });
+
+  app.post("/api/admin/delete-donor", (req, res) => {
+    const id = req.body?.id;
+    if (!id) {
+      return res.status(400).json({ success: false, message: "ID is required." });
+    }
+    mockDonors = mockDonors.filter(d => d.id !== id);
+    return res.json({ success: true, message: "Donor profile deleted from directory." });
+  });
+
+  app.post("/api/admin/delete-request", (req, res) => {
+    const id = req.body?.id;
+    if (!id) {
+      return res.status(400).json({ success: false, message: "ID is required." });
+    }
+    mockRequests = mockRequests.filter(r => r.id !== id);
+    return res.json({ success: true, message: "Emergency query deleted successfully." });
   });
 
   // Support direct static serving of style.css and Logo.jpg/Logo.png from theme path

@@ -719,6 +719,29 @@ function tatkhalsa_submit_blood_request() {
 	// Try sending email
 	$sent = wp_mail( $to, $subject, $body, $headers, $attachments );
 
+	// Create WordPress blood_request post for record tracking
+	$request_post_id = wp_insert_post( array(
+		'post_title'  => 'Blood Request - ' . $blood_group . ' - ' . $patient_name,
+		'post_type'   => 'blood_request',
+		'post_status' => 'publish'
+	) );
+	if ( $request_post_id ) {
+		update_post_meta( $request_post_id, 'patient_name', $patient_name );
+		update_post_meta( $request_post_id, 'blood_group', $blood_group );
+		update_post_meta( $request_post_id, 'patient_location', $patient_location );
+		update_post_meta( $request_post_id, 'contact_details', $contact_details );
+		update_post_meta( $request_post_id, 'hospital_name', $hospital_name );
+		update_post_meta( $request_post_id, 'units_required', $units_required );
+		update_post_meta( $request_post_id, 'urgency', $urgency );
+		update_post_meta( $request_post_id, 'additional_info', $additional_info );
+		update_post_meta( $request_post_id, 'request_ip', $_SERVER['REMOTE_ADDR'] );
+		update_post_meta( $request_post_id, 'request_time', current_time( 'mysql' ) );
+		if ( ! empty( $attachments[0] ) ) {
+			// Save reference to physician request file
+			update_post_meta( $request_post_id, 'doctor_slip_path', esc_url_raw( $attachments[0] ) );
+		}
+	}
+
 	// Send WhatsApp Alert
 	$sms_message = "URGENT BLOOD REQUEST:\nType: $blood_group\nUnits: $units\nHospital: $hospital_name\nContact: $contact_details";
 	tatkhalsa_send_whatsapp_alert( $sms_message );
@@ -852,6 +875,8 @@ function tatkhalsa_submit_blood_donor() {
 		update_post_meta( $post_id, 'address', $address );
 		update_post_meta( $post_id, 'map_location', $map_location );
 		update_post_meta( $post_id, 'availability_status', $availability_status );
+		update_post_meta( $post_id, 'donor_ip', $_SERVER['REMOTE_ADDR'] );
+		update_post_meta( $post_id, 'registration_time', current_time( 'mysql' ) );
 
 		wp_send_json_success( array( 'message' => 'Thank you for registering as a blood donor!' ) );
 	} else {
@@ -894,6 +919,41 @@ function tatkhalsa_remove_blood_donor() {
 }
 add_action( 'wp_ajax_remove_blood_donor', 'tatkhalsa_remove_blood_donor' );
 add_action( 'wp_ajax_nopriv_remove_blood_donor', 'tatkhalsa_remove_blood_donor' );
+
+function tatkhalsa_update_donor_status() {
+	if ( ! isset( $_POST['action'] ) || $_POST['action'] !== 'update_donor_status' ) {
+		wp_send_json_error( array( 'message' => 'Invalid request.' ) );
+	}
+
+	$contact = isset( $_POST['contactNumber'] ) ? sanitize_text_field( wp_unslash( $_POST['contactNumber'] ) ) : '';
+	$new_status = isset( $_POST['availabilityStatus'] ) ? sanitize_text_field( wp_unslash( $_POST['availabilityStatus'] ) ) : '';
+
+	if ( empty( $contact ) || empty( $new_status ) ) {
+		wp_send_json_error( array( 'message' => 'Please provide the contact number and select a status.' ) );
+	}
+
+	$args = array(
+		'post_type'  => 'blood_donor',
+		'meta_key'   => 'contact_details',
+		'meta_value' => $contact,
+		'posts_per_page' => -1
+	);
+
+	$query = new WP_Query( $args );
+
+	if ( $query->have_posts() ) {
+		while ( $query->have_posts() ) {
+			$query->the_post();
+			update_post_meta( get_the_ID(), 'availability_status', $new_status );
+		}
+		wp_reset_postdata();
+		wp_send_json_success( array( 'message' => 'Your status has been updated successfully to ' . esc_html( $new_status ) . '!' ) );
+	} else {
+		wp_send_json_error( array( 'message' => 'No registration found with this contact number.' ) );
+	}
+}
+add_action( 'wp_ajax_update_donor_status', 'tatkhalsa_update_donor_status' );
+add_action( 'wp_ajax_nopriv_update_donor_status', 'tatkhalsa_update_donor_status' );
 
 function tatkhalsa_verify_donor_email() {
 	if ( ! isset( $_POST['action'] ) || $_POST['action'] !== 'verify_donor_email' ) {
@@ -1438,4 +1498,195 @@ function tatkhalsa_gurbani_search_shortcode() {
     return ob_get_clean();
 }
 add_shortcode('gurbani_search', 'tatkhalsa_gurbani_search_shortcode');
+
+/**
+ * Register Blood Request Custom Post Type
+ */
+function tatkhalsa_register_blood_request_cpt() {
+	$labels = array(
+		'name'               => _x( 'Blood Requests', 'post type general name', 'tatkhalsa-theme' ),
+		'singular_name'      => _x( 'Blood Request', 'post type singular name', 'tatkhalsa-theme' ),
+		'menu_name'          => _x( 'Blood Requests', 'admin menu', 'tatkhalsa-theme' ),
+		'all_items'          => __( 'All Blood Requests', 'tatkhalsa-theme' ),
+		'view_item'          => __( 'View Blood Request', 'tatkhalsa-theme' ),
+		'search_items'       => __( 'Search Blood Requests', 'tatkhalsa-theme' ),
+		'not_found'          => __( 'No blood requests found.', 'tatkhalsa-theme' ),
+	);
+
+	$args = array(
+		'labels'             => $labels,
+		'public'             => true,
+		'publicly_queryable' => true,
+		'show_ui'            => true,
+		'show_in_menu'       => true,
+		'query_var'          => true,
+		'capability_type'    => 'post',
+		'has_archive'        => true,
+		'hierarchical'       => false,
+		'menu_icon'          => 'dashicons-warning',
+		'supports'           => array( 'title' )
+	);
+
+	register_post_type( 'blood_request', $args );
+}
+add_action( 'init', 'tatkhalsa_register_blood_request_cpt' );
+
+/**
+ * Prune blood network IP addresses older than 30 days automatically
+ */
+function tatkhalsa_prune_expired_ips() {
+	$purgable_posts = get_posts( array(
+		'post_type'      => array( 'blood_donor', 'blood_request' ),
+		'posts_per_page' => -1,
+		'date_query'     => array(
+			'before' => '30 days ago'
+		)
+	) );
+	foreach ( $purgable_posts as $post ) {
+		// Delete the raw IP address to preserve absolute anonymity after 30 days
+		delete_post_meta( $post->ID, 'donor_ip' );
+		delete_post_meta( $post->ID, 'request_ip' );
+		update_post_meta( $post->ID, 'ip_purged_after_30_days', 'yes' );
+	}
+}
+add_action( 'wp_loaded', 'tatkhalsa_prune_expired_ips' );
+
+/**
+ * Add WP-Admin Master Data Tab
+ */
+function tatkhalsa_add_blood_master_data_menu() {
+	add_menu_page(
+		'Blood Master Data',
+		'Blood Master Data',
+		'manage_options',
+		'blood-master-data',
+		'tatkhalsa_render_blood_master_data_page',
+		'dashicons-clipboard',
+		25
+	);
+}
+add_action( 'admin_menu', 'tatkhalsa_add_blood_master_data_menu' );
+
+function tatkhalsa_render_blood_master_data_page() {
+	?>
+	<div class="wrap" style="font-family: 'Inter', sans-serif;">
+		<h1 style="color: #ff334b; font-weight: bold; margin-bottom: 20px;">📌 Tatkhalsa Blood Network - Master Admin Records</h1>
+		<div style="background: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); margin-bottom: 30px;">
+			<p>Secure database containing donor credentials, active patient broadcasts, and spam protection metadata. Access is restricted to site managers.</p>
+			<p><strong>🔒 IP Logging Status:</strong> Active (Strict rolling 30-day storage system for security checks and anti-spam verification).</p>
+		</div>
+
+		<h2 style="margin-top: 30px;">🩸 Registered Blood Donors</h2>
+		<table class="wp-list-table widefat fixed striped" style="margin-bottom: 30px;">
+			<thead>
+				<tr>
+					<th>Donor Name</th>
+					<th>Blood Group</th>
+					<th>Email Address</th>
+					<th>Contact Details</th>
+					<th>Address & Location</th>
+					<th>Status</th>
+					<th>IP Address (30 days retention)</th>
+				</tr>
+			</thead>
+			<tbody>
+				<?php
+				$donors = get_posts( array(
+					'post_type'      => 'blood_donor',
+					'posts_per_page' => -1,
+				) );
+				if ( ! empty( $donors ) ) {
+					foreach ( $donors as $donor ) {
+						$p_id = $donor->ID;
+						$name = get_post_meta( $p_id, 'donor_name', true );
+						$group = get_post_meta( $p_id, 'blood_group', true );
+						$email = get_post_meta( $p_id, 'donor_email', true );
+						$contact = get_post_meta( $p_id, 'contact_details', true );
+						$address = get_post_meta( $p_id, 'address', true );
+						$status = get_post_meta( $p_id, 'availability_status', true );
+						$ip = get_post_meta( $p_id, 'donor_ip', true );
+						$purged = get_post_meta( $p_id, 'ip_purged_after_30_days', true );
+
+						if ( empty( $ip ) ) {
+							$ip_display = ( $purged === 'yes' ) ? '<span style="color:#aa6666; font-style:italic;">[Purged after 30 days]</span>' : '<span style="color:#777;">unknown</span>';
+						} else {
+							$ip_display = '<code>' . esc_html( $ip ) . '</code> <span style="font-size:0.8rem; color:#22aa22;">(Active)</span>';
+						}
+						?>
+						<tr>
+							<td><strong><?php echo esc_html( $name ); ?></strong></td>
+							<td><span style="background:#ff334b; color:#fff; font-weight:bold; padding:2px 8px; border-radius:10px;"><?php echo esc_html( $group ); ?></span></td>
+							<td><?php echo esc_html( $email ); ?></td>
+							<td><code><?php echo esc_html( $contact ); ?></code></td>
+							<td><?php echo esc_html( $address ); ?></td>
+							<td><?php echo esc_html( $status ); ?></td>
+							<td><?php echo $ip_display; ?></td>
+						</tr>
+						<?php
+					}
+				} else {
+					echo '<tr><td colspan="7">No registered donors found.</td></tr>';
+				}
+				?>
+			</tbody>
+		</table>
+
+		<h2>🚨 Emergency Blood Requests</h2>
+		<table class="wp-list-table widefat fixed striped">
+			<thead>
+				<tr>
+					<th>Patient Name</th>
+					<th>Blood Group</th>
+					<th>Hospital Name</th>
+					<th>Patient Location</th>
+					<th>Contact Details</th>
+					<th>Required Units & Urgency</th>
+					<th>Request IP (30 days retention)</th>
+				</tr>
+			</thead>
+			<tbody>
+				<?php
+				$requests = get_posts( array(
+					'post_type'      => 'blood_request',
+					'posts_per_page' => -1,
+				) );
+				if ( ! empty( $requests ) ) {
+					foreach ( $requests as $req_post ) {
+						$p_id = $req_post->ID;
+						$pat_name = get_post_meta( $p_id, 'patient_name', true );
+						$group = get_post_meta( $p_id, 'blood_group', true );
+						$hospital = get_post_meta( $p_id, 'hospital_name', true );
+						$loc = get_post_meta( $p_id, 'patient_location', true );
+						$contact = get_post_meta( $p_id, 'contact_details', true );
+						$units = get_post_meta( $p_id, 'units_required', true );
+						$urgency = get_post_meta( $p_id, 'urgency', true );
+						$ip = get_post_meta( $p_id, 'request_ip', true );
+						$purged = get_post_meta( $p_id, 'ip_purged_after_30_days', true );
+
+						if ( empty( $ip ) ) {
+							$ip_display = ( $purged === 'yes' ) ? '<span style="color:#aa6666; font-style:italic;">[Purged after 30 days]</span>' : '<span style="color:#777;">unknown</span>';
+						} else {
+							$ip_display = '<code>' . esc_html( $ip ) . '</code> <span style="font-size:0.8rem; color:#22aa22;">(Active)</span>';
+						}
+						?>
+						<tr>
+							<td><strong><?php echo esc_html( $pat_name ); ?></strong></td>
+							<td><span style="background:#ff334b; color:#fff; font-weight:bold; padding:2px 8px; border-radius:10px;"><?php echo esc_html( $group ); ?></span></td>
+							<td><?php echo esc_html( $hospital ); ?></td>
+							<td><?php echo esc_html( $loc ); ?></td>
+							<td><code><?php echo esc_html( $contact ); ?></code></td>
+							<td><strong><?php echo esc_html( $units ); ?> Units</strong> (<?php echo esc_html( $urgency ); ?>)</td>
+							<td><?php echo $ip_display; ?></td>
+						</tr>
+						<?php
+					}
+				} else {
+					echo '<tr><td colspan="7">No active blood requests found.</td></tr>';
+				}
+				?>
+			</tbody>
+		</table>
+	</div>
+	<?php
+}
 ?>
