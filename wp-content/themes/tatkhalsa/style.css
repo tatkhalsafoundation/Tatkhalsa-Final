@@ -1621,6 +1621,8 @@ footer .container {
   justify-content: center;
   z-index: 2000;
   backdrop-filter: blur(5px);
+  padding: 20px;
+  box-sizing: border-box;
 }
 .modal-overlay.active {
   display: flex;
@@ -1632,12 +1634,28 @@ footer .container {
   border-radius: 20px;
   max-width: 500px;
   width: 90%;
+  max-height: calc(100vh - 40px);
+  overflow-y: auto;
   text-align: center;
   position: relative;
   box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5), 0 0 40px rgba(212, 175, 55, 0.1);
   animation: modalEnter 0.5s cubic-bezier(0.165, 0.84, 0.44, 1);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
+  box-sizing: border-box;
+}
+.modal-content::-webkit-scrollbar {
+  width: 6px;
+}
+.modal-content::-webkit-scrollbar-track {
+  background: transparent;
+}
+.modal-content::-webkit-scrollbar-thumb {
+  background: rgba(212, 175, 55, 0.3);
+  border-radius: 10px;
+}
+.modal-content::-webkit-scrollbar-thumb:hover {
+  background: rgba(212, 175, 55, 0.5);
 }
 @keyframes modalEnter {
   from {
