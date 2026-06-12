@@ -51,9 +51,9 @@ get_header();
                 By accessing and using this website, you accept and agree to be bound by the terms and provision of this agreement. In addition, when using these particular services, you shall be subject to any posted guidelines or rules applicable to such services.
             </p>
 
-            <h2 style="font-size: 1.8rem; margin-bottom: 20px; color: var(--primary);">2. Blood Network Disclaimer</h2>
+            <h2 style="font-size: 1.8rem; margin-bottom: 20px; color: var(--primary);">2. Blood On Call Disclaimer</h2>
             <p style="margin-bottom: 20px; color: var(--text-light); line-height: 1.8;">
-                The Tatkhalsa Blood Network is a voluntary platform designed to connect blood donors with those in need. We do not guarantee the availability of donors, nor do we perform medical screening of donors. It is the responsibility of the medical professionals at the respective hospitals to screen and verify any blood donation for safety. We accept no liability for any medical complications or issues that arise from donations facilitated through this platform.
+                The Tatkhalsa Blood On Call is a voluntary platform designed to connect blood donors with those in need. We do not guarantee the availability of donors, nor do we perform medical screening of donors. It is the responsibility of the medical professionals at the respective hospitals to screen and verify any blood donation for safety. We accept no liability for any medical complications or issues that arise from donations facilitated through this platform.
             </p>
 
             <h2 style="font-size: 1.8rem; margin-bottom: 20px; color: var(--primary);">3. Donations & Contributions</h2>

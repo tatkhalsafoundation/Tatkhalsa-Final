@@ -46,7 +46,7 @@ get_header();
                 We collect information you provide directly to us, such as when you volunteer, donate, register as a blood donor, submit an emergency blood request, or contact us. The types of personal information we may collect include your name, email address, physical address, and phone number.
             </p>
             <p style="margin-bottom: 20px; color: var(--text-light); line-height: 1.8;">
-                <strong>IP Address Logging & Anti-Spam Security:</strong> To prevent spam, fraudulent entries, and misuse of our community blood network, we securely log the IP address and registration timestamp associated with all blood donor registrations and emergency blood requests. To protect user privacy, IP address data is automatically and permanently purged or anonymized after exactly 30 days.
+                <strong>IP Address Logging & Anti-Spam Security:</strong> To prevent spam, fraudulent entries, and misuse of our community Blood On Call, we securely log the IP address and registration timestamp associated with all blood donor registrations and emergency blood requests. To protect user privacy, IP address data is automatically and permanently purged or anonymized after exactly 30 days.
             </p>
 
             <h2 style="font-size: 1.8rem; margin-bottom: 20px; color: var(--primary);">2. How We Use Information</h2>
@@ -55,12 +55,12 @@ get_header();
                 <ul style="list-style: disc; margin-left: 20px; margin-bottom: 20px; color: var(--text-light); line-height: 1.8;">
                     <li>Send you technical notices, updates, security alerts, and support and administrative messages.</li>
                     <li>Respond to your comments, questions, and requests and provide customer service.</li>
-                    <li>Facilitate the Tatkhalsa Blood Network, including notifying matched donors about nearby emergency blood requests and allowing individuals in need to reach out to available local donors.</li>
+                    <li>Facilitate Tatkhalsa Blood On Call, including notifying matched donors about nearby emergency blood requests and allowing individuals in need to reach out to available local donors.</li>
                     <li>Process donations securely.</li>
                 </ul>
             </p>
 
-            <h2 style="font-size: 1.8rem; margin-bottom: 20px; color: var(--primary);">3. Privacy & Blood Network</h2>
+            <h2 style="font-size: 1.8rem; margin-bottom: 20px; color: var(--primary);">3. Privacy & Blood On Call</h2>
             <p style="margin-bottom: 20px; color: var(--text-light); line-height: 1.8;">
                 When you register as a blood donor, your explicit contact details and exact location are protected and remain private. Contact information is only shared when an Emergency Blood Request is explicitly submitted through our portal. We prioritize your privacy and anonymity wherever possible. Donor details can be removed from our systems anytime by using the "Remove My Name" functionality.
             </p>

@@ -118,7 +118,7 @@
               <li><a href="<?php echo esc_url( home_url( '/' ) ); ?>">Home</a></li>
               <li><a href="<?php echo esc_url( home_url( '/about/' ) ); ?>">About Us</a></li>
               <li><a href="<?php echo esc_url( home_url( '/blog/' ) ); ?>">Blog</a></li>
-              <li><a href="<?php echo esc_url( home_url( '/blood-donors/' ) ); ?>">Blood Donors</a></li>
+              <li><a href="<?php echo esc_url( home_url( '/blood-donors/' ) ); ?>">Blood On Call</a></li>
               <li><a href="<?php echo esc_url( home_url( '/volunteer/' ) ); ?>">Volunteer</a></li>
             </ul>
           </div>
@@ -147,7 +147,7 @@
           </h3>
         </div>
         <p style="color: var(--text-light); margin-bottom: 22px; font-size: 0.88rem; line-height: 1.45;">
-          Our 24/7 Tatkhalsa Blood Network coordinates rapid mobilizations of nearby registered donors. Direct email and SMS alerts will be triggered immediately.
+          Our 24/7 Tatkhalsa Blood On Call coordinates rapid mobilizations of nearby registered donors. Direct email and SMS alerts will be triggered immediately.
         </p>
 
         <div style="background: rgba(255,51,75,0.05); border: 1px solid rgba(255,51,75,0.2); padding: 12px; border-radius: 8px; margin-bottom: 20px; text-align: center;">

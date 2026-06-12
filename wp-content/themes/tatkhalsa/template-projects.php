@@ -668,12 +668,12 @@ get_header();
           <div>
             <span class="card-category-lbl">Healthcare Seva</span>
             <div class="card-top">
-              <h3 class="card-title">Sikh Blood Contribution Network</h3>
+              <h3 class="card-title">Blood On Call</h3>
               <div class="card-icon-sphere">❤️</div>
             </div>
 
             <div class="bento-card-image-wrap">
-              <img src="<?php echo esc_url( get_theme_mod( 'tatkhalsa_blood_contribution_img', 'https://images.unsplash.com/photo-1584515979956-d9f6e5d09982?q=80&w=800&auto=format&fit=crop' ) ); ?>" alt="Sikh Blood Contribution Network" />
+              <img src="<?php echo esc_url( get_theme_mod( 'tatkhalsa_blood_contribution_img', 'https://images.unsplash.com/photo-1584515979956-d9f6e5d09982?q=80&w=800&auto=format&fit=crop' ) ); ?>" alt="Blood On Call Logo" />
             </div>
 
             <p class="card-desc">
@@ -995,9 +995,9 @@ get_header();
     },
     blood: {
       category: "Healthcare Support",
-      title: "Sikh Blood Contribution Network",
+      title: "Blood On Call",
       image: "<?php echo esc_url( get_theme_mod( 'tatkhalsa_blood_contribution_img', 'https://images.unsplash.com/photo-1584515979956-d9f6e5d09982?q=80&w=800&auto=format&fit=crop' ) ); ?>",
-      desc1: "When immediate urgent health crises occur, finding the exact blood type becomes a frantic race against the clock. Our Tatkhalsa Sikh Blood network lists vetted, registered, non-commercial donors across major cities who stand fully mobilized to travel immediately to save a patient.",
+      desc1: "When immediate urgent health crises occur, finding the exact blood type becomes a frantic race against the clock. Our Tatkhalsa Blood On Call service lists vetted, registered, non-commercial donors across major cities who stand fully mobilized to travel immediately to save a patient.",
       desc2: "We maintain close regular audits of patients in need to prevent exploitation, while regularly hosting community blood collection drives in coordination with municipal hospitals and approved medical practitioners.",
       basis: "Tan-Man-Dhan Seva (Physical & Spiritual service)",
       funding: "Direct Local Donations & Corporate Volunteers"

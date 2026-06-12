@@ -212,7 +212,7 @@
                 <a href="<?php echo esc_url( home_url( '/about/' ) ); ?>">About</a>
                 <a href="<?php echo esc_url( home_url( '/projects/' ) ); ?>">Projects</a>
                 <a href="<?php echo esc_url( home_url( '/blog/' ) ); ?>">Blog</a>
-                <a href="<?php echo esc_url( home_url( '/blood-donors/' ) ); ?>" style="color: #ff334b; font-weight: 700;">Blood Network</a>
+                <a href="<?php echo esc_url( home_url( '/blood-donors/' ) ); ?>" style="color: #ff334b; font-weight: 700;">Blood On Call</a>
               </div>
               <?php
           }
@@ -234,7 +234,7 @@
               <option value="<?php echo esc_url( home_url( '/projects/' ) ); ?>">Our Seva Projects</option>
               <option value="<?php echo esc_url( home_url( '/volunteer/' ) ); ?>">Join as Volunteer</option>
               <option value="<?php echo esc_url( home_url( '/blog/' ) ); ?>">Insights & Blog</option>
-              <option value="<?php echo esc_url( home_url( '/blood-donors/' ) ); ?>">Blood Network</option>
+              <option value="<?php echo esc_url( home_url( '/blood-donors/' ) ); ?>">Blood On Call</option>
               <option value="contact">Contact Us</option>
               <option value="donate">Contribute Now</option>
             </select>
@@ -254,7 +254,7 @@
                 <a href="<?php echo esc_url( home_url( '/projects/' ) ); ?>" class="custom-dropdown-opt" role="option">Our Seva Projects</a>
                 <a href="<?php echo esc_url( home_url( '/volunteer/' ) ); ?>" class="custom-dropdown-opt" role="option">Join as Volunteer</a>
                 <a href="<?php echo esc_url( home_url( '/blog/' ) ); ?>" class="custom-dropdown-opt" role="option">Insights & Blog</a>
-                <a href="<?php echo esc_url( home_url( '/blood-donors/' ) ); ?>" class="custom-dropdown-opt" role="option" style="color: #ff334b !important; font-weight: 700;">Blood Network</a>
+                <a href="<?php echo esc_url( home_url( '/blood-donors/' ) ); ?>" class="custom-dropdown-opt" role="option" style="color: #ff334b !important; font-weight: 700;">Blood On Call</a>
                 <a href="#" onclick="document.getElementById('footer').scrollIntoView({ behavior: 'smooth' }); document.getElementById('customMobileNavWrapper').classList.remove('open'); return false;" class="custom-dropdown-opt" role="option" style="color: #4da6ff !important; font-weight: 700;">Contact Us</a>
                 <a href="#" onclick="openModal(); document.getElementById('customMobileNavWrapper').classList.remove('open'); return false;" class="custom-dropdown-opt header-mobile-contrib-opt" role="option" style="color: #ff5d73 !important; font-weight: 700;">Contribute Now</a>
               </div>

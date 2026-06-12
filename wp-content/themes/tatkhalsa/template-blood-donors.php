@@ -57,26 +57,26 @@ $donors_query = new WP_Query( $args );
     <div class="container">
         
         <div style="text-align: center; margin-bottom: 40px;">
-            <h1 style="color: var(--text-dark); font-size: 2.5rem; margin-bottom: 10px;">Blood Donors Directory</h1>
+            <h1 style="color: var(--text-dark); font-size: 2.5rem; margin-bottom: 10px;">Blood On Call</h1>
             <p style="color: var(--text-light); font-size: 1.1rem; max-width: 600px; margin: 0 auto;">
                 Connect with verified blood donors in your area or register yourself to save lives.
             </p>
         </div>
 
-        <div style="display: flex; flex-wrap: wrap; gap: 20px; justify-content: center; margin-bottom: 40px;">
-            <button onclick="openDonorRegistrationModal()" class="btn-primary" style="background: linear-gradient(135deg, var(--secondary) 0%, #ffdf79 100%); color: #000; border: none; padding: 12px 24px; border-radius: 8px; font-weight: bold; cursor: pointer; box-shadow: 0 4px 15px rgba(212, 175, 55, 0.4);">
+        <div class="blood-actions-menu">
+            <button onclick="openDonorRegistrationModal()" class="btn-donor-register">
                 🩸 Register as a Donor
             </button>
-            <button onclick="openBloodRequestModal()" class="btn-secondary" style="background: linear-gradient(135deg, #ff334b 0%, #ff5d73 100%); color: #fff; border: none; padding: 12px 24px; border-radius: 8px; font-weight: bold; cursor: pointer; box-shadow: 0 4px 15px rgba(255,51,75,0.3);">
+            <button onclick="openBloodRequestModal()" class="btn-donor-request">
                 🚨 Request Blood
             </button>
-            <button onclick="toggleMasterDataView()" class="btn-secondary" style="display: none; background: linear-gradient(135deg, #2a2a2a 0%, #444444 100%); color: #fff; border: 1px solid rgba(255,255,255,0.15); padding: 12px 24px; border-radius: 8px; font-weight: bold; cursor: pointer; box-shadow: 0 4px 15px rgba(0,0,0,0.25);">
+            <button id="adminMasterBtn" onclick="toggleMasterDataView()" class="btn-donor-admin" style="display: none;">
                 📊 Admin Master Data
             </button>
-            <button onclick="openUpdateStatusModal()" class="btn-secondary" style="background: transparent; color: var(--secondary); border: 1px dashed rgba(212, 175, 55, 0.6); padding: 12px 24px; border-radius: 8px; font-weight: bold; cursor: pointer; transition: all 0.3s;" onmouseover="this.style.borderColor='var(--secondary)'; this.style.color='#fff'; this.style.background='rgba(212,175,55,0.05)';" onmouseout="this.style.borderColor='rgba(212, 175, 55, 0.6)'; this.style.color='var(--secondary)'; this.style.background='transparent';">
+            <button onclick="openUpdateStatusModal()" class="btn-donor-status">
                 🔄 Update My Status
             </button>
-            <button onclick="openRemoveDonorModal()" class="btn-secondary" style="background: transparent; color: var(--text-light); border: 1px dashed rgba(255,51,75,0.5); padding: 12px 24px; border-radius: 8px; font-weight: bold; cursor: pointer; transition: all 0.3s;" onmouseover="this.style.borderColor='#ff334b'; this.style.color='#ff334b';" onmouseout="this.style.borderColor='rgba(255,51,75,0.5)'; this.style.color='var(--text-light)';">
+            <button onclick="openRemoveDonorModal()" class="btn-donor-remove">
                 🗑️ Remove My Name
             </button>
         </div>
@@ -491,7 +491,7 @@ $donors_query = new WP_Query( $args );
                 <h1 style="color:#0a2342; font-family: 'Georgia', serif; font-size:46px; text-transform:uppercase; letter-spacing:4px; margin:0 0 15px 0;">Certificate of Appreciation</h1>
                 
                 <div style="background: #e31837; color: #fff; display: inline-block; padding: 6px 20px; border-radius: 30px; font-size: 16px; font-weight: bold; letter-spacing: 2px; margin: 0 auto 30px auto;">
-                    TATKHALSA FOUNDATION BLOOD NETWORK
+                    TATKHALSA BLOOD ON CALL
                 </div>
                 
                 <p style="color:#555; font-size:18px; font-style: italic; margin:0 0 15px 0;">This certificate is proudly presented to</p>
@@ -499,7 +499,7 @@ $donors_query = new WP_Query( $args );
                 <h2 id="certDonorName" style="color:#0a2342; font-family: 'Georgia', serif; font-size:52px; font-weight:bold; border-bottom:3px solid #FFB800; display:inline-block; padding:0 40px 10px 40px; margin:0 0 25px 0;">[Name]</h2>
                 
                 <p style="color:#444; font-size: 18px; margin:0 auto 40px auto; line-height:1.7; max-width: 650px;">
-                    in profound recognition of your selfless commitment to saving lives. Your blood donation through the Tatkhalsa Blood Network stands as a true testament to humanity, compassion, and the spirit of selfless service.
+                    in profound recognition of your selfless commitment to saving lives. Your blood donation through the Tatkhalsa Blood On Call stands as a true testament to humanity, compassion, and the spirit of selfless service.
                 </p>
                 
                 <div style="display:flex; justify-content:space-between; align-items:flex-end; padding: 0 40px;">

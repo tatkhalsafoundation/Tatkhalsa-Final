@@ -2680,3 +2680,132 @@ footer#footer:nth-of-type(1) > div:nth-of-type(2) > div:nth-of-type(2) {
   content: '💙';
 }
 
+/* Blood On Call Actions Menu styling */
+.blood-actions-menu {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  justify-content: center;
+  margin-bottom: 40px;
+}
+
+.btn-donor-register {
+  background: var(--secondary);
+  color: #000;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3);
+  transition: all 0.3s ease;
+}
+.btn-donor-register:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(212, 175, 55, 0.5);
+  background: #ffe38f;
+}
+
+[data-theme="light"] .btn-donor-register {
+  background: var(--secondary);
+  color: #0a2342;
+  box-shadow: 0 4px 3px rgba(212, 175, 55, 0.12);
+}
+[data-theme="light"] .btn-donor-register:hover {
+  background: #c39e2e;
+}
+
+.btn-donor-request {
+  background: linear-gradient(135deg, var(--accent-red) 0%, #ff5d73 100%);
+  color: #fff;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  box-shadow: 0 4px 15px rgba(209, 61, 82, 0.3);
+  transition: all 0.3s ease;
+}
+.btn-donor-request:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(209, 61, 82, 0.5);
+}
+
+.btn-donor-admin {
+  background: rgba(255, 255, 255, 0.08);
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  transition: all 0.3s ease;
+}
+.btn-donor-admin:hover {
+  background: rgba(255, 255, 255, 0.15);
+  transform: translateY(-2px);
+}
+
+[data-theme="light"] .btn-donor-admin {
+  background: rgba(0, 0, 0, 0.05);
+  color: var(--text-dark);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+}
+[data-theme="light"] .btn-donor-admin:hover {
+  background: rgba(0, 0, 0, 0.1);
+}
+
+.btn-donor-status {
+  background: transparent;
+  color: var(--secondary);
+  border: 1.5px dashed rgba(212, 175, 55, 0.6);
+  padding: 11px 23px;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+.btn-donor-status:hover {
+  border-color: var(--secondary);
+  color: #fff;
+  background: rgba(212, 175, 55, 0.1);
+  transform: translateY(-2px);
+}
+
+[data-theme="light"] .btn-donor-status {
+  border: 1.5px dashed var(--secondary-dark);
+  color: var(--text-dark);
+}
+[data-theme="light"] .btn-donor-status:hover {
+  background: rgba(212, 175, 55, 0.08);
+  color: var(--text-dark);
+}
+
+.btn-donor-remove {
+  background: transparent;
+  color: var(--text-light);
+  border: 1.5px dashed rgba(209, 61, 82, 0.5);
+  padding: 11px 23px;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+.btn-donor-remove:hover {
+  border-color: var(--accent-red);
+  color: var(--accent-red);
+  background: rgba(209, 61, 82, 0.08);
+  transform: translateY(-2px);
+}
+
+[data-theme="light"] .btn-donor-remove {
+  border: 1.5px dashed var(--accent-red);
+  color: var(--text-dark);
+}
+[data-theme="light"] .btn-donor-remove:hover {
+  background: rgba(209, 61, 82, 0.05);
+  border-color: #ff334b;
+  color: #ff334b;
+}
+

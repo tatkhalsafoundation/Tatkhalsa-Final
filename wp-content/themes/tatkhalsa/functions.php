@@ -815,19 +815,19 @@ add_action( 'wp_ajax_nopriv_submit_blood_request', 'tatkhalsa_submit_blood_reque
 
 function tatkhalsa_register_blood_donor_cpt() {
 	$labels = array(
-		'name'               => _x( 'Blood Donors', 'post type general name', 'tatkhalsa-theme' ),
-		'singular_name'      => _x( 'Blood Donor', 'post type singular name', 'tatkhalsa-theme' ),
-		'menu_name'          => _x( 'Blood Donors', 'admin menu', 'tatkhalsa-theme' ),
-		'name_admin_bar'     => _x( 'Blood Donor', 'add new on admin bar', 'tatkhalsa-theme' ),
-		'add_new'            => _x( 'Add New', 'blood donor', 'tatkhalsa-theme' ),
-		'add_new_item'       => __( 'Add New Blood Donor', 'tatkhalsa-theme' ),
-		'new_item'           => __( 'New Blood Donor', 'tatkhalsa-theme' ),
-		'edit_item'          => __( 'Edit Blood Donor', 'tatkhalsa-theme' ),
-		'view_item'          => __( 'View Blood Donor', 'tatkhalsa-theme' ),
-		'all_items'          => __( 'All Blood Donors', 'tatkhalsa-theme' ),
-		'search_items'       => __( 'Search Blood Donors', 'tatkhalsa-theme' ),
-		'not_found'          => __( 'No blood donors found.', 'tatkhalsa-theme' ),
-		'not_found_in_trash' => __( 'No blood donors found in Trash.', 'tatkhalsa-theme' )
+		'name'               => _x( 'Blood On Call', 'post type general name', 'tatkhalsa-theme' ),
+		'singular_name'      => _x( 'Blood On Call Entry', 'post type singular name', 'tatkhalsa-theme' ),
+		'menu_name'          => _x( 'Blood On Call', 'admin menu', 'tatkhalsa-theme' ),
+		'name_admin_bar'     => _x( 'Blood On Call Entry', 'add new on admin bar', 'tatkhalsa-theme' ),
+		'add_new'            => _x( 'Add New', 'blood on call', 'tatkhalsa-theme' ),
+		'add_new_item'       => __( 'Add New Entry', 'tatkhalsa-theme' ),
+		'new_item'           => __( 'New Entry', 'tatkhalsa-theme' ),
+		'edit_item'          => __( 'Edit Entry', 'tatkhalsa-theme' ),
+		'view_item'          => __( 'View Entry', 'tatkhalsa-theme' ),
+		'all_items'          => __( 'All Entries', 'tatkhalsa-theme' ),
+		'search_items'       => __( 'Search Entries', 'tatkhalsa-theme' ),
+		'not_found'          => __( 'No entry found.', 'tatkhalsa-theme' ),
+		'not_found_in_trash' => __( 'No entry found in Trash.', 'tatkhalsa-theme' )
 	);
 
 	$args = array(
@@ -1583,13 +1583,13 @@ add_action( 'admin_menu', 'tatkhalsa_add_blood_master_data_menu' );
 function tatkhalsa_render_blood_master_data_page() {
 	?>
 	<div class="wrap" style="font-family: 'Inter', sans-serif;">
-		<h1 style="color: #ff334b; font-weight: bold; margin-bottom: 20px;">📌 Tatkhalsa Blood Network - Master Admin Records</h1>
+		<h1 style="color: #ff334b; font-weight: bold; margin-bottom: 20px;">📌 Tatkhalsa Blood On Call - Master Admin Records</h1>
 		<div style="background: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); margin-bottom: 30px;">
 			<p>Secure database containing donor credentials, active patient broadcasts, and spam protection metadata. Access is restricted to site managers.</p>
 			<p><strong>🔒 IP Logging Status:</strong> Active (Strict rolling 30-day storage system for security checks and anti-spam verification).</p>
 		</div>
 
-		<h2 style="margin-top: 30px;">🩸 Registered Blood Donors</h2>
+		<h2 style="margin-top: 30px;">🩸 Blood On Call Entries</h2>
 		<table class="wp-list-table widefat fixed striped" style="margin-bottom: 30px;">
 			<thead>
 				<tr>

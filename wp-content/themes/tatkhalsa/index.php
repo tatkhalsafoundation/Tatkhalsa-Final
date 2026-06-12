@@ -134,7 +134,7 @@ get_header();
       Save Lives Today
     </div>
     <h2 style="font-size: 2.5rem; color: var(--text-dark); margin-bottom: 20px; font-weight: 800; font-family: var(--font-heading); line-height: 1.2;">
-      Take the Pledge.<br>Join the Blood Network.
+      Take the Pledge.<br>Join Blood On Call.
     </h2>
     <p style="font-size: 1.1rem; color: var(--text-light); margin-bottom: 30px; line-height: 1.6; max-width: 700px; margin-left: auto; margin-right: auto;">
       We call upon the youth and every compassionate soul to step forward. A single act of contribution can give a family their loved one back. Register your name today to become someone's emergency hero.
@@ -896,7 +896,7 @@ get_header();
       </div>
       <div class="stat-item">
         <h3 class="counter" data-target="100">0</h3>
-        <p>Blood Donors</p>
+        <p>Blood On Call</p>
       </div>
       <div class="stat-item">
         <h3 class="counter" data-target="50">0</h3>
