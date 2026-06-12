@@ -819,17 +819,39 @@ function tatkhalsa_submit_blood_request() {
 			// Alert donor via email since they are in the same state
 			if ( ! empty( $donor_email ) ) {
 				$donor_subject = 'URGENT: Blood Donation Request - ' . $blood_group;
-				$donor_body = "<h1>Urgent Blood Request</h1>
-					<p>Dear {$donor_name},</p>
-					<p>Someone near you in your state requires urgent blood donation.</p>
-					<ul>
-						<li><strong>Blood Group:</strong> {$blood_group}</li>
-						<li><strong>Patient:</strong> {$patient_name}</li>
-						<li><strong>Hospital:</strong> {$hospital_name}</li>
-						<li><strong>Location:</strong> {$patient_location}</li>
-						<li><strong>Patient Contact:</strong> {$contact_details}</li>
-					</ul>
-					<p>If you are available, please contact the patient's family immediately.</p>";
+				$donor_body = "<div style='font-family: Arial, sans-serif; line-height: 1.6; color: #333; max-width: 600px; margin: 0 auto; border: 1px solid #eee; padding: 20px; border-radius: 8px;'>
+					<h2 style='color: #ff334b; font-size: 22px; border-bottom: 2px solid #ff334b; padding-bottom: 10px; margin-top: 0;'>🚨 Urgent Blood Request</h2>
+					<p>Dear <strong>{$donor_name}</strong>,</p>
+					<p>Someone near you in your state requires an urgent blood donation matching your blood group.</p>
+					
+					<div style='background: #fdfafa; border-left: 4px solid #ff334b; padding: 15px; margin: 20px 0; border-radius: 4px;'>
+						<h3 style='margin-top: 0; color: #ff334b; font-size: 16px;'>📋 Patient Information:</h3>
+						<table style='width: 100%; border-collapse: collapse;'>
+							<tr><td style='padding: 6px 0; font-weight: bold; width: 150px;'>Blood Group Needed:</td><td style='color: #ff334b; font-weight: bold; font-size: 1.15rem;'>{$blood_group}</td></tr>
+							<tr><td style='padding: 6px 0; font-weight: bold;'>Patient Name:</td><td>{$patient_name}</td></tr>
+							<tr><td style='padding: 6px 0; font-weight: bold;'>Hospital Details:</td><td>{$hospital_name}</td></tr>
+							<tr><td style='padding: 6px 0; font-weight: bold;'>Location:</td><td>{$patient_location}</td></tr>
+							<tr><td style='padding: 6px 0; font-weight: bold;'>Contact Details:</td><td><a href='tel:{$contact_details}' style='color: #ff334b; font-weight: bold; text-decoration: none;'>{$contact_details}</a></td></tr>
+						</table>
+					</div>
+
+					<div style='background: #fff8eb; border: 1.5px solid #ffb800; border-radius: 6px; padding: 15px; margin: 20px 0;'>
+						<strong style='color: #c39e2e; font-size: 15px;'>⚠️ STRICT VERIFICATION NOTE</strong>
+						<p style='margin: 8px 0 0 0; font-size: 13.5px; color: #555;'>
+							Please <strong>verify the attached doctor request/blood requirement slip</strong> carefully before making any commitments. Ensure you fully coordinate with the patient's family, relative, or hospital staff to validate all medical requirements before making a contribution.
+						</p>
+					</div>
+
+					<p style='font-size: 13px; color: #666;'><em>* Note: A copy of the physician's request / doctor slip has been attached to this email for your active validation.</em></p>
+					
+					<p>If you are available to travel or assist, please reach out to the patient's family at the contact information provided above as soon as possible.</p>
+					
+					<hr style='border: none; border-top: 1px solid #ddd; margin: 25px 0;' />
+					<p style='font-size: 12px; color: #999; text-align: center; margin-bottom: 0;'>
+						This is an automated mobilization broadcast by <strong>Tatkhalsa Blood On Call</strong>.<br/>
+						Thank you for your noble commitment to saving lives.
+					</p>
+				</div>";
 				wp_mail( $donor_email, $donor_subject, $donor_body, $headers, $attachments );
 				$mailed_some_donors = true;
 			}
