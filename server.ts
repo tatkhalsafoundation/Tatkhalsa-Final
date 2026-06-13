@@ -478,6 +478,10 @@ async function startServer() {
       const urgency = req.body?.urgency || req.query?.urgency || "Urgent";
       const doctorSlipBase64 = req.body?.doctorSlipBase64 || req.query?.doctorSlipBase64;
 
+      const district = req.body?.district || req.query?.district || "";
+      const state = req.body?.state || req.query?.state || "";
+      const country = req.body?.country || req.query?.country || "";
+
       if (!patientName || !bloodGroup || !contactDetails) {
         return res.json({ success: false, data: { message: "Please fill in all required fields." } });
       }
@@ -492,7 +496,7 @@ async function startServer() {
         patientName,
         bloodGroup,
         hospitalName: hospitalName || "N/A",
-        patientLocation: patientLocation || "N/A",
+        patientLocation: patientLocation || (district ? `${district}, ${state}, ${country}` : "N/A"),
         contactDetails,
         unitsRequired,
         urgency,
@@ -503,10 +507,55 @@ async function startServer() {
 
       mockRequests.unshift(newRequest);
 
+      // Perform Mock donor matching with priority: District -> State -> Country
+      let matchedDonors: Donor[] = [];
+
+      // Helper to check if blood group matches
+      const getBloodGroupMatch = (dGroup: string) => {
+        if (!bloodGroup || bloodGroup === "Any" || bloodGroup === "Any Blood Group") {
+          return true;
+        }
+        return dGroup.toLowerCase().trim() === bloodGroup.toLowerCase().trim();
+      };
+
+      // 1. Try District match first
+      if (district) {
+        const dLower = district.toLowerCase().trim();
+        matchedDonors = mockDonors.filter(d => {
+          return getBloodGroupMatch(d.bloodGroup) && 
+                 d.availabilityStatus !== "Resting Phase" &&
+                 d.address.toLowerCase().includes(dLower);
+        });
+      }
+
+      // 2. Fallback to State if no district matches found
+      if (matchedDonors.length === 0 && state) {
+        const sLower = state.toLowerCase().trim();
+        matchedDonors = mockDonors.filter(d => {
+          return getBloodGroupMatch(d.bloodGroup) && 
+                 d.availabilityStatus !== "Resting Phase" &&
+                 d.address.toLowerCase().includes(sLower);
+        });
+      }
+
+      // 3. Fallback to Country if still no matches found
+      if (matchedDonors.length === 0 && country) {
+        const cLower = country.toLowerCase().trim();
+        matchedDonors = mockDonors.filter(d => {
+          return getBloodGroupMatch(d.bloodGroup) && 
+                 d.availabilityStatus !== "Resting Phase" &&
+                 d.address.toLowerCase().includes(cLower);
+        });
+      }
+
       return res.json({
         success: true,
         data: {
-          message: "Emergency Blood Request submitted successfully and logged!"
+          message: `Emergency Blood Request submitted successfully! Broadcast notification emails simulated for ${matchedDonors.length} available matching donors in your target area.`,
+          matched_donors: matchedDonors.map(d => ({
+            name: d.name,
+            contact: d.contact
+          }))
         }
       });
     }
