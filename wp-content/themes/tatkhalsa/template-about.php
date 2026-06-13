@@ -158,7 +158,7 @@ get_header();
             </p>
           </div>
 
-          <!-- Blood on Call -->
+          <!-- Blood On Call -->
           <div
             class="service-card"
             style="text-align: center; border-bottom-color: var(--accent-blue)"
@@ -191,7 +191,7 @@ get_header();
                 color: var(--primary);
               "
             >
-              Blood on Call
+              Blood On Call
             </h3>
             <p
               style="

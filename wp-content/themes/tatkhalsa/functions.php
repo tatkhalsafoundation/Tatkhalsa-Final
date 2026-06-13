@@ -2891,7 +2891,7 @@ add_filter( 'pre_get_document_title', function() {
     } elseif ( is_page_template( 'template-projects.php' ) ) {
         return "Our Seva Projects | Environmental, Healthcare, and Spiritual Initiatives";
     } elseif ( is_page_template( 'template-blood-donors.php' ) ) {
-        return "Emergency Blood Donor Network | Save Lives with Tatkhalsa Foundation";
+        return "Blood On Call | Save Lives with Tatkhalsa Foundation";
     } elseif ( is_page_template( 'template-volunteer.php' ) ) {
         return "Become a Sevadar | Join the Tatkhalsa Foundation Volunteer Force";
     } elseif ( is_page_template( 'template-privacy.php' ) ) {

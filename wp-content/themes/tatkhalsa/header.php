@@ -33,9 +33,9 @@
         $seo_description = "Explore our active global programs: Emergency Medical Aid, Dynamic Gurbani Search API, Tree Planting Stewardship, and educational support systems for underrepresented youths.";
         $seo_keywords    = "Tatkhalsa projects, Tree planting initiative Punjab, Gurbani Search Engine, Gurbani API, Medical Seva, NGO tasks";
     } elseif ( is_page_template( 'template-blood-donors.php' ) ) {
-        $seo_title       = "Emergency Blood Donor Network | Save Lives with Tatkhalsa Foundation";
-        $seo_description = "Join or request help from our secure, rapid response blood donor directory. Real-time availability tracking for all blood groups (A+, O-, B+, etc.) in Punjab and across India.";
-        $seo_keywords    = "Blood Donor India, Registered Blood Donor Punjab, Emergency Blood Group A B O, Sikh blood drive, donor directory, request blood";
+        $seo_title       = "Blood On Call | Save Lives with Tatkhalsa Foundation";
+        $seo_description = "Join Blood On Call, our secure and rapid response blood donor directory. Real-time availability tracking for all blood groups (A+, O-, B+, etc.) in Punjab and across India.";
+        $seo_keywords    = "Blood On Call, Blood Donor India, Registered Blood Donor Punjab, Emergency Blood Group A B O, Sikh blood drive, donor directory, request blood";
     } elseif ( is_page_template( 'template-volunteer.php' ) ) {
         $seo_title       = "Become a Sevadar | Join the Tatkhalsa Foundation Volunteer Force";
         $seo_description = "Uplift humanity through physical seva. Register as a certified Tatkhalsa volunteer to assist with medical help desk setup, administrative tasks, and local plantation drives.";
@@ -86,6 +86,59 @@
     <meta name="twitter:image" content="<?php echo esc_url( $seo_image ); ?>" />
     <meta name="twitter:site" content="@tatkhalsain" />
     <meta name="twitter:creator" content="@tatkhalsain" />
+
+    <!-- Semantic Schema.org Structured Markup JSON-LD for rich SEO results -->
+    <script type="application/ld+json">
+    <?php
+    $schema_graph = array(
+        "@context" => "https://schema.org",
+        "@graph" => array(
+            array(
+                "@type" => "NGO",
+                "@id" => esc_url( home_url( '/' ) ) . "#organization",
+                "name" => "Tatkhalsa Foundation",
+                "url" => esc_url( home_url( '/' ) ),
+                "logo" => array(
+                    "@type" => "ImageObject",
+                    "@id" => esc_url( home_url( '/' ) ) . "#logo",
+                    "url" => esc_url( tatkhalsa_get_logo_url() ),
+                    "caption" => "Tatkhalsa Foundation Logo"
+                ),
+                "image" => array(
+                    "@id" => esc_url( home_url( '/' ) ) . "#logo"
+                ),
+                "sameAs" => array(
+                    "https://instagram.com/tatkhalsa.in/",
+                    "https://www.facebook.com/tatkhalsain",
+                    "https://x.com/tatkhalsain"
+                ),
+                "description" => "Tatkhalsa Foundation is an NGO registered non-profit organization dedicated to human upliftment, tree planting, volunteer mobilizations, Gurbani scripture search tools, and emergency blood networks."
+            ),
+            array(
+                "@type" => "WebSite",
+                "@id" => esc_url( home_url( '/' ) ) . "#website",
+                "url" => esc_url( home_url( '/' ) ),
+                "name" => "Tatkhalsa Foundation",
+                "description" => "Modern Seva, Heritage and Humanitarian Relief Networks",
+                "publisher" => array(
+                    "@id" => esc_url( home_url( '/' ) ) . "#organization"
+                )
+            ),
+            array(
+                "@type" => "WebPage",
+                "@id" => esc_url( $current_url ) . "#webpage",
+                "url" => esc_url( $current_url ),
+                "name" => esc_attr( $seo_title ),
+                "description" => esc_attr( $seo_description ),
+                "isPartOf" => array(
+                    "@id" => esc_url( home_url( '/' ) ) . "#website"
+                )
+            )
+        )
+    );
+    echo json_encode( $schema_graph, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES );
+    ?>
+    </script>
     
     <script>
       (function() {
