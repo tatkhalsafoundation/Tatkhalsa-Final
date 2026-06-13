@@ -2862,60 +2862,54 @@ footer#footer:nth-of-type(1) > div:nth-of-type(2) > div:nth-of-type(2) {
   color: #ff334b;
 }
 
-/* Warm text color in dark mode for the registration modal */
-:root:not([data-theme="light"]) #donorRegModal .modal-content,
-body:not([data-theme="light"]) #donorRegModal .modal-content {
-  border-color: rgba(212, 175, 55, 0.5) !important;
-  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5), 0 0 40px rgba(212, 175, 55, 0.2) !important;
+/* Ensure the donor registration modal utilizes high contrast dark blue text and a cohesive light blue background matching the theme scheme */
+div#donorRegModal:nth-of-type(3) > div:nth-of-type(1),
+#donorRegModal .modal-content {
+  background: #ebf8ff !important;
+  color: #0a2342 !important;
+  border: 1px solid rgba(10, 35, 66, 0.2) !important;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25), 0 0 40px rgba(10, 35, 66, 0.15) !important;
 }
 
-:root:not([data-theme="light"]) #donorRegModal .modal-content h2,
-body:not([data-theme="light"]) #donorRegModal .modal-content h2 {
-  color: #ffe38f !important;
+#donorRegModal .modal-content h2,
+#donorRegModal .modal-content label {
+  color: #0a2342 !important;
 }
 
-:root:not([data-theme="light"]) #donorRegModal .modal-content label,
-body:not([data-theme="light"]) #donorRegModal .modal-content label {
-  color: #ffd275 !important;
+#donorRegModal .modal-content p,
+#donorRegModal .modal-content small,
+#donorRegModal .modal-content span {
+  color: #2b425b !important;
 }
 
-:root:not([data-theme="light"]) #donorRegModal .modal-content p,
-body:not([data-theme="light"]) #donorRegModal .modal-content p,
-:root:not([data-theme="light"]) #donorRegModal .modal-content small,
-body:not([data-theme="light"]) #donorRegModal .modal-content small {
-  color: #d1bba4 !important;
+#donorRegModal .modal-content input,
+#donorRegModal .modal-content select,
+#donorRegModal .modal-content textarea {
+  background: #ffffff !important;
+  color: #0a2342 !important;
+  border: 1px solid rgba(10, 35, 66, 0.3) !important;
 }
 
-:root:not([data-theme="light"]) #donorRegModal .modal-close,
-body:not([data-theme="light"]) #donorRegModal .modal-close {
-  color: #ffd275 !important;
+#donorRegModal .modal-content input:focus,
+#donorRegModal .modal-content select:focus,
+#donorRegModal .modal-content textarea:focus {
+  border-color: #0a2342 !important;
+  box-shadow: 0 0 8px rgba(10, 35, 66, 0.2) !important;
 }
 
-:root:not([data-theme="light"]) #donorRegModal .modal-content input,
-body:not([data-theme="light"]) #donorRegModal .modal-content input,
-:root:not([data-theme="light"]) #donorRegModal .modal-content select,
-body:not([data-theme="light"]) #donorRegModal .modal-content select,
-:root:not([data-theme="light"]) #donorRegModal .modal-content textarea,
-body:not([data-theme="light"]) #donorRegModal .modal-content textarea {
-  background: rgba(253, 247, 231, 0.05) !important;
-  color: #ffeed6 !important;
-  border-color: rgba(212, 175, 55, 0.25) !important;
+#donorRegModal .modal-content input::placeholder,
+#donorRegModal .modal-content textarea::placeholder {
+  color: #718096 !important;
 }
 
-:root:not([data-theme="light"]) #donorRegModal .modal-content input:focus,
-body:not([data-theme="light"]) #donorRegModal .modal-content input:focus,
-:root:not([data-theme="light"]) #donorRegModal .modal-content select:focus,
-body:not([data-theme="light"]) #donorRegModal .modal-content select:focus,
-:root:not([data-theme="light"]) #donorRegModal .modal-content textarea:focus,
-body:not([data-theme="light"]) #donorRegModal .modal-content textarea:focus {
-  border-color: #ffd275 !important;
-  box-shadow: 0 0 8px rgba(212, 175, 55, 0.3) !important;
+#donorRegModal .modal-content select option {
+  background: #ffffff !important;
+  color: #0a2342 !important;
 }
 
-:root:not([data-theme="light"]) #donorRegModal .modal-content input::placeholder,
-body:not([data-theme="light"]) #donorRegModal .modal-content input::placeholder,
-:root:not([data-theme="light"]) #donorRegModal .modal-content textarea::placeholder,
-body:not([data-theme="light"]) #donorRegModal .modal-content textarea::placeholder {
-  color: rgba(212, 175, 55, 0.45) !important;
+#donorRegModal .modal-close {
+  color: #0a2342 !important;
+  background: rgba(10, 35, 66, 0.08) !important;
+  border: 1px solid rgba(10, 35, 66, 0.1) !important;
 }
 
