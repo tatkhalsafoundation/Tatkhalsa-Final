@@ -1896,9 +1896,6 @@ document.addEventListener("DOMContentLoaded", function() {
                     if (msg) msg.innerHTML = `<strong>${popupMessage}</strong>`;
                 }
 
-                // Call real browser popup alert
-                alert(popupMessage);
-
                 // Auto-refresh admin panel data if active
                 if (typeof window.fetchMasterData === 'function') {
                     window.fetchMasterData();
