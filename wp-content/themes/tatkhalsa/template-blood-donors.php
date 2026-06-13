@@ -259,7 +259,22 @@ $donors_query = new WP_Query( $args );
 
                         <!-- Location Section -->
                         <div style="margin-bottom: 10px; font-size: 0.85rem; color: var(--text-dark); line-height: 1.4; display: block !important; visibility: visible !important;">
-                            📍 <strong>Location:</strong> <?php echo esc_html( $address ? $address : 'Punjab, India' ); ?>
+                            📍 <strong>Location:</strong> 
+                            <?php 
+                                $country = get_post_meta( $post_id, 'country', true );
+                                $state = get_post_meta( $post_id, 'state', true );
+                                $district = get_post_meta( $post_id, 'district', true );
+                                $loc_parts = array_filter( array_map( 'trim', array( $district, $state, $country ) ) );
+                                if ( ! empty( $loc_parts ) ) {
+                                    echo esc_html( implode( ', ', $loc_parts ) );
+                                } else {
+                                    $parts = array_filter( array_map( 'trim', explode( ',', $address ) ) );
+                                    if ( count( $parts ) > 3 ) {
+                                        $parts = array_slice( $parts, -3 );
+                                    }
+                                    echo esc_html( implode( ', ', $parts ) );
+                                }
+                            ?>
                         </div>
 
                         <div style="margin-bottom: 15px; font-size: 0.75rem; color: var(--text-light); line-height: 1.4; background: rgba(0,0,0,0.03); padding: 10px; border-radius: 6px;">
@@ -1599,6 +1614,16 @@ document.addEventListener("DOMContentLoaded", function() {
                                 statusText = '🔴 Resting Phase';
                             }
                             
+                            let displayAddress = 'Punjab, India';
+                            if (donor.address) {
+                                const parts = donor.address.split(',').map(p => p.trim()).filter(Boolean);
+                                if (parts.length > 3) {
+                                    displayAddress = parts.slice(-3).join(', ');
+                                } else {
+                                    displayAddress = parts.join(', ');
+                                }
+                            }
+
                             anchor.innerHTML += `
                                 <div style="background: var(--bg-dark); border-radius: 10px; padding: 15px; box-shadow: 0 3px 10px rgba(0,0,0,0.05); position: relative; border-top: 3px solid #ff334b;">
                                     <div style="position: absolute; top: 15px; right: 15px; background: #ff334b; color: #fff; font-weight: bold; padding: 4px 10px; border-radius: 15px; font-size: 0.9rem; box-shadow: 0 2px 6px rgba(255,51,75,0.4);">
@@ -1611,7 +1636,7 @@ document.addEventListener("DOMContentLoaded", function() {
                                     </div>
 
                                     <div style="margin-bottom: 10px; font-size: 0.85rem; color: var(--text-dark); line-height: 1.4; display: block !important; visibility: visible !important;">
-                                        📍 <strong>Location:</strong> ${donor.address}
+                                        📍 <strong>Location:</strong> ${displayAddress}
                                     </div>
 
                                     <div style="margin-bottom: 15px; font-size: 0.75rem; color: var(--text-light); line-height: 1.4; background: rgba(0,0,0,0.03); padding: 10px; border-radius: 6px;">
