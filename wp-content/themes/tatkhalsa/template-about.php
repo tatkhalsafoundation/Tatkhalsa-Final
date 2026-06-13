@@ -5,7 +5,6 @@
  * @package TatkhalsaTheme
  */
 
-<?php
 get_header();
 
 // Initialize standard WordPress page post object for proper SEO metadata and Yoast support
