@@ -59,6 +59,7 @@
     }
     ?>
 
+    <?php if ( ! defined( 'WPSEO_VERSION' ) && ! class_exists( 'AIOSEO_Base' ) && ! class_exists( 'RankMath' ) ) : ?>
     <!-- Primary Search Engine Optimization Tags -->
     <meta name="description" content="<?php echo esc_attr( $seo_description ); ?>" />
     <meta name="keywords" content="<?php echo esc_attr( $seo_keywords ); ?>" />
@@ -86,6 +87,7 @@
     <meta name="twitter:image" content="<?php echo esc_url( $seo_image ); ?>" />
     <meta name="twitter:site" content="@tatkhalsain" />
     <meta name="twitter:creator" content="@tatkhalsain" />
+    <?php endif; ?>
 
     <!-- Semantic Schema.org Structured Markup JSON-LD for rich SEO results -->
     <script type="application/ld+json">

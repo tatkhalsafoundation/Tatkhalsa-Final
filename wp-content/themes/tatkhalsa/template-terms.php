@@ -6,6 +6,14 @@
  */
 
 get_header();
+
+// Initialize standard WordPress page post object for proper SEO metadata and Yoast support
+if ( have_posts() ) {
+    while ( have_posts() ) {
+        the_post();
+    }
+    rewind_posts();
+}
 ?>
 
     <section class="hero" style="padding: 40px 0 60px 0;">
@@ -41,7 +49,25 @@ get_header();
     <section style="padding: 60px 0;">
       <div class="container" style="max-width: 800px; color: var(--text-dark);">
         <div style="background: var(--bg-shade-1); padding: 40px; border-radius: 12px; border: 1px solid rgba(0,0,0,0.1); box-shadow: 0 4px 15px rgba(0,0,0,0.05);">
+            <?php 
+            $has_custom_content = false;
+            if ( have_posts() ) {
+                while ( have_posts() ) {
+                    the_post();
+                    if ( ! empty( get_the_content() ) ) {
+                        $has_custom_content = true;
+                        ?>
+                        <div class="entry-content" style="color: var(--text-light); line-height: 1.8;">
+                            <?php the_content(); ?>
+                        </div>
+                        <?php
+                    }
+                }
+                rewind_posts();
+            }
             
+            if ( ! $has_custom_content ) :
+            ?>
             <p style="margin-bottom: 40px; color: var(--text-light); line-height: 1.8; font-style: italic;">
                 Last Updated: <?php echo date('F Y'); ?>
             </p>
@@ -78,6 +104,7 @@ get_header();
             <p style="margin-bottom: 20px; color: var(--text-light); line-height: 1.8;">
                 If you have any questions about these Terms, please contact us at: <a href="mailto:info@tatkhalsa.in" style="color: var(--secondary);">info@tatkhalsa.in</a>.
             </p>
+            <?php endif; ?>
         </div>
       </div>
     </section>

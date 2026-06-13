@@ -7,6 +7,14 @@
 ?>
 <?php get_header(); ?>
 <?php
+// Initialize standard WordPress page post object for proper SEO metadata and Yoast support
+if ( have_posts() ) {
+    while ( have_posts() ) {
+        the_post();
+    }
+    rewind_posts();
+}
+
 // Fetch Blood Donors
 $paged = ( get_query_var( 'paged' ) ) ? get_query_var( 'paged' ) : 1;
 $args = array(
@@ -66,6 +74,20 @@ $donors_query = new WP_Query( $args );
                 <span style="color: var(--text-light); font-size: 0.85rem; font-weight: 500;">This section is in public beta. Real-time notifications and features are currently being verified and enhanced.</span>
             </div>
         </div>
+
+        <!-- WordPress Editor Page Content Section -->
+        <?php if ( have_posts() ) : ?>
+            <?php while ( have_posts() ) : the_post(); ?>
+                <?php if ( ! empty( get_the_content() ) ) : ?>
+                    <div class="wp-page-editor-content-section" style="max-width: 800px; margin: 0 auto; margin-bottom: 40px; color: var(--text-light); line-height: 1.8; text-align: left; padding: 25px; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.06); border-radius: 12px; font-size: 1.05rem; box-shadow: 0 4px 15px rgba(0,0,0,0.05);">
+                        <div class="entry-content">
+                            <?php the_content(); ?>
+                        </div>
+                    </div>
+                <?php endif; ?>
+            <?php endwhile; ?>
+            <?php rewind_posts(); ?>
+        <?php endif; ?>
 
         <!-- Accept Request Status Banner -->
         <div id="acceptRequestBanner" style="display: none; max-width: 800px; margin: 0 auto 30px auto; padding: 22px; border-radius: 12px; text-align: left; background: rgba(255,255,255,0.03); border: 1.5px solid rgba(255,255,255,0.08); box-shadow: 0 10px 25px rgba(0,0,0,0.25); backdrop-filter: blur(8px); overflow: hidden;">

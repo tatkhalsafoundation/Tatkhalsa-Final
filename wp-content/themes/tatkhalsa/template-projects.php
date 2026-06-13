@@ -6,6 +6,14 @@
  */
 
 get_header();
+
+// Initialize standard WordPress page post object for proper SEO metadata and Yoast support
+if ( have_posts() ) {
+    while ( have_posts() ) {
+        the_post();
+    }
+    rewind_posts();
+}
 ?>
 
 <style>
@@ -541,6 +549,22 @@ get_header();
       <div style="width: 45px; height: 2px; background: var(--secondary); margin: 0 auto;"></div>
     </div>
   </section>
+
+  <!-- WordPress Editor Page Content Section -->
+  <?php if ( have_posts() ) : ?>
+      <?php while ( have_posts() ) : the_post(); ?>
+          <?php if ( ! empty( get_the_content() ) ) : ?>
+              <section class="wp-page-editor-content-section" style="padding: 40px 0; background: var(--bg-shade-1);">
+                  <div class="container" style="max-width: 800px; color: var(--text-dark); line-height: 1.8; font-size: 1.05rem;">
+                      <div class="entry-content">
+                          <?php the_content(); ?>
+                      </div>
+                  </div>
+              </section>
+          <?php endif; ?>
+      <?php endwhile; ?>
+      <?php rewind_posts(); ?>
+  <?php endif; ?>
 
   <!-- Section 1: Hot Active Seva Spotlight -->
   <section class="spotlight-section">

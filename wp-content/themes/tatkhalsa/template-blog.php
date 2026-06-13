@@ -6,6 +6,14 @@
  */
 
 get_header();
+
+// Initialize standard WordPress page post object for proper SEO metadata and Yoast support
+if ( have_posts() ) {
+    while ( have_posts() ) {
+        the_post();
+    }
+    rewind_posts();
+}
 ?>
 
 <style>
@@ -507,6 +515,20 @@ get_header();
   <!-- Main Blogs Container -->
   <div class="container blogs-grid-container">
     
+    <!-- WordPress Editor Page Content Section -->
+    <?php if ( have_posts() ) : ?>
+        <?php while ( have_posts() ) : the_post(); ?>
+            <?php if ( ! empty( get_the_content() ) ) : ?>
+                <div class="wp-page-editor-content-section" style="margin-bottom: 40px; color: var(--text-light); line-height: 1.8; text-align: left; padding: 25px; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.06); border-radius: 12px; font-size: 1.05rem; box-shadow: 0 4px 15px rgba(0,0,0,0.05);">
+                    <div class="entry-content">
+                        <?php the_content(); ?>
+                    </div>
+                </div>
+            <?php endif; ?>
+        <?php endwhile; ?>
+        <?php rewind_posts(); ?>
+    <?php endif; ?>
+
     <!-- Interactive Search and Category Filters -->
     <div class="blogs-filter-bar scroll-reveal">
       <div class="blogs-categories">

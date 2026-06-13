@@ -6,6 +6,14 @@
  */
 
 get_header();
+
+// Initialize standard WordPress page post object for proper SEO metadata and Yoast support
+if ( have_posts() ) {
+    while ( have_posts() ) {
+        the_post();
+    }
+    rewind_posts();
+}
 ?>
 
     <section class="hero" style="padding: 40px 0 60px 0;">
@@ -41,6 +49,25 @@ get_header();
     <section style="padding: 60px 0;">
       <div class="container" style="max-width: 800px; color: var(--text-dark);">
         <div style="background: var(--bg-shade-1); padding: 40px; border-radius: 12px; border: 1px solid rgba(0,0,0,0.1); box-shadow: 0 4px 15px rgba(0,0,0,0.05);">
+            <?php 
+            $has_custom_content = false;
+            if ( have_posts() ) {
+                while ( have_posts() ) {
+                    the_post();
+                    if ( ! empty( get_the_content() ) ) {
+                        $has_custom_content = true;
+                        ?>
+                        <div class="entry-content" style="color: var(--text-light); line-height: 1.8;">
+                            <?php the_content(); ?>
+                        </div>
+                        <?php
+                    }
+                }
+                rewind_posts();
+            }
+            
+            if ( ! $has_custom_content ) :
+            ?>
             <h2 style="font-size: 1.8rem; margin-bottom: 20px; color: var(--primary);">1. Information We Collect</h2>
             <p style="margin-bottom: 20px; color: var(--text-light); line-height: 1.8;">
                 We collect information you provide directly to us, such as when you volunteer, donate, register as a blood donor, submit an emergency blood request, or contact us. The types of personal information we may collect include your name, email address, physical address, and phone number.
@@ -74,6 +101,7 @@ get_header();
             <p style="margin-bottom: 20px; color: var(--text-light); line-height: 1.8;">
                 If you have any questions about this Privacy Policy, please contact us at: <a href="mailto:info@tatkhalsa.in" style="color: var(--secondary);">info@tatkhalsa.in</a>.
             </p>
+            <?php endif; ?>
         </div>
       </div>
     </section>
