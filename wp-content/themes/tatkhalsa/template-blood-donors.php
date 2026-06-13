@@ -67,6 +67,20 @@ $donors_query = new WP_Query( $args );
             </div>
         </div>
 
+        <!-- Accept Request Status Banner -->
+        <div id="acceptRequestBanner" style="display: none; max-width: 800px; margin: 0 auto 30px auto; padding: 22px; border-radius: 12px; text-align: left; background: rgba(255,255,255,0.03); border: 1.5px solid rgba(255,255,255,0.08); box-shadow: 0 10px 25px rgba(0,0,0,0.25); backdrop-filter: blur(8px); overflow: hidden;">
+            <div style="display: flex; gap: 18px; align-items: flex-start; flex-wrap: wrap;">
+                <div id="acceptRequestIcon" style="font-size: 2.2rem; line-height: 1; min-width: 40px; text-align: center;">✨</div>
+                <div style="flex: 1; min-width: 250px;">
+                    <h3 id="acceptRequestTitle" style="margin: 0 0 6px 0; font-size: 1.25rem; font-weight: bold; color: #fff;">Processing Request Acceptance...</h3>
+                    <p id="acceptRequestMsg" style="margin: 0; font-size: 0.95rem; line-height: 1.5; color: rgba(255,255,255,0.73);"></p>
+                </div>
+                <button onclick="document.getElementById('acceptRequestBanner').style.display='none'" style="background: rgba(255,255,255,0.05); border: none; color: #fff; font-size: 0.85rem; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-weight: bold; transition: background 0.2s; white-space: nowrap; margin-left: auto;" onmouseover="this.style.background='rgba(255,255,255,0.1)'" onmouseout="this.style.background='rgba(255,255,255,0.05)'">
+                    Dismiss
+                </button>
+            </div>
+        </div>
+
         <div class="blood-actions-menu">
             <button onclick="openDonorRegistrationModal()" class="btn-donor-register">
                 🩸 Register as a Donor
@@ -1806,11 +1820,95 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     };
 
+    async function checkAcceptRequestQuery() {
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.has('accept') || urlParams.has('accept_request')) {
+            const req_id = urlParams.get('req_id') || urlParams.get('req') || urlParams.get('id');
+            const donor_id = urlParams.get('donor_id') || urlParams.get('donor');
+
+            if (!req_id || !donor_id) {
+                return;
+            }
+
+            const banner = document.getElementById('acceptRequestBanner');
+            const icon = document.getElementById('acceptRequestIcon');
+            const title = document.getElementById('acceptRequestTitle');
+            const msg = document.getElementById('acceptRequestMsg');
+
+            if (!banner) return;
+
+            banner.style.display = 'block';
+            banner.style.borderLeft = '5px solid #0A327D';
+            banner.style.background = 'rgba(10, 50, 125, 0.08)';
+            if (icon) icon.innerText = '⌛';
+            if (title) title.innerText = 'Verifying Request Fulfillments...';
+            if (msg) msg.innerText = 'Connecting to blood network registry to confirm your request acceptance. Please standby.';
+
+            try {
+                let responseData;
+                const isLocalMock = window.location.hostname.includes('localhost') || 
+                                    window.location.hostname.includes('.run.app') || 
+                                    window.location.hostname.includes('aistudio');
+
+                if (isLocalMock) {
+                    const res = await fetch('/api/admin/accept-request', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ req_id, donor_id })
+                    });
+                    responseData = await res.json();
+                } else {
+                    const formData = new FormData();
+                    formData.append('action', 'accept_blood_request');
+                    formData.append('req_id', req_id);
+                    formData.append('donor_id', donor_id);
+                    
+                    const res = await fetch('/wp-admin/admin-ajax.php', {
+                        method: 'POST',
+                        body: formData
+                    });
+                    responseData = await res.json();
+                }
+
+                const isSuccess = responseData.success || (responseData.data && responseData.data.success);
+                const isAlreadyAccepted = responseData.already_accepted_by_you || (responseData.data && responseData.data.already_accepted_by_you);
+                const messageText = responseData.message || (responseData.data && responseData.data.message) || responseData.error || '';
+
+                if (isSuccess) {
+                    banner.style.borderLeft = '5px solid #2ced73';
+                    banner.style.background = 'rgba(46, 213, 115, 0.08)';
+                    if (icon) icon.innerText = isAlreadyAccepted ? '🤝' : '❤️';
+                    if (title) title.innerText = isAlreadyAccepted ? 'Already Accepted by You' : 'Noble Response Registered!';
+                    if (msg) msg.innerHTML = `<strong>${messageText}</strong>`;
+                } else {
+                    banner.style.borderLeft = '5px solid #ff334b';
+                    banner.style.background = 'rgba(255, 51, 75, 0.08)';
+                    if (icon) icon.innerText = '🛡️';
+                    if (title) title.innerText = 'Blood Request Handled';
+                    if (msg) msg.innerHTML = `<strong>${messageText}</strong>`;
+                }
+
+                // Auto-refresh admin panel data if active
+                if (typeof window.fetchMasterData === 'function') {
+                    window.fetchMasterData();
+                }
+            } catch (err) {
+                banner.style.borderLeft = '5px solid #ff9f43';
+                banner.style.background = 'rgba(255, 159, 67, 0.08)';
+                if (icon) icon.innerText = '⚠️';
+                if (title) title.innerText = 'Sync Timeout';
+                if (msg) msg.innerText = 'Request was not authenticated. It may have already been claimed or completed. Contact support as fallback.';
+                console.error(err);
+            }
+        }
+    }
+
     // Override public submission refresh logic
     const oldOnSubmit = window.submitDonorRegistration;
     // We run loadPublicDirectory on load
     setTimeout(() => {
         window.loadPublicDirectory();
+        checkAcceptRequestQuery();
     }, 500);
 
     loadResources();

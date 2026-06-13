@@ -845,6 +845,12 @@ function tatkhalsa_submit_blood_request() {
 		$body .= "<p><strong>Additional Info / Notes:</strong><br />" . nl2br( esc_html( $additional_info ) ) . "</p>";
 	}
 
+	$app_url = esc_url( home_url( '/blood-donors/' ) );
+	$body .= "<div style='text-align: center; margin: 25px 0 10px 0;'>";
+	$body .= "<a href='{$app_url}' style='display: inline-block; background-color: #0A327D; color: #ffffff !important; font-weight: bold; font-family: Arial, sans-serif; font-size: 15px; padding: 12px 24px; text-decoration: none; border-radius: 6px; box-shadow: 0 4px 12px rgba(10,50,125,0.25); text-transform: uppercase; letter-spacing: 0.5px;'>🖥️ Open Blood Directory App</a>";
+	$body .= "</div>";
+	$body .= "<p style='text-align: center; font-size: 12px; color: #666; margin-bottom: 25px;'>If the button above does not work, copy and paste this link: <a href='{$app_url}' style='color: #0A327D;'>{$app_url}</a></p>";
+
 	$headers = array(
 		'Content-Type: text/html; charset=UTF-8',
 		'From: Tatkhalsa Blood On Call <bloodoncall@tatkhalsa.in>',
@@ -932,6 +938,12 @@ function tatkhalsa_submit_blood_request() {
 
 				// Alert donor via email since they are in the same district
 				if ( ! empty( $donor_email ) ) {
+					$accept_link = esc_url( add_query_arg( array(
+						'accept_request' => '1',
+						'req_id'         => $request_post_id,
+						'donor_id'       => $post_id
+					), home_url( '/blood-donors/' ) ) );
+
 					$donor_subject = 'URGENT: General Blood Request In Your District - ' . $district;
 					$donor_body = "<div style='font-family: Arial, sans-serif; line-height: 1.6; color: #333; max-width: 600px; margin: 0 auto; border: 1px solid #eee; padding: 20px; border-radius: 8px;'>
 						<h2 style='color: #ff334b; font-size: 22px; border-bottom: 2px solid #ff334b; padding-bottom: 10px; margin-top: 0;'>🚨 Urgent Blood Request</h2>
@@ -961,6 +973,15 @@ function tatkhalsa_submit_blood_request() {
 
 						<p style='font-size: 13px; color: #666;'><em>* Note: A copy of the physician's request / doctor slip has been attached to this email for your active validation.</em></p>
 						
+						<div style='text-align: center; margin: 25px 0 10px 0;'>
+							<a href='{$accept_link}' style='display: inline-block; background-color: #0A327D; color: #ffffff !important; font-weight: bold; font-family: Arial, sans-serif; font-size: 15px; padding: 12px 24px; text-decoration: none; border-radius: 6px; box-shadow: 0 4px 12px rgba(10,50,125,0.25); text-transform: uppercase; letter-spacing: 0.5px;'>🩸 Accept Blood Request</a>
+							<p style='margin: 8px 0 0 0; font-size: 11px; color: #ff334b;'><strong>* Single acceptance rule:</strong> Only the first donor to click accepts the request. Others cannot accept once it has been claimed.</p>
+						</div>
+						<p style='text-align: center; font-size: 12px; color: #666; margin-bottom: 25px;'>
+							If you cannot click the button above, please copy & paste this link directly in your browser: <br/>
+							<a href='{$accept_link}' style='color: #0A327D; word-break: break-all;'>{$accept_link}</a>
+						</p>
+
 						<p>If you are available to travel or assist, please reach out to the patient's family at the contact information provided above as soon as possible.</p>
 						
 						<hr style='border: none; border-top: 1px solid #ddd; margin: 25px 0;' />
@@ -1020,6 +1041,12 @@ function tatkhalsa_submit_blood_request() {
 
 				// Alert donor via email since they are in the same district
 				if ( ! empty( $donor_email ) ) {
+					$accept_link = esc_url( add_query_arg( array(
+						'accept_request' => '1',
+						'req_id'         => $request_post_id,
+						'donor_id'       => $post_id
+					), home_url( '/blood-donors/' ) ) );
+
 					$donor_subject = 'URGENT: Blood Donation Request in your District - ' . $blood_group;
 					$donor_body = "<div style='font-family: Arial, sans-serif; line-height: 1.6; color: #333; max-width: 600px; margin: 0 auto; border: 1px solid #eee; padding: 20px; border-radius: 8px;'>
 						<h2 style='color: #ff334b; font-size: 22px; border-bottom: 2px solid #ff334b; padding-bottom: 10px; margin-top: 0;'>🚨 Urgent Blood Request</h2>
@@ -1049,6 +1076,15 @@ function tatkhalsa_submit_blood_request() {
 
 						<p style='font-size: 13px; color: #666;'><em>* Note: A copy of the physician's request / doctor slip has been attached to this email for your active validation.</em></p>
 						
+						<div style='text-align: center; margin: 25px 0 10px 0;'>
+							<a href='{$accept_link}' style='display: inline-block; background-color: #0A327D; color: #ffffff !important; font-weight: bold; font-family: Arial, sans-serif; font-size: 15px; padding: 12px 24px; text-decoration: none; border-radius: 6px; box-shadow: 0 4px 12px rgba(10,50,125,0.25); text-transform: uppercase; letter-spacing: 0.5px;'>🩸 Accept Blood Request</a>
+							<p style='margin: 8px 0 0 0; font-size: 11px; color: #ff334b;'><strong>* Single acceptance rule:</strong> Only the first donor to click accepts the request. Others cannot accept once it has been claimed.</p>
+						</div>
+						<p style='text-align: center; font-size: 12px; color: #666; margin-bottom: 25px;'>
+							If you cannot click the button above, please copy & paste this link directly in your browser: <br/>
+							<a href='{$accept_link}' style='color: #0A327D; word-break: break-all;'>{$accept_link}</a>
+						</p>
+
 						<p>If you are available to travel or assist, please reach out to the patient's family at the contact information provided above as soon as possible.</p>
 						
 						<hr style='border: none; border-top: 1px solid #ddd; margin: 25px 0;' />
@@ -1109,6 +1145,12 @@ function tatkhalsa_submit_blood_request() {
 
 					// Alert state donor via email as state-level fallback
 					if ( ! empty( $donor_email ) ) {
+						$accept_link = esc_url( add_query_arg( array(
+							'accept_request' => '1',
+							'req_id'         => $request_post_id,
+							'donor_id'       => $post_id
+						), home_url( '/blood-donors/' ) ) );
+
 						$donor_subject = 'URGENT: Blood Donation Request in your State - ' . $blood_group;
 						$donor_body = "<div style='font-family: Arial, sans-serif; line-height: 1.6; color: #333; max-width: 600px; margin: 0 auto; border: 1px solid #eee; padding: 20px; border-radius: 8px;'>
 							<h2 style='color: #ff334b; font-size: 22px; border-bottom: 2px solid #ff334b; padding-bottom: 10px; margin-top: 0;'>🚨 Urgent Blood Request</h2>
@@ -1138,6 +1180,15 @@ function tatkhalsa_submit_blood_request() {
 
 							<p style='font-size: 13px; color: #666;'><em>* Note: A copy of the physician's request / doctor slip has been attached to this email for your active validation.</em></p>
 							
+							<div style='text-align: center; margin: 25px 0 10px 0;'>
+								<a href='{$accept_link}' style='display: inline-block; background-color: #0A327D; color: #ffffff !important; font-weight: bold; font-family: Arial, sans-serif; font-size: 15px; padding: 12px 24px; text-decoration: none; border-radius: 6px; box-shadow: 0 4px 12px rgba(10,50,125,0.25); text-transform: uppercase; letter-spacing: 0.5px;'>🩸 Accept Blood Request</a>
+								<p style='margin: 8px 0 0 0; font-size: 11px; color: #ff334b;'><strong>* Single acceptance rule:</strong> Only the first donor to click accepts the request. Others cannot accept once it has been claimed.</p>
+							</div>
+							<p style='text-align: center; font-size: 12px; color: #666; margin-bottom: 25px;'>
+								If you cannot click the button above, please copy & paste this link directly in your browser: <br/>
+								<a href='{$accept_link}' style='color: #0A327D; word-break: break-all;'>{$accept_link}</a>
+							</p>
+
 							<p>If you are available to travel or assist, please reach out to the patient's family at the contact information provided above as soon as possible.</p>
 							
 							<hr style='border: none; border-top: 1px solid #ddd; margin: 25px 0;' />
@@ -1211,6 +1262,11 @@ function tatkhalsa_submit_blood_request() {
 }
 add_action( 'wp_ajax_submit_blood_request', 'tatkhalsa_submit_blood_request' );
 add_action( 'wp_ajax_nopriv_submit_blood_request', 'tatkhalsa_submit_blood_request' );
+
+function tatkhalsa_set_html_mail_content_type() {
+	return 'text/html';
+}
+add_filter( 'wp_mail_content_type', 'tatkhalsa_set_html_mail_content_type' );
 
 function tatkhalsa_register_blood_donor_cpt() {
 	$labels = array(
@@ -1408,6 +1464,56 @@ function tatkhalsa_verify_donor_email() {
 }
 add_action( 'wp_ajax_verify_donor_email', 'tatkhalsa_verify_donor_email' );
 add_action( 'wp_ajax_nopriv_verify_donor_email', 'tatkhalsa_verify_donor_email' );
+
+function tatkhalsa_accept_blood_request() {
+	$req_id   = isset( $_POST['req_id'] ) ? sanitize_text_field( wp_unslash( $_POST['req_id'] ) ) : '';
+	$donor_id = isset( $_POST['donor_id'] ) ? sanitize_text_field( wp_unslash( $_POST['donor_id'] ) ) : '';
+
+	if ( empty( $req_id ) || empty( $donor_id ) ) {
+		wp_send_json_error( array( 'message' => 'Missing required request or donor fields.' ) );
+	}
+
+	$status = get_post_meta( $req_id, 'status', true );
+	if ( empty( $status ) ) {
+		$status = 'pending';
+	}
+
+	if ( $status === 'accepted' || $status === 'fulfilled' ) {
+		$accepted_by = get_post_meta( $req_id, 'accepted_by_donor_id', true );
+		if ( intval( $accepted_by ) === intval( $donor_id ) ) {
+			$contact = get_post_meta( $req_id, 'contact_details', true );
+			wp_send_json_success( array(
+				'already_accepted_by_you' => true,
+				'message' => 'You have already accepted this blood request! Please contact the family directly at: ' . $contact
+			) );
+		} else {
+			wp_send_json_error( array( 'message' => 'This blood request has already been accepted or fulfilled by another noble volunteer. Thank you so much for your readiness!' ) );
+		}
+	}
+
+	// Update status and track the recipient donor ID
+	update_post_meta( $req_id, 'status', 'accepted' );
+	update_post_meta( $req_id, 'accepted_by_donor_id', $donor_id );
+
+	// Update in custom table if it exists
+	global $wpdb;
+	$table_exists = $wpdb->get_var( "SHOW TABLES LIKE 'wp_blood_requests'" );
+	if ( $table_exists ) {
+		$wpdb->update(
+			'wp_blood_requests',
+			array( 'status' => 'accepted', 'accepted_by_donor_id' => $donor_id ),
+			array( 'id' => $req_id )
+		);
+	}
+
+	$contact = get_post_meta( $req_id, 'contact_details', true );
+	$patient = get_post_meta( $req_id, 'patient_name', true );
+	wp_send_json_success( array(
+		'message' => 'Waheguru Ji Ka Khalsa! You have successfully accepted this blood request for ' . $patient . '. Kindly contact the family immediately at: ' . $contact
+	) );
+}
+add_action( 'wp_ajax_accept_blood_request', 'tatkhalsa_accept_blood_request' );
+add_action( 'wp_ajax_nopriv_accept_blood_request', 'tatkhalsa_accept_blood_request' );
 
 function tatkhalsa_send_pdf_certificate() {
 	if ( ! isset( $_POST['action'] ) || $_POST['action'] !== 'send_pdf_certificate' ) {

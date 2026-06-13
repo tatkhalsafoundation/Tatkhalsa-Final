@@ -692,6 +692,50 @@ async function startServer() {
     return res.json({ success: true, message: "Blood request status updated to fulfilled." });
   });
 
+  app.post("/api/admin/accept-request", (req, res) => {
+    const { req_id, donor_id } = req.body || {};
+    if (!req_id || !donor_id) {
+      return res.status(400).json({ success: false, message: "Request ID and Donor ID are required." });
+    }
+    const reqIndex = mockRequests.findIndex(r => r.id === req_id);
+    if (reqIndex === -1) {
+      return res.status(404).json({ success: false, message: "Blood request not found." });
+    }
+    const request = mockRequests[reqIndex];
+    const donor = mockDonors.find(d => d.id === donor_id);
+    const donorNameOutput = donor ? donor.name : "A verified donor";
+
+    // Double claim tracking / blocking protection
+    if (request.status === "accepted" || request.status === "fulfilled") {
+      if (request.acceptedByDonorId === donor_id) {
+        return res.json({
+          success: true,
+          data: {
+            success: true,
+            already_accepted_by_you: true,
+            message: `You have already accepted this blood request! Please coordinate directly with the patient line at: ${request.contactDetails}`
+          }
+        });
+      }
+      return res.status(400).json({
+        success: false,
+        message: "This emergency blood request has already been claimed or fulfilled by another noble volunteer. Thank you so much for your noble commitment!"
+      });
+    }
+
+    // Set request status to accepted and record which donor did it
+    request.status = "accepted";
+    request.acceptedByDonorId = donor_id;
+
+    return res.json({
+      success: true,
+      data: {
+        success: true,
+        message: `Waheguru Ji Ka Khalsa! You have successfully accepted the request for ${request.patientName}. Please contact the patient family at ${request.contactDetails} as soon as possible.`
+      }
+    });
+  });
+
   app.post("/api/admin/import-data", (req, res) => {
     const { donors, requests } = req.body || {};
     if (!Array.isArray(donors) || !Array.isArray(requests)) {
