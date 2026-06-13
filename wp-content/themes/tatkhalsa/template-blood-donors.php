@@ -61,6 +61,10 @@ $donors_query = new WP_Query( $args );
             <p style="color: var(--text-light); font-size: 1.1rem; max-width: 600px; margin: 0 auto;">
                 Connect with verified blood donors in your area or register yourself to save lives.
             </p>
+            <div style="display: inline-flex; align-items: center; justify-content: center; gap: 8px; margin-top: 18px; padding: 6px 14px; background: rgba(255, 51, 75, 0.08); border: 1px solid rgba(255, 51, 75, 0.25); border-radius: 20px; box-shadow: 0 4px 12px rgba(255, 51, 75, 0.05);">
+                <span style="font-size: 0.75rem; background: #ff334b; color: #fff; font-weight: bold; padding: 2px 8px; border-radius: 12px; text-transform: uppercase; letter-spacing: 0.5px; box-shadow: 0 2px 6px rgba(255,51,75,0.3);">Beta</span>
+                <span style="color: var(--text-light); font-size: 0.85rem; font-weight: 500;">This section is in public beta. Real-time notifications and features are currently being verified and enhanced.</span>
+            </div>
         </div>
 
         <div class="blood-actions-menu">
