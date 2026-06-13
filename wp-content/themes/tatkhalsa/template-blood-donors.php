@@ -257,6 +257,11 @@ $donors_query = new WP_Query( $args );
                             ?>
                         </div>
 
+                        <!-- Location Section -->
+                        <div style="margin-bottom: 10px; font-size: 0.85rem; color: var(--text-dark); line-height: 1.4; display: block !important; visibility: visible !important;">
+                            📍 <strong>Location:</strong> <?php echo esc_html( $address ? $address : 'Punjab, India' ); ?>
+                        </div>
+
                         <div style="margin-bottom: 15px; font-size: 0.75rem; color: var(--text-light); line-height: 1.4; background: rgba(0,0,0,0.03); padding: 10px; border-radius: 6px;">
                             <span style="font-size: 0.85rem; display: block; margin-bottom: 3px;">🔒 Privacy Protected</span>
                             Contact details are private. Submit an Emergency Blood Request to view available donor contacts.
@@ -1605,7 +1610,7 @@ document.addEventListener("DOMContentLoaded", function() {
                                         ${statusText}
                                     </div>
 
-                                    <div style="margin-bottom: 10px; font-size: 0.8rem; color: var(--text-light); line-height: 1.4;">
+                                    <div style="margin-bottom: 10px; font-size: 0.85rem; color: var(--text-dark); line-height: 1.4; display: block !important; visibility: visible !important;">
                                         📍 <strong>Location:</strong> ${donor.address}
                                     </div>
 
