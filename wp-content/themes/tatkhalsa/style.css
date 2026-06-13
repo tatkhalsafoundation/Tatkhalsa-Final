@@ -272,6 +272,14 @@ h6 {
   transform: translateY(-2px);
   box-shadow: 0 4px 12px rgba(212, 175, 55, 0.4);
 }
+[data-theme="light"] .btn {
+  background-color: var(--secondary) !important;
+  color: #0a2342 !important;
+}
+[data-theme="light"] .btn:hover {
+  background-color: var(--secondary-dark) !important;
+  color: #000000 !important;
+}
 .btn-outline {
   background-color: transparent;
   border: 2px solid var(--cream);
@@ -2724,13 +2732,17 @@ footer#footer:nth-of-type(1) > div:nth-of-type(2) > div:nth-of-type(2) {
   background: #ffe38f;
 }
 
+[data-theme="light"] div:nth-of-type(2) > div:nth-of-type(1) > div:nth-of-type(2) > button:nth-of-type(1),
 [data-theme="light"] .btn-donor-register {
-  background: var(--secondary);
-  color: #0a2342;
-  box-shadow: 0 4px 3px rgba(212, 175, 55, 0.12);
+  background: var(--secondary) !important;
+  color: #0a2342 !important;
+  border: 1px solid rgba(10, 35, 66, 0.2) !important;
+  box-shadow: 0 4px 10px rgba(10, 25, 51, 0.15) !important;
 }
+[data-theme="light"] div:nth-of-type(2) > div:nth-of-type(1) > div:nth-of-type(2) > button:nth-of-type(1):hover,
 [data-theme="light"] .btn-donor-register:hover {
-  background: #c39e2e;
+  background: #c39e2e !important;
+  color: #000000 !important;
 }
 
 .btn-donor-request {

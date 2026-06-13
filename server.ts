@@ -119,6 +119,8 @@ async function startServer() {
     ip: string;
     timestamp: number;
     doctorSlipUrl?: string;
+    status?: "pending" | "accepted" | "fulfilled";
+    acceptedByDonorId?: string;
   }
 
   let mockDonors: Donor[] = [
@@ -180,7 +182,8 @@ async function startServer() {
       urgency: "Urgent",
       ip: "192.168.1.200",
       timestamp: Date.now() - 1 * 24 * 3600 * 1000,
-      doctorSlipUrl: "https://images.unsplash.com/photo-1576091160550-2173dba999ef?auto=format&fit=crop&w=800&q=80"
+      doctorSlipUrl: "https://images.unsplash.com/photo-1576091160550-2173dba999ef?auto=format&fit=crop&w=800&q=80",
+      status: "pending"
     },
     {
       id: "req_2",
@@ -193,7 +196,23 @@ async function startServer() {
       urgency: "Immediate",
       ip: "192.168.1.201",
       timestamp: Date.now() - 4 * 3600 * 1000,
-      doctorSlipUrl: "https://images.unsplash.com/photo-1584515979956-d9f6e5d09982?auto=format&fit=crop&w=800&q=80"
+      doctorSlipUrl: "https://images.unsplash.com/photo-1584515979956-d9f6e5d09982?auto=format&fit=crop&w=800&q=80",
+      status: "accepted",
+      acceptedByDonorId: "donor_1"
+    },
+    {
+      id: "req_3",
+      patientName: "S. Gurcharan Singh",
+      bloodGroup: "B+",
+      hospitalName: "Fortis Hospital",
+      patientLocation: "Sector 62, Mohali, Punjab",
+      contactDetails: "+91 99887 12345",
+      unitsRequired: "1",
+      urgency: "Normal",
+      ip: "192.168.1.202",
+      timestamp: Date.now() - 8 * 3600 * 1000,
+      doctorSlipUrl: "https://images.unsplash.com/photo-1576091160550-2173dba999ef?auto=format&fit=crop&w=800&q=80",
+      status: "fulfilled"
     }
   ];
 
@@ -658,6 +677,19 @@ async function startServer() {
     const toDelete = ids ? ids : [id];
     mockRequests = mockRequests.filter(r => !toDelete.includes(r.id));
     return res.json({ success: true, message: "Emergency query logs deleted successfully." });
+  });
+
+  app.post("/api/admin/fulfill-request", (req, res) => {
+    const { id } = req.body || {};
+    if (!id) {
+      return res.status(400).json({ success: false, message: "Request ID is required." });
+    }
+    const reqIndex = mockRequests.findIndex(r => r.id === id);
+    if (reqIndex === -1) {
+      return res.status(404).json({ success: false, message: "Blood request not found." });
+    }
+    mockRequests[reqIndex].status = "fulfilled";
+    return res.json({ success: true, message: "Blood request status updated to fulfilled." });
   });
 
   // Support direct static serving of style.css and Logo.jpg/Logo.png from theme path

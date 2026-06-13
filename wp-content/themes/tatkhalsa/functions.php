@@ -949,10 +949,13 @@ function tatkhalsa_submit_blood_request() {
 							</table>
 						</div>
 
-						<div style='background: #fff8eb; border: 1.5px solid #ffb800; border-radius: 6px; padding: 15px; margin: 20px 0;'>
-							<strong style='color: #c39e2e; font-size: 15px;'>⚠️ STRICT VERIFICATION NOTE</strong>
-							<p style='margin: 8px 0 0 0; font-size: 13.5px; color: #555;'>
-								Please <strong>verify the attached doctor request/blood requirement slip</strong> carefully before making any commitments. Ensure you fully coordinate with the patient's family, relative, or hospital staff to validate all medical requirements before making a contribution.
+						<div style='background: #fff5f5; border: 2px solid #ff334b; border-radius: 8px; padding: 15px; margin: 20px 0;'>
+							<strong style='color: #ff334b; font-size: 16px;'>⚠️ IMPORTANT: VERIFY REQUEST FIRST THEN ONLY DONATE</strong>
+							<p style='margin: 8px 0 0 0; font-size: 14px; color: #333; font-weight: bold; line-height: 1.5;'>
+								Please verify the medical requirement and doctor request / blood prescription slip carefully first, and only then proceed to donate blood. 
+							</p>
+							<p style='margin: 6px 0 0 0; font-size: 13.5px; color: #555; line-height: 1.4;'>
+								You must coordinate directly with the patient's family, relatives, or treating hospital staff to fully validate all medical requirements and authentication before making a contribution.
 							</p>
 						</div>
 
@@ -1034,10 +1037,13 @@ function tatkhalsa_submit_blood_request() {
 							</table>
 						</div>
 
-						<div style='background: #fff8eb; border: 1.5px solid #ffb800; border-radius: 6px; padding: 15px; margin: 20px 0;'>
-							<strong style='color: #c39e2e; font-size: 15px;'>⚠️ STRICT VERIFICATION NOTE</strong>
-							<p style='margin: 8px 0 0 0; font-size: 13.5px; color: #555;'>
-								Please <strong>verify the attached doctor request/blood requirement slip</strong> carefully before making any commitments. Ensure you fully coordinate with the patient's family, relative, or hospital staff to validate all medical requirements before making a contribution.
+						<div style='background: #fff5f5; border: 2px solid #ff334b; border-radius: 8px; padding: 15px; margin: 20px 0;'>
+							<strong style='color: #ff334b; font-size: 16px;'>⚠️ IMPORTANT: VERIFY REQUEST FIRST THEN ONLY DONATE</strong>
+							<p style='margin: 8px 0 0 0; font-size: 14px; color: #333; font-weight: bold; line-height: 1.5;'>
+								Please verify the medical requirement and doctor request / blood prescription slip carefully first, and only then proceed to donate blood. 
+							</p>
+							<p style='margin: 6px 0 0 0; font-size: 13.5px; color: #555; line-height: 1.4;'>
+								You must coordinate directly with the patient's family, relatives, or treating hospital staff to fully validate all medical requirements and authentication before making a contribution.
 							</p>
 						</div>
 
@@ -1120,12 +1126,15 @@ function tatkhalsa_submit_blood_request() {
 								</table>
 							</div>
 
-							<div style='background: #fff8eb; border: 1.5px solid #ffb800; border-radius: 6px; padding: 15px; margin: 20px 0;'>
-								<strong style='color: #c39e2e; font-size: 15px;'>⚠️ STRICT VERIFICATION NOTE</strong>
-								<p style='margin: 8px 0 0 0; font-size: 13.5px; color: #555;'>
-									Please <strong>verify the attached doctor request/blood requirement slip</strong> carefully before making any commitments. Ensure you fully coordinate with the patient's family, relative, or hospital staff to validate all medical requirements before making a contribution.
-								</p>
-							</div>
+						<div style='background: #fff5f5; border: 2px solid #ff334b; border-radius: 8px; padding: 15px; margin: 20px 0;'>
+							<strong style='color: #ff334b; font-size: 16px;'>⚠️ IMPORTANT: VERIFY REQUEST FIRST THEN ONLY DONATE</strong>
+							<p style='margin: 8px 0 0 0; font-size: 14px; color: #333; font-weight: bold; line-height: 1.5;'>
+								Please verify the medical requirement and doctor request / blood prescription slip carefully first, and only then proceed to donate blood. 
+							</p>
+							<p style='margin: 6px 0 0 0; font-size: 13.5px; color: #555; line-height: 1.4;'>
+								You must coordinate directly with the patient's family, relatives, or treating hospital staff to fully validate all medical requirements and authentication before making a contribution.
+							</p>
+						</div>
 
 							<p style='font-size: 13px; color: #666;'><em>* Note: A copy of the physician's request / doctor slip has been attached to this email for your active validation.</em></p>
 							
@@ -1980,12 +1989,73 @@ function tatkhalsa_add_blood_master_data_menu() {
 add_action( 'admin_menu', 'tatkhalsa_add_blood_master_data_menu' );
 
 function tatkhalsa_render_blood_master_data_page() {
+	global $wpdb;
+
+	// Automatically upgrade database with missing status/accepted_by_donor_id columns if the custom table exists in live WP environment
+	$table_exists = $wpdb->get_var( "SHOW TABLES LIKE 'wp_blood_requests'" );
+	if ( $table_exists ) {
+		$col_status_exists = $wpdb->get_results( "SHOW COLUMNS FROM `wp_blood_requests` LIKE 'status'" );
+		if ( empty( $col_status_exists ) ) {
+			$wpdb->query( "ALTER TABLE `wp_blood_requests` ADD `status` VARCHAR(50) DEFAULT 'pending'" );
+		}
+		$col_donor_exists = $wpdb->get_results( "SHOW COLUMNS FROM `wp_blood_requests` LIKE 'accepted_by_donor_id'" );
+		if ( empty( $col_donor_exists ) ) {
+			$wpdb->query( "ALTER TABLE `wp_blood_requests` ADD `accepted_by_donor_id` INT DEFAULT NULL" );
+		}
+	}
+
+	// Handle MARK AS FULFILLED query or localized postback
+	if ( isset( $_GET['action'] ) && $_GET['action'] === 'fulfill' && isset( $_GET['id'] ) ) {
+		if ( current_user_can( 'manage_options' ) ) {
+			$request_id = intval( $_GET['id'] );
+			
+			// Try updating direct MySQL table if it exists
+			$table_exists = $wpdb->get_var( "SHOW TABLES LIKE 'wp_blood_requests'" );
+			if ( $table_exists ) {
+				$wpdb->update(
+					'wp_blood_requests',
+					array( 'status' => 'fulfilled' ),
+					array( 'id' => $request_id ),
+					array( '%s' ),
+					array( '%d' )
+				);
+			} else {
+				// Local dev environment fallback (WordPress custom post meta)
+				update_post_meta( $request_id, 'status', 'fulfilled' );
+			}
+			
+			echo '<div class="notice notice-success is-dismissible" style="padding: 12px; background: #d4edda; color: #155724; border-left: 4px solid #00875a; margin: 15px 0; border-radius: 4px;"><p style="margin: 0; font-weight: bold;">✓ Status successfully marked as <strong>Fulfilled</strong> for blood request #' . $request_id . '!</p></div>';
+		}
+	}
+
 	if ( isset( $_GET['action'] ) && $_GET['action'] === 'delete' && isset( $_GET['id'] ) ) {
 		if ( current_user_can( 'manage_options' ) ) {
 			$post_id = intval( $_GET['id'] );
+			$deleted_from_db = false;
+
+			$table_req_exists = $wpdb->get_var( "SHOW TABLES LIKE 'wp_blood_requests'" );
+			$table_don_exists = $wpdb->get_var( "SHOW TABLES LIKE 'wp_blood_donors'" );
+			
+			if ( $table_req_exists ) {
+				$deleted_req = $wpdb->delete( 'wp_blood_requests', array( 'id' => $post_id ), array( '%d' ) );
+				if ( $deleted_req ) {
+					$deleted_from_db = true;
+				}
+			}
+			if ( $table_don_exists ) {
+				$deleted_don = $wpdb->delete( 'wp_blood_donors', array( 'id' => $post_id ), array( '%d' ) );
+				if ( $deleted_don ) {
+					$deleted_from_db = true;
+				}
+			}
+
 			$post_type = get_post_type( $post_id );
 			if ( $post_type === 'blood_donor' || $post_type === 'blood_request' ) {
 				wp_delete_post( $post_id, true );
+				$deleted_from_db = true;
+			}
+
+			if ( $deleted_from_db ) {
 				echo '<div class="notice notice-success is-dismissible" style="padding: 12px; background: #d4edda; color: #155724; border-left: 4px solid #28a745; margin: 15px 0; border-radius: 4px;"><p style="margin: 0; font-weight: bold;">✓ Record #' . $post_id . ' was permanently deleted from the WordPress Master Data secure database.</p></div>';
 			}
 		}
@@ -1994,11 +2064,33 @@ function tatkhalsa_render_blood_master_data_page() {
 	if ( isset( $_POST['bulk_action'] ) && $_POST['bulk_action'] === 'bulk_delete' && isset( $_POST['bulk_ids'] ) && is_array( $_POST['bulk_ids'] ) ) {
 		if ( current_user_can( 'manage_options' ) ) {
 			$deleted_count = 0;
+			$table_req_exists = $wpdb->get_var( "SHOW TABLES LIKE 'wp_blood_requests'" );
+			$table_don_exists = $wpdb->get_var( "SHOW TABLES LIKE 'wp_blood_donors'" );
+
 			foreach ( $_POST['bulk_ids'] as $id ) {
 				$post_id = intval( $id );
+				$deleted_this = false;
+
+				if ( $table_req_exists ) {
+					$deleted_req = $wpdb->delete( 'wp_blood_requests', array( 'id' => $post_id ), array( '%d' ) );
+					if ( $deleted_req ) {
+						$deleted_this = true;
+					}
+				}
+				if ( $table_don_exists ) {
+					$deleted_don = $wpdb->delete( 'wp_blood_donors', array( 'id' => $post_id ), array( '%d' ) );
+					if ( $deleted_don ) {
+						$deleted_this = true;
+					}
+				}
+
 				$post_type = get_post_type( $post_id );
 				if ( $post_type === 'blood_donor' || $post_type === 'blood_request' ) {
 					wp_delete_post( $post_id, true );
+					$deleted_this = true;
+				}
+
+				if ( $deleted_this ) {
 					$deleted_count++;
 				}
 			}
@@ -2098,29 +2190,146 @@ function tatkhalsa_render_blood_master_data_page() {
 						<th>Patient Location</th>
 						<th>Contact Details</th>
 						<th>Required Units / Urgency</th>
-						<th style="text-align: center; width: 110px;">Doctor\'s Slip</th>
+						<th style="text-align: center; width: 110px;">Doctor's Slip</th>
+						<th style="text-align: center; width: 110px;">Status</th>
+						<th>Accepted Volunteer Info</th>
 						<th>Request IP (30 days retention)</th>
-						<th style="width: 100px; text-align: center;">Actions</th>
+						<th style="width: 155px; text-align: center;">Actions</th>
 					</tr>
 				</thead>
 				<tbody>
 					<?php
-					$requests = get_posts( array(
-						'post_type'      => 'blood_request',
-						'posts_per_page' => -1,
-					) );
+					global $wpdb;
+
+					// Define helper function inline if not already declared for masking phones
+					if ( ! function_exists( 'tatkhalsa_master_mask_phone' ) ) {
+						function tatkhalsa_master_mask_phone( $phone ) {
+							$phone = trim( $phone );
+							if ( empty( $phone ) ) {
+								return 'N/A';
+							}
+							
+							// Check standard Indian mobile layout (+91 or 91 prefix)
+							if ( preg_match( '/^(\+91|91)?\s*(\d{10})$/', $phone, $matches ) ) {
+								$prefix = ! empty( $matches[1] ) ? $matches[1] : '+91';
+								$digits = $matches[2];
+								$last_4 = substr( $digits, -4 );
+								return $prefix . ' ******' . $last_4;
+							}
+							
+							// Fallback if formatting is unexpected, keep first 3 digits and last 4
+							if ( strlen( $phone ) >= 7 ) {
+								return substr( $phone, 0, 3 ) . ' ******' . substr( $phone, -4 );
+							}
+							return '******' . substr( $phone, -4 );
+						}
+					}
+
+					// Verify direct database table presence
+					$table_exists = $wpdb->get_var( "SHOW TABLES LIKE 'wp_blood_requests'" );
+					$requests = array();
+
+					if ( $table_exists ) {
+						// 1. & 2. SQL JOIN Query reading status, accepted_by_donor_id, and joining wp_blood_donors for accepting volunteers.
+						// Note: LEFT JOIN is behaviorally correct here so we don't drop 'pending' or 'fulfilled' requests that aren't actively assigned.
+						$results = $wpdb->get_results( "
+							SELECT r.*, 
+							       d.donor_name AS volunteer_name, 
+							       d.contact_details AS volunteer_phone
+							FROM wp_blood_requests r
+							LEFT JOIN wp_blood_donors d ON r.accepted_by_donor_id = d.id
+							ORDER BY r.id DESC
+						" );
+
+						if ( ! empty( $results ) ) {
+							foreach ( $results as $row ) {
+								$req_obj = new stdClass();
+								$req_obj->id = isset( $row->id ) ? $row->id : 0;
+								$req_obj->patient_name = isset( $row->patient_name ) ? $row->patient_name : '';
+								$req_obj->blood_group = isset( $row->blood_group ) ? $row->blood_group : '';
+								$req_obj->hospital_name = isset( $row->hospital_name ) ? $row->hospital_name : '';
+								$req_obj->patient_location = isset( $row->patient_location ) ? $row->patient_location : '';
+								$req_obj->contact_details = isset( $row->contact_details ) ? $row->contact_details : '';
+								$req_obj->units_required = isset( $row->units_required ) ? $row->units_required : '1';
+								$req_obj->urgency = isset( $row->urgency ) ? $row->urgency : 'Normal';
+								$req_obj->request_ip = isset( $row->request_ip ) ? $row->request_ip : '';
+								$req_obj->ip_purged_after_30_days = isset( $row->ip_purged_after_30_days ) ? $row->ip_purged_after_30_days : 'no';
+								$req_obj->status = isset( $row->status ) ? $row->status : 'pending';
+								$req_obj->accepted_by_donor_id = isset( $row->accepted_by_donor_id ) ? $row->accepted_by_donor_id : null;
+								$req_obj->volunteer_name = isset( $row->volunteer_name ) ? $row->volunteer_name : '';
+								$req_obj->volunteer_phone = isset( $row->volunteer_phone ) ? $row->volunteer_phone : '';
+								$req_obj->doctor_slip_url = isset( $row->doctor_slip_url ) ? $row->doctor_slip_url : '';
+								$requests[] = $req_obj;
+							}
+						}
+					} else {
+						// Local development context fallback using custom post types
+						$requests_posts = get_posts( array(
+							'post_type'      => 'blood_request',
+							'posts_per_page' => -1,
+						) );
+
+						if ( ! empty( $requests_posts ) ) {
+							foreach ( $requests_posts as $post ) {
+								$p_id = $post->ID;
+								$req_obj = new stdClass();
+								$req_obj->id = $p_id;
+								$req_obj->patient_name = get_post_meta( $p_id, 'patient_name', true );
+								$req_obj->blood_group = get_post_meta( $p_id, 'blood_group', true );
+								$req_obj->hospital_name = get_post_meta( $p_id, 'hospital_name', true );
+								$req_obj->patient_location = get_post_meta( $p_id, 'patient_location', true );
+								$req_obj->contact_details = get_post_meta( $p_id, 'contact_details', true );
+								$req_obj->units_required = get_post_meta( $p_id, 'units_required', true );
+								$req_obj->urgency = get_post_meta( $p_id, 'urgency', true );
+								$req_obj->request_ip = get_post_meta( $p_id, 'request_ip', true );
+								$req_obj->ip_purged_after_30_days = get_post_meta( $p_id, 'ip_purged_after_30_days', true );
+								
+								// Status and Accepted by Donor logic
+								$status_meta = get_post_meta( $p_id, 'status', true );
+								$req_obj->status = ! empty( $status_meta ) ? $status_meta : 'pending';
+								$donor_id = get_post_meta( $p_id, 'accepted_by_donor_id', true );
+								$req_obj->accepted_by_donor_id = $donor_id;
+								
+								if ( $req_obj->status === 'accepted' && ! empty( $donor_id ) ) {
+									$req_obj->volunteer_name = get_post_meta( $donor_id, 'donor_name', true );
+									$req_obj->volunteer_phone = get_post_meta( $donor_id, 'contact_details', true );
+								} else {
+									$req_obj->volunteer_name = '';
+									$req_obj->volunteer_phone = '';
+								}
+								
+								// Doctor Slip backward compatible files
+								$slip_url = get_post_meta( $p_id, 'doctor_slip_url', true );
+								if ( empty( $slip_url ) ) {
+									$slip_path = get_post_meta( $p_id, 'doctor_slip_path', true );
+									if ( ! empty( $slip_path ) ) {
+										if ( filter_var( $slip_path, FILTER_VALIDATE_URL ) ) {
+											$slip_url = $slip_path;
+										} else {
+											$uploads = wp_upload_dir();
+											$slip_url = str_replace( $uploads['basedir'], $uploads['baseurl'], $slip_path );
+										}
+									}
+								}
+								$req_obj->doctor_slip_url = $slip_url;
+								$requests[] = $req_obj;
+							}
+						}
+					}
+
 					if ( ! empty( $requests ) ) {
-						foreach ( $requests as $req_post ) {
-							$p_id = $req_post->ID;
-							$pat_name = get_post_meta( $p_id, 'patient_name', true );
-							$group = get_post_meta( $p_id, 'blood_group', true );
-							$hospital = get_post_meta( $p_id, 'hospital_name', true );
-							$loc = get_post_meta( $p_id, 'patient_location', true );
-							$contact = get_post_meta( $p_id, 'contact_details', true );
-							$units = get_post_meta( $p_id, 'units_required', true );
-							$urgency = get_post_meta( $p_id, 'urgency', true );
-							$ip = get_post_meta( $p_id, 'request_ip', true );
-							$purged = get_post_meta( $p_id, 'ip_purged_after_30_days', true );
+						foreach ( $requests as $req ) {
+							$p_id = $req->id;
+							$pat_name = $req->patient_name;
+							$group = $req->blood_group;
+							$hospital = $req->hospital_name;
+							$loc = $req->patient_location;
+							$contact = $req->contact_details;
+							$units = $req->units_required;
+							$urgency = $req->urgency;
+							$ip = $req->request_ip;
+							$purged = $req->ip_purged_after_30_days;
+							$status = $req->status;
 
 							if ( empty( $ip ) ) {
 								$ip_display = ( $purged === 'yes' ) ? '<span style="color:#aa6666; font-style:italic;">[Purged after 30 days]</span>' : '<span style="color:#777;">unknown</span>';
@@ -2128,18 +2337,27 @@ function tatkhalsa_render_blood_master_data_page() {
 								$ip_display = '<code>' . esc_html( $ip ) . '</code> <span style="font-size:0.8rem; color:#22aa22;">(Active)</span>';
 							}
 
-							// Fetch Doctor Slip with backward compatible conversions
-							$slip_url = get_post_meta( $p_id, 'doctor_slip_url', true );
-							if ( empty( $slip_url ) ) {
-								$slip_path = get_post_meta( $p_id, 'doctor_slip_path', true );
-								if ( ! empty( $slip_path ) ) {
-									if ( filter_var( $slip_path, FILTER_VALIDATE_URL ) ) {
-										$slip_url = $slip_path;
-									} else {
-										$uploads = wp_upload_dir();
-										$slip_url = str_replace( $uploads['basedir'], $uploads['baseurl'], $slip_path );
-									}
-								}
+							$slip_url = $req->doctor_slip_url;
+
+							// 3. Status Visual Guidelines: bright green (pending), brand royal blue (accepted), dark grey (fulfilled)
+							if ( $status === 'pending' || $status === '' ) {
+								$status_display = '<span style="background: #2ced73; color: #0a2342; font-weight: bold; padding: 4px 10px; border-radius: 12px; font-size: 0.8rem; display: inline-block; text-align: center; box-shadow: 0 2px 4px rgba(46,213,115,0.15);">Pending</span>';
+							} elseif ( $status === 'accepted' ) {
+								$status_display = '<span style="background: #0A327D; color: #ffffff; font-weight: bold; padding: 4px 10px; border-radius: 12px; font-size: 0.8rem; display: inline-block; text-align: center; box-shadow: 0 2px 4px rgba(10,50,125,0.15);">Accepted</span>';
+							} elseif ( $status === 'fulfilled' ) {
+								$status_display = '<span style="background: #555555; color: #ffffff; font-weight: bold; padding: 4px 10px; border-radius: 12px; font-size: 0.8rem; display: inline-block; text-align: center; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">fulfilled</span>';
+							} else {
+								$status_display = '<span style="background: #777777; color: #ffffff; font-weight: bold; padding: 4px 10px; border-radius: 12px; font-size: 0.8rem; display: inline-block; text-align: center;">' . esc_html( $status ) . '</span>';
+							}
+
+							// 2. Format Accepted Volunteer details (inner joined) and mask phone
+							if ( $status === 'accepted' && ! empty( $req->volunteer_name ) ) {
+								$accepted_info = '<div style="font-size: 0.85rem; line-height: 1.4;">';
+								$accepted_info .= '<strong style="color: #0A327D;">👤 ' . esc_html( $req->volunteer_name ) . '</strong><br>';
+								$accepted_info .= '<code style="color: #444; font-size: 0.8rem;">📞 ' . esc_html( tatkhalsa_master_mask_phone( $req->volunteer_phone ) ) . '</code>';
+								$accepted_info .= '</div>';
+							} else {
+								$accepted_info = '<span style="color: #999; font-style: italic; font-size: 0.85rem;">No active claim</span>';
 							}
 							?>
 							<tr>
@@ -2159,15 +2377,23 @@ function tatkhalsa_render_blood_master_data_page() {
 										<span style="color: #999; font-size: 0.8rem; font-style: italic;">No attachment</span>
 									<?php endif; ?>
 								</td>
+								<td style="text-align: center; vertical-align: middle;"><?php echo $status_display; ?></td>
+								<td><?php echo $accepted_info; ?></td>
 								<td><?php echo $ip_display; ?></td>
 								<td style="text-align: center;">
-									<a href="<?php echo esc_url( admin_url( 'admin.php?page=blood-master-data&action=delete&id=' . $p_id ) ); ?>" class="button button-small" onclick="return confirm('Are you sure you want to permanently delete this blood request?');" style="color: #ff334b; border-color: #ff334b; background: rgba(255,51,75,0.05); font-weight: bold; text-decoration: none;">✕ Delete</a>
+									<div style="display: flex; flex-direction: column; gap: 4px; align-items: stretch;">
+										<?php if ( $status !== 'fulfilled' ) : ?>
+											<!-- 4. Quick-action Mark as Fulfilled localized postback button -->
+											<a href="<?php echo esc_url( admin_url( 'admin.php?page=blood-master-data&action=fulfill&id=' . $p_id ) ); ?>" class="button button-small" style="background: #555555; color: #ffffff; border-color: #555555; font-weight: bold; text-decoration: none; text-align: center; box-shadow: 0 1px 3px rgba(0,0,0,0.15);" onclick="return confirm('Are you sure you want to mark request #<?php echo $p_id; ?> as Fulfilled?');">✓ Fulfill</a>
+										<?php endif; ?>
+										<a href="<?php echo esc_url( admin_url( 'admin.php?page=blood-master-data&action=delete&id=' . $p_id ) ); ?>" class="button button-small" onclick="return confirm('Are you sure you want to permanently delete this blood request?');" style="color: #ff334b; border-color: #ff334b; background: rgba(255,51,75,0.05); font-weight: bold; text-decoration: none; text-align: center;">✕ Delete</a>
+									</div>
 								</td>
 							</tr>
 							<?php
 						}
 					} else {
-						echo '<tr><td colspan="10">No active blood requests found.</td></tr>';
+						echo '<tr><td colspan="12">No active blood requests found.</td></tr>';
 					}
 					?>
 				</tbody>

@@ -162,6 +162,8 @@ $donors_query = new WP_Query( $args );
                             <th style="padding: 12px 10px;">Units Required</th>
                             <th style="padding: 12px 10px;">Urgency</th>
                             <th style="padding: 12px 10px; text-align: center; width: 100px;">Doctor's Slip</th>
+                            <th style="padding: 12px 10px; text-align: center;">Status</th>
+                            <th style="padding: 12px 10px;">Accepted Volunteer</th>
                             <th style="padding: 12px 10px; text-align: center;">Actions</th>
                         </tr>
                     </thead>
@@ -1489,9 +1491,47 @@ document.addEventListener("DOMContentLoaded", function() {
                 if (tblRequestsBody) {
                     tblRequestsBody.innerHTML = '';
                     if (data.requests.length === 0) {
-                        tblRequestsBody.innerHTML = `<tr><td colspan="10" style="padding: 24px; text-align: center; color: var(--text-light);">No emergency blood requests found.</td></tr>`;
+                        tblRequestsBody.innerHTML = `<tr><td colspan="12" style="padding: 24px; text-align: center; color: var(--text-light);">No emergency blood requests found.</td></tr>`;
                     } else {
+                        const maskPhone = (phone) => {
+                            if (!phone) return 'N/A';
+                            const trimmed = phone.trim();
+                            const match = trimmed.match(/^(\+91|91)?\s*(\d{10})$/);
+                            if (match) {
+                                const prefix = match[1] || '+91';
+                                const digits = match[2];
+                                return `${prefix} ******${digits.slice(-4)}`;
+                            }
+                            if (trimmed.length > 7) {
+                                return trimmed.slice(0, 3) + ' ******' + trimmed.slice(-4);
+                            }
+                            return '******' + trimmed.slice(-4);
+                        };
+
                         data.requests.forEach(req => {
+                            const statusVal = req.status || 'pending';
+                            let statusHtml = '';
+                            if (statusVal === 'pending') {
+                                statusHtml = `<span style="background: #2ced73; color: #0a2342; font-weight: bold; padding: 4px 10px; border-radius: 12px; font-size: 0.75rem; display: inline-block; box-shadow: 0 2px 4px rgba(46,213,115,0.15);">Pending</span>`;
+                            } else if (statusVal === 'accepted') {
+                                statusHtml = `<span style="background: #0A327D; color: #ffffff; font-weight: bold; padding: 4px 10px; border-radius: 12px; font-size: 0.75rem; display: inline-block; box-shadow: 0 2px 4px rgba(10,50,125,0.15);">Accepted</span>`;
+                            } else if (statusVal === 'fulfilled') {
+                                statusHtml = `<span style="background: #555555; color: #ffffff; font-weight: bold; padding: 4px 10px; border-radius: 12px; font-size: 0.75rem; display: inline-block; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">fulfilled</span>`;
+                            }
+
+                            let volunteerHtml = `<span style="color: rgba(255,255,255,0.4); font-style: italic; font-size: 0.8rem;">No active claim</span>`;
+                            if (statusVal === 'accepted' && req.acceptedByDonorId) {
+                                const volunteer = data.donors.find(d => d.id === req.acceptedByDonorId);
+                                if (volunteer) {
+                                    volunteerHtml = `
+                                        <div style="font-size: 0.8rem; line-height: 1.4;">
+                                            <strong style="color: var(--secondary);">👤 ${volunteer.name}</strong><br>
+                                            <code style="color: rgba(255,255,255,0.73); font-size: 0.75rem;">📞 ${maskPhone(volunteer.contact)}</code>
+                                        </div>
+                                    `;
+                                }
+                            }
+
                             tblRequestsBody.innerHTML += `
                                 <tr style="border-bottom: 1px solid rgba(255,255,255,0.05); transition: background 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.01)'" onmouseout="this.style.background='transparent'">
                                     <td style="padding: 14px 10px; text-align: center; vertical-align: middle;">
@@ -1513,8 +1553,15 @@ document.addEventListener("DOMContentLoaded", function() {
                                             <span style="color: var(--text-light); font-size: 0.75rem; font-style: italic;">No attachment</span>
                                         `}
                                     </td>
-                                    <td style="padding: 14px 10px; text-align: center;">
-                                        <button onclick="window.deleteRequest('${req.id}')" style="background: rgba(255,51,75,0.1); color: #ff334b; border: 1px solid rgba(255,51,75,0.25); padding: 5px 10px; border-radius: 6px; cursor: pointer; font-size: 0.75rem; font-weight: bold; transition: all 0.2s;" onmouseover="this.style.background='#ff334b'; this.style.color='#fff';">Delete</button>
+                                    <td style="padding: 14px 10px; text-align: center; vertical-align: middle;">${statusHtml}</td>
+                                    <td style="padding: 14px 10px; vertical-align: middle;">${volunteerHtml}</td>
+                                    <td style="padding: 14px 10px;">
+                                        <div style="display: flex; flex-direction: column; gap: 4px; align-items: stretch; justify-content: center;">
+                                            ${statusVal !== 'fulfilled' ? `
+                                                <button onclick="window.fulfillRequest('${req.id}')" style="background: rgba(46,213,115,0.1); color: #2ced73; border: 1px solid rgba(46,213,115,0.3); padding: 5px 8px; border-radius: 6px; cursor: pointer; font-size: 0.75rem; font-weight: bold; transition: all 0.2s; text-align: center;" onmouseover="this.style.background='#2ced73'; this.style.color='#0a2342';">Fulfill</button>
+                                            ` : ''}
+                                            <button onclick="window.deleteRequest('${req.id}')" style="background: rgba(255,51,75,0.1); color: #ff334b; border: 1px solid rgba(255,51,75,0.25); padding: 5px 8px; border-radius: 6px; cursor: pointer; font-size: 0.75rem; font-weight: bold; transition: all 0.2s; text-align: center;" onmouseover="this.style.background='#ff334b'; this.style.color='#fff';">Delete</button>
+                                        </div>
                                     </td>
                                 </tr>
                             `;
@@ -1560,6 +1607,22 @@ document.addEventListener("DOMContentLoaded", function() {
                     window.fetchMasterData();
                 }
             } catch(e) { alert("Error deleting request."); }
+        }
+    };
+
+    window.fulfillRequest = async function(id) {
+        if (confirm('Are you sure you want to mark this blood request as Fulfilled?')) {
+            try {
+                const res = await fetch('/api/admin/fulfill-request', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ id })
+                });
+                const r = await res.json();
+                if (r.success) {
+                    window.fetchMasterData();
+                }
+            } catch(e) { alert("Error marking request as fulfilled."); }
         }
     };
 
