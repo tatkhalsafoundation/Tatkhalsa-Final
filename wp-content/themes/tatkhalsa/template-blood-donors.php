@@ -1824,9 +1824,9 @@ document.addEventListener("DOMContentLoaded", function() {
         const urlParams = new URLSearchParams(window.location.search);
         if (urlParams.has('accept') || urlParams.has('accept_request')) {
             const req_id = urlParams.get('req_id') || urlParams.get('req') || urlParams.get('id');
-            const donor_id = urlParams.get('donor_id') || urlParams.get('donor');
+            const donor_id = urlParams.get('donor_id') || urlParams.get('donor') || 'general';
 
-            if (!req_id || !donor_id) {
+            if (!req_id) {
                 return;
             }
 
@@ -1874,19 +1874,30 @@ document.addEventListener("DOMContentLoaded", function() {
                 const isAlreadyAccepted = responseData.already_accepted_by_you || (responseData.data && responseData.data.already_accepted_by_you);
                 const messageText = responseData.message || (responseData.data && responseData.data.message) || responseData.error || '';
 
-                if (isSuccess) {
+                // Normalize message text based on the user's specific request
+                let popupMessage = messageText;
+                if (isAlreadyAccepted || messageText.toLowerCase().includes('already') || !isSuccess) {
+                    popupMessage = "its already accepted thanks for your efforts We appreciate your time";
+                } else {
+                    popupMessage = "thank you not accepting request please get in touch with the one who required";
+                }
+
+                if (isSuccess && !isAlreadyAccepted) {
                     banner.style.borderLeft = '5px solid #2ced73';
                     banner.style.background = 'rgba(46, 213, 115, 0.08)';
-                    if (icon) icon.innerText = isAlreadyAccepted ? '🤝' : '❤️';
-                    if (title) title.innerText = isAlreadyAccepted ? 'Already Accepted by You' : 'Noble Response Registered!';
-                    if (msg) msg.innerHTML = `<strong>${messageText}</strong>`;
+                    if (icon) icon.innerText = '❤️';
+                    if (title) title.innerText = 'Noble Response Registered!';
+                    if (msg) msg.innerHTML = `<strong>${popupMessage}</strong>`;
                 } else {
                     banner.style.borderLeft = '5px solid #ff334b';
                     banner.style.background = 'rgba(255, 51, 75, 0.08)';
                     if (icon) icon.innerText = '🛡️';
                     if (title) title.innerText = 'Blood Request Handled';
-                    if (msg) msg.innerHTML = `<strong>${messageText}</strong>`;
+                    if (msg) msg.innerHTML = `<strong>${popupMessage}</strong>`;
                 }
+
+                // Call real browser popup alert
+                alert(popupMessage);
 
                 // Auto-refresh admin panel data if active
                 if (typeof window.fetchMasterData === 'function') {

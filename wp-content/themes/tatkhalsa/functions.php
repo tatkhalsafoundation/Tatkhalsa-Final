@@ -826,41 +826,7 @@ function tatkhalsa_submit_blood_request() {
 		wp_send_json_error( array( 'message' => esc_html__( 'Please upload the doctor\'s request slip or form.', 'tatkhalsa-theme' ) ) );
 	}
 
-	// Email config
-	$to      = 'info@tatkhalsa.in';
-	$subject = '🔴 EMERGENCY BLOOD REQUEST: ' . $blood_group . ' Group needed';
-	
-	$body  = "<h2>🔴 Emergency Blood Request Details</h2>";
-	$body .= "<p><strong>Patient Name:</strong> " . esc_html( $patient_name ) . "</p>";
-	$body .= "<p><strong>Blood Group Required:</strong> <span style='font-size: 1.25rem; color: #ff334b; font-weight: bold;'>" . esc_html( $blood_group ) . "</span></p>";
-	$body .= "<p><strong>Location:</strong> " . esc_html( $patient_location ) . "</p>";
-	$body .= "<p><strong>Country:</strong> " . esc_html( $country ) . "</p>";
-	$body .= "<p><strong>State:</strong> " . esc_html( $state ) . "</p>";
-	$body .= "<p><strong>District:</strong> " . esc_html( $district ) . "</p>";
-	$body .= "<p><strong>Hospital Name:</strong> " . esc_html( $hospital_name ) . "</p>";
-	$body .= "<p><strong>Contact Details:</strong> " . esc_html( $contact_details ) . "</p>";
-	$body .= "<p><strong>Units Required:</strong> " . esc_html( $units_required ) . "</p>";
-	$body .= "<p><strong>Urgency Level:</strong> " . esc_html( $urgency ) . "</p>";
-	if ( ! empty( $additional_info ) ) {
-		$body .= "<p><strong>Additional Info / Notes:</strong><br />" . nl2br( esc_html( $additional_info ) ) . "</p>";
-	}
-
-	$app_url = esc_url( home_url( '/blood-donors/' ) );
-	$body .= "<div style='text-align: center; margin: 25px 0 10px 0;'>";
-	$body .= "<a href='{$app_url}' style='display: inline-block; background-color: #0A327D; color: #ffffff !important; font-weight: bold; font-family: Arial, sans-serif; font-size: 15px; padding: 12px 24px; text-decoration: none; border-radius: 6px; box-shadow: 0 4px 12px rgba(10,50,125,0.25); text-transform: uppercase; letter-spacing: 0.5px;'>🖥️ Open Blood Directory App</a>";
-	$body .= "</div>";
-	$body .= "<p style='text-align: center; font-size: 12px; color: #666; margin-bottom: 25px;'>If the button above does not work, copy and paste this link: <a href='{$app_url}' style='color: #0A327D;'>{$app_url}</a></p>";
-
-	$headers = array(
-		'Content-Type: text/html; charset=UTF-8',
-		'From: Tatkhalsa Blood On Call <bloodoncall@tatkhalsa.in>',
-		'Reply-To: Tatkhalsa Blood On Call <noreply@tatkhalsa.in>'
-	);
-
-	// Try sending email
-	$sent = wp_mail( $to, $subject, $body, $headers, $attachments );
-
-	// Create WordPress blood_request post for record tracking
+	// Create WordPress blood_request post for record tracking first so we have the ID for the link
 	$request_post_id = wp_insert_post( array(
 		'post_title'  => 'Blood Request - ' . $blood_group . ' - ' . $patient_name,
 		'post_type'   => 'blood_request',
@@ -888,6 +854,45 @@ function tatkhalsa_submit_blood_request() {
 			}
 		}
 	}
+
+	// Email config
+	$to      = 'info@tatkhalsa.in';
+	$subject = '🔴 EMERGENCY BLOOD REQUEST: ' . $blood_group . ' Group needed';
+	
+	$body  = "<h2>🔴 Emergency Blood Request Details</h2>";
+	$body .= "<p><strong>Patient Name:</strong> " . esc_html( $patient_name ) . "</p>";
+	$body .= "<p><strong>Blood Group Required:</strong> <span style='font-size: 1.25rem; color: #ff334b; font-weight: bold;'>" . esc_html( $blood_group ) . "</span></p>";
+	$body .= "<p><strong>Location:</strong> " . esc_html( $patient_location ) . "</p>";
+	$body .= "<p><strong>Country:</strong> " . esc_html( $country ) . "</p>";
+	$body .= "<p><strong>State:</strong> " . esc_html( $state ) . "</p>";
+	$body .= "<p><strong>District:</strong> " . esc_html( $district ) . "</p>";
+	$body .= "<p><strong>Hospital Name:</strong> " . esc_html( $hospital_name ) . "</p>";
+	$body .= "<p><strong>Contact Details:</strong> " . esc_html( $contact_details ) . "</p>";
+	$body .= "<p><strong>Units Required:</strong> " . esc_html( $units_required ) . "</p>";
+	$body .= "<p><strong>Urgency Level:</strong> " . esc_html( $urgency ) . "</p>";
+	if ( ! empty( $additional_info ) ) {
+		$body .= "<p><strong>Additional Info / Notes:</strong><br />" . nl2br( esc_html( $additional_info ) ) . "</p>";
+	}
+
+	$app_url = esc_url( add_query_arg( array(
+		'accept_request' => '1',
+		'req_id'         => $request_post_id,
+		'donor_id'       => 'general'
+	), home_url( '/blood-donors/' ) ) );
+
+	$body .= "<div style='text-align: center; margin: 25px 0 10px 0;'>";
+	$body .= "<a href='{$app_url}' style='display: inline-block; background-color: #0A327D; color: #ffffff !important; font-weight: bold; font-family: Arial, sans-serif; font-size: 15px; padding: 12px 24px; text-decoration: none; border-radius: 6px; box-shadow: 0 4px 12px rgba(10,50,125,0.25); text-transform: uppercase; letter-spacing: 0.5px;'>🩸 Accept the Request</a>";
+	$body .= "</div>";
+	$body .= "<p style='text-align: center; font-size: 12px; color: #666; margin-bottom: 25px;'>If the button above does not work, copy and paste this link: <a href='{$app_url}' style='color: #0A327D;'>{$app_url}</a></p>";
+
+	$headers = array(
+		'Content-Type: text/html; charset=UTF-8',
+		'From: Tatkhalsa Blood On Call <bloodoncall@tatkhalsa.in>',
+		'Reply-To: Tatkhalsa Blood On Call <noreply@tatkhalsa.in>'
+	);
+
+	// Try sending email
+	$sent = wp_mail( $to, $subject, $body, $headers, $attachments );
 
 	// Send WhatsApp Alert
 	$sms_message = "URGENT BLOOD REQUEST:\nType: $blood_group\nUnits: $units_required\nHospital: $hospital_name\nContact: $contact_details";
@@ -1468,9 +1473,12 @@ add_action( 'wp_ajax_nopriv_verify_donor_email', 'tatkhalsa_verify_donor_email' 
 function tatkhalsa_accept_blood_request() {
 	$req_id   = isset( $_POST['req_id'] ) ? sanitize_text_field( wp_unslash( $_POST['req_id'] ) ) : '';
 	$donor_id = isset( $_POST['donor_id'] ) ? sanitize_text_field( wp_unslash( $_POST['donor_id'] ) ) : '';
+	if ( empty( $donor_id ) ) {
+		$donor_id = 'general';
+	}
 
-	if ( empty( $req_id ) || empty( $donor_id ) ) {
-		wp_send_json_error( array( 'message' => 'Missing required request or donor fields.' ) );
+	if ( empty( $req_id ) ) {
+		wp_send_json_error( array( 'message' => 'Missing required request field.' ) );
 	}
 
 	$status = get_post_meta( $req_id, 'status', true );
@@ -1479,16 +1487,10 @@ function tatkhalsa_accept_blood_request() {
 	}
 
 	if ( $status === 'accepted' || $status === 'fulfilled' ) {
-		$accepted_by = get_post_meta( $req_id, 'accepted_by_donor_id', true );
-		if ( intval( $accepted_by ) === intval( $donor_id ) ) {
-			$contact = get_post_meta( $req_id, 'contact_details', true );
-			wp_send_json_success( array(
-				'already_accepted_by_you' => true,
-				'message' => 'You have already accepted this blood request! Please contact the family directly at: ' . $contact
-			) );
-		} else {
-			wp_send_json_error( array( 'message' => 'This blood request has already been accepted or fulfilled by another noble volunteer. Thank you so much for your readiness!' ) );
-		}
+		wp_send_json_success( array(
+			'already_accepted_by_you' => true,
+			'message' => 'its already accepted thanks for your efforts We appreciate your time'
+		) );
 	}
 
 	// Update status and track the recipient donor ID
@@ -1506,10 +1508,8 @@ function tatkhalsa_accept_blood_request() {
 		);
 	}
 
-	$contact = get_post_meta( $req_id, 'contact_details', true );
-	$patient = get_post_meta( $req_id, 'patient_name', true );
 	wp_send_json_success( array(
-		'message' => 'Waheguru Ji Ka Khalsa! You have successfully accepted this blood request for ' . $patient . '. Kindly contact the family immediately at: ' . $contact
+		'message' => 'thank you not accepting request please get in touch with the one who required'
 	) );
 }
 add_action( 'wp_ajax_accept_blood_request', 'tatkhalsa_accept_blood_request' );

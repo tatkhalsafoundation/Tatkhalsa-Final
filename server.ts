@@ -694,44 +694,37 @@ async function startServer() {
 
   app.post("/api/admin/accept-request", (req, res) => {
     const { req_id, donor_id } = req.body || {};
-    if (!req_id || !donor_id) {
-      return res.status(400).json({ success: false, message: "Request ID and Donor ID are required." });
+    if (!req_id) {
+      return res.status(400).json({ success: false, message: "Request ID is required." });
     }
+    const targetDonorId = donor_id || 'general';
     const reqIndex = mockRequests.findIndex(r => r.id === req_id);
     if (reqIndex === -1) {
       return res.status(404).json({ success: false, message: "Blood request not found." });
     }
     const request = mockRequests[reqIndex];
-    const donor = mockDonors.find(d => d.id === donor_id);
-    const donorNameOutput = donor ? donor.name : "A verified donor";
 
     // Double claim tracking / blocking protection
     if (request.status === "accepted" || request.status === "fulfilled") {
-      if (request.acceptedByDonorId === donor_id) {
-        return res.json({
+      return res.json({
+        success: true,
+        data: {
           success: true,
-          data: {
-            success: true,
-            already_accepted_by_you: true,
-            message: `You have already accepted this blood request! Please coordinate directly with the patient line at: ${request.contactDetails}`
-          }
-        });
-      }
-      return res.status(400).json({
-        success: false,
-        message: "This emergency blood request has already been claimed or fulfilled by another noble volunteer. Thank you so much for your noble commitment!"
+          already_accepted_by_you: true,
+          message: "its already accepted thanks for your efforts We appreciate your time"
+        }
       });
     }
 
     // Set request status to accepted and record which donor did it
     request.status = "accepted";
-    request.acceptedByDonorId = donor_id;
+    request.acceptedByDonorId = targetDonorId;
 
     return res.json({
       success: true,
       data: {
         success: true,
-        message: `Waheguru Ji Ka Khalsa! You have successfully accepted the request for ${request.patientName}. Please contact the patient family at ${request.contactDetails} as soon as possible.`
+        message: "thank you not accepting request please get in touch with the one who required"
       }
     });
   });
