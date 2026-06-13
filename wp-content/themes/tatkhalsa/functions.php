@@ -1953,24 +1953,12 @@ function tatkhalsa_register_blood_request_cpt() {
 add_action( 'init', 'tatkhalsa_register_blood_request_cpt' );
 
 /**
- * Prune blood network IP addresses older than 30 days automatically
+ * Prune blood network IP addresses older than 30 days - DISABLED by Admin Request
  */
 function tatkhalsa_prune_expired_ips() {
-	$purgable_posts = get_posts( array(
-		'post_type'      => array( 'blood_donor', 'blood_request' ),
-		'posts_per_page' => -1,
-		'date_query'     => array(
-			'before' => '30 days ago'
-		)
-	) );
-	foreach ( $purgable_posts as $post ) {
-		// Delete the raw IP address to preserve absolute anonymity after 30 days
-		delete_post_meta( $post->ID, 'donor_ip' );
-		delete_post_meta( $post->ID, 'request_ip' );
-		update_post_meta( $post->ID, 'ip_purged_after_30_days', 'yes' );
-	}
+	// Auto deletion of IP address after 30 days has been removed at administrator request.
 }
-add_action( 'wp_loaded', 'tatkhalsa_prune_expired_ips' );
+// add_action( 'wp_loaded', 'tatkhalsa_prune_expired_ips' );
 
 /**
  * Add WP-Admin Master Data Tab
@@ -2001,6 +1989,333 @@ function tatkhalsa_render_blood_master_data_page() {
 		$col_donor_exists = $wpdb->get_results( "SHOW COLUMNS FROM `wp_blood_requests` LIKE 'accepted_by_donor_id'" );
 		if ( empty( $col_donor_exists ) ) {
 			$wpdb->query( "ALTER TABLE `wp_blood_requests` ADD `accepted_by_donor_id` INT DEFAULT NULL" );
+		}
+	}
+
+	// Handle backup EXPORT request
+	if ( isset( $_GET['action'] ) && $_GET['action'] === 'export_backup' ) {
+		if ( current_user_can( 'manage_options' ) ) {
+			if ( ob_get_length() ) {
+				ob_clean();
+			}
+			
+			// 1. Fetch Donors
+			$donors_posts = get_posts( array(
+				'post_type'      => 'blood_donor',
+				'posts_per_page' => -1,
+			) );
+			$exported_donors = array();
+			foreach ( $donors_posts as $post ) {
+				$p_id = $post->ID;
+				$exported_donors[] = array(
+					'id'                  => $p_id,
+					'name'                => get_post_meta( $p_id, 'donor_name', true ),
+					'blood_group'         => get_post_meta( $p_id, 'blood_group', true ),
+					'donor_email'         => get_post_meta( $p_id, 'donor_email', true ),
+					'contact_details'     => get_post_meta( $p_id, 'contact_details', true ),
+					'country'             => get_post_meta( $p_id, 'country', true ),
+					'state'               => get_post_meta( $p_id, 'state', true ),
+					'district'            => get_post_meta( $p_id, 'district', true ),
+					'address'             => get_post_meta( $p_id, 'address', true ),
+					'map_location'        => get_post_meta( $p_id, 'map_location', true ),
+					'availability_status' => get_post_meta( $p_id, 'availability_status', true ),
+					'donor_ip'            => get_post_meta( $p_id, 'donor_ip', true ),
+					'registration_time'   => get_post_meta( $p_id, 'registration_time', true ),
+				);
+			}
+			
+			$table_don_exists = $wpdb->get_var( "SHOW TABLES LIKE 'wp_blood_donors'" );
+			if ( $table_don_exists ) {
+				$db_donors = $wpdb->get_results( "SELECT * FROM wp_blood_donors", ARRAY_A );
+				if ( ! empty( $db_donors ) ) {
+					foreach ( $db_donors as $row ) {
+						$exists = false;
+						foreach ( $exported_donors as $ed ) {
+							if ( (isset($ed['donor_email']) && $ed['donor_email'] === $row['donor_email']) || (isset($ed['contact_details']) && $ed['contact_details'] === $row['contact_details']) ) {
+								$exists = true;
+								break;
+							}
+						}
+						if ( ! $exists ) {
+							$exported_donors[] = $row;
+						}
+					}
+				}
+			}
+
+			// 2. Fetch Requests
+			$requests_posts = get_posts( array(
+				'post_type'      => 'blood_request',
+				'posts_per_page' => -1,
+			) );
+			$exported_requests = array();
+			foreach ( $requests_posts as $post ) {
+				$p_id = $post->ID;
+				$exported_requests[] = array(
+					'id'                        => $p_id,
+					'patient_name'              => get_post_meta( $p_id, 'patient_name', true ),
+					'blood_group'               => get_post_meta( $p_id, 'blood_group', true ),
+					'country'                   => get_post_meta( $p_id, 'country', true ),
+					'state'                     => get_post_meta( $p_id, 'state', true ),
+					'district'                  => get_post_meta( $p_id, 'district', true ),
+					'patient_location'          => get_post_meta( $p_id, 'patient_location', true ),
+					'contact_details'           => get_post_meta( $p_id, 'contact_details', true ),
+					'hospital_name'             => get_post_meta( $p_id, 'hospital_name', true ),
+					'units_required'            => get_post_meta( $p_id, 'units_required', true ),
+					'urgency'                   => get_post_meta( $p_id, 'urgency', true ),
+					'additional_info'           => get_post_meta( $p_id, 'additional_info', true ),
+					'request_ip'                => get_post_meta( $p_id, 'request_ip', true ),
+					'request_time'              => get_post_meta( $p_id, 'request_time', true ),
+					'status'                    => get_post_meta( $p_id, 'status', true ) ? get_post_meta( $p_id, 'status', true ) : 'pending',
+					'accepted_by_donor_id'      => get_post_meta( $p_id, 'accepted_by_donor_id', true ),
+					'doctor_slip_url'           => get_post_meta( $p_id, 'doctor_slip_url', true ),
+				);
+			}
+
+			$table_req_exists = $wpdb->get_var( "SHOW TABLES LIKE 'wp_blood_requests'" );
+			if ( $table_req_exists ) {
+				$db_reqs = $wpdb->get_results( "SELECT * FROM wp_blood_requests", ARRAY_A );
+				if ( ! empty( $db_reqs ) ) {
+					foreach ( $db_reqs as $row ) {
+						$exists = false;
+						foreach ( $exported_requests as $er ) {
+							if ( $er['id'] == $row['id'] || (isset($er['patient_name']) && $er['patient_name'] === $row['patient_name'] && isset($er['contact_details']) && $er['contact_details'] === $row['contact_details']) ) {
+								$exists = true;
+								break;
+							}
+						}
+						if ( ! $exists ) {
+							$exported_requests[] = $row;
+						}
+					}
+				}
+			}
+
+			$backupObj = array(
+				'version'     => '1.0',
+				'exported_at' => current_time( 'mysql' ),
+				'donors'      => $exported_donors,
+				'requests'    => $exported_requests,
+			);
+
+			header( 'Content-Type: application/json; charset=utf-8' );
+			header( 'Content-Disposition: attachment; filename="tatkhalsa-blood-data-backup-' . date( 'Y-m-d' ) . '.json"' );
+			echo json_encode( $backupObj, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES );
+			exit();
+		}
+	}
+
+	// Handle backup IMPORT request
+	if ( isset( $_POST['import_backup_submit'] ) && current_user_can( 'manage_options' ) ) {
+		if ( ! empty( $_FILES['import_backup_file']['tmp_name'] ) ) {
+			$file_path = $_FILES['import_backup_file']['tmp_name'];
+			$raw_content = file_get_contents( $file_path );
+			$imported_data = json_decode( $raw_content, true );
+
+			if ( ! empty( $imported_data ) && ( isset( $imported_data['donors'] ) || isset( $imported_data['requests'] ) ) ) {
+				$donors_count = 0;
+				$requests_count = 0;
+
+				// Import Donors
+				if ( isset( $imported_data['donors'] ) && is_array( $imported_data['donors'] ) ) {
+					foreach ( $imported_data['donors'] as $donor ) {
+						$email = isset( $donor['donor_email'] ) ? sanitize_email( $donor['donor_email'] ) : (isset($donor['email']) ? sanitize_email($donor['email']) : '');
+						$contact = isset( $donor['contact_details'] ) ? sanitize_text_field( $donor['contact_details'] ) : (isset($donor['contact']) ? sanitize_text_field($donor['contact']) : '');
+						$name = isset( $donor['donor_name'] ) ? sanitize_text_field( $donor['donor_name'] ) : (isset($donor['name']) ? sanitize_text_field($donor['name']) : 'Anonymous');
+						$group = isset( $donor['blood_group'] ) ? sanitize_text_field( $donor['blood_group'] ) : (isset($donor['bloodGroup']) ? sanitize_text_field($donor['bloodGroup']) : 'O+');
+						
+						$existing_donor = null;
+						if ( ! empty( $email ) ) {
+							$existing_query = get_posts( array(
+								'post_type'      => 'blood_donor',
+								'meta_key'       => 'donor_email',
+								'meta_value'     => $email,
+								'posts_per_page' => 1,
+							) );
+							if ( ! empty( $existing_query ) ) {
+								$existing_donor = $existing_query[0];
+							}
+						}
+						if ( empty( $existing_donor ) && ! empty( $contact ) ) {
+							$existing_query = get_posts( array(
+								'post_type'      => 'blood_donor',
+								'meta_key'       => 'contact_details',
+								'meta_value'     => $contact,
+								'posts_per_page' => 1,
+							) );
+							if ( ! empty( $existing_query ) ) {
+								$existing_donor = $existing_query[0];
+							}
+						}
+
+						if ( ! empty( $existing_donor ) ) {
+							$post_id = $existing_donor->ID;
+						} else {
+							$post_id = wp_insert_post( array(
+								'post_title'  => $name . ' - ' . $group,
+								'post_type'   => 'blood_donor',
+								'post_status' => 'publish',
+							) );
+						}
+
+						if ( $post_id ) {
+							update_post_meta( $post_id, 'donor_name', $name );
+							update_post_meta( $post_id, 'blood_group', $group );
+							update_post_meta( $post_id, 'donor_email', $email );
+							update_post_meta( $post_id, 'contact_details', $contact );
+							
+							$country = isset( $donor['country'] ) ? sanitize_text_field( $donor['country'] ) : '';
+							$state = isset( $donor['state'] ) ? sanitize_text_field( $donor['state'] ) : '';
+							$district = isset( $donor['district'] ) ? sanitize_text_field( $donor['district'] ) : '';
+							$address = isset( $donor['address'] ) ? sanitize_text_field( $donor['address'] ) : '';
+							
+							update_post_meta( $post_id, 'country', $country );
+							update_post_meta( $post_id, 'state', $state );
+							update_post_meta( $post_id, 'district', $district );
+							update_post_meta( $post_id, 'address', $address );
+							
+							$map_loc = isset( $donor['map_location'] ) ? sanitize_text_field( $donor['map_location'] ) : '';
+							update_post_meta( $post_id, 'map_location', $map_loc );
+							
+							$avl_status = isset( $donor['availability_status'] ) ? sanitize_text_field( $donor['availability_status'] ) : '';
+							if ( empty($avl_status) && isset($donor['availabilityStatus']) ) { $avl_status = sanitize_text_field($donor['availabilityStatus']); }
+							update_post_meta( $post_id, 'availability_status', $avl_status ? $avl_status : 'Available Now' );
+							
+							$donor_ip = isset( $donor['donor_ip'] ) ? sanitize_text_field( $donor['donor_ip'] ) : (isset($donor['ip']) ? sanitize_text_field($donor['ip']) : '127.0.0.1');
+							update_post_meta( $post_id, 'donor_ip', $donor_ip );
+							
+							$reg_time = isset( $donor['registration_time'] ) ? sanitize_text_field( $donor['registration_time'] ) : '';
+							if (empty($reg_time) && isset($donor['timestamp'])) { $reg_time = date('Y-m-d H:i:s', $donor['timestamp']/1000); }
+							update_post_meta( $post_id, 'registration_time', $reg_time ? $reg_time : current_time( 'mysql' ) );
+
+							$table_don_exists = $wpdb->get_var( "SHOW TABLES LIKE 'wp_blood_donors'" );
+							if ( $table_don_exists ) {
+								$table_record = $wpdb->get_var( $wpdb->prepare( "SELECT id FROM wp_blood_donors WHERE id = %d", $post_id ) );
+								$db_donor_data = array(
+									'id'                  => $post_id,
+									'donor_name'          => $name,
+									'blood_group'         => $group,
+									'donor_email'         => $email,
+									'contact_details'     => $contact,
+									'country'             => $country,
+									'state'               => $state,
+									'district'            => $district,
+									'address'             => $address,
+									'map_location'        => $map_loc,
+									'availability_status' => $avl_status ? $avl_status : 'Available Now',
+									'donor_ip'            => $donor_ip,
+									'registration_time'   => $reg_time ? $reg_time : current_time( 'mysql' ),
+								);
+								if ( $table_record ) {
+									$wpdb->update( 'wp_blood_donors', $db_donor_data, array( 'id' => $post_id ) );
+								} else {
+									$wpdb->insert( 'wp_blood_donors', $db_donor_data );
+								}
+							}
+							$donors_count++;
+						}
+					}
+				}
+
+				// Import Requests
+				if ( isset( $imported_data['requests'] ) && is_array( $imported_data['requests'] ) ) {
+					foreach ( $imported_data['requests'] as $req ) {
+						$patient_name = isset( $req['patient_name'] ) ? sanitize_text_field( $req['patient_name'] ) : (isset($req['patientName']) ? sanitize_text_field($req['patientName']) : 'Anonymous');
+						$group = isset( $req['blood_group'] ) ? sanitize_text_field( $req['blood_group'] ) : (isset($req['bloodGroup']) ? sanitize_text_field($req['bloodGroup']) : 'O+');
+						$contact = isset( $req['contact_details'] ) ? sanitize_text_field( $req['contact_details'] ) : (isset($req['contactDetails']) ? sanitize_text_field($req['contactDetails']) : '');
+						
+						$existing_req = null;
+						if ( ! empty( $contact ) ) {
+							$existing_query = get_posts( array(
+								'post_type'      => 'blood_request',
+								'meta_key'       => 'patient_name',
+								'meta_value'     => $patient_name,
+								'posts_per_page' => 1,
+							) );
+							if ( ! empty( $existing_query ) ) {
+								$existing_req = $existing_query[0];
+							}
+						}
+
+						if ( ! empty( $existing_req ) ) {
+							$post_id = $existing_req->ID;
+						} else {
+							$post_id = wp_insert_post( array(
+								'post_title'  => 'Blood Request - ' . $group . ' - ' . $patient_name,
+								'post_type'   => 'blood_request',
+								'post_status' => 'publish',
+							) );
+						}
+
+						if ( $post_id ) {
+							update_post_meta( $post_id, 'patient_name', $patient_name );
+							update_post_meta( $post_id, 'blood_group', $group );
+							update_post_meta( $post_id, 'contact_details', $contact );
+							
+							$hospital = isset( $req['hospital_name'] ) ? sanitize_text_field( $req['hospital_name'] ) : (isset($req['hospitalName']) ? sanitize_text_field($req['hospitalName']) : '');
+							update_post_meta( $post_id, 'hospital_name', $hospital );
+							
+							$loc = isset( $req['patient_location'] ) ? sanitize_text_field( $req['patient_location'] ) : '';
+							update_post_meta( $post_id, 'patient_location', $loc );
+							
+							$units = isset( $req['units_required'] ) ? sanitize_text_field( $req['units_required'] ) : (isset($req['unitsRequired']) ? sanitize_text_field($req['unitsRequired']) : '1');
+							update_post_meta( $post_id, 'units_required', $units );
+							
+							$urg = isset( $req['urgency'] ) ? sanitize_text_field( $req['urgency'] ) : '';
+							update_post_meta( $post_id, 'urgency', $urg ? $urg : 'Urgent' );
+							
+							$info = isset( $req['additional_info'] ) ? sanitize_textarea_field( $req['additional_info'] ) : '';
+							update_post_meta( $post_id, 'additional_info', $info );
+							
+							$req_ip = isset( $req['request_ip'] ) ? sanitize_text_field( $req['request_ip'] ) : (isset($req['ip']) ? sanitize_text_field($req['ip']) : '127.0.0.1');
+							update_post_meta( $post_id, 'request_ip', $req_ip );
+							
+							$req_time = isset( $req['request_time'] ) ? sanitize_text_field( $req['request_time'] ) : '';
+							if (empty($req_time) && isset($req['timestamp'])) { $req_time = date('Y-m-d H:i:s', $req['timestamp']/1000); }
+							update_post_meta( $post_id, 'request_time', $req_time ? $req_time : current_time( 'mysql' ) );
+							
+							$status = isset( $req['status'] ) ? sanitize_text_field( $req['status'] ) : 'pending';
+							update_post_meta( $post_id, 'status', $status );
+							
+							$acc_id = isset( $req['accepted_by_donor_id'] ) ? intval( $req['accepted_by_donor_id'] ) : null;
+							update_post_meta( $post_id, 'accepted_by_donor_id', $acc_id );
+							
+							$slip_url = isset( $req['doctor_slip_url'] ) ? esc_url_raw( $req['doctor_slip_url'] ) : '';
+							update_post_meta( $post_id, 'doctor_slip_url', $slip_url );
+
+							$table_req_exists = $wpdb->get_var( "SHOW TABLES LIKE 'wp_blood_requests'" );
+							if ( $table_req_exists ) {
+								$table_record = $wpdb->get_var( $wpdb->prepare( "SELECT id FROM wp_blood_requests WHERE id = %d", $post_id ) );
+								$db_req_data = array(
+									'id'                   => $post_id,
+									'patient_name'         => $patient_name,
+									'blood_group'          => $group,
+									'patient_location'     => $loc,
+									'contact_details'      => $contact,
+									'hospital_name'        => $hospital,
+									'units_required'       => $units,
+									'urgency'              => $urg ? $urg : 'Urgent',
+									'doctor_slip_url'      => $slip_url,
+									'request_ip'           => $req_ip,
+									'request_time'         => $req_time ? $req_time : current_time( 'mysql' ),
+									'status'               => $status,
+									'accepted_by_donor_id' => $acc_id,
+								);
+								if ( $table_record ) {
+									$wpdb->update( 'wp_blood_requests', $db_req_data, array( 'id' => $post_id ) );
+								} else {
+									$wpdb->insert( 'wp_blood_requests', $db_req_data );
+								}
+							}
+							$requests_count++;
+						}
+					}
+				}
+
+				echo '<div class="notice notice-success is-dismissible" style="padding: 12px; background: #d4edda; color: #155724; border-left: 4px solid #28a745; margin: 15px 0; border-radius: 4px;"><p style="margin: 0; font-weight: bold;">✓ Data backup imported successfully! Loaded ' . $donors_count . ' donors and ' . $requests_count . ' emergency requests safely.</p></div>';
+			} else {
+				echo '<div class="notice notice-error is-dismissible" style="padding: 12px; background: #f8d7da; color: #721c24; border-left: 4px solid #dc3545; margin: 15px 0; border-radius: 4px;"><p style="margin: 0; font-weight: bold;">✕ Failed to process backup format. Verify JSON structures.</p></div>';
+			}
 		}
 	}
 
@@ -2104,7 +2419,19 @@ function tatkhalsa_render_blood_master_data_page() {
 		<h1 style="color: #ff334b; font-weight: bold; margin-bottom: 20px;">📌 Tatkhalsa Blood On Call - Master Admin Records</h1>
 		<div style="background: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); margin-bottom: 30px;">
 			<p>Secure database containing donor credentials, active patient broadcasts, and spam protection metadata. Access is restricted to site managers.</p>
-			<p><strong>🔒 IP Logging Status:</strong> Active (Strict rolling 30-day storage system for security checks and anti-spam verification).</p>
+			<p><strong>🔒 IP Logging Status:</strong> Active (Full historic IP retention is enabled for safety audits; 30-day auto-purge has been disabled at administrator request).</p>
+			<hr style="border: 0; border-top: 1px solid #eee; margin: 15px 0;" />
+			<div style="display: flex; gap: 15px; align-items: center; flex-wrap: wrap;">
+				<div>
+					<a href="<?php echo admin_url('admin.php?page=blood-master-data&action=export_backup'); ?>" class="button button-primary" style="background: #2ecc71; border-color: #27ae60; font-weight: bold; text-shadow: none; box-shadow: none; display: inline-flex; align-items: center; gap: 5px;">📥 Download JSON Data Backup</a>
+				</div>
+				<div style="border-left: 1px solid #ddd; height: 30px; margin: 0 5px;"></div>
+				<form method="POST" action="" enctype="multipart/form-data" style="display: inline-flex; align-items: center; gap: 10px; margin: 0;">
+					<span style="font-weight: bold;">📤 Import Data Backup:</span>
+					<input type="file" name="import_backup_file" accept=".json" required style="max-width: 200px;" />
+					<input type="submit" name="import_backup_submit" class="button button-secondary" value="Load Backup" style="font-weight: bold;" />
+				</form>
+			</div>
 		</div>
 
 		<h2 style="margin-top: 30px; display: flex; align-items: center; gap: 8px;">🩸 Registered Donors List</h2>
@@ -2123,7 +2450,7 @@ function tatkhalsa_render_blood_master_data_page() {
 						<th>Contact Details</th>
 						<th>Address & Location</th>
 						<th>Status</th>
-						<th>IP Address (30 days retention)</th>
+						<th>IP Address</th>
 						<th style="width: 100px; text-align: center;">Actions</th>
 					</tr>
 				</thead>
@@ -2193,7 +2520,7 @@ function tatkhalsa_render_blood_master_data_page() {
 						<th style="text-align: center; width: 110px;">Doctor's Slip</th>
 						<th style="text-align: center; width: 110px;">Status</th>
 						<th>Accepted Volunteer Info</th>
-						<th>Request IP (30 days retention)</th>
+						<th>Request IP</th>
 						<th style="width: 155px; text-align: center;">Actions</th>
 					</tr>
 				</thead>

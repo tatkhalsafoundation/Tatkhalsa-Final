@@ -692,6 +692,84 @@ async function startServer() {
     return res.json({ success: true, message: "Blood request status updated to fulfilled." });
   });
 
+  app.post("/api/admin/import-data", (req, res) => {
+    const { donors, requests } = req.body || {};
+    if (!Array.isArray(donors) || !Array.isArray(requests)) {
+      return res.status(400).json({ success: false, message: "Invalid backup content templates." });
+    }
+
+    let donorsImportedCount = 0;
+    let requestsImportedCount = 0;
+
+    // Import Donors
+    donors.forEach(d => {
+      // Find matching donor in existing records
+      const existingIndex = mockDonors.findIndex(md => 
+        (md.email && md.email.toLowerCase() === (d.email || d.donor_email || '').toLowerCase()) || 
+        (md.contact && md.contact.replace(/\s+/g, '') === (d.contact || d.contact_details || '').replace(/\s+/g, ''))
+      );
+
+      const mappedDonor = {
+        id: d.id || `donor_${Date.now()}_${Math.floor(Math.random() * 1000)}`,
+        name: d.name || d.donor_name || 'Anonymous',
+        bloodGroup: d.bloodGroup || d.blood_group || 'O+',
+        email: d.email || d.donor_email || '',
+        contact: d.contact || d.contact_details || '',
+        address: d.address || d.address_line || '',
+        availabilityStatus: d.availabilityStatus || d.availability_status || 'Available Now',
+        ip: d.ip || d.donor_ip || '127.0.0.1',
+        timestamp: d.timestamp || d.registration_time || Date.now()
+      };
+
+      if (existingIndex !== -1) {
+        mockDonors[existingIndex] = mappedDonor;
+      } else {
+        mockDonors.push(mappedDonor);
+      }
+      donorsImportedCount++;
+    });
+
+    // Import Requests
+    requests.forEach(r => {
+      const existingIndex = mockRequests.findIndex(mr => 
+        mr.id === r.id || 
+        (mr.patientName === (r.patientName || r.patient_name) && mr.contactDetails === (r.contactDetails || r.contact_details))
+      );
+
+      const mappedRequest = {
+        id: r.id || `req_${Date.now()}_${Math.floor(Math.random() * 1000)}`,
+        patientName: r.patientName || r.patient_name || 'Anonymous',
+        bloodGroup: r.bloodGroup || r.blood_group || 'O+',
+        hospitalName: r.hospitalName || r.hospital_name || 'General Hospital',
+        patientLocation: r.patientLocation || r.patient_location || '',
+        contactDetails: r.contactDetails || r.contact_details || '',
+        unitsRequired: r.unitsRequired || r.units_required || '1',
+        urgency: r.urgency || r.urgency || 'Normal',
+        doctorSlipUrl: r.doctorSlipUrl || r.doctor_slip_url || '',
+        status: r.status || 'pending',
+        acceptedByDonorId: r.acceptedByDonorId || r.accepted_by_donor_id || null,
+        volunteer_name: r.volunteer_name || r.volunteer_name || '',
+        volunteer_phone: r.volunteer_phone || r.volunteer_phone || '',
+        ip: r.ip || r.request_ip || '127.0.0.1',
+        timestamp: r.timestamp || r.request_time || r.registration_time || Date.now()
+      };
+
+      if (existingIndex !== -1) {
+        mockRequests[existingIndex] = mappedRequest;
+      } else {
+        mockRequests.push(mappedRequest);
+      }
+      requestsImportedCount++;
+    });
+
+    return res.json({ 
+      success: true, 
+      donors_imported: donorsImportedCount,
+      requests_imported: requestsImportedCount,
+      message: "Data loaded successfully." 
+    });
+  });
+
   // Support direct static serving of style.css and Logo.jpg/Logo.png from theme path
   app.get("/style.css", (req, res) => {
     res.sendFile(path.join(THEME_PATH, "style.css"));

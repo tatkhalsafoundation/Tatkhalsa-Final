@@ -98,14 +98,25 @@ $donors_query = new WP_Query( $args );
                 </button>
             </div>
 
-            <!-- Tabs Header -->
-            <div style="display: flex; gap: 10px; margin-bottom: 25px;">
-                <button id="tabDonorsBtn" onclick="switchAdminTab('donors')" style="padding: 10px 18px; border-radius: 6px; border: none; font-weight: bold; cursor: pointer; font-size: 0.85rem; background: var(--secondary); color: #000; transition: all 0.2s;">
-                    🩸 Registered Donors List (<span id="countDonors">0</span>)
-                </button>
-                <button id="tabRequestsBtn" onclick="switchAdminTab('requests')" style="padding: 10px 18px; border-radius: 6px; border: none; font-weight: bold; cursor: pointer; font-size: 0.85rem; background: rgba(255,255,255,0.05); color: var(--text-light); transition: all 0.2s;">
-                    🚨 Urgent Blood Requests (<span id="countRequests">0</span>)
-                </button>
+            <!-- Tabs & Backup Header -->
+            <div style="display: flex; flex-wrap: wrap; gap: 15px; justify-content: space-between; align-items: center; margin-bottom: 25px;">
+                <div style="display: flex; gap: 10px;">
+                    <button id="tabDonorsBtn" onclick="switchAdminTab('donors')" style="padding: 10px 18px; border-radius: 6px; border: none; font-weight: bold; cursor: pointer; font-size: 0.85rem; background: var(--secondary); color: #000; transition: all 0.2s;">
+                        🩸 Registered Donors List (<span id="countDonors">0</span>)
+                    </button>
+                    <button id="tabRequestsBtn" onclick="switchAdminTab('requests')" style="padding: 10px 18px; border-radius: 6px; border: none; font-weight: bold; cursor: pointer; font-size: 0.85rem; background: rgba(255,255,255,0.05); color: var(--text-light); transition: all 0.2s;">
+                        🚨 Urgent Blood Requests (<span id="countRequests">0</span>)
+                    </button>
+                </div>
+                <div style="display: flex; gap: 10px; align-items: center;">
+                    <button onclick="window.exportMasterDataBackup()" style="background: rgba(46,204,113,0.15); color: #2ecc71; border: 1px solid rgba(46,204,113,0.3); padding: 8px 14px; border-radius: 6px; font-weight: bold; cursor: pointer; font-size: 0.8rem; display: flex; align-items: center; gap: 6px; transition: all 0.2s;" onmouseover="this.style.background='#2ecc71'; this.style.color='#000';" onmouseout="this.style.background='rgba(46,204,113,0.15)'; this.style.color='#2ecc71';">
+                        📥 Export JSON Backup
+                    </button>
+                    <button onclick="document.getElementById('adminImportFileInput').click()" style="background: rgba(52,152,219,0.15); color: #3498db; border: 1px solid rgba(52,152,219,0.3); padding: 8px 14px; border-radius: 6px; font-weight: bold; cursor: pointer; font-size: 0.8rem; display: flex; align-items: center; gap: 6px; transition: all 0.2s;" onmouseover="this.style.background='#3498db'; this.style.color='#fff';" onmouseout="this.style.background='rgba(52,152,219,0.15)'; this.style.color='#3498db';">
+                        📤 Import JSON Backup
+                    </button>
+                    <input type="file" id="adminImportFileInput" style="display: none;" accept=".json" onchange="window.handleAdminImport(event)" />
+                </div>
             </div>
 
             <div id="adminLoading" style="text-align: center; padding: 40px; color: var(--text-light);">
@@ -1624,6 +1635,80 @@ document.addEventListener("DOMContentLoaded", function() {
                 }
             } catch(e) { alert("Error marking request as fulfilled."); }
         }
+    };
+
+    window.exportMasterDataBackup = async function() {
+        try {
+            const res = await fetch('/api/admin/master-data');
+            const data = await res.json();
+            if (data.success) {
+                const exportObj = {
+                    version: "1.0",
+                    exported_at: new Date().toISOString(),
+                    donors: data.donors,
+                    requests: data.requests
+                };
+                const blob = new Blob([JSON.stringify(exportObj, null, 2)], { type: "application/json" });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement("a");
+                a.href = url;
+                a.download = `tatkhalsa-blood-data-backup-${new Date().toISOString().slice(0,10)}.json`;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+            } else {
+                alert("Failed to fetch fresh records for export.");
+            }
+        } catch(e) {
+            alert("Error exporting master data backup.");
+        }
+    };
+
+    window.handleAdminImport = function(event) {
+        const file = event.target.files[0];
+        if (!file) return;
+
+        const reader = new FileReader();
+        reader.onload = async function(e) {
+            try {
+                const rawJson = e.target.result;
+                const importObj = JSON.parse(rawJson);
+
+                if (!importObj.donors || !importObj.requests) {
+                    alert("Invalid backup file. The JSON must contain 'donors' and 'requests' arrays.");
+                    return;
+                }
+
+                if (!confirm(`Are you sure you want to import ${importObj.donors.length} donors and ${importObj.requests.length} requests into the database? Existing identical entries will be kept up to date.`)) {
+                    event.target.value = '';
+                    return;
+                }
+
+                const res = await fetch('/api/admin/import-data', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        donors: importObj.donors,
+                        requests: importObj.requests
+                    })
+                });
+                const r = await res.json();
+                if (r.success) {
+                    alert(`Backup file imported successfully!\n- Donors Loaded: ${r.donors_imported || importObj.donors.length}\n- Requests Loaded: ${r.requests_imported || importObj.requests.length}`);
+                    window.fetchMasterData();
+                    if (typeof window.loadPublicDirectory === "function") {
+                        window.loadPublicDirectory();
+                    }
+                } else {
+                    alert(r.message || "Failed to import data.");
+                }
+            } catch(err) {
+                alert("Error parsing backup JSON file. Make sure it is a valid JSON exported backup.");
+            }
+            event.target.value = '';
+        };
+        reader.readAsText(file);
     };
 
     window.loadPublicDirectory = async function() {
