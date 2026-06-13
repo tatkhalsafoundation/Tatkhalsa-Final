@@ -3030,4 +3030,64 @@ add_filter( 'pre_get_document_title', function() {
     return ''; // Let WordPress handle dynamic posts or category titles
 }, 999 );
 
+/**
+ * Handle manual UPI tracking in GiveWP via AJAX
+ */
+function tatkhalsa_verify_upi_donation() {
+    $name = sanitize_text_field( $_POST['name'] );
+    $parts = explode(' ', $name, 2);
+    $first_name = $parts[0];
+    $last_name = isset($parts[1]) ? $parts[1] : '';
+    
+    $email = sanitize_email( $_POST['email'] );
+    $amount = floatval( $_POST['amount'] );
+    $utr = sanitize_text_field( $_POST['utr'] );
+    $seva_type = sanitize_text_field( $_POST['seva_type'] );
+
+    if ( empty( $name ) || empty( $email ) || empty( $amount ) || empty( $utr ) ) {
+        wp_send_json_error( 'Missing fields' );
+    }
+
+    // Insert GiveWP Payment Post manually so it appears in the GiveWP dashboard
+    $payment_id = wp_insert_post( array(
+        'post_type'   => 'give_payment',
+        'post_title'  => "GiveWP Donation - $name",
+        'post_status' => 'pending', // Pending verification
+        'post_author' => 1,
+    ) );
+
+    if ( $payment_id && ! is_wp_error( $payment_id ) ) {
+        update_post_meta( $payment_id, '_give_payment_donor_email', $email );
+        update_post_meta( $payment_id, '_give_payment_donor_billing_first_name', $first_name );
+        update_post_meta( $payment_id, '_give_payment_donor_billing_last_name', $last_name );
+        update_post_meta( $payment_id, '_give_payment_total', $amount );
+        update_post_meta( $payment_id, '_give_payment_currency', 'INR' );
+        update_post_meta( $payment_id, '_give_payment_gateway', 'manual' );
+        update_post_meta( $payment_id, '_give_payment_utr', $utr );
+        update_post_meta( $payment_id, '_give_payment_seva_type', $seva_type );
+        update_post_meta( $payment_id, '_give_payment_date', current_time('mysql') );
+        
+        // GiveWP standard meta
+        update_post_meta( $payment_id, '_give_payment_donor_ip', $_SERVER['REMOTE_ADDR'] );
+        update_post_meta( $payment_id, '_give_payment_form_title', $seva_type );
+
+        wp_insert_comment( array(
+            'comment_post_ID'  => $payment_id,
+            'comment_content'  => "User submitted manual payment.\nUTR: $utr\nSeva Type: $seva_type",
+            'comment_type'     => 'give_payment_note',
+            'comment_approved' => 1,
+        ) );
+    }
+
+    // Email admin notifier
+    $admin_email = get_option('admin_email');
+    $subject = "New UPI Donation verification needed ($utr)";
+    $message = "Name: $name\nEmail: $email\nAmount: Rs. $amount\nUTR: $utr\nSeva Type: $seva_type\n\nPlease check your bank statement for this UTR. Then go to GiveWP dashboard -> Donations, find this pending record, and mark it as 'Complete' to issue the receipt.";
+    wp_mail( $admin_email, $subject, $message, array('Content-Type: text/plain; charset=UTF-8') );
+    
+    wp_send_json_success( 'Recorded' );
+}
+add_action( 'wp_ajax_verify_upi_donation', 'tatkhalsa_verify_upi_donation' );
+add_action( 'wp_ajax_nopriv_verify_upi_donation', 'tatkhalsa_verify_upi_donation' );
+
 ?>
