@@ -2598,9 +2598,32 @@ footer#footer:nth-of-type(1) > div:nth-of-type(2) > div:nth-of-type(2) {
 }
 
 [data-theme="light"] .modal-content {
-  background: var(--bg-shade-1);
-  border: 1px solid rgba(0, 0, 0, 0.1);
-  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.2), 0 0 40px rgba(212, 175, 55, 0.1);
+  background: #ffffff !important;
+  color: #0a2342 !important;
+  border: 1px solid rgba(0, 0, 0, 0.15) !important;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15), 0 0 40px rgba(10, 35, 66, 0.05) !important;
+}
+
+[data-theme="light"] .modal-content h2 {
+  color: #0a2342 !important;
+}
+
+[data-theme="light"] .modal-content label {
+  color: #0a2342 !important;
+}
+
+[data-theme="light"] .modal-content p,
+[data-theme="light"] .modal-content small,
+[data-theme="light"] .modal-content span {
+  color: #3f5d82 !important;
+}
+
+[data-theme="light"] .modal-content input,
+[data-theme="light"] .modal-content select,
+[data-theme="light"] .modal-content textarea {
+  background: #ffffff !important;
+  color: #0a2342 !important;
+  border: 1px solid rgba(0, 0, 0, 0.2) !important;
 }
 
 [data-theme="light"] .modal-close {

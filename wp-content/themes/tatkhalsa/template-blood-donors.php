@@ -347,6 +347,11 @@ $donors_query = new WP_Query( $args );
         <div style="margin-top: 60px; padding: 25px; background: rgba(0,0,0,0.03); border-radius: 12px; border-left: 4px solid #ff334b; font-size: 0.85rem; color: var(--text-light); line-height: 1.6;">
             <strong>Disclaimer:</strong> Tatkhalsa Foundation operates purely as a voluntary community coordination network. We do not run physical blood banks or commercialize medical supplies. All verifications of donor eligibility must be independently validated by certified hospital practitioners at the time of transfusion.
         </div>
+
+        <!-- Technical Support & Bug Reporting -->
+        <div style="margin-top: 20px; padding: 15px; background: rgba(0,0,0,0.02); border-radius: 10px; border: 1px dashed rgba(255, 51, 75, 0.2); text-align: center; font-size: 0.85rem; color: var(--text-light); line-height: 1.5;">
+            🐛 Encountered any bug or problem? Please tell us at <strong><a href="mailto:tech-team@tatkhalsa.in" style="color: #ff334b; text-decoration: none;">tech-team@tatkhalsa.in</a></strong>
+        </div>
     </div>
 </div>
 
