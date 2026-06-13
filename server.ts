@@ -650,12 +650,129 @@ async function startServer() {
     res.status(404).json({ success: false, data: { message: `Unknown AJAX action: ${action}` } });
   });
 
+  // Admin Configuration for Auto IP Purging
+  let ipPurgeEnabled = true; // Auto IP purging active by default
+  let ipPurgeDuration = "15_days"; // Default duration is 15 days
+
+  function runIpPurge() {
+    if (!ipPurgeEnabled || ipPurgeDuration === "never") return;
+
+    let days = 15;
+    if (ipPurgeDuration === "7_days") days = 7;
+    else if (ipPurgeDuration === "15_days") days = 15;
+    else if (ipPurgeDuration === "30_days") days = 30;
+
+    const thresholdMs = days * 24 * 3600 * 1000;
+    const now = Date.now();
+
+    mockDonors = mockDonors.map(d => {
+      if (now - d.timestamp > thresholdMs && d.ip && d.ip !== "[Purged]") {
+        return { ...d, ip: "[Purged]" };
+      }
+      return d;
+    });
+
+    mockRequests = mockRequests.map(r => {
+      if (now - r.timestamp > thresholdMs && r.ip && r.ip !== "[Purged]") {
+        return { ...r, ip: "[Purged]" };
+      }
+      return r;
+    });
+  }
+
   // Admin Master Data and Deletion Endpoints for local simulation
   app.get("/api/admin/master-data", (req, res) => {
+    runIpPurge(); // Auto purge check on loading master data
     return res.json({
       success: true,
       donors: mockDonors,
-      requests: mockRequests
+      requests: mockRequests,
+      purgeSettings: {
+        enabled: ipPurgeEnabled,
+        duration: ipPurgeDuration
+      }
+    });
+  });
+
+  // Get and set Auto IP purging settings
+  app.get("/api/admin/purge-settings", (req, res) => {
+    return res.json({
+      success: true,
+      enabled: ipPurgeEnabled,
+      duration: ipPurgeDuration
+    });
+  });
+
+  app.post("/api/admin/purge-settings", (req, res) => {
+    const { enabled, duration } = req.body || {};
+    if (enabled !== undefined) ipPurgeEnabled = !!enabled;
+    if (duration !== undefined) ipPurgeDuration = duration;
+
+    runIpPurge(); // Trigger purge immediately with updated config
+
+    return res.json({
+      success: true,
+      message: "IP address purging configuration updated successfully.",
+      enabled: ipPurgeEnabled,
+      duration: ipPurgeDuration
+    });
+  });
+
+  // Edit Donor API Route
+  app.post("/api/admin/edit-donor", (req, res) => {
+    const { id, name, bloodGroup, email, contact, address, availabilityStatus } = req.body || {};
+    if (!id) {
+      return res.status(400).json({ success: false, message: "Donor ID is required to edit." });
+    }
+    const donorIndex = mockDonors.findIndex(d => d.id === id);
+    if (donorIndex === -1) {
+      return res.status(404).json({ success: false, message: "Donor profile not found." });
+    }
+
+    mockDonors[donorIndex] = {
+      ...mockDonors[donorIndex],
+      name: name !== undefined ? name : mockDonors[donorIndex].name,
+      bloodGroup: bloodGroup !== undefined ? bloodGroup : mockDonors[donorIndex].bloodGroup,
+      email: email !== undefined ? email : mockDonors[donorIndex].email,
+      contact: contact !== undefined ? contact : mockDonors[donorIndex].contact,
+      address: address !== undefined ? address : mockDonors[donorIndex].address,
+      availabilityStatus: availabilityStatus !== undefined ? availabilityStatus : mockDonors[donorIndex].availabilityStatus
+    };
+
+    return res.json({
+      success: true,
+      message: "Donor credentials updated successfully.",
+      donor: mockDonors[donorIndex]
+    });
+  });
+
+  // Edit Request API Route
+  app.post("/api/admin/edit-request", (req, res) => {
+    const { id, patientName, bloodGroup, hospitalName, patientLocation, contactDetails, unitsRequired, urgency, status } = req.body || {};
+    if (!id) {
+      return res.status(400).json({ success: false, message: "Request ID is required to edit." });
+    }
+    const reqIndex = mockRequests.findIndex(r => r.id === id);
+    if (reqIndex === -1) {
+      return res.status(404).json({ success: false, message: "Blood request profile not found." });
+    }
+
+    mockRequests[reqIndex] = {
+      ...mockRequests[reqIndex],
+      patientName: patientName !== undefined ? patientName : mockRequests[reqIndex].patientName,
+      bloodGroup: bloodGroup !== undefined ? bloodGroup : mockRequests[reqIndex].bloodGroup,
+      hospitalName: hospitalName !== undefined ? hospitalName : mockRequests[reqIndex].hospitalName,
+      patientLocation: patientLocation !== undefined ? patientLocation : mockRequests[reqIndex].patientLocation,
+      contactDetails: contactDetails !== undefined ? contactDetails : mockRequests[reqIndex].contactDetails,
+      unitsRequired: unitsRequired !== undefined ? unitsRequired : mockRequests[reqIndex].unitsRequired,
+      urgency: urgency !== undefined ? urgency : mockRequests[reqIndex].urgency,
+      status: status !== undefined ? status : mockRequests[reqIndex].status
+    };
+
+    return res.json({
+      success: true,
+      message: "Emergency blood request credentials updated successfully.",
+      request: mockRequests[reqIndex]
     });
   });
 

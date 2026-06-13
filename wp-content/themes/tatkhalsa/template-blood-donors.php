@@ -133,6 +133,35 @@ $donors_query = new WP_Query( $args );
                 </div>
             </div>
 
+            <!-- Auto IP Purging Settings Box -->
+            <div id="ipPurgeSettingsBox" style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); padding: 16px; border-radius: 8px; margin-bottom: 25px; display: flex; flex-wrap: wrap; gap: 20px; align-items: center; justify-content: space-between;">
+                <div style="display: flex; align-items: center; gap: 12px;">
+                    <span style="font-size: 1.4rem;">🔒</span>
+                    <div>
+                        <h4 style="margin: 0; color: var(--secondary); font-size: 0.95rem; font-weight: bold;">Auto IP Address Purging</h4>
+                        <p style="margin: 3px 0 0 0; color: var(--text-light); font-size: 0.78rem;">Scrub recorded client IP metrics from active records based on custom duration retention thresholds.</p>
+                    </div>
+                </div>
+                <div style="display: flex; align-items: center; gap: 15px; flex-wrap: wrap;">
+                    <label style="display: flex; align-items: center; gap: 8px; color: #fff; cursor: pointer; font-size: 0.85rem; font-weight: 600;">
+                        <input type="checkbox" id="chkIpPurgeEnabled" onchange="window.savePurgeSettings()" style="transform: scale(1.15); cursor: pointer;" />
+                        Enable Auto Purge
+                    </label>
+                    <div style="display: flex; align-items: center; gap: 8px;">
+                        <span style="color: rgba(255,255,255,0.6); font-size: 0.8rem;">Threshold:</span>
+                        <select id="selIpPurgeDuration" onchange="window.savePurgeSettings()" style="background: #111; color: #fff; border: 1px solid rgba(255,255,255,0.2); padding: 6px 10px; border-radius: 6px; font-size: 0.8rem; outline: none; cursor: pointer;">
+                            <option value="7_days">7 Days</option>
+                            <option value="15_days">15 Days</option>
+                            <option value="30_days">1 Month (30 Days)</option>
+                            <option value="never">Never (Keep Forever)</option>
+                        </select>
+                    </div>
+                    <span id="purgeStatusTick" style="color: #2ed573; font-size: 0.82rem; font-weight: bold; opacity: 0; transition: opacity 0.3s; display: flex; align-items: center; gap: 4px;">
+                        ✓ Saved
+                    </span>
+                </div>
+            </div>
+
             <div id="adminLoading" style="text-align: center; padding: 40px; color: var(--text-light);">
                 Loading secure administrator records...
             </div>
@@ -451,6 +480,148 @@ $donors_query = new WP_Query( $args );
   </div>
 </div>
 
+<!-- Edit Donor Modal (Master Data Administrative Option) -->
+<div class="modal-overlay" id="editDonorModal" style="display: none;">
+  <div class="modal-content" style="max-height: 90vh; overflow-y: auto;">
+    <button class="modal-close" style="position: absolute; top: 15px; right: 15px; background: none; border: none; font-size: 1.5rem; cursor: pointer; color: var(--text-dark);" onclick="window.closeEditDonorModal()">&times;</button>
+    
+    <h2 style="color: var(--text-dark); margin-bottom: 20px; text-align: center; display: flex; align-items: center; justify-content: center; gap: 8px;">
+        <span>📝</span> Edit Registered Donor Details
+    </h2>
+    
+    <form id="editDonorForm" onsubmit="window.saveEditedDonor(event)">
+      <input type="hidden" id="editDonorId" />
+      
+      <div style="margin-bottom: 15px;">
+        <label style="display: block; margin-bottom: 6px; color: var(--text-dark); font-weight: bold;">Full Name *</label>
+        <input type="text" id="editDonorName" required style="width: 100%; padding: 12px; border-radius: 6px; border: 1px solid rgba(0,0,0,0.2); background: #fff; color: #333;">
+      </div>
+      
+      <div style="margin-bottom: 15px;">
+        <label style="display: block; margin-bottom: 6px; color: var(--text-dark); font-weight: bold;">Blood Group *</label>
+        <select id="editDonorBloodGroup" required style="width: 100%; padding: 12px; border-radius: 6px; border: 1px solid rgba(0,0,0,0.2); background: #fff; color: #333;">
+            <option value="A+">A+</option>
+            <option value="A-">A-</option>
+            <option value="B+">B+</option>
+            <option value="B-">B-</option>
+            <option value="O+">O+</option>
+            <option value="O-">O-</option>
+            <option value="AB+">AB+</option>
+            <option value="AB-">AB-</option>
+        </select>
+      </div>
+
+      <div style="margin-bottom: 15px;">
+        <label style="display: block; margin-bottom: 6px; color: var(--text-dark); font-weight: bold;">Email Address *</label>
+        <input type="email" id="editDonorEmail" required style="width: 100%; padding: 12px; border-radius: 6px; border: 1px solid rgba(0,0,0,0.2); background: #fff; color: #333;">
+      </div>
+      
+      <div style="margin-bottom: 15px;">
+        <label style="display: block; margin-bottom: 6px; color: var(--text-dark); font-weight: bold;">Contact Number *</label>
+        <input type="text" id="editDonorContact" required style="width: 100%; padding: 12px; border-radius: 6px; border: 1px solid rgba(0,0,0,0.2); background: #fff; color: #333;">
+      </div>
+
+      <div style="margin-bottom: 15px;">
+        <label style="display: block; margin-bottom: 6px; color: var(--text-dark); font-weight: bold;">Street Address / Area *</label>
+        <textarea id="editDonorAddress" required rows="2" style="width: 100%; padding: 12px; border-radius: 6px; border: 1px solid rgba(0,0,0,0.2); background: #fff; color: #333; font-family: inherit;"></textarea>
+      </div>
+
+      <div style="margin-bottom: 25px;">
+        <label style="display: block; margin-bottom: 6px; color: var(--text-dark); font-weight: bold;">Availability Status</label>
+        <select id="editDonorAvailability" required style="width: 100%; padding: 12px; border-radius: 6px; border: 1px solid rgba(0,0,0,0.2); background: #fff; color: #333;">
+            <option value="Available Now">🟢 Available Now</option>
+            <option value="On Standby">🟡 On Standby</option>
+            <option value="Resting Phase">🔴 Resting Phase</option>
+        </select>
+      </div>
+
+      <div id="editDonorStatus" style="margin-bottom: 15px; font-size: 0.9rem; padding: 10px; border-radius: 6px; display: none;"></div>
+      
+      <button type="submit" id="editDonorSaveBtn" style="width: 100%; background: linear-gradient(135deg, #d4af37 0%, #ffd275 100%); color: #000; border: none; font-size: 1rem; font-weight: bold; padding: 14px; border-radius: 8px; cursor: pointer; box-shadow: 0 5px 15px rgba(212,175,55,0.35); transition: opacity 0.2s;">
+        Save Changes
+      </button>
+    </form>
+  </div>
+</div>
+
+<!-- Edit Request Modal (Master Data Administrative Option) -->
+<div class="modal-overlay" id="editRequestModal" style="display: none;">
+  <div class="modal-content" style="max-height: 90vh; overflow-y: auto;">
+    <button class="modal-close" style="position: absolute; top: 15px; right: 15px; background: none; border: none; font-size: 1.5rem; cursor: pointer; color: var(--text-dark);" onclick="window.closeEditRequestModal()">&times;</button>
+    
+    <h2 style="color: var(--text-dark); margin-bottom: 20px; text-align: center; display: flex; align-items: center; justify-content: center; gap: 8px;">
+        <span>📝</span> Edit Urgent Blood Request
+    </h2>
+    
+    <form id="editRequestForm" onsubmit="window.saveEditedRequest(event)">
+      <input type="hidden" id="editRequestId" />
+      
+      <div style="margin-bottom: 15px;">
+        <label style="display: block; margin-bottom: 6px; color: var(--text-dark); font-weight: bold;">Patient Name *</label>
+        <input type="text" id="editReqPatientName" required style="width: 100%; padding: 12px; border-radius: 6px; border: 1px solid rgba(0,0,0,0.2); background: #fff; color: #333;">
+      </div>
+      
+      <div style="margin-bottom: 15px;">
+        <label style="display: block; margin-bottom: 6px; color: var(--text-dark); font-weight: bold;">Blood Group *</label>
+        <select id="editReqBloodGroup" required style="width: 100%; padding: 12px; border-radius: 6px; border: 1px solid rgba(0,0,0,0.2); background: #fff; color: #333;">
+            <option value="A+">A+</option>
+            <option value="A-">A-</option>
+            <option value="B+">B+</option>
+            <option value="B-">B-</option>
+            <option value="O+">O+</option>
+            <option value="O-">O-</option>
+            <option value="AB+">AB+</option>
+            <option value="AB-">AB-</option>
+        </select>
+      </div>
+
+      <div style="margin-bottom: 15px;">
+        <label style="display: block; margin-bottom: 6px; color: var(--text-dark); font-weight: bold;">Hospital Name *</label>
+        <input type="text" id="editReqHospital" required style="width: 100%; padding: 12px; border-radius: 6px; border: 1px solid rgba(0,0,0,0.2); background: #fff; color: #333;">
+      </div>
+
+      <div style="margin-bottom: 15px;">
+        <label style="display: block; margin-bottom: 6px; color: var(--text-dark); font-weight: bold;">Patient Location / Address *</label>
+        <input type="text" id="editReqLocation" required style="width: 100%; padding: 12px; border-radius: 6px; border: 1px solid rgba(0,0,0,0.2); background: #fff; color: #333;">
+      </div>
+      
+      <div style="margin-bottom: 15px;">
+        <label style="display: block; margin-bottom: 6px; color: var(--text-dark); font-weight: bold;">Contact Details *</label>
+        <input type="text" id="editReqContact" required style="width: 100%; padding: 12px; border-radius: 6px; border: 1px solid rgba(0,0,0,0.2); background: #fff; color: #333;">
+      </div>
+
+      <div style="margin-bottom: 15px;">
+        <label style="display: block; margin-bottom: 6px; color: var(--text-dark); font-weight: bold;">Units Required *</label>
+        <input type="number" id="editReqUnits" min="1" max="50" required style="width: 100%; padding: 12px; border-radius: 6px; border: 1px solid rgba(0,0,0,0.2); background: #fff; color: #333;">
+      </div>
+
+      <div style="margin-bottom: 15px;">
+        <label style="display: block; margin-bottom: 6px; color: var(--text-dark); font-weight: bold;">Urgency Level *</label>
+        <select id="editReqUrgency" required style="width: 100%; padding: 12px; border-radius: 6px; border: 1px solid rgba(0,0,0,0.2); background: #fff; color: #333;">
+            <option value="Normal">Normal</option>
+            <option value="Urgent">Urgent</option>
+            <option value="Critical">Critical (Immediate Seva Need)</option>
+        </select>
+      </div>
+
+      <div style="margin-bottom: 25px;">
+        <label style="display: block; margin-bottom: 6px; color: var(--text-dark); font-weight: bold;">Request Status</label>
+        <select id="editReqStatus" required style="width: 100%; padding: 12px; border-radius: 6px; border: 1px solid rgba(0,0,0,0.2); background: #fff; color: #333;">
+            <option value="pending">Pending</option>
+            <option value="accepted">Accepted (Volunteer Claimed)</option>
+            <option value="fulfilled">Fulfilled</option>
+        </select>
+      </div>
+
+      <div id="editRequestStatus" style="margin-bottom: 15px; font-size: 0.9rem; padding: 10px; border-radius: 6px; display: none;"></div>
+      
+      <button type="submit" id="editRequestSaveBtn" style="width: 100%; background: linear-gradient(135deg, #ff334b 0%, #ff5d73 100%); color: #fff; border: none; font-size: 1rem; font-weight: bold; padding: 14px; border-radius: 8px; cursor: pointer; box-shadow: 0 5px 15px rgba(255,51,75,0.35); transition: opacity 0.2s;">
+        Save Changes
+      </button>
+    </form>
+  </div>
+</div>
+
 <!-- Remove Donor Modal -->
 <div class="modal-overlay" id="removeDonorModal" style="display: none;">
   <div class="modal-content">
@@ -729,6 +900,26 @@ document.addEventListener("DOMContentLoaded", () => {
         uModal.addEventListener("click", (e) => {
             if (e.target === uModal) {
                 closeUpdateStatusModal();
+            }
+        });
+    }
+
+    // For Edit Donor modal background click
+    const edModal = document.getElementById("editDonorModal");
+    if(edModal) {
+        edModal.addEventListener("click", (e) => {
+            if (e.target === edModal) {
+                window.closeEditDonorModal();
+            }
+        });
+    }
+
+    // For Edit Request modal background click
+    const erModal = document.getElementById("editRequestModal");
+    if(erModal) {
+        erModal.addEventListener("click", (e) => {
+            if (e.target === erModal) {
+                window.closeEditRequestModal();
             }
         });
     }
@@ -1485,6 +1676,18 @@ document.addEventListener("DOMContentLoaded", function() {
                 if (countDonorsEl) countDonorsEl.innerText = data.donors.length;
                 if (countRequestsEl) countRequestsEl.innerText = data.requests.length;
                 
+                // Cache records for instantaneous edit-modal population
+                window.adminDonorsCache = data.donors;
+                window.adminRequestsCache = data.requests;
+
+                // Sync Auto IP Purge settings UI elements loaded from backend state
+                if (data.purgeSettings) {
+                    const chk = document.getElementById('chkIpPurgeEnabled');
+                    const sel = document.getElementById('selIpPurgeDuration');
+                    if (chk) chk.checked = !!data.purgeSettings.enabled;
+                    if (sel) sel.value = data.purgeSettings.duration || '15_days';
+                }
+
                 // Build Donors Rows
                 if (tblDonorsBody) {
                     tblDonorsBody.innerHTML = '';
@@ -1500,11 +1703,19 @@ document.addEventListener("DOMContentLoaded", function() {
                                     <td style="padding: 14px 10px; font-weight: bold; color: #fff;">${donor.name}</td>
                                     <td style="padding: 14px 10px; text-align: center;"><span style="background: #ff334b; color:#fff; font-weight:bold; padding:3px 10px; border-radius:12px; font-size:0.75rem;">${donor.bloodGroup}</span></td>
                                     <td style="padding: 14px 10px;"><a href="mailto:${donor.email}" style="color:var(--secondary); text-decoration:none;">${donor.email}</a></td>
-                                    <td style="padding: 14px 10px;"><code>${donor.contact}</code></td>
+                                    <td style="padding: 14px 10px;">
+                                        <code>${donor.contact}</code>
+                                        <div style="font-size: 0.72rem; color: rgba(255,255,255,0.4); margin-top: 3px; display: flex; align-items: center; gap: 3px;">
+                                            <span>💻 IP:</span> <code style="color: rgba(255,255,255,0.55);">${donor.ip || 'N/A'}</code>
+                                        </div>
+                                    </td>
                                     <td style="padding: 14px 10px; max-width: 220px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" title="${donor.address}">${donor.address}</td>
                                     <td style="padding: 14px 10px; font-size:0.8rem;"><span style="color:#2ed573;">🟢 ${donor.availabilityStatus || 'Available Now'}</span></td>
                                     <td style="padding: 14px 10px; text-align: center;">
-                                        <button onclick="window.deleteDonor('${donor.id}')" style="background: rgba(255,51,75,0.1); color: #ff334b; border: 1px solid rgba(255,51,75,0.25); padding: 5px 10px; border-radius: 6px; cursor: pointer; font-size: 0.75rem; font-weight: bold; transition: all 0.2s;" onmouseover="this.style.background='#ff334b'; this.style.color='#fff';">Delete</button>
+                                        <div style="display: flex; gap: 6px; justify-content: center; align-items: center;">
+                                            <button onclick="window.openEditDonorModal('${donor.id}')" style="background: rgba(212,175,55,0.15); color: #ffd275; border: 1px solid rgba(212,175,55,0.3); padding: 5px 10px; border-radius: 6px; cursor: pointer; font-size: 0.75rem; font-weight: bold; transition: all 0.2s;" onmouseover="this.style.background='#d4af37'; this.style.color='#000';" onmouseout="this.style.background='rgba(212,175,55,0.15)'; this.style.color='#ffd275';">Edit</button>
+                                            <button onclick="window.deleteDonor('${donor.id}')" style="background: rgba(255,51,75,0.1); color: #ff334b; border: 1px solid rgba(255,51,75,0.25); padding: 5px 10px; border-radius: 6px; cursor: pointer; font-size: 0.75rem; font-weight: bold; transition: all 0.2s;" onmouseover="this.style.background='#ff334b'; this.style.color='#fff';" onmouseout="this.style.background='rgba(255,51,75,0.1)'; this.style.color='#ff334b';">Delete</button>
+                                        </div>
                                     </td>
                                 </tr>
                             `;
@@ -1566,7 +1777,12 @@ document.addEventListener("DOMContentLoaded", function() {
                                     <td style="padding: 14px 10px; text-align: center;"><span style="background: #ff334b; color:#fff; font-weight:bold; padding:3px 10px; border-radius:12px; font-size:0.75rem;">${req.bloodGroup}</span></td>
                                     <td style="padding: 14px 10px;">${req.hospitalName}</td>
                                     <td style="padding: 14px 10px; max-width:180px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" title="${req.patientLocation}">${req.patientLocation}</td>
-                                    <td style="padding: 14px 10px;"><code>${req.contactDetails}</code></td>
+                                    <td style="padding: 14px 10px;">
+                                        <code>${req.contactDetails}</code>
+                                        <div style="font-size: 0.72rem; color: rgba(255,255,255,0.4); margin-top: 3px; display: flex; align-items: center; gap: 3px;">
+                                            <span>💻 IP:</span> <code style="color: rgba(255,255,255,0.55);">${req.ip || 'N/A'}</code>
+                                        </div>
+                                    </td>
                                     <td style="padding: 14px 10px; font-weight:bold;">${req.unitsRequired} Unit(s)</td>
                                     <td style="padding: 14px 10px;"><span style="color:#ff334b; font-weight:bold; font-size:0.8rem;">🚨 ${req.urgency}</span></td>
                                     <td style="padding: 14px 10px; text-align: center; vertical-align: middle;">
@@ -1582,10 +1798,11 @@ document.addEventListener("DOMContentLoaded", function() {
                                     <td style="padding: 14px 10px; vertical-align: middle;">${volunteerHtml}</td>
                                     <td style="padding: 14px 10px;">
                                         <div style="display: flex; flex-direction: column; gap: 4px; align-items: stretch; justify-content: center;">
+                                            <button onclick="window.openEditRequestModal('${req.id}')" style="background: rgba(212,175,55,0.15); color: #ffd275; border: 1px solid rgba(212,175,55,0.3); padding: 5px 8px; border-radius: 6px; cursor: pointer; font-size: 0.75rem; font-weight: bold; transition: all 0.2s; text-align: center;" onmouseover="this.style.background='#d4af37'; this.style.color='#000';" onmouseout="this.style.background='rgba(212,175,55,0.15)'; this.style.color='#ffd275';">Edit</button>
                                             ${statusVal !== 'fulfilled' ? `
-                                                <button onclick="window.fulfillRequest('${req.id}')" style="background: rgba(46,213,115,0.1); color: #2ced73; border: 1px solid rgba(46,213,115,0.3); padding: 5px 8px; border-radius: 6px; cursor: pointer; font-size: 0.75rem; font-weight: bold; transition: all 0.2s; text-align: center;" onmouseover="this.style.background='#2ced73'; this.style.color='#0a2342';">Fulfill</button>
+                                                <button onclick="window.fulfillRequest('${req.id}')" style="background: rgba(46,213,115,0.1); color: #2ced73; border: 1px solid rgba(46,213,115,0.3); padding: 5px 8px; border-radius: 6px; cursor: pointer; font-size: 0.75rem; font-weight: bold; transition: all 0.2s; text-align: center;" onmouseover="this.style.background='#2ced73'; this.style.color='#0a2342';" onmouseout="this.style.background='rgba(46,213,115,0.1)'; this.style.color='#2ced73';">Fulfill</button>
                                             ` : ''}
-                                            <button onclick="window.deleteRequest('${req.id}')" style="background: rgba(255,51,75,0.1); color: #ff334b; border: 1px solid rgba(255,51,75,0.25); padding: 5px 8px; border-radius: 6px; cursor: pointer; font-size: 0.75rem; font-weight: bold; transition: all 0.2s; text-align: center;" onmouseover="this.style.background='#ff334b'; this.style.color='#fff';">Delete</button>
+                                            <button onclick="window.deleteRequest('${req.id}')" style="background: rgba(255,51,75,0.1); color: #ff334b; border: 1px solid rgba(255,51,75,0.25); padding: 5px 8px; border-radius: 6px; cursor: pointer; font-size: 0.75rem; font-weight: bold; transition: all 0.2s; text-align: center;" onmouseover="this.style.background='#ff334b'; this.style.color='#fff';" onmouseout="this.style.background='rgba(255,51,75,0.1)'; this.style.color='#ff334b';">Delete</button>
                                         </div>
                                     </td>
                                 </tr>
@@ -1599,6 +1816,201 @@ document.addEventListener("DOMContentLoaded", function() {
         } catch(err) {
             console.error(err);
             if (loading) loading.innerText = 'Failed to load credentials directory. Please try again.';
+        }
+    };
+
+    // --- Auto IP Purging Settings Save Function ---
+    window.savePurgeSettings = async function() {
+        const enabled = document.getElementById('chkIpPurgeEnabled').checked;
+        const duration = document.getElementById('selIpPurgeDuration').value;
+        const tick = document.getElementById('purgeStatusTick');
+
+        try {
+            const res = await fetch('/api/admin/purge-settings', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ enabled, duration })
+            });
+            const data = await res.json();
+            if (data.success) {
+                if (tick) {
+                    tick.style.opacity = '1';
+                    setTimeout(() => {
+                        tick.style.opacity = '0';
+                    }, 2000);
+                }
+                // Instantly fetch master data so that if the list was reduced/purged, the state updates in-place.
+                window.fetchMasterData();
+            }
+        } catch(e) {
+            console.error('Failed to update purging settings:', e);
+        }
+    };
+
+    // --- Edit Donor Modal Interactions & Save Option ---
+    window.openEditDonorModal = function(id) {
+        if (!window.adminDonorsCache) return;
+        const donor = window.adminDonorsCache.find(d => d.id === id);
+        if (!donor) return;
+
+        document.getElementById('editDonorId').value = donor.id;
+        document.getElementById('editDonorName').value = donor.name || '';
+        document.getElementById('editDonorBloodGroup').value = donor.bloodGroup || '';
+        document.getElementById('editDonorEmail').value = donor.email || '';
+        document.getElementById('editDonorContact').value = donor.contact || '';
+        document.getElementById('editDonorAddress').value = donor.address || '';
+        document.getElementById('editDonorAvailability').value = donor.availabilityStatus || 'Available Now';
+
+        const statusDiv = document.getElementById('editDonorStatus');
+        if (statusDiv) statusDiv.style.display = 'none';
+
+        const modal = document.getElementById('editDonorModal');
+        if (modal) modal.style.display = 'flex';
+    };
+
+    window.closeEditDonorModal = function() {
+        const modal = document.getElementById('editDonorModal');
+        if (modal) modal.style.display = 'none';
+    };
+
+    window.saveEditedDonor = async function(e) {
+        if (e) e.preventDefault();
+        
+        const saveBtn = document.getElementById('editDonorSaveBtn');
+        const statusDiv = document.getElementById('editDonorStatus');
+        
+        if (saveBtn) saveBtn.disabled = true;
+        if (statusDiv) {
+            statusDiv.style.display = 'block';
+            statusDiv.style.background = 'rgba(255,255,255,0.05)';
+            statusDiv.style.color = '#fff';
+            statusDiv.innerText = 'Synchronizing modification with database...';
+        }
+
+        const payload = {
+            id: document.getElementById('editDonorId').value,
+            name: document.getElementById('editDonorName').value,
+            bloodGroup: document.getElementById('editDonorBloodGroup').value,
+            email: document.getElementById('editDonorEmail').value,
+            contactDetails: document.getElementById('editDonorContact').value,
+            address: document.getElementById('editDonorAddress').value,
+            availabilityStatus: document.getElementById('editDonorAvailability').value
+        };
+
+        try {
+            const res = await fetch('/api/admin/edit-donor', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            });
+            const data = await res.json();
+            if (data.success) {
+                if (statusDiv) {
+                    statusDiv.style.background = 'rgba(46,213,115,0.15)';
+                    statusDiv.style.color = '#2ced73';
+                    statusDiv.innerText = '✓ Donor entry successfully synchronized!';
+                }
+                setTimeout(() => {
+                    window.closeEditDonorModal();
+                    window.fetchMasterData();
+                    if (window.loadPublicDirectory) window.loadPublicDirectory();
+                }, 1000);
+            } else {
+                throw new Error(data.message || 'Synchronization failure.');
+            }
+        } catch(err) {
+            if (statusDiv) {
+                statusDiv.style.background = 'rgba(255,51,75,0.15)';
+                statusDiv.style.color = '#ff334b';
+                statusDiv.innerText = 'Error: ' + err.message;
+            }
+        } finally {
+            if (saveBtn) saveBtn.disabled = false;
+        }
+    };
+
+    // --- Edit Request Modal Interactions & Save Option ---
+    window.openEditRequestModal = function(id) {
+        if (!window.adminRequestsCache) return;
+        const req = window.adminRequestsCache.find(r => r.id === id);
+        if (!req) return;
+
+        document.getElementById('editRequestId').value = req.id;
+        document.getElementById('editReqPatientName').value = req.patientName || '';
+        document.getElementById('editReqBloodGroup').value = req.bloodGroup || '';
+        document.getElementById('editReqHospital').value = req.hospitalName || '';
+        document.getElementById('editReqLocation').value = req.patientLocation || '';
+        document.getElementById('editReqContact').value = req.contactDetails || '';
+        document.getElementById('editReqUnits').value = req.unitsRequired || 1;
+        document.getElementById('editReqUrgency').value = req.urgency || 'Normal';
+        document.getElementById('editReqStatus').value = req.status || 'pending';
+
+        const statusDiv = document.getElementById('editRequestStatus');
+        if (statusDiv) statusDiv.style.display = 'none';
+
+        const modal = document.getElementById('editRequestModal');
+        if (modal) modal.style.display = 'flex';
+    };
+
+    window.closeEditRequestModal = function() {
+        const modal = document.getElementById('editRequestModal');
+        if (modal) modal.style.display = 'none';
+    };
+
+    window.saveEditedRequest = async function(e) {
+        if (e) e.preventDefault();
+        
+        const saveBtn = document.getElementById('editRequestSaveBtn');
+        const statusDiv = document.getElementById('editRequestStatus');
+        
+        if (saveBtn) saveBtn.disabled = true;
+        if (statusDiv) {
+            statusDiv.style.display = 'block';
+            statusDiv.style.background = 'rgba(255,255,255,0.05)';
+            statusDiv.style.color = '#fff';
+            statusDiv.innerText = 'Synchronizing modification with database...';
+        }
+
+        const payload = {
+            id: document.getElementById('editRequestId').value,
+            patientName: document.getElementById('editReqPatientName').value,
+            bloodGroup: document.getElementById('editReqBloodGroup').value,
+            hospitalName: document.getElementById('editReqHospital').value,
+            patientLocation: document.getElementById('editReqLocation').value,
+            contactDetails: document.getElementById('editReqContact').value,
+            unitsRequired: parseInt(document.getElementById('editReqUnits').value, 10),
+            urgency: document.getElementById('editReqUrgency').value,
+            status: document.getElementById('editReqStatus').value
+        };
+
+        try {
+            const res = await fetch('/api/admin/edit-request', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            });
+            const data = await res.json();
+            if (data.success) {
+                if (statusDiv) {
+                    statusDiv.style.background = 'rgba(46,213,115,0.15)';
+                    statusDiv.style.color = '#2ced73';
+                    statusDiv.innerText = '✓ Blood request entry successfully synchronized!';
+                }
+                setTimeout(() => {
+                    window.closeEditRequestModal();
+                    window.fetchMasterData();
+                }, 1000);
+            } else {
+                throw new Error(data.message || 'Synchronization failure.');
+            }
+        } catch(err) {
+            if (statusDiv) {
+                statusDiv.style.background = 'rgba(255,51,75,0.15)';
+                statusDiv.style.color = '#ff334b';
+                statusDiv.innerText = 'Error: ' + err.message;
+            }
+        } finally {
+            if (saveBtn) saveBtn.disabled = false;
         }
     };
 

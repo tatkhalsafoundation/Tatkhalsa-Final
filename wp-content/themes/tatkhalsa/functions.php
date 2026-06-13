@@ -1663,18 +1663,54 @@ function tatkhalsa_customize_register( $wp_customize ) {
 	}
 	// Other Page Images Section
 	$wp_customize->add_section( 'tatkhalsa_other_pages', array(
-		'title'    => __( 'Other Page Images', 'tatkhalsa-theme' ),
+		'title'    => __( 'Super Background Images', 'tatkhalsa-theme' ),
 		'priority' => 132,
 	) );
 
 	$other_pages = array(
+		'tatkhalsa_default_hero_bg' => array(
+			'label'   => __( 'Default Site-wide Hero Background', 'tatkhalsa-theme' ),
+			'default' => 'https://images.unsplash.com/photo-1543332143-4e8c27e3256f?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80',
+		),
 		'tatkhalsa_home_hero_img' => array(
-			'label' => __( 'Home Page Hero Image', 'tatkhalsa-theme' ),
-			'default' => 'https://images.unsplash.com/photo-1543332143-4e8c27e3256f?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80'
+			'label'   => __( 'Home Page Hero Background', 'tatkhalsa-theme' ),
+			'default' => 'https://images.unsplash.com/photo-1543332143-4e8c27e3256f?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80',
+		),
+		'tatkhalsa_about_header_hero_img' => array(
+			'label'   => __( 'About Page Header Hero Background', 'tatkhalsa-theme' ),
+			'default' => 'https://upload.wikimedia.org/wikipedia/commons/3/30/A_group_of_volunteers_helping_with_daily_food_preparation_for_Langar_at_the_Golden_Temple.jpg',
 		),
 		'tatkhalsa_about_hero_img' => array(
-			'label' => __( 'About Page Hero Image', 'tatkhalsa-theme' ),
-			'default' => 'https://upload.wikimedia.org/wikipedia/commons/3/30/A_group_of_volunteers_helping_with_daily_food_preparation_for_Langar_at_the_Golden_Temple.jpg'
+			'label'   => __( 'About Page Body/Langar Section Bg', 'tatkhalsa-theme' ),
+			'default' => 'https://upload.wikimedia.org/wikipedia/commons/3/30/A_group_of_volunteers_helping_with_daily_food_preparation_for_Langar_at_the_Golden_Temple.jpg',
+		),
+		'tatkhalsa_blog_hero_img' => array(
+			'label'   => __( 'Insights & Blog Header Hero Background', 'tatkhalsa-theme' ),
+			'default' => 'https://images.unsplash.com/photo-1516979187457-637abb4f9353?auto=format&fit=crop&w=1920&h=1080&q=80',
+		),
+		'tatkhalsa_blood_donors_bg_img' => array(
+			'label'   => __( 'Blood On Call (Donors) Super Background', 'tatkhalsa-theme' ),
+			'default' => 'https://upload.wikimedia.org/wikipedia/commons/3/30/A_group_of_volunteers_helping_with_daily_food_preparation_for_Langar_at_the_Golden_Temple.jpg',
+		),
+		'tatkhalsa_projects_hero_img' => array(
+			'label'   => __( 'Seva Projects Header Hero Background', 'tatkhalsa-theme' ),
+			'default' => 'https://upload.wikimedia.org/wikipedia/commons/d/de/Sikhs_gathered_at_Hola_Mohalla_Holi_festival_in_Anandpur_Sahib.jpg',
+		),
+		'tatkhalsa_volunteer_hero_img' => array(
+			'label'   => __( 'Become a Sevadar Header Hero Background', 'tatkhalsa-theme' ),
+			'default' => 'https://images.unsplash.com/photo-1517486808906-6ca8b3f04846?auto=format&fit=crop&w=1920&q=80',
+		),
+		'tatkhalsa_privacy_hero_img' => array(
+			'label'   => __( 'Privacy Policy Header Hero Background', 'tatkhalsa-theme' ),
+			'default' => 'https://images.unsplash.com/photo-1450133064473-71024230f91b?auto=format&fit=crop&w=1920&h=1080&q=80',
+		),
+		'tatkhalsa_terms_hero_img' => array(
+			'label'   => __( 'Terms & Conditions Header Hero Background', 'tatkhalsa-theme' ),
+			'default' => 'https://images.unsplash.com/photo-1450133064473-71024230f91b?auto=format&fit=crop&w=1920&h=1080&q=80',
+		),
+		'tatkhalsa_error404_hero_img' => array(
+			'label'   => __( '404 Page Header Hero Background', 'tatkhalsa-theme' ),
+			'default' => 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1920&h=1080&q=80',
 		),
 	);
 
@@ -1753,23 +1789,113 @@ function tatkhalsa_customize_register( $wp_customize ) {
 add_action( 'customize_register', 'tatkhalsa_customize_register' );
 
 /**
+ * Get Customizer background image with default site-wide fallback and hardcoded fallback
+ */
+function tatkhalsa_get_bg_with_fallback( $mod_name, $hardcoded_fallback ) {
+	$val = get_theme_mod( $mod_name );
+	if ( empty( $val ) ) {
+		$val = get_theme_mod( 'tatkhalsa_default_hero_bg' );
+	}
+	if ( empty( $val ) ) {
+		$val = $hardcoded_fallback;
+	}
+	return $val;
+}
+
+/**
  * Output Customizer CSS for Home Hero Image
  */
 function tatkhalsa_customizer_css() {
-	$home_hero_img = get_theme_mod( 'tatkhalsa_home_hero_img', 'https://images.unsplash.com/photo-1543332143-4e8c27e3256f?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80' );
+	$default_bg          = 'https://images.unsplash.com/photo-1543332143-4e8c27e3256f?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80';
+	$home_hero_img       = tatkhalsa_get_bg_with_fallback( 'tatkhalsa_home_hero_img', $default_bg );
+	$about_header_hero   = tatkhalsa_get_bg_with_fallback( 'tatkhalsa_about_header_hero_img', 'https://upload.wikimedia.org/wikipedia/commons/3/30/A_group_of_volunteers_helping_with_daily_food_preparation_for_Langar_at_the_Golden_Temple.jpg' );
+	$about_body_bg       = get_theme_mod( 'tatkhalsa_about_hero_img', 'https://upload.wikimedia.org/wikipedia/commons/3/30/A_group_of_volunteers_helping_with_daily_food_preparation_for_Langar_at_the_Golden_Temple.jpg' );
+	$blog_hero_img       = tatkhalsa_get_bg_with_fallback( 'tatkhalsa_blog_hero_img', 'https://images.unsplash.com/photo-1516979187457-637abb4f9353?auto=format&fit=crop&w=1920&h=1080&q=80' );
+	$blood_donors_bg     = tatkhalsa_get_bg_with_fallback( 'tatkhalsa_blood_donors_bg_img', 'https://upload.wikimedia.org/wikipedia/commons/3/30/A_group_of_volunteers_helping_with_daily_food_preparation_for_Langar_at_the_Golden_Temple.jpg' );
+	$projects_hero_img   = tatkhalsa_get_bg_with_fallback( 'tatkhalsa_projects_hero_img', 'https://upload.wikimedia.org/wikipedia/commons/d/de/Sikhs_gathered_at_Hola_Mohalla_Holi_festival_in_Anandpur_Sahib.jpg' );
+	$volunteer_hero_img  = tatkhalsa_get_bg_with_fallback( 'tatkhalsa_volunteer_hero_img', 'https://images.unsplash.com/photo-1517486808906-6ca8b3f04846?auto=format&fit=crop&w=1920&h=1080&q=80' );
+	$privacy_hero_img    = tatkhalsa_get_bg_with_fallback( 'tatkhalsa_privacy_hero_img', 'https://images.unsplash.com/photo-1450133064473-71024230f91b?auto=format&fit=crop&w=1920&h=1080&q=80' );
+	$terms_hero_img      = tatkhalsa_get_bg_with_fallback( 'tatkhalsa_terms_hero_img', 'https://images.unsplash.com/photo-1450133064473-71024230f91b?auto=format&fit=crop&w=1920&h=1080&q=80' );
+	$error404_hero_img   = tatkhalsa_get_bg_with_fallback( 'tatkhalsa_error404_hero_img', 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1920&h=1080&q=80' );
 	?>
 	<style type="text/css">
+		/* Centralized Super Hero & Background Customizer Overrides */
+
+		/* 1. Home Page Hero */
 		.home .hero {
 			background: linear-gradient( 135deg, rgba(10, 46, 109, 0.98), rgba(5, 26, 64, 0.95) ), url("<?php echo esc_url( $home_hero_img ); ?>") center/cover !important;
 		}
 		[data-theme="light"] .home .hero {
 			background: linear-gradient( 135deg, rgba(220, 240, 255, 0.92), rgba(235, 248, 255, 0.96) ), url("<?php echo esc_url( $home_hero_img ); ?>") center/cover !important;
 		}
-		.hero {
-			background: linear-gradient( 135deg, rgba(10, 46, 109, 0.98), rgba(5, 26, 64, 0.95) ) !important;
+
+		/* 2. About Page Header Hero */
+		.page-template-template-about .hero {
+			background: linear-gradient( 135deg, rgba(10, 46, 109, 0.98), rgba(5, 26, 64, 0.95) ), url("<?php echo esc_url( $about_header_hero ); ?>") center/cover !important;
 		}
-		[data-theme="light"] .hero {
-			background: linear-gradient( 135deg, rgba(220, 240, 255, 0.92), rgba(235, 248, 255, 0.96) ) !important;
+		[data-theme="light"] .page-template-template-about .hero {
+			background: linear-gradient( 135deg, rgba(220, 240, 255, 0.92), rgba(235, 248, 255, 0.96) ), url("<?php echo esc_url( $about_header_hero ); ?>") center/cover !important;
+		}
+
+		/* 3. About Page Body Section */
+		#about {
+			background-image: url("<?php echo esc_url( $about_body_bg ); ?>") !important;
+		}
+
+		/* 4. Blog / Insights Page Header Hero */
+		.page-template-template-blog .hero {
+			background: linear-gradient( 135deg, rgba(10, 46, 109, 0.98), rgba(5, 26, 64, 0.95) ), url("<?php echo esc_url( $blog_hero_img ); ?>") center/cover !important;
+		}
+		[data-theme="light"] .page-template-template-blog .hero {
+			background: linear-gradient( 135deg, rgba(220, 240, 255, 0.92), rgba(235, 248, 255, 0.96) ), url("<?php echo esc_url( $blog_hero_img ); ?>") center/cover !important;
+		}
+
+		/* 5. Blood On Call (Donors) Super Background */
+		.blood-donors-page {
+			background-image: linear-gradient(135deg, rgba(4, 9, 20, 0.88), rgba(13, 27, 42, 0.92)), url("<?php echo esc_url( $blood_donors_bg ); ?>") !important;
+		}
+		[data-theme="light"] .blood-donors-page {
+			background-image: linear-gradient(135deg, rgba(224, 242, 254, 0.85), rgba(186, 230, 253, 0.85)), url("<?php echo esc_url( $blood_donors_bg ); ?>") !important;
+		}
+
+		/* 6. Seva Projects Header Hero */
+		.page-template-template-projects .hero {
+			background: linear-gradient( 135deg, rgba(10, 46, 109, 0.98), rgba(5, 26, 64, 0.95) ), url("<?php echo esc_url( $projects_hero_img ); ?>") center/cover !important;
+		}
+		[data-theme="light"] .page-template-template-projects .hero {
+			background: linear-gradient( 135deg, rgba(220, 240, 255, 0.92), rgba(235, 248, 255, 0.96) ), url("<?php echo esc_url( $projects_hero_img ); ?>") center/cover !important;
+		}
+
+		/* 7. Become a Sevadar Header Hero */
+		.page-template-template-volunteer .hero {
+			background: linear-gradient( 135deg, rgba(10, 46, 109, 0.98), rgba(5, 26, 64, 0.95) ), url("<?php echo esc_url( $volunteer_hero_img ); ?>") center/cover !important;
+		}
+		[data-theme="light"] .page-template-template-volunteer .hero {
+			background: linear-gradient( 135deg, rgba(220, 240, 255, 0.92), rgba(235, 248, 255, 0.96) ), url("<?php echo esc_url( $volunteer_hero_img ); ?>") center/cover !important;
+		}
+
+		/* 8. Privacy Policy Header Hero */
+		.page-template-template-privacy .hero {
+			background: linear-gradient( 135deg, rgba(10, 46, 109, 0.98), rgba(5, 26, 64, 0.95) ), url("<?php echo esc_url( $privacy_hero_img ); ?>") center/cover !important;
+		}
+		[data-theme="light"] .page-template-template-privacy .hero {
+			background: linear-gradient( 135deg, rgba(220, 240, 255, 0.92), rgba(235, 248, 255, 0.96) ), url("<?php echo esc_url( $privacy_hero_img ); ?>") center/cover !important;
+		}
+
+		/* 9. Terms & Conditions Header Hero */
+		.page-template-template-terms .hero {
+			background: linear-gradient( 135deg, rgba(10, 46, 109, 0.98), rgba(5, 26, 64, 0.95) ), url("<?php echo esc_url( $terms_hero_img ); ?>") center/cover !important;
+		}
+		[data-theme="light"] .page-template-template-terms .hero {
+			background: linear-gradient( 135deg, rgba(220, 240, 255, 0.92), rgba(235, 248, 255, 0.96) ), url("<?php echo esc_url( $terms_hero_img ); ?>") center/cover !important;
+		}
+
+		/* 10. 404 Page Header Hero */
+		.error404 .hero {
+			background: linear-gradient( 135deg, rgba(10, 46, 109, 0.98), rgba(5, 26, 64, 0.95) ), url("<?php echo esc_url( $error404_hero_img ); ?>") center/cover !important;
+		}
+		[data-theme="light"] .error404 .hero {
+			background: linear-gradient( 135deg, rgba(220, 240, 255, 0.92), rgba(235, 248, 255, 0.96) ), url("<?php echo esc_url( $error404_hero_img ); ?>") center/cover !important;
 		}
 	</style>
 	<?php

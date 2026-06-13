@@ -2862,54 +2862,168 @@ footer#footer:nth-of-type(1) > div:nth-of-type(2) > div:nth-of-type(2) {
   color: #ff334b;
 }
 
-/* Ensure the donor registration modal utilizes high contrast dark blue text and a cohesive light blue background matching the theme scheme */
-div#donorRegModal:nth-of-type(3) > div:nth-of-type(1),
-#donorRegModal .modal-content {
+/* Ensure the donor registration modal utilizes high contrast dark blue text and a cohesive light blue background matching the theme scheme in light theme */
+[data-theme="light"] div#donorRegModal:nth-of-type(3) > div:nth-of-type(1),
+[data-theme="light"] #donorRegModal .modal-content {
   background: #ebf8ff !important;
   color: #0a2342 !important;
   border: 1px solid rgba(10, 35, 66, 0.2) !important;
   box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25), 0 0 40px rgba(10, 35, 66, 0.15) !important;
 }
 
-#donorRegModal .modal-content h2,
-#donorRegModal .modal-content label {
+[data-theme="light"] #donorRegModal .modal-content h2,
+[data-theme="light"] #donorRegModal .modal-content label {
   color: #0a2342 !important;
 }
 
-#donorRegModal .modal-content p,
-#donorRegModal .modal-content small,
-#donorRegModal .modal-content span {
+[data-theme="light"] #donorRegModal .modal-content p,
+[data-theme="light"] #donorRegModal .modal-content small,
+[data-theme="light"] #donorRegModal .modal-content span {
   color: #2b425b !important;
 }
 
-#donorRegModal .modal-content input,
-#donorRegModal .modal-content select,
-#donorRegModal .modal-content textarea {
+[data-theme="light"] #donorRegModal .modal-content input,
+[data-theme="light"] #donorRegModal .modal-content select,
+[data-theme="light"] #donorRegModal .modal-content textarea {
   background: #ffffff !important;
   color: #0a2342 !important;
   border: 1px solid rgba(10, 35, 66, 0.3) !important;
 }
 
-#donorRegModal .modal-content input:focus,
-#donorRegModal .modal-content select:focus,
-#donorRegModal .modal-content textarea:focus {
+[data-theme="light"] #donorRegModal .modal-content input:focus,
+[data-theme="light"] #donorRegModal .modal-content select:focus,
+[data-theme="light"] #donorRegModal .modal-content textarea:focus {
   border-color: #0a2342 !important;
   box-shadow: 0 0 8px rgba(10, 35, 66, 0.2) !important;
 }
 
-#donorRegModal .modal-content input::placeholder,
-#donorRegModal .modal-content textarea::placeholder {
+[data-theme="light"] #donorRegModal .modal-content input::placeholder,
+[data-theme="light"] #donorRegModal .modal-content textarea::placeholder {
   color: #718096 !important;
 }
 
-#donorRegModal .modal-content select option {
+[data-theme="light"] #donorRegModal .modal-content select option {
   background: #ffffff !important;
   color: #0a2342 !important;
 }
 
-#donorRegModal .modal-close {
+[data-theme="light"] #donorRegModal .modal-close {
   color: #0a2342 !important;
   background: rgba(10, 35, 66, 0.08) !important;
   border: 1px solid rgba(10, 35, 66, 0.1) !important;
 }
+
+/* Elegant Warm & Cozy Royal Navy/Gold design for registration modal in dark mode */
+:root:not([data-theme="light"]) div#donorRegModal:nth-of-type(3) > div:nth-of-type(1),
+body:not([data-theme="light"]) #donorRegModal .modal-content {
+  background: #081123 !important;
+  color: #fdf7e7 !important;
+  border: 1px solid rgba(212, 175, 55, 0.45) !important;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.6), 0 0 45px rgba(212, 175, 55, 0.25) !important;
+}
+
+:root:not([data-theme="light"]) #donorRegModal .modal-content h2 {
+  color: #ffe38f !important;
+}
+
+:root:not([data-theme="light"]) #donorRegModal .modal-content label {
+  color: #ffd275 !important;
+}
+
+:root:not([data-theme="light"]) #donorRegModal .modal-content p,
+:root:not([data-theme="light"]) #donorRegModal .modal-content small,
+:root:not([data-theme="light"]) #donorRegModal .modal-content span {
+  color: #d1bba4 !important;
+}
+
+:root:not([data-theme="light"]) #donorRegModal .modal-content input,
+:root:not([data-theme="light"]) #donorRegModal .modal-content select,
+:root:not([data-theme="light"]) #donorRegModal .modal-content textarea {
+  background: rgba(253, 247, 231, 0.06) !important;
+  color: #ffeed6 !important;
+  border: 1px solid rgba(212, 175, 55, 0.3) !important;
+}
+
+:root:not([data-theme="light"]) #donorRegModal .modal-content input:focus,
+:root:not([data-theme="light"]) #donorRegModal .modal-content select:focus,
+:root:not([data-theme="light"]) #donorRegModal .modal-content textarea:focus {
+  border-color: #ffd275 !important;
+  box-shadow: 0 0 10px rgba(212, 175, 55, 0.35) !important;
+}
+
+:root:not([data-theme="light"]) #donorRegModal .modal-content input::placeholder,
+:root:not([data-theme="light"]) #donorRegModal .modal-content textarea::placeholder {
+  color: rgba(212, 175, 55, 0.45) !important;
+}
+
+:root:not([data-theme="light"]) #donorRegModal .modal-content select option {
+  background: #081123 !important;
+  color: #ffeed6 !important;
+}
+
+:root:not([data-theme="light"]) #donorRegModal .modal-close {
+  color: #ffd275 !important;
+  background: rgba(212, 175, 55, 0.1) !important;
+  border: 1px solid rgba(212, 175, 55, 0.2) !important;
+}
+
+/* Translucent / Glassmorphic background and overlays for Blood On Call page */
+.blood-donors-page {
+  position: relative !important;
+  background-image: linear-gradient(135deg, rgba(4, 9, 20, 0.88), rgba(13, 27, 42, 0.92)), url('https://upload.wikimedia.org/wikipedia/commons/3/30/A_group_of_volunteers_helping_with_daily_food_preparation_for_Langar_at_the_Golden_Temple.jpg') !important;
+  background-size: cover !important;
+  background-position: center !important;
+  background-attachment: fixed !important;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+[data-theme="light"] .blood-donors-page {
+  background-image: linear-gradient(135deg, rgba(224, 242, 254, 0.85), rgba(186, 230, 253, 0.85)), url('https://upload.wikimedia.org/wikipedia/commons/3/30/A_group_of_volunteers_helping_with_daily_food_preparation_for_Langar_at_the_Golden_Temple.jpg') !important;
+}
+
+/* Glassmorphic search filter and cards with translucent backgrounds */
+.blood-donors-page div[style*="background: var(--bg-dark)"] {
+  background: rgba(15, 23, 42, 0.45) !important;
+  backdrop-filter: blur(14px) !important;
+  -webkit-backdrop-filter: blur(14px) !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.18) !important;
+  transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease !important;
+}
+
+[data-theme="light"] .blood-donors-page div[style*="background: var(--bg-dark)"] {
+  background: rgba(255, 255, 255, 0.65) !important;
+  border: 1px solid rgba(10, 35, 66, 0.12) !important;
+  box-shadow: 0 8px 32px 0 rgba(10, 35, 66, 0.05) !important;
+}
+
+/* Hover scales and glow on elements */
+.blood-donors-page div[style*="background: var(--bg-dark)"]:hover {
+  transform: translateY(-4px);
+  background: rgba(15, 23, 42, 0.65) !important;
+  box-shadow: 0 12px 40px 0 rgba(0, 0, 0, 0.3), 0 0 15px rgba(255, 51, 75, 0.15) !important;
+}
+
+[data-theme="light"] .blood-donors-page div[style*="background: var(--bg-dark)"]:hover {
+  transform: translateY(-4px);
+  background: rgba(255, 255, 255, 0.82) !important;
+  box-shadow: 0 12px 40px 0 rgba(10, 35, 66, 0.08), 0 0 15px rgba(255, 51, 75, 0.1) !important;
+}
+
+/* Translucent Administration Data Panel */
+#masterDataPanel {
+  background: rgba(15, 23, 42, 0.85) !important;
+  backdrop-filter: blur(16px) !important;
+  -webkit-backdrop-filter: blur(16px) !important;
+  border: 1.5px solid rgba(255, 51, 75, 0.35) !important;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5) !important;
+}
+
+[data-theme="light"] #masterDataPanel {
+  background: rgba(235, 248, 255, 0.88) !important;
+  border: 1.5px solid rgba(255, 51, 75, 0.3) !important;
+  box-shadow: 0 20px 60px rgba(10, 35, 66, 0.12) !important;
+}
+
 
