@@ -94,6 +94,9 @@ $donors_query = new WP_Query( $args );
             <button onclick="openRemoveDonorModal()" class="btn-donor-remove">
                 🗑️ Remove My Name
             </button>
+            <button onclick="toggleMasterDataView()" class="btn-donor-admin" style="background: #111111; color: #ffd275; border: 1.5px solid rgba(212,175,55,0.5); padding: 12px 24px; border-radius: 8px; font-weight: bold; cursor: pointer; box-shadow: 0 4px 15px rgba(212,175,55,0.15); transition: all 0.3s ease; display: inline-flex; align-items: center; gap: 8px;" onmouseover="this.style.transform='translateY(-2px)'; this.style.background='#d4af37'; this.style.color='#000'; this.style.boxShadow='0 6px 20px rgba(212,175,55,0.45)';" onmouseout="this.style.transform='translateY(0)'; this.style.background='#111111'; this.style.color='#ffd275'; this.style.boxShadow='0 4px 15px rgba(212,175,55,0.15)';">
+                ⚙️ Admin Master Data
+            </button>
         </div>
 
         <!-- Admin Master Data Panel -->
@@ -2324,6 +2327,14 @@ document.addEventListener("DOMContentLoaded", function() {
     setTimeout(() => {
         window.loadPublicDirectory();
         checkAcceptRequestQuery();
+        
+        // Auto open master data administrative panel if requested via query parameter
+        const urlParams = window.location ? new URLSearchParams(window.location.search) : null;
+        if (urlParams && (urlParams.get('admin') === 'true' || urlParams.get('openModal') === 'admin')) {
+            if (typeof window.toggleMasterDataView === 'function') {
+                window.toggleMasterDataView();
+            }
+        }
     }, 500);
 
     loadResources();
