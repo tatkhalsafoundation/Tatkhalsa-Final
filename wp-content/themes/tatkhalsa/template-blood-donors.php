@@ -304,14 +304,9 @@ $donors_query = new WP_Query( $args );
                             ?>
                         </div>
 
-                        <div style="margin-bottom: 15px; font-size: 0.75rem; color: var(--text-light); line-height: 1.4; background: rgba(0,0,0,0.03); padding: 10px; border-radius: 6px;">
-                            <span style="font-size: 0.85rem; display: block; margin-bottom: 3px;">🔒 Privacy Protected</span>
-                            Contact details are private. Submit an Emergency Blood Request to view available donor contacts.
+                        <div style="margin-bottom: 10px; font-size: 0.8rem; color: var(--text-light); line-height: 1.4; background: rgba(0,0,0,0.03); padding: 8px; border-radius: 6px; text-align: center;">
+                            🔒 Privacy Protected
                         </div>
-
-                        <button onclick="openBloodRequestModal()" style="display: block; width: 100%; text-align: center; background: rgba(255,51,75,0.1); padding: 8px; border-radius: 6px; font-weight: bold; font-size: 0.8rem; color: #ff334b; text-decoration: none; border: 1px solid rgba(255,51,75,0.2); cursor: pointer; transition: background 0.2s;">
-                            🚨 Request to Connect
-                        </button>
                     </div>
                 <?php endwhile; ?>
             </div>
@@ -1801,14 +1796,9 @@ document.addEventListener("DOMContentLoaded", function() {
                                         📍 <strong>Location:</strong> ${displayAddress}
                                     </div>
 
-                                    <div style="margin-bottom: 15px; font-size: 0.75rem; color: var(--text-light); line-height: 1.4; background: rgba(0,0,0,0.03); padding: 10px; border-radius: 6px;">
-                                        <span style="font-size: 0.85rem; display: block; margin-bottom: 3px;">🔒 Privacy Protected</span>
-                                        Contact details are private. Submit an Emergency Blood Request to view available donor contacts.
+                                    <div style="margin-bottom: 10px; font-size: 0.8rem; color: var(--text-light); line-height: 1.4; background: rgba(0,0,0,0.03); padding: 8px; border-radius: 6px; text-align: center;">
+                                        🔒 Privacy Protected
                                     </div>
-
-                                    <button onclick="openBloodRequestModal()" style="display: block; width: 100%; text-align: center; background: rgba(255,51,75,0.1); padding: 8px; border-radius: 6px; font-weight: bold; font-size: 0.8rem; color: #ff334b; text-decoration: none; border: 1px solid rgba(255,51,75,0.2); cursor: pointer; transition: background 0.2s;">
-                                        🚨 Request to Connect
-                                    </button>
                                 </div>
                             `;
                         });
