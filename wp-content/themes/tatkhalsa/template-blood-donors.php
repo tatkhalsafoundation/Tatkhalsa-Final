@@ -158,6 +158,25 @@ $donors_query = new WP_Query( $args );
                 </div>
             </div>
 
+            <!-- API Integrations Box -->
+            <div id="thirdPartyConfigBox" style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); padding: 16px; border-radius: 8px; margin-bottom: 25px; display: flex; flex-wrap: wrap; gap: 20px; align-items: center; justify-content: space-between;">
+                <div style="display: flex; align-items: center; gap: 12px;">
+                    <span style="font-size: 1.4rem;">🔗</span>
+                    <div>
+                        <h4 style="margin: 0; color: var(--secondary); font-size: 0.95rem; font-weight: bold;">API Integrations</h4>
+                        <p style="margin: 3px 0 0 0; color: var(--text-light); font-size: 0.78rem;">Configure external API keys and authorization endpoints.</p>
+                    </div>
+                </div>
+                <div style="display: flex; align-items: center; gap: 15px; flex-wrap: wrap;">
+                    <button onclick="alert('WhatsApp API Configuration options are currently set to mock mode.')" style="background: rgba(37,211,102,0.15); color: #25d366; border: 1px solid rgba(37,211,102,0.3); padding: 8px 14px; border-radius: 6px; font-weight: bold; cursor: pointer; font-size: 0.8rem; display: flex; align-items: center; gap: 6px; transition: all 0.2s;" onmouseover="this.style.background='#25d366'; this.style.color='#fff';" onmouseout="this.style.background='rgba(37,211,102,0.15)'; this.style.color='#25d366';">
+                        💬 WhatsApp API Configuration
+                    </button>
+                    <button onclick="alert('OAuth configuration will allow third-party logins.')" style="background: rgba(255,184,0,0.15); color: #FFB800; border: 1px solid rgba(255,184,0,0.3); padding: 8px 14px; border-radius: 6px; font-weight: bold; cursor: pointer; font-size: 0.8rem; display: flex; align-items: center; gap: 6px; transition: all 0.2s;" onmouseover="this.style.background='#FFB800'; this.style.color='#fff';" onmouseout="this.style.background='rgba(255,184,0,0.15)'; this.style.color='#FFB800';">
+                        🔑 OAuth Configuration
+                    </button>
+                </div>
+            </div>
+
             <!-- Auto IP Purging Settings Box -->
             <div id="ipPurgeSettingsBox" style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); padding: 16px; border-radius: 8px; margin-bottom: 25px; display: flex; flex-wrap: wrap; gap: 20px; align-items: center; justify-content: space-between;">
                 <div style="display: flex; align-items: center; gap: 12px;">
@@ -449,7 +468,19 @@ $donors_query = new WP_Query( $args );
       
       <div style="margin-bottom: 15px;">
         <label style="display: block; margin-bottom: 8px; color: var(--text-dark); font-weight: bold;">Contact Number *</label>
-        <input type="tel" name="contactDetails" required placeholder="e.g. +91 9876543210" style="width: 100%; padding: 12px; border-radius: 6px; border: 1px solid rgba(0,0,0,0.2); background: #fff; color: #333;">
+        <div style="display: flex; gap: 10px;">
+          <input type="tel" name="contactDetails" id="contactDetails" required placeholder="e.g. +91 9876543210" style="flex: 1; padding: 12px; border-radius: 6px; border: 1px solid rgba(0,0,0,0.2); background: #fff; color: #333;">
+          <button type="button" id="sendOtpBtn" onclick="window.simulateSendOtp()" style="background: var(--primary); color: #fff; padding: 0 15px; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; white-space: nowrap;">Send OTP</button>
+        </div>
+      </div>
+      
+      <div id="otpSection" style="margin-bottom: 15px; display: none;">
+        <label style="display: block; margin-bottom: 8px; color: var(--text-dark); font-weight: bold;">Enter OTP *</label>
+        <div style="display: flex; gap: 10px;">
+          <input type="text" name="otp" id="otpValue" placeholder="e.g. 123456" style="flex: 1; padding: 12px; border-radius: 6px; border: 1px solid rgba(0,0,0,0.2); background: #fff; color: #333;">
+          <button type="button" id="verifyOtpBtn" onclick="window.simulateVerifyOtp()" style="background: var(--accent-green); color: #fff; padding: 0 15px; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; white-space: nowrap;">Verify</button>
+        </div>
+        <small id="otpStatus" style="color: var(--text-light); font-size: 0.85rem; display: block; margin-top: 5px;"></small>
       </div>
       
       <div style="margin-bottom: 15px;">
@@ -1455,6 +1486,38 @@ document.addEventListener("DOMContentLoaded", function() {
             } catch (e) {
                 console.error("Error fetching cities", e);
             }
+        }
+    };
+
+    window.simulateSendOtp = function() {
+        const contact = document.getElementById('contactDetails').value;
+        if (!contact) {
+            alert('Please enter a valid contact number first.');
+            return;
+        }
+        document.getElementById('otpSection').style.display = 'block';
+        const otpStatus = document.getElementById('otpStatus');
+        otpStatus.innerText = 'Sending OTP via WhatsApp...';
+        otpStatus.style.color = '#ff9f43';
+        
+        setTimeout(() => {
+            otpStatus.innerText = 'Test OTP is 123456';
+            otpStatus.style.color = 'var(--text-light)';
+        }, 1500);
+    };
+
+    window.simulateVerifyOtp = function() {
+        const otpVal = document.getElementById('otpValue').value;
+        const otpStatus = document.getElementById('otpStatus');
+        if (otpVal === '123456') {
+            otpStatus.innerText = 'OTP Verified Successfully!';
+            otpStatus.style.color = 'var(--accent-green)';
+            document.getElementById('verifyOtpBtn').innerText = 'Verified';
+            document.getElementById('verifyOtpBtn').disabled = true;
+            document.getElementById('sendOtpBtn').style.display = 'none';
+        } else {
+            otpStatus.innerText = 'Invalid OTP. Please try again.';
+            otpStatus.style.color = 'var(--accent-red)';
         }
     };
 
