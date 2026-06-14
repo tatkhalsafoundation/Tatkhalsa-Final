@@ -1805,102 +1805,6 @@
         return true;
       };
 
-      window.sendSevadaarOtpVol = function() {
-          const phone = document.getElementById('vPhone').value;
-          if(!phone || phone.length < 8) {
-              alert("Please enter a valid phone number first.");
-              return;
-          }
-          const btn = document.getElementById('btnSendOtpVol');
-          btn.innerHTML = "Sending...";
-          btn.disabled = true;
-
-          const data = new URLSearchParams();
-          data.append('action', 'send_sms_otp');
-          data.append('phone', phone);
-          
-          fetch('<?php echo admin_url("admin-ajax.php"); ?>', {
-              method: 'POST',
-              body: data,
-              headers: {'Content-Type': 'application/x-www-form-urlencoded'}
-          })
-          .then(res => res.json())
-          .then(res => {
-              if(res.success) {
-                  document.getElementById('otpSectionVol').style.display = 'block';
-                  btn.innerHTML = "Sent ✓";
-                  btn.style.background = "#27ae60";
-                  btn.style.color = "#fff";
-                  
-                  const msg = document.getElementById('otpMsgVol');
-                  msg.style.display = "block";
-                  msg.style.color = "#27ae60";
-                  msg.innerText = "OTP sent successfully to your number!";
-                  
-                  setTimeout(() => {
-                      btn.innerHTML = "Resend";
-                      btn.disabled = false;
-                      btn.style.background = "var(--text-dark)";
-                      btn.style.color = "var(--body-bg)";
-                  }, 30000);
-              } else {
-                  alert(res.data);
-                  btn.innerHTML = "Send OTP";
-                  btn.disabled = false;
-              }
-          })
-          .catch(err => {
-              alert("Network error.");
-              btn.innerHTML = "Send OTP";
-              btn.disabled = false;
-          });
-      };
-      
-      window.verifySevadaarOtpVol = function() {
-          const phone = document.getElementById('vPhone').value;
-          const inputOtp = document.getElementById('vOtpInput').value;
-          const msg = document.getElementById('otpMsgVol');
-          msg.style.display = "block";
-
-          const btn = document.getElementById('btnVerifyOtpVol');
-          btn.innerHTML = "Verifying...";
-          btn.disabled = true;
-
-          const data = new URLSearchParams();
-          data.append('action', 'verify_sms_otp');
-          data.append('phone', phone);
-          data.append('otp', inputOtp);
-
-          fetch('<?php echo admin_url("admin-ajax.php"); ?>', {
-              method: 'POST',
-              body: data,
-              headers: {'Content-Type': 'application/x-www-form-urlencoded'}
-          })
-          .then(res => res.json())
-          .then(res => {
-              if(res.success) {
-                  document.getElementById('isPhoneVerifiedVol').value = "true";
-                  msg.style.color = "#27ae60";
-                  msg.innerHTML = "<strong>✓ Phone Number Verified Successfully</strong>";
-                  document.getElementById('vPhone').readOnly = true;
-                  document.getElementById('btnSendOtpVol').style.display = "none";
-                  document.getElementById('vOtpInput').disabled = true;
-                  document.getElementById('btnVerifyOtpVol').innerHTML = "Verified ✓";
-              } else {
-                  msg.style.color = "#ff334b";
-                  msg.innerText = res.data || "Invalid OTP. Please try again.";
-                  btn.innerHTML = "Verify";
-                  btn.disabled = false;
-              }
-          })
-          .catch(err => {
-              msg.style.color = "#ff334b";
-              msg.innerText = "Network error.";
-              btn.innerHTML = "Verify";
-              btn.disabled = false;
-          });
-      };
-
       // Real dynamic Form submission connected to WordPress backend for direct email delivery
       const vForm = document.getElementById("volunteerForm");
       if (vForm) {
@@ -1919,13 +1823,6 @@
             statusEl.style.color = "var(--accent-red)";
             statusEl.textContent = "⚠️ " + validationErr;
             return;
-          }
-          
-          const isVerified = document.getElementById("isPhoneVerifiedVol");
-          if (isVerified && isVerified.value !== "true") {
-              statusEl.style.color = "var(--accent-red)";
-              statusEl.textContent = "⚠️ Please verify your mobile number with OTP first.";
-              return;
           }
 
           const params = new URLSearchParams();
