@@ -90,8 +90,20 @@ if ( have_posts() ) {
               </div>
               <div class="form-group">
                 <label>Phone</label>
-                <input type="tel" id="vPhone" required />
+                <div style="display: flex; gap: 8px;">
+                   <input type="tel" id="vPhone" required style="flex: 1;" />
+                   <button type="button" id="btnSendOtpVol" onclick="window.sendSevadaarOtpVol()" style="padding: 0 15px; border-radius: 6px; background: var(--text-dark); color: var(--body-bg); border: none; cursor: pointer; font-weight: bold; white-space: nowrap;">Send OTP</button>
+                </div>
               </div>
+              <div id="otpSectionVol" style="margin-bottom: 20px; display: none; background: rgba(0,0,0,0.1); padding: 12px; border-radius: 8px; border: 1px dashed rgba(255,255,255,0.2);">
+                <label>Enter OTP</label>
+                <div style="display: flex; gap: 8px;">
+                    <input type="text" id="vOtpInput" placeholder="Enter 6-digit OTP" style="flex: 1; text-align: center; letter-spacing: 2px;">
+                    <button type="button" id="btnVerifyOtpVol" onclick="window.verifySevadaarOtpVol()" style="padding: 0 15px; border-radius: 6px; background: #27ae60; color: #fff; border: none; cursor: pointer; font-weight: bold;">Verify</button>
+                </div>
+                <p id="otpMsgVol" style="margin-top: 8px; font-size: 0.8rem; display: none;"></p>
+              </div>
+              <input type="hidden" id="isPhoneVerifiedVol" value="false">
               <div class="form-group">
                 <label>Message / Skills</label>
                 <textarea

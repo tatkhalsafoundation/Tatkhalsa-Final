@@ -447,8 +447,22 @@ $donors_query = new WP_Query( $args );
       
       <div style="margin-bottom: 15px;">
         <label style="display: block; margin-bottom: 8px; color: var(--text-dark); font-weight: bold;">Contact Number *</label>
-        <input type="tel" name="contactDetails" required placeholder="e.g. +91 9876543210" style="width: 100%; padding: 12px; border-radius: 6px; border: 1px solid rgba(0,0,0,0.2); background: #fff; color: #333;">
+        <div style="display: flex; gap: 8px;">
+           <input type="tel" name="contactDetails" id="regContactNumber" required placeholder="e.g. +91 9876543210" style="flex: 1; padding: 12px; border-radius: 6px; border: 1px solid rgba(0,0,0,0.2); background: #fff; color: #333;">
+           <button type="button" id="btnSendOtp" onclick="window.sendSevadaarOtp()" style="padding: 0 15px; border-radius: 6px; background: var(--text-dark); color: var(--body-bg); border: none; cursor: pointer; font-weight: bold; white-space: nowrap; transition: 0.2s;">Send OTP</button>
+        </div>
       </div>
+      
+      <div id="otpSection" style="margin-bottom: 15px; display: none; background: rgba(0,0,0,0.02); padding: 12px; border-radius: 8px; border: 1px dashed rgba(0,0,0,0.1);">
+        <label style="display: block; margin-bottom: 8px; color: var(--text-dark); font-weight: bold;">Enter OTP *</label>
+        <p style="font-size: 0.8rem; color: var(--text-light); margin-bottom: 8px;">To verify as a sevadaar, please enter the OTP sent to your number.</p>
+        <div style="display: flex; gap: 8px;">
+            <input type="text" id="regOtpInput" placeholder="Enter 6-digit OTP" style="flex: 1; padding: 12px; border-radius: 6px; border: 1px solid rgba(0,0,0,0.2); background: #fff; color: #333; text-align: center; letter-spacing: 2px; font-weight: bold;">
+            <button type="button" id="btnVerifyOtp" onclick="window.verifySevadaarOtp()" style="padding: 0 15px; border-radius: 6px; background: #27ae60; color: #fff; border: none; cursor: pointer; font-weight: bold; transition: 0.2s;">Verify</button>
+        </div>
+        <p id="otpMsg" style="margin-top: 8px; font-size: 0.8rem; display: none;"></p>
+      </div>
+      <input type="hidden" id="isPhoneVerified" value="false">
       
       <div style="margin-bottom: 15px;">
         <label style="display: block; margin-bottom: 8px; color: var(--text-dark); font-weight: bold;">Country *</label>
@@ -1013,6 +1027,105 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         });
     }
+    
+    window.sendSevadaarOtp = function() {
+        const phone = document.getElementById('regContactNumber').value;
+        if(!phone || phone.length < 8) {
+            alert("Please enter a valid phone number first.");
+            return;
+        }
+        
+        const btn = document.getElementById('btnSendOtp');
+        btn.innerHTML = "Sending...";
+        btn.disabled = true;
+
+        const data = new URLSearchParams();
+        data.append('action', 'send_sms_otp');
+        data.append('phone', phone);
+        
+        fetch('<?php echo admin_url("admin-ajax.php"); ?>', {
+            method: 'POST',
+            body: data,
+            headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+        })
+        .then(res => res.json())
+        .then(res => {
+            if(res.success) {
+                document.getElementById('otpSection').style.display = 'block';
+                btn.innerHTML = "Sent ✓";
+                btn.style.background = "#27ae60";
+                
+                const msg = document.getElementById('otpMsg');
+                msg.style.display = "block";
+                msg.style.color = "#27ae60";
+                msg.innerText = "OTP sent successfully to your number!";
+                
+                setTimeout(() => {
+                    btn.innerHTML = "Resend";
+                    btn.disabled = false;
+                    btn.style.background = "var(--text-dark)";
+                    btn.style.color = "var(--body-bg)";
+                }, 30000);
+            } else {
+                alert(res.data);
+                btn.innerHTML = "Send OTP";
+                btn.disabled = false;
+            }
+        })
+        .catch(err => {
+            alert("Network error.");
+            btn.innerHTML = "Send OTP";
+            btn.disabled = false;
+        });
+    };
+
+    window.verifySevadaarOtp = function() {
+        const phone = document.getElementById('regContactNumber').value;
+        const inputOtp = document.getElementById('regOtpInput').value;
+        const msg = document.getElementById('otpMsg');
+        msg.style.display = "block";
+        
+        const btn = document.getElementById('btnVerifyOtp');
+        btn.innerHTML = "Verifying...";
+        btn.disabled = true;
+
+        const data = new URLSearchParams();
+        data.append('action', 'verify_sms_otp');
+        data.append('phone', phone);
+        data.append('otp', inputOtp);
+
+        fetch('<?php echo admin_url("admin-ajax.php"); ?>', {
+            method: 'POST',
+            body: data,
+            headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+        })
+        .then(res => res.json())
+        .then(res => {
+            if(res.success) {
+                document.getElementById('isPhoneVerified').value = "true";
+                msg.style.color = "#27ae60";
+                msg.innerHTML = "<strong>✓ Phone Number Verified Successfully</strong>";
+                
+                document.getElementById('regContactNumber').readOnly = true;
+                document.getElementById('regContactNumber').style.background = "#f0f0f0";
+                document.getElementById('btnSendOtp').style.display = "none";
+                
+                document.getElementById('regOtpInput').disabled = true;
+                document.getElementById('btnVerifyOtp').innerHTML = "Verified ✓";
+            } else {
+                msg.style.color = "#ff334b";
+                msg.innerText = res.data || "Invalid OTP. Please try again.";
+                btn.innerHTML = "Verify";
+                btn.disabled = false;
+            }
+        })
+        .catch(err => {
+            msg.style.color = "#ff334b";
+            msg.innerText = "Network error.";
+            btn.innerHTML = "Verify";
+            btn.disabled = false;
+        });
+    };
 
      // Ajax Submission
     const form = document.getElementById("donorRegForm");
@@ -1041,6 +1154,19 @@ document.addEventListener("DOMContentLoaded", () => {
                 btn.innerHTML = originalText;
                 btn.disabled = false;
                 return;
+            }
+
+            const isVerified = document.getElementById("isPhoneVerified").value;
+            if (isVerified !== "true") {
+                statusBox.style.display = "block";
+                statusBox.style.padding = "10px";
+                statusBox.style.backgroundColor = "rgba(220, 53, 69, 0.1)";
+                statusBox.style.borderColor = "rgba(220, 53, 69, 0.2)";
+                statusBox.style.color = "#dc3545";
+                statusBox.innerHTML = "⚠️ Please verify your mobile number with OTP first.";
+                btn.innerHTML = originalText;
+                btn.disabled = false;
+                return; 
             }
 
             btn.innerHTML = "Registering...";
