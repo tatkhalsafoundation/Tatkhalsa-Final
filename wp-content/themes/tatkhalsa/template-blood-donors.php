@@ -321,6 +321,7 @@ $donors_query = new WP_Query( $args );
                         </h3>
                         
                         <!-- Visual Verification Badge for Sevadar status -->
+                        <?php $is_verified = get_post_meta( $post_id, 'is_verified', true ); if ( $is_verified ) : ?>
                         <div style="display: flex; align-items: center; gap: 6px; margin-bottom: 8px; flex-wrap: wrap;">
                             <span style="display: inline-flex; align-items: center; gap: 4px; font-size: 0.72rem; font-weight: 700; background: rgba(212, 175, 55, 0.12); color: #d4af37; padding: 3px 8px; border-radius: 12px; border: 1.1px solid rgba(212, 175, 55, 0.4); text-transform: uppercase; letter-spacing: 0.5px;">
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" style="width: 12px; height: 12px; color: #d4af37; flex-shrink: 0;">
@@ -329,6 +330,7 @@ $donors_query = new WP_Query( $args );
                                 Verified Sevadar ✓
                             </span>
                         </div>
+                        <?php endif; ?>
                         
                         <div style="margin-bottom: 10px; font-size: 0.8rem; color: var(--text-dark); font-weight: 500;">
                             <?php 
@@ -1737,7 +1739,8 @@ document.addEventListener("DOMContentLoaded", function() {
                                     <td style="padding: 14px 10px; max-width: 220px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" title="${donor.address}">${donor.address}</td>
                                     <td style="padding: 14px 10px; font-size:0.8rem;"><span style="color:#2ed573;">🟢 ${donor.availabilityStatus || 'Available Now'}</span></td>
                                     <td style="padding: 14px 10px; text-align: center;">
-                                        <div style="display: flex; gap: 6px; justify-content: center; align-items: center;">
+                                        <div style="display: flex; gap: 6px; justify-content: center; align-items: center; flex-wrap: wrap;">
+                                            <button onclick="window.verifyDonorWhatsApp('${donor.id}', '${donor.contact}', '${donor.name}', ${!!donor.isVerified})" style="background: ${donor.isVerified ? 'rgba(37, 211, 102, 1)' : 'rgba(37, 211, 102, 0.15)'}; color: ${donor.isVerified ? '#fff' : '#25D366'}; border: 1px solid rgba(37, 211, 102, 0.5); padding: 5px 10px; border-radius: 6px; cursor: pointer; font-size: 0.75rem; font-weight: bold; transition: all 0.2s;" onmouseover="this.style.background='#25D366'; this.style.color='#fff';" onmouseout="this.style.background='${donor.isVerified ? 'rgba(37, 211, 102, 1)' : 'rgba(37, 211, 102, 0.15)'}'; this.style.color='${donor.isVerified ? '#fff' : '#25D366'}';">${donor.isVerified ? 'Verified ✓' : 'Verify (WA)'}</button>
                                             <button onclick="window.openEditDonorModal('${donor.id}')" style="background: rgba(212,175,55,0.15); color: #ffd275; border: 1px solid rgba(212,175,55,0.3); padding: 5px 10px; border-radius: 6px; cursor: pointer; font-size: 0.75rem; font-weight: bold; transition: all 0.2s;" onmouseover="this.style.background='#d4af37'; this.style.color='#000';" onmouseout="this.style.background='rgba(212,175,55,0.15)'; this.style.color='#ffd275';">Edit</button>
                                             <button onclick="window.deleteDonor('${donor.id}')" style="background: rgba(255,51,75,0.1); color: #ff334b; border: 1px solid rgba(255,51,75,0.25); padding: 5px 10px; border-radius: 6px; cursor: pointer; font-size: 0.75rem; font-weight: bold; transition: all 0.2s;" onmouseover="this.style.background='#ff334b'; this.style.color='#fff';" onmouseout="this.style.background='rgba(255,51,75,0.1)'; this.style.color='#ff334b';">Delete</button>
                                         </div>
@@ -2039,6 +2042,42 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     };
 
+    window.verifyDonorWhatsApp = async function(id, contact, name, isVerified) {
+        if (!contact) {
+            alert('No contact number available for this donor.');
+            return;
+        }
+
+        // Setup WhatsApp contact
+        let phone = contact.replace(/\D/g, ''); // Remove non-numeric characters
+        if (phone.length === 10) {
+            phone = '91' + phone; // Default to India prefix if 10 digits
+        }
+
+        const message = encodeURIComponent(`Sat Sri Akal ${name} Ji, this is a volunteer verification message from the Blood On Call network (Tatkhalsa Foundation). Please confirm your availability and blood group. Waheguru Ji Ka Khalsa, Waheguru Ji Ki Fateh.`);
+        const waLink = `https://api.whatsapp.com/send?phone=${phone}&text=${message}`;
+
+        // Toggle verification in the backend if admin desires
+        if (confirm(`Do you want to toggle the verification status for ${name}?\n\nClick "OK" to toggle (current: ${isVerified ? 'Verified' : 'Unverified'}) and write them a message.\nClick "Cancel" to skip toggling but still send the WhatsApp message.`)) {
+            try {
+                const res = await fetch('/api/admin/verify-donor', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ id, isVerified: !isVerified })
+                });
+                const r = await res.json();
+                if (r.success) {
+                    window.fetchMasterData();
+                    window.loadPublicDirectory();
+                }
+            } catch(e) {
+                console.error("Error verifying donor.", e);
+            }
+        }
+        
+        window.open(waLink, '_blank');
+    };
+
     window.deleteDonor = async function(id) {
         if (confirm('Are you sure you want to permanently delete this donor from directory?')) {
             try {
@@ -2223,13 +2262,24 @@ document.addEventListener("DOMContentLoaded", function() {
                                 }
                             }
 
+                            const verifiedBadge = donor.isVerified ? `
+                                <div style="display: flex; align-items: center; gap: 6px; margin-bottom: 8px; flex-wrap: wrap;">
+                                    <span style="display: inline-flex; align-items: center; gap: 4px; font-size: 0.72rem; font-weight: 700; background: rgba(212, 175, 55, 0.12); color: #d4af37; padding: 3px 8px; border-radius: 12px; border: 1.1px solid rgba(212, 175, 55, 0.4); text-transform: uppercase; letter-spacing: 0.5px;">
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" style="width: 12px; height: 12px; color: #d4af37; flex-shrink: 0;">
+                                            <path fill-rule="evenodd" d="M8.603 3.799A4.49 4.49 0 0112 2.25c1.357 0 2.573.6 3.397 1.549a4.49 4.49 0 013.498 1.307 4.491 4.491 0 011.307 3.497A4.49 4.49 0 0121.75 12c0 1.357-.6 2.573-1.549 3.397a4.49 4.49 0 01-1.307 3.498 4.49 4.49 0 01-3.497 1.307A4.491 4.491 0 0112 21.75c-1.357 0-2.573-.6-3.397-1.549a4.49 4.49 0 01-3.498-1.307a4.49 4.49 0 01-1.307-3.497A4.491 4.491 0 012.25 12c0-1.357.6-2.573 1.549-3.397a4.49 4.49 0 011.307-3.498a4.49 4.49 0 013.497-1.307zm7.007 6.387a.75.75 0 00-1.22-.872l-3.236 4.53L9.53 12.22a.75.75 0 00-1.06 1.06l2.25 2.25a.75.75 0 001.14-.094l3.75-5.25z" clip-rule="evenodd" />
+                                        </svg>
+                                        Verified Sevadar ✓
+                                    </span>
+                                </div>
+                            ` : '';
+
                             anchor.innerHTML += `
                                 <div style="background: var(--bg-dark); border-radius: 10px; padding: 15px; box-shadow: 0 3px 10px rgba(0,0,0,0.05); position: relative; border-top: 3px solid #ff334b;">
                                     <div style="position: absolute; top: 15px; right: 15px; background: #ff334b; color: #fff; font-weight: bold; padding: 4px 10px; border-radius: 15px; font-size: 0.9rem; box-shadow: 0 2px 6px rgba(255,51,75,0.4);">
                                         ${donor.bloodGroup}
                                     </div>
                                     <h3 style="color: var(--text-dark); margin-bottom: 5px; padding-right: 40px; font-size: 1.1rem;">${donor.name}</h3>
-                                    
+                                    ${verifiedBadge}
                                     <div style="margin-bottom: 10px; font-size: 0.8rem; color: var(--text-dark); font-weight: 500;">
                                         ${statusText}
                                     </div>

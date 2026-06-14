@@ -105,6 +105,7 @@ async function startServer() {
     availabilityStatus: string;
     ip: string;
     timestamp: number;
+    isVerified?: boolean;
   }
 
   interface BloodRequest {
@@ -742,6 +743,25 @@ async function startServer() {
     return res.json({
       success: true,
       message: "Donor credentials updated successfully.",
+      donor: mockDonors[donorIndex]
+    });
+  });
+
+  app.post("/api/admin/verify-donor", (req, res) => {
+    const { id, isVerified } = req.body || {};
+    if (!id) {
+      return res.status(400).json({ success: false, message: "Donor ID is required to verify." });
+    }
+    const donorIndex = mockDonors.findIndex(d => d.id === id);
+    if (donorIndex === -1) {
+      return res.status(404).json({ success: false, message: "Donor profile not found." });
+    }
+
+    mockDonors[donorIndex].isVerified = isVerified;
+
+    return res.json({
+      success: true,
+      message: `Donor marks as ${isVerified ? 'verified' : 'unverified'} on WhatsApp.`,
       donor: mockDonors[donorIndex]
     });
   });

@@ -2367,6 +2367,88 @@
         }, { passive: true });
       })();
     </script>
+    
+    <script src="<?php echo get_template_directory_uri(); ?>/lang-dict.js"></script>
+    <script type="text/javascript">
+      // Inherit the dictionary loaded from lang-dict.js
+      const punjabiDictionary = (typeof masterPunjabiDictionary !== 'undefined') ? masterPunjabiDictionary : {};
+
+      const englishDictionary = Object.fromEntries(Object.entries(punjabiDictionary).map(([k, v]) => [v, k]));
+
+      function translateNode(node, lang) {
+        if (node.nodeType === Node.TEXT_NODE) {
+          const originalText = node.textContent;
+          const text = originalText.trim().replace(/\s+/g, ' ');
+          if (text) {
+             const dict = lang === 'pa' ? punjabiDictionary : englishDictionary;
+             if (dict[text]) {
+                 node.textContent = originalText.replace(node.textContent.trim(), dict[text]);
+             }
+          }
+        } else if (node.nodeType === Node.ELEMENT_NODE) {
+          if (node.nodeName !== 'SCRIPT' && node.nodeName !== 'STYLE') {
+            node.childNodes.forEach(child => translateNode(child, lang));
+            
+            // Also translate placeholders on inputs
+            if (node.tagName === 'INPUT' || node.tagName === 'TEXTAREA') {
+               const ph = node.getAttribute('placeholder');
+               if (ph) {
+                   const cleanPh = ph.trim().replace(/\s+/g, ' ');
+                   const dict = lang === 'pa' ? punjabiDictionary : englishDictionary;
+                   if (dict[cleanPh]) {
+                       node.setAttribute('placeholder', dict[cleanPh]);
+                   }
+               }
+            }
+          }
+        }
+      }
+
+      function applyTranslation(lang) {
+        document.documentElement.lang = lang;
+        translateNode(document.body, lang);
+        
+        // Update URL/Options in selectors to reflect language correctly if needed
+        const sel = document.getElementById("mobileNavSelect");
+        if (sel) {
+           Array.from(sel.options).forEach(opt => {
+               if(opt.value === "translate_pa") opt.text = lang === 'pa' ? "🌐 Translate to Punjabi (ਪੰਜਾਬੀ)" : "🌐 Translate to Punjabi";
+               if(opt.value === "translate_en") opt.text = lang === 'pa' ? "🌐 View in English (ਅੰਗਰੇਜ਼ੀ ਵਿੱਚ ਦੇਖੋ)" : "🌐 View in English";
+           });
+        }
+      }
+
+      function tatkhalsaSetLanguage(lang) {
+          localStorage.setItem('tatkhalsa_lang', lang);
+          window.location.reload();
+      }
+
+      // Automatically apply translation on load if saved
+      document.addEventListener("DOMContentLoaded", () => {
+          const savedLang = localStorage.getItem('tatkhalsa_lang');
+          if (savedLang === 'pa') {
+              applyTranslation('pa');
+          }
+      });
+    </script>
+    
+    <!-- Global Floating Language Switcher -->
+    <div style="position: fixed; bottom: 20px; left: 20px; z-index: 9999; display: flex; gap: 5px; background: var(--bg-shade-1, #1a1a1a); padding: 5px; border-radius: 30px; border: 1px solid rgba(255,255,255,0.2); box-shadow: 0 4px 12px rgba(0,0,0,0.5);">
+      <button onclick="tatkhalsaSetLanguage('en')" style="padding: 8px 12px; border-radius: 20px; border: none; background: transparent; color: white; cursor: pointer; font-weight: 600; font-size: 0.8rem; outline: none;" id="lang-btn-en">EN</button>
+      <button onclick="tatkhalsaSetLanguage('pa')" style="padding: 8px 12px; border-radius: 20px; border: none; background: transparent; color: white; cursor: pointer; font-weight: 600; font-size: 0.8rem; outline: none;" id="lang-btn-pa">ਪੰਜਾਬੀ</button>
+    </div>
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+          const savedLang = localStorage.getItem('tatkhalsa_lang') || 'en';
+          if(savedLang === 'pa') {
+              document.getElementById('lang-btn-pa').style.background = 'var(--secondary, #d4af37)';
+              document.getElementById('lang-btn-pa').style.color = '#000';
+          } else {
+              document.getElementById('lang-btn-en').style.background = 'var(--secondary, #d4af37)';
+              document.getElementById('lang-btn-en').style.color = '#000';
+          }
+      });
+    </script>
 
     <?php wp_footer(); ?>
   </body>

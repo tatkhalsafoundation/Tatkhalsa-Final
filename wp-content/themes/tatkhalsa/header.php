@@ -276,13 +276,21 @@
  
         <!-- Header Actions CTA (Desktop/Wide Viewports) -->
         <div class="header-actions">
+          <div class="lang-selector-desktop">
+            <button class="header-cta-btn header-lang-btn" onclick="tatkhalsaSetLanguage('pa')" title="Translate to Punjabi (ਪੰਜਾਬੀ)" style="padding: 0.5rem; background: transparent; border: 1px solid rgba(255,255,255,0.2); color: white; display:flex; align-items:center; justify-content:center; width:36px; height:36px; border-radius:8px;">
+              <span style="font-size: 1.2rem; font-weight:700;">ਪੰ</span>
+            </button>
+            <button class="header-cta-btn header-lang-btn" onclick="tatkhalsaSetLanguage('en')" title="View in English" style="padding: 0.5rem; background: transparent; border: 1px solid rgba(255,255,255,0.2); color: white; display:flex; align-items:center; justify-content:center; width:36px; height:36px; border-radius:8px; margin-left: 5px;">
+              <span style="font-size: 1.2rem; font-weight:700;">EN</span>
+            </button>
+          </div>
           <button onclick="openModal()" class="header-cta-btn header-donate-btn">Contribute Now</button>
           <a href="<?php echo esc_url( home_url( '/volunteer/' ) ); ?>" class="header-cta-btn header-volunteer-btn">Join Seva</a>
         </div>
  
         <!-- Elegant Multi-Selection Dropdown for Mobile / Tablet (Instead of Hamburger Menu) -->
         <div class="header-nav-selector">
-            <select id="mobileNavSelect" onchange="if(this.value === 'donate') { openModal(); } else if(this.value === 'contact') { document.getElementById('footer').scrollIntoView({ behavior: 'smooth' }); } else if(this.value) { window.location.href=this.value; }" style="display: none;" aria-label="Select Seva Page">
+            <select id="mobileNavSelect" onchange="if(this.value === 'translate_pa') { tatkhalsaSetLanguage('pa'); } else if(this.value === 'translate_en') { tatkhalsaSetLanguage('en'); } else if(this.value === 'donate') { openModal(); } else if(this.value === 'contact') { document.getElementById('footer').scrollIntoView({ behavior: 'smooth' }); } else if(this.value) { window.location.href=this.value; }" style="display: none;" aria-label="Select Seva Page">
               <option value="" disabled selected>Explore Seva...</option>
               <option value="<?php echo esc_url( home_url( '/' ) ); ?>">Home Page</option>
               <option value="<?php echo esc_url( home_url( '/about/' ) ); ?>">About Tatkhalsa</option>
@@ -292,6 +300,8 @@
               <option value="<?php echo esc_url( home_url( '/blood-donors/' ) ); ?>">Blood On Call</option>
               <option value="contact">Contact Us</option>
               <option value="donate">Contribute Now</option>
+              <option value="translate_pa">🌐 Translate to Punjabi</option>
+              <option value="translate_en">🌐 View in English</option>
             </select>
             
             <div class="custom-select-wrapper" id="customMobileNavWrapper">
@@ -304,6 +314,10 @@
                 </span>
               </button>
               <div class="custom-select-dropdown" id="customMobileNavDropdown" role="listbox">
+                <div style="display: flex; gap: 5px; padding: 5px; border-bottom: 1px solid rgba(255,255,255,0.1); margin-bottom: 5px;">
+                   <a href="#" onclick="tatkhalsaSetLanguage('pa'); document.getElementById('customMobileNavWrapper').classList.remove('open'); return false;" class="custom-dropdown-opt" role="option" style="flex:1; text-align:center; padding: 5px; color: #d4af37 !important; font-weight: 700; font-size: 0.75rem; border:1px solid #d4af37; border-radius:5px;">ਪੰਜਾਬੀ</a>
+                   <a href="#" onclick="tatkhalsaSetLanguage('en'); document.getElementById('customMobileNavWrapper').classList.remove('open'); return false;" class="custom-dropdown-opt" role="option" style="flex:1; text-align:center; padding: 5px; color: #4da6ff !important; font-weight: 700; font-size: 0.75rem; border:1px solid #4da6ff; border-radius:5px;">EN</a>
+                </div>
                 <a href="<?php echo esc_url( home_url( '/' ) ); ?>" class="custom-dropdown-opt" role="option">Home Page</a>
                 <a href="<?php echo esc_url( home_url( '/about/' ) ); ?>" class="custom-dropdown-opt" role="option">About Tatkhalsa</a>
                 <a href="<?php echo esc_url( home_url( '/projects/' ) ); ?>" class="custom-dropdown-opt" role="option">Our Seva Projects</a>
@@ -312,6 +326,7 @@
                 <a href="<?php echo esc_url( home_url( '/blood-donors/' ) ); ?>" class="custom-dropdown-opt" role="option" style="color: #ff334b !important; font-weight: 700;">Blood On Call</a>
                 <a href="#" onclick="document.getElementById('footer').scrollIntoView({ behavior: 'smooth' }); document.getElementById('customMobileNavWrapper').classList.remove('open'); return false;" class="custom-dropdown-opt" role="option" style="color: #4da6ff !important; font-weight: 700;">Contact Us</a>
                 <a href="#" onclick="openModal(); document.getElementById('customMobileNavWrapper').classList.remove('open'); return false;" class="custom-dropdown-opt header-mobile-contrib-opt" role="option" style="color: #ff5d73 !important; font-weight: 700;">Contribute Now</a>
+                <div style="border-top: 1px solid rgba(255,255,255,0.1); margin: 5px 0;"></div>
               </div>
             </div>
         </div>

@@ -1,0 +1,983 @@
+"
+            alt="Tatkhalsa Foundation Logo"
+            class="hero-gurbani-logo"
+            width="180"
+            height="180"
+            style="width: 180px; height: 180px; object-fit: contain; filter: drop-shadow(0 4px 10px rgba(0,0,0,0.1));"
+          /
+Error Code: 404
+Seva Page Not Found
+The page you are looking for has embarked on a different path, or may have been rearranged during our recent updates. We apologize for any inconvenience.
+" style="display: inline-block; background: var(--primary); color: #fff; padding: 14px 28px; border-radius: 8px; font-weight: 600; text-decoration: none; box-shadow: 0 4px 15px rgba(12, 26, 48, 0.15); transition: all 0.3s ease; border: 1px solid var(--primary);"
+              Return to Home Portal
+" style="text-decoration: none; color: var(--primary); font-weight: 500; font-size: 0.95rem; background: #fff; border: 1px solid rgba(0,0,0,0.1); padding: 8px 16px; border-radius: 6px; box-shadow: 0 2px 5px rgba(0,0,0,0.02); transition: all 0.2s ease;"
+                📁 Seva Projects
+" style="text-decoration: none; color: var(--primary); font-weight: 500; font-size: 0.95rem; background: #fff; border: 1px solid rgba(0,0,0,0.1); padding: 8px 16px; border-radius: 6px; box-shadow: 0 2px 5px rgba(0,0,0,0.02); transition: all 0.2s ease;"
+                🩸 Blood Network
+" style="text-decoration: none; color: var(--primary); font-weight: 500; font-size: 0.95rem; background: #fff; border: 1px solid rgba(0,0,0,0.1); padding: 8px 16px; border-radius: 6px; box-shadow: 0 2px 5px rgba(0,0,0,0.02); transition: all 0.2s ease;"
+                🤝 Join as Sevadar
+If you believe this is a technical mistake, please contact support:
+info@tatkhalsa.in
+"
+                alt="Tatkhalsa Foundation Logo"
+                style="height: 60px; width: 60px; border-radius: 50%; object-fit: cover;"
+              /
+Tatkhalsa
+Foundation
+Registered NGO
+CIN: U88900PB2023NPL059225
+Contact Us
+Email:
+Address: GF 37, Bazidpur,
+SBS Nagar, Punjab - 144518
+Registrations
+12A Registered
+80G Approved
+CSR Eligible
+Quick Links
+"Home
+"About Us
+"Blog
+"Blood On Call
+"Volunteer
+" style="color: var(--secondary); text-decoration: none; margin: 0 10px;"Privacy Policy
+" style="color: var(--secondary); text-decoration: none; margin: 0 10px;"Terms & Conditions
+&copy;
+. All Rights Reserved. Saved & Built dynamically via custom theme template.
+Designed with
+by Prabhjot Singh (Team Tatkhalsa)
+Emergency Blood Request
+Our 24/7 Tatkhalsa Blood On Call coordinates rapid mobilizations of nearby registered donors. Direct email and SMS alerts will be triggered immediately.
+Looking for donors right now?
+" style="display: inline-block; background: #ff334b; color: white; padding: 8px 16px; border-radius: 6px; font-weight: bold; font-size: 0.85rem; text-decoration: none; box-shadow: 0 2px 8px rgba(255,51,75,0.3);"
+            🔍 Browse Available Donors
+Patient Full Name
+Blood Group
+Select Group
+Any Blood Group
+A+ (A Positive)
+A- (A Negative)
+B+ (B Positive)
+B- (B Negative)
+O+ (O Positive)
+O- (O Negative)
+AB+ (AB Positive)
+AB- (AB Negative)
+Rare: Bombay Phenotype
+Country
+Select Country
+State
+Select State
+District / City
+Select District
+Hospital Name & Detail
+Doctor's Request Slip / Form Photo
+Please upload a clear photo of the doctor's prescription or hospital blood request form (from camera or gallery) to verify emergency.
+Units Required
+1 Unit
+2 Units
+3 Units
+4 Units
+5+ Units (Bulk Crisis)
+Urgency Level
+Urgent (Within 12-24 hours)
+Normal (Scheduled/Upcoming Surgery)
+🚨 Critical (Immediate requirement)
+Contact Phone / Details
+Additional Case Notes (Optional)
+📢 Broadcast Blood Request
+Emergency Medical Fundraiser
+" alt="Sikh Child Nimrat Kaur" style="width: 100%; display: block; filter: saturate(1.15);"
+Nimrat Kaur (2 years old)
+🎗️ 80G Tax Benefit Available
+CANCER SEVA STATUS: CRITICAL
+"My name is Nimrat Kaur, and I am just 2 years old. I am fighting blood cancer and need your urgent support. I am a Gursikh child, doing my best to stay strong during this difficult time. My family needs ₹7,00,000 for my treatment and life-saving care, which is more than we can afford. Please help me get a chance to live, grow, and experience the world. Even a small contribution can help save my life."
+Raised: ₹2,25,000
+Goal: ₹7,00,000
+32% Completed
+₹4,75,000 Remaining
+How to Contribute Instantly:
+DIRECT BANK TRANSFER
+Transfer directly from any bank application using standard NEFT/IMPS/RTGS.
+Bank:
+Axis Bank
+A/C: 925010057912966
+Copy
+IFSC: UTIB0004354
+UPI INSTANT PAY
+Scan or pay to:
+mab.037215043540097@axisbank
+Contact:
++91 98770 38520
+Web:
+https://tatkhalsa.in
+Location:
+Nawasahar, Punjab, India
+📱 Pay Directly via UPI App
+Emergency Flood Relief SOS
+" alt="Punjab Relief Support" style="width: 100%; display: block; filter: saturate(1.15);"
+Punjab Flood Relief 2025
+RELIEF STATUS: ACTIVE
+In response to the devastating floods across Punjab in 2025, Tatkhalsa Foundation has launched comprehensive relief efforts. Our dedicated sevadars are working round-the-clock to distribute essential supplies, dry ration packages, fresh hot langar, water purification pills, and conducting medical camps inside distressed remote rural flood zones. Please contribute to help restore lives.
+Raised: ₹5,80,000
+Goal: ₹10,00,000
+58% Completed
+₹4,20,000 Remaining
+Essential Grocery Help Seva
+" alt="Grocery Help Support" style="width: 100%; display: block; filter: saturate(1.15);"
+Monthly Ration & Grocery Support
+RATION STATUS: ACTIVE
+Our grocery help campaign focuses on distributing comprehensive monthly ration hampers to physically disabled sevadars, single mothers, and elderly Gursikh families below the poverty line. Each kit includes essential wheat flour, pulses, pure ghee, salt, sugar, tea leaves, oil, and basic hygiene utilities, ensuring that no family goes hungry.
+Raised: ₹1,60,000
+Goal: ₹3,00,000
+53.3% Completed
+₹1,40,000 Remaining
+1984 Victims Family Support
+" alt="1984 Victim Support" style="width: 100%; display: block; filter: saturate(1.15);"
+Sikh Family Rehabilitation Seva
+AID STATUS: ACTIVE
+Providing dignified rehabilitation and life sponsorships to families & widows directly affected by the November 1984 tragedy. We sponsor school education, college tuitions, and vocational skills training for their children, alongside distributing continuous monthly livelihood stipends to secure their futures with respect.
+Raised: ₹3,15,000
+Goal: ₹6,00,000
+52.5% Completed
+₹2,85,000 Remaining
+Gursikh Daughters Marriages Seva
+" alt="Marriages Seva Support" style="width: 100%; display: block; filter: saturate(1.15);"
+Anand Karaj & Marriage Support
+SUPPORT STATUS: ACTIVE
+Under this welfare initiative, Tatkhalsa Foundation provides funding support, Gurdwara arrangements for respectful Anand Karaj ceremonies, and comprehensive startup household gift hampers (including cookware, blankets, sewing machines, etc.) for daughters of underprivileged and extremely poor Gursikh families who cannot afford standard marriage expenses.
+Raised: ₹1,52,000
+Goal: ₹4,00,000
+38% Completed
+₹2,48,000 Remaining
+Join Our Mission
+Your generosity fuels our seva for humanity. Every contribution makes a difference.
+Direct Bank Transfer
+Bank Name
+Account Number
+925010057912966
+IFSC Code
+UTIB0004354
+Quick UPI Pay
+Custom
+₹501
+₹1100
+₹5100
+Scan QR or copy UPI ID
+Pay App
+Claim 80G Receipt / Track Payment
+Click here if you have completed the payment via UPI/Bank Transfer
+General Donation (Default)
+Nimrat Kaur Cancer Seva
+Punjab Flood Relief
+Essential Grocery Help
+Daughters Marriages Seva
+Langar Seva
+Submit Details
+Secure contributions. Eligible for tax benefits under Section 80G.
+Success ✓
+No registered donors found for this blood group, but our sevadars have been alerted!
+';
+          if (reqDistrictSelect) reqDistrictSelect.innerHTML = '
+width + margin) p.x = -margin;
+            
+            if (p.y
+WhatsApp Seva Desk
+ਪੰਜਾਬੀ
+New Tatkhalsa Volunteer Application
+";
+	$body .= "
+Name:
+" . esc_html( $name ) . "
+" . esc_html( $email ) . "
+Phone:
+" . esc_html( $phone ) . "
+Skills & Message:
+" . nl2br( esc_html( $message ) ) . "
+";
+
+	$headers = array(
+		'Content-Type: text/html; charset=UTF-8',
+		'From: Tatkhalsa Foundation
+" class="tatkhalsa-dismiss-btn" title="Dismiss this recommendation notice"Dismiss Notice ×
+Tat Khalsa Foundation Theme Recommendations
+To unlock full power, direct email deliverability, and humanitarian donation collection for your
+Tat Khalsa
+website, we highly recommend installing the following plugins:
+" target="_blank"⚙️ Search & Install Plugin →
+🔴 Emergency Blood Request Details
+Patient Name:
+" . esc_html( $patient_name ) . "
+Blood Group Required:
+" . esc_html( $blood_group ) . "
+" . esc_html( $patient_location ) . "
+Country:
+" . esc_html( $country ) . "
+State:
+" . esc_html( $state ) . "
+District:
+" . esc_html( $district ) . "
+Hospital Name:
+" . esc_html( $hospital_name ) . "
+Contact Details:
+" . esc_html( $contact_details ) . "
+Units Required:
+" . esc_html( $units_required ) . "
+Urgency Level:
+" . esc_html( $urgency ) . "
+Additional Info / Notes:
+" . nl2br( esc_html( $additional_info ) ) . "
+🩸 Accept the Request
+If the button above does not work, copy and paste this link:
+";
+
+	$headers = array(
+		'Content-Type: text/html; charset=UTF-8',
+		'From: Tatkhalsa Blood On Call
+',
+		'Reply-To: Tatkhalsa Blood On Call
+🚨 Urgent Blood Request
+Dear
+Someone in your immediate district (
+) requires an urgent blood donation. Any blood group is requested / welcomed to assist.
+📋 Patient Information:
+Blood Group Needed:
+Hospital Details:
+⚠️ IMPORTANT: VERIFY REQUEST FIRST THEN ONLY DONATE
+Please verify the medical requirement and doctor request / blood prescription slip carefully first, and only then proceed to donate blood.
+You must coordinate directly with the patient's family, relatives, or treating hospital staff to fully validate all medical requirements and authentication before making a contribution.
+* Note: A copy of the physician's request / doctor slip has been attached to this email for your active validation.
+🩸 Accept Blood Request
+* Single acceptance rule:
+Only the first donor to click accepts the request. Others cannot accept once it has been claimed.
+If you cannot click the button above, please copy & paste this link directly in your browser:
+If you are available to travel or assist, please reach out to the patient's family at the contact information provided above as soon as possible.
+This is an automated mobilization broadcast by
+Tatkhalsa Blood On Call
+Thank you for your noble commitment to saving lives.
+Someone near you in your district (
+) requires an urgent blood donation matching your blood group.
+Someone in your state (
+) requires an urgent blood donation matching your blood group because a matching donor was not found in their local district.
+',
+		'Reply-To: noreply@tatkhalsa.in',
+		'Bcc: info@tatkhalsa.in'
+	);
+	
+	$body = "
+Waheguru Ji Ka Khalsa, Waheguru Ji Ki Fateh.
+Thank you for your noble commitment. Please find attached your official Certificate of Appreciation from Tatkhalsa Foundation.
+Search
+Searching Gurbani...
+Fetching from BaniDB via GurbaniNow API
+No shabads found for "'+input+'".
+Try typing the first letters of each word in English (e.g. "m m" for mere man).
+Error connecting to Gurbani API. Please check your internet connection or try again later.
+✓ Data backup imported successfully! Loaded ' . $donors_count . ' donors and ' . $requests_count . ' emergency requests safely.
+✕ Failed to process backup format. Verify JSON structures.
+✓ Status successfully marked as
+Fulfilled
+for blood request #' . $request_id . '!
+✓ Record #' . $post_id . ' was permanently deleted from the WordPress Master Data secure database.
+✓ Successfully deleted ' . $deleted_count . ' selected record(s) permanently from the secure WordPress database.
+📌 Tatkhalsa Blood On Call - Master Admin Records
+Secure database containing donor credentials, active patient broadcasts, and spam protection metadata. Access is restricted to site managers.
+🔒 IP Logging Status:
+Active (Full historic IP retention is enabled for safety audits; 30-day auto-purge has been disabled at administrator request).
+" class="button button-primary" style="background: #2ecc71; border-color: #27ae60; font-weight: bold; text-shadow: none; box-shadow: none; display: inline-flex; align-items: center; gap: 5px;"📥 Download JSON Data Backup
+📤 Import Data Backup:
+🩸 Registered Donors List
+Donor Name
+Email Address
+Contact Details
+Address & Location
+Status
+IP Address
+Actions
+[Purged after 30 days]
+' : '
+unknown
+' . esc_html( $ip ) . '
+(Active)
+" class="chk-donor" /
+" class="button button-small" onclick="return confirm('Are you sure you want to permanently delete this donor?');" style="color: #ff334b; border-color: #ff334b; background: rgba(255,51,75,0.05); font-weight: bold; text-decoration: none;"✕ Delete
+No registered donors found.
+🚨 Urgent Family Blood Requests
+Patient Name
+Hospital Name
+Patient Location
+Required Units / Urgency
+Doctor's Slip
+Accepted Volunteer Info
+Request IP
+Pending
+Accepted
+fulfilled
+' . esc_html( $status ) . '
+';
+								$accepted_info .= '
+👤 ' . esc_html( $req-volunteer_name ) . '
+📞 ' . esc_html( tatkhalsa_master_mask_phone( $req-volunteer_phone ) ) . '
+No active claim
+" class="chk-request" /
+Units
+" target="_blank" title="Click to view physician request prescription form"
+" style="width: 48px; height: 48px; border-radius: 6px; object-fit: cover; border: 1.5px solid #ff334b; box-shadow: 0 2px 4px rgba(0,0,0,0.1); transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.2)';" onmouseout="this.style.transform='scale(1)';" /
+No attachment
+" class="button button-small" style="background: #555555; color: #ffffff; border-color: #555555; font-weight: bold; text-decoration: none; text-align: center; box-shadow: 0 1px 3px rgba(0,0,0,0.15);" onclick="return confirm('Are you sure you want to mark request #
+as Fulfilled?');"✓ Fulfill
+" class="button button-small" onclick="return confirm('Are you sure you want to permanently delete this blood request?');" style="color: #ff334b; border-color: #ff334b; background: rgba(255,51,75,0.05); font-weight: bold; text-decoration: none; text-align: center;"✕ Delete
+No active blood requests found.
+Tatkhalsa Foundation
+Official 80G Tax Exemption Receipt
+Thank you for your generous contribution. Your payment has been successfully verified by our team. Please find your official donation receipt below:
+Receipt No:
+Date:
+Donor Name:
+Amount Received:
+Payment Mode:
+Seva/Cause:
+Tax Exemption Note:
+Donations made to TATKHALSA FOUNDATION are eligible for tax exemption under section 80G of the Income Tax Act, 1961. This automated email serves as your official receipt for tax filing purposes.
+May Waheguru bless you,
+Tatkhalsa Foundation Team
+" /
+"https://schema.org",
+        "@graph" = array(
+            array(
+                "@type" = "NGO",
+                "@id" = esc_url( home_url( '/' ) ) . "#organization",
+                "name" = "Tatkhalsa Foundation",
+                "url" = esc_url( home_url( '/' ) ),
+                "logo" = array(
+                    "@type" = "ImageObject",
+                    "@id" = esc_url( home_url( '/' ) ) . "#logo",
+                    "url" = esc_url( tatkhalsa_get_logo_url() ),
+                    "caption" = "Tatkhalsa Foundation Logo"
+                ),
+                "image" = array(
+                    "@id" = esc_url( home_url( '/' ) ) . "#logo"
+                ),
+                "sameAs" = array(
+                    "https://instagram.com/tatkhalsa.in/",
+                    "https://www.facebook.com/tatkhalsain",
+                    "https://x.com/tatkhalsain"
+                ),
+                "description" = "Tatkhalsa Foundation is an NGO registered non-profit organization dedicated to human upliftment, tree planting, volunteer mobilizations, Gurbani scripture search tools, and emergency blood networks."
+            ),
+            array(
+                "@type" = "WebSite",
+                "@id" = esc_url( home_url( '/' ) ) . "#website",
+                "url" = esc_url( home_url( '/' ) ),
+                "name" = "Tatkhalsa Foundation",
+                "description" = "Modern Seva, Heritage and Humanitarian Relief Networks",
+                "publisher" = array(
+                    "@id" = esc_url( home_url( '/' ) ) . "#organization"
+                )
+            ),
+            array(
+                "@type" = "WebPage",
+                "@id" = esc_url( $current_url ) . "#webpage",
+                "url" = esc_url( $current_url ),
+                "name" = esc_attr( $seo_title ),
+                "description" = esc_attr( $seo_description ),
+                "isPartOf" = array(
+                    "@id" = esc_url( home_url( '/' ) ) . "#website"
+                )
+            )
+        )
+    );
+    echo json_encode( $schema_graph, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES );
+    ?
+" class="logo"
+" alt="Tatkhalsa Logo" /
+'primary',
+                  'container'      = false,
+                  'items_wrap'     = '
+%3$s
+"About
+"Projects
+" style="color: #ff334b; font-weight: 700;"Blood On Call
+Contribute Now
+" class="header-cta-btn header-volunteer-btn"Join Seva
+Explore Seva...
+"Home Page
+"About Tatkhalsa
+"Our Seva Projects
+"Join as Volunteer
+"Insights & Blog
+🌐 Translate to Punjabi
+🌐 View in English
+" class="custom-dropdown-opt" role="option"Home Page
+" class="custom-dropdown-opt" role="option"About Tatkhalsa
+" class="custom-dropdown-opt" role="option"Our Seva Projects
+" class="custom-dropdown-opt" role="option"Join as Volunteer
+" class="custom-dropdown-opt" role="option"Insights & Blog
+" class="custom-dropdown-opt" role="option" style="color: #ff334b !important; font-weight: 700;"Blood On Call
+" style="display: inline-flex; justify-content: center; align-items: center;"
+"
+          alt="Tatkhalsa Foundation Logo"
+          class="hero-gurbani-logo"
+          width="240"
+          height="240"
+          fetchpriority="high"
+          style="width: 240px; height: 240px; object-fit: contain;"
+        /
+ਏਕਹੀ ਕੀ ਸੇਵ ਸਭ ਹੀ ਕੋ ਗੁਰਦੇਵ ਏਕ ॥
+ਏਕਹੀ ਸਰੂਪ ਸਭੈ ਏਕੈ ਜੋਤਿ ਜਾਨਬੋ ॥
+Serving Humanity Through Seva, Compassion, and Community Action
+Tatkhalsa Foundation is a registered non-profit organization dedicated
+      to humanitarian relief, healthcare support, youth development,
+      environmental initiatives, and preservation of Sikh heritage across
+      Punjab and beyond.
+✓ Registered NGO
+🏛️
+CIN: U88900PB2023NPL059225. Officially incorporated with deep devotion towards transparent, audited community-focused Seva.
+✓ 12A Registered
+Income Tax Department tax-exemption approval, validating the fully charitable nature of all our activities and accounts.
+✓ 80G Approved
+Tax-exempt contributions under Section 80G, allowing our esteemed donors in India to claim tax deductions on support.
+✓ CSR Eligible
+Fully compliant with corporate social responsibility guidelines, enabling corporates to execute CSR programs in Punjab.
+Save Lives Today
+Take the Pledge.
+Join Blood On Call.
+We call upon the youth and every compassionate soul to step forward. A single act of contribution can give a family their loved one back. Register your name today to become someone's emergency hero.
+" style="display: inline-flex; align-items: center; justify-content: center; background: linear-gradient(135deg, var(--secondary) 0%, #ffdf79 100%); color: #000; text-decoration: none; padding: 14px 32px; border-radius: 8px; font-weight: 700; font-size: 1.1rem; box-shadow: 0 4px 15px rgba(212, 175, 55, 0.4); transition: transform 0.2s, box-shadow 0.2s;" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 6px 20px rgba(212, 175, 55, 0.5)';" onmouseout="this.style.transform='none'; this.style.boxShadow='0 4px 15px rgba(212, 175, 55, 0.4)';"
+        🩸 Register as a Donor
+Request Blood 🚨
+Tatkhalsa Foundation Seva
+Current Campaigns
+View Campaign
+" alt="Pediatric Cancer Care Support - Nimrat Kaur" /
+Healthcare Aid
+Cancer Patient Nimrat Kaur
+2-year-old Gursikh child battling blood cancer. Urgent medical treatment support needed to save her life and cover expensive oncology sessions.
+" alt="Punjab Relief - Sri Harmandir Sahib" /
+Emergency SOS
+Providing urgent dry ration packs, medical camps, and infrastructure repair for distressed remote flood areas.
+" alt="Grocery Help Seva - Sikh Sevadar Elder Support" /
+Ration Seva
+Distributing monthly ration hampers with wheat flour, pulses, ghee, sugar, and hygiene kits to disabled and elderly families.
+" alt="1984 Victim Families Support - Sikh Elder Portrait" /
+Livelihood Aid
+1984 Victim Families
+Providing education sponsorships and monthly livelihood stipends to families & widows of 1984 victims.
+" alt="Underprivileged Marriages support - Traditional Bridal Hands" /
+Social Welfare
+Gursikh Marriages Seva
+Supporting respectful Anand Karaj and essential household startup kits for daughters of Gursikh families below poverty line.
+" class="btn" style="background-color: var(--secondary); color: var(--body-bg); text-transform: uppercase; font-size: 0.85rem; letter-spacing: 1.5px; padding: 14px 34px; box-shadow: 0 8px 20px rgba(212, 175, 55, 0.2); transition: all 0.3s; font-weight: 700; border-radius: 50px; text-decoration: none;"
+        View All Campaigns
+Designated Campaign Seva:
+Financial Transparency
+Annual Budget Allocation
+We are committed to full accountability. Here is how our resources
+          are allocated to maximize our impact on the community.
+Community Programs
+45%
+Education & Youth
+25%
+Disaster Relief
+15%
+Admin & Ops
+Est. Annual
+2.4M
+Seva Ledger & Gateway Hub
+Our live ledger automatically collects, syncs, and displays donation details from active WordPress plugins. Minimal manual override needed.
+Sync Gateway Active
+GiveWP ✓
+WooCommerce ✓
+UPI Pay ✓
+⏳ Querying connected plugins databases...
+Verified Seva ledger feeds
+0 / 0
+⚡ Test Sync Plugin
+Ready to test synchronized ledger injection.
+No logs synchronized. Click "Test Sync" below!
+Synced Verified ✓
+`
+            : `
+Parsing ⏳
+`;
+
+          const contributorName = tx.anonymous == 1 ? "Anonymous Sevadar" : tx.name;
+          const noteElement = tx.note 
+            ? `
+Lives Impacted
+Blood On Call
+Initiatives
+Volunteers
+✧ ✦ ✧
+ਵਿਚਿ ਦੁਨੀਆ ਸੇਵ ਕਮਾਈਐ ॥ ਤਾ ਦਰਗਹ ਬੈਸਣੁ ਪਾਈਐ ॥
+vich dhuneeaa saev kamaaeeai || thaa dharageh baisan paaeeai ||
+"In the midst of this world, perform selfless service, and you shall find a place of honor in the Divine Court."
+Sri Guru Granth Sahib Ji — Ang 26
+"
+            alt="Tatkhalsa Foundation Logo"
+            class="hero-gurbani-logo"
+            width="240"
+            height="240"
+            style="width: 240px; height: 240px; object-fit: contain;"
+          /
+About Us
+');
+        background-size: cover;
+        background-position: center;
+        background-attachment: fixed;
+        position: relative;
+        padding-bottom: 80px;
+        padding-top: 80px;
+      "
+Our Humanitarian Core
+Tatkhalsa Foundation is a dedicated Sikh charity and non-profit NGO
+          providing comprehensive humanitarian relief. Built on the core
+          principles of Seva (selfless service) and compassion, we focus on
+          extending a helping hand where it is needed the most. Our ongoing
+          initiatives provide vital support across medical emergencies,
+          educational empowerment, and daily sustenance to ensure no family is
+          left behind.
+Cancer Patient Support
+We offer life-saving healthcare assistance and emotional care to
+              cancer patients. Combating an illness shouldn't result in
+              financial ruin—our NGO provides treatment support, medicine
+              supply, and holistic care for affected individuals and their
+              families.
+Emergency situations demand immediate response. Our 'Blood on
+              Call' network ensures that patients receive timely blood
+              contributions during critical medical emergencies. A network of
+              dedicated volunteers is always ready to step forward and save
+              lives.
+Grocery Assistance
+Upholding the langar tradition of feeding the community, we supply
+              monthly rations and grocery assistance to disadvantaged Sikh
+              families. We strive to provide basic food security so they can
+              focus on regaining stability and dignity.
+Schooling of Children
+Education is the key to breaking the cycle of poverty. Our
+              Children Education NGO program funds schooling, books, and
+              uniforms for underprivileged children, empowering the next
+              generation with the tools they need to succeed and lead.
+ਸਭ ਮਹਿ ਜੋਤਿ ਜੋਤਿ ਹੈ ਸੋਇ ॥ ਤਿਸ ਦੈ ਚਾਨਣਿ ਸਭ ਮਹਿ ਚਾਨਣੁ ਹੋਇ ॥
+sabh meh joth joth hai soe || thas dhai chaanan sabh meh chaanan hoi ||
+"The Divine Light is within everyone, and everyone is illuminated by that same Light."
+Sri Guru Granth Sahib Ji — Ang 13
+"
+          alt="Tatkhalsa Foundation Logo"
+          class="hero-gurbani-logo"
+          width="240"
+          height="240"
+          style="width: 240px; height: 240px; object-fit: contain;"
+        /
+Tatkhalsa Insights & Blog
+Keep updated with our latest Seva projects, historical research, and spiritual reflections from Punjab.
+All Seva
+Philosophy
+Relief SOS
+Heritage
+Environment
+" 
+            alt="The Essence of Seva: Selfless Service as a Spiritual Path" 
+            loading="lazy" 
+          /
+Jun 08, 2026
+5 min read
+The Essence of Seva: Selfless Service as a Spiritual Path
+Explore the deep spiritual roots of Seva in the Sikh tradition and how it acts as a powerful beacon for modern-day community transformation and selflessness.
+Bhai Jagjit Singh
+Read More
+" 
+            alt="Flood Response Diaries: Restoring Hope in Inundated Villages" 
+            loading="lazy" 
+          /
+Relief Mission
+May 25, 2026
+7 min read
+Flood Response Diaries: Restoring Hope in Inundated Villages
+Go inside Tatkhalsa’s continuous flood relief operations in Punjab. Learn how emergency relief, portable water filtration kits, and medical aid saved lives.
+Bibi Harpreet Kaur
+" 
+            alt="Preserving Sikh Heritage: Digitizing Silent Ancient Manuscripts" 
+            loading="lazy" 
+          /
+Apr 12, 2026
+6 min read
+Preserving Sikh Heritage: Digitizing Ancient Manuscripts
+How Tatkhalsa is leveraging non-destructive high-definition imaging techniques to archive rare Gurmukhi leaf scripts and preserve historical Sikh history.
+Dr. Gurmukh Singh
+" 
+            alt="Nurturing Our Mother Earth: Replanting Green Canopies" 
+            loading="lazy" 
+          /
+Mar 22, 2026
+4 min read
+Nurturing Our Mother Earth: Replanting Green Canopies
+Air is the Guru, Water is the Father, Earth is the Great Mother. Discover Tatkhalsa’s collaborative local tree-plantation drives to heal ecosystems.
+Prof. Balwinder Singh
+No Articles Found
+We couldn't find any articles matching your search query. Try setting the filter to "All Seva" or typing a different keyword.
+"In the midst of this world, perform Seva (selfless service), and you shall obtain a seat of honor in the Divine Court of the Creator."
+Blog Title
+Author Name
+Date
+Read Time
+Understanding the Spiritual bedrock of Seva
+In the heart of the Sikh ethos lies the eternal doctrine of
+Seva
+(selfless duty) — service done without any expectation of reward, validation, or personal gain. Guru Nanak Dev Ji, the first Sikh Guru, engineered this philosophy to dismantle pride (Ahamkar) and bring humanity together around one universal table.
+Langar: Servitude in Action
+The practice of Langar (the free community kitchen) serves as the ultimate expression of Seva and Equality. In our modern context, the Tatkhalsa Foundation strives to preserve this holy heritage. We organize free community kitchens and medical camps designed specifically for the underserved, carrying forward Guru Nanak Dev Ji’s eternal call of
+Vand Chhako
+(Share what you earn with the needy).
+Overcoming Ego to Find Divine Light
+Seva is not merely physical assistance; it is a profound spiritual cleansing. By engaging in active, humble service — whether by cleaning floors, cooking meals, distributing medicine, or preserving historical Gurmukhi transcripts — one humbles the self. In this state of quiet humility, the heart is primed to experience the Divine Light present inside all living creation.
+We welcome you to join our active volunteer network. Whether you contribute half an hour of your time, some specialized medical skills, or financial sponsorships, you are actively facilitating real humanitarian transformation on the ground.
+`,
+      date: 'Jun 08, 2026',
+      author: 'Bhai Jagjit Singh',
+      avatar: 'https://secure.gravatar.com/avatar/fb000000000000000000000000000001?s=96&d=mp',
+      category: 'Philosophy',
+      read_time: '5 min read',
+      image: '
+On the Front Lines of Nature’s Fury
+When monsoons breached the embankments of Punjab’s primary river basins, entire villages in districts such as Ferozepur, Jalandhar, and Kapurthala lay submerged under feet of dangerous, muddy water. Crops were ruined, livestock lost, and families stranded in roof-high isolations. In this hour of darkness, the Tatkhalsa Foundation was mobilized instantly.
+The SOS Strategy: Rapid Intervention
+Our disaster action protocol was split into three critical phases:
+Emergency Evacuation & Survival Rations:
+Deploying volunteer rescue inflatable boats and supplying high-density nutrient kits (wheat, pulses, oil, baby formula, and clean bottled water).
+Water Purification & Health Guards:
+Because biological contaminants pose the highest post-flood threat, we distributed over 1,500 portable water filtration kits and established 24-hour medical diagnostic tents on high grounds.
+Long-Term Rehabilitation:
+Rebuilding dry-walls, disinfecting wells, and restoring ruined local primary school structures to prepare communities for a return to education and normal life.
+Stories of Resilience and Unity
+One of our lead volunteers recalls: "In a small hamlet near Ferozepur, we found an elderly grandmother and her grandchildren stranded on their terrace with no food for 3 days. When we handed them warm Langar meals and medicine, she didn’t ask where we were from — she simply raised her hands in profound blessing. That moment of shared connection contains the heart of our mission."
+This campaign is funded purely by compassionate, transparent donations. Support the Tatkhalsa Punjab Flood Relief SOS today and empower us to keep standing between disaster and vulnerable families.
+`,
+      date: 'May 25, 2026',
+      author: 'Bibi Harpreet Kaur',
+      avatar: 'https://secure.gravatar.com/avatar/fb000000000000000000000000000002?s=96&d=mp',
+      category: 'Relief Mission',
+      read_time: '7 min read',
+      image: '
+Rescuing Our Sacred History
+Beyond our visual physical bodies, a community lives and breathes through its recorded history, its visual expressions, and its sacred manuscripts. Over centuries, Punjab has experienced immense geopolitical unrest, leading to the destruction and decay of priceless Gurmukhi scripts, manuscripts (Birhs), and historical scrolls. Tatkhalsa’s Heritage Preservation Wing is addressing this critical issue head-on.
+Digital Seva: Merging Heritage with Science
+We have introduced state-of-the-art non-destructive imaging studios on-site in historic Gurdwaras and private repositories. Using temperature-controlled high-resolution digital cameras and specialized white-light spectra, we successfully digitize aging manuscripts without stressing the ancient fiber pages.
+Why Gurmukhi Archiving Is Crucial
+Our work focuses not only on preservation but on democratic accessibility. Once indexed, these historical archives are cataloged into open-access online repositories. These allow international scholars, researchers, and Sikh youth to interact with authentic 18th and 19th-century scripts directly.
+"A nation that forgets its history loses its roots,"
+says Dr. Gurmukh Singh.
+"By archiving these pages, we make sure our future generations hear the authentic, beautiful voices of our ancestors."
+This massive task is ongoing. If you possess information about rare historical artifacts, manuscripts, or scrolls in Punjab in need of active preservation, contact our specialized preservation wing today.
+`,
+      date: 'Apr 12, 2026',
+      author: 'Dr. Gurmukh Singh',
+      avatar: 'https://secure.gravatar.com/avatar/fb000000000000000000000000000003?s=96&d=mp',
+      category: 'Heritage',
+      read_time: '6 min read',
+      image: '
+Pawan Guru Paani Pita, Mata Dharat Mahat
+In accordance with the sacred Gurbani composition of Guru Nanak Dev Ji, our natural environment is elevated to the level of divine guidance:
+"Air is the Guru, Water the Father, and Earth the Great Mother."
+Yet, modern Punjab suffers from deep industrial deforestation, water table reduction, and intensive pesticide runoff. Tatkhalsa Foundation’s
+Green Seva Initiative
+was born to restore this sacred balance.
+The Micro-Forest Revolution Let’s Go
+Our environmental team utilizes the Japanese Miyawaki afforestation methodology. By planting highly dense, native multi-tier saplings closely together, we grow forests that develop 10 times faster and become 30 times denser than standard plantations. Areas that were barren dumps are transformed into oxygen-rich biodiversity spaces within months.
+Empowering Farmers toward Organic Stewardship
+Furthermore, we conduct regular educational outreach programs for local farmers. We provide organic seed varieties and practical workshops detailing bio-enzyme farming, soil conservation, and drip irrigation. This minimizes rely-on toxic agrochemicals, protecting Punjab’s groundwater for future generations.
+We dream of a Punjab where the streams run clear and the air is pristine. Our local micro-forest planting is powered entirely by volunteers. Join our next weekend planting drive and leave a legacy that grows for centuries!
+`,
+      date: 'Mar 22, 2026',
+      author: 'Prof. Balwinder Singh',
+      avatar: 'https://secure.gravatar.com/avatar/fb000000000000000000000000000004?s=96&d=mp',
+      category: 'Environment',
+      read_time: '4 min read',
+      image: '
+Connect with verified blood donors in your area or register yourself to save lives.
+Beta
+This section is in public beta. Real-time notifications and features are currently being verified and enhanced.
+Processing Request Acceptance...
+Dismiss
+🩸 Register as a Donor
+🚨 Request Blood
+🔄 Update My Status
+🗑️ Remove My Name
+⚙️ Admin Master Data
+Blood Directory - Administrative Master Data
+Full donor credentials and live emergency request records.
+✕ Close Panel
+🩸 Registered Donors List (
+🚨 Urgent Blood Requests (
+📥 Export JSON Backup
+📤 Import JSON Backup
+Auto IP Address Purging
+Scrub recorded client IP metrics from active records based on custom duration retention thresholds.
+Enable Auto Purge
+Threshold:
+7 Days
+15 Days
+1 Month (30 Days)
+Never (Keep Forever)
+✓ Saved
+Loading secure administrator records...
+🗑️
+0 items selected
+Delete Selected
+Name
+Group
+Email
+Contact Number
+Address
+Location Details
+Urgency
+Accepted Volunteer
+All Blood Groups
+AB+
+AB-
+Any Country
+Any State
+Any District
+Or Type Location
+" placeholder="Area, Zip Code, etc" style="width: 100%; padding: 10px; border-radius: 6px; border: 1px solid rgba(0,0,0,0.1); background: #fff; color: #333;"
+" style="margin-left: 10px; color: var(--text-light); text-decoration: none; font-size: 0.9rem;"Clear
+have_posts() ) : ?
+have_posts() ) : $donors_query-the_post(); 
+                    $post_id = get_the_ID();
+                    $bg = get_post_meta( $post_id, 'blood_group', true );
+                    $address = get_post_meta( $post_id, 'address', true );
+                    $contact = get_post_meta( $post_id, 'contact_details', true );
+                    $map = get_post_meta( $post_id, 'map_location', true );
+                    $availability = get_post_meta( $post_id, 'availability_status', true );
+                    if ( ! $availability ) $availability = 'Available Now';
+                ?
+Verified Sevadar ✓
+🔒 Privacy Protected
+$donors_query-max_num_pages,
+                    'prev_text' = '&laquo; Prev',
+                    'next_text' = 'Next &raquo;'
+                ) );
+                ?
+No donors found matching your criteria.
+'" style="background: var(--bg-dark); color: var(--text-dark); border: 1px solid var(--text-dark); padding: 10px 20px; border-radius: 6px; cursor: pointer;"
+                    Clear Filters
+ਮਾਨਸ ਕੀ ਜਾਤ ਸਬੈ ਏਕੈ ਪਹਿਚਾਨਬੋ ॥
+maanas kee jaat sabai aekai pehichaanabo ||
+"Recognize all of the human race as one."
+Disclaimer:
+Tatkhalsa Foundation operates purely as a voluntary community coordination network. We do not run physical blood banks or commercialize medical supplies. All verifications of donor eligibility must be independently validated by certified hospital practitioners at the time of transfusion.
+🐛 Encountered any bug or problem? Please tell us at
+tech-team@tatkhalsa.in
+&times;
+Register as Blood Donor
+Full Name *
+Blood Group *
+Select Blood Group
+Email Address *
+Required to receive blood request alerts from nearby patients.
+Contact Number *
+Country *
+State *
+District / City *
+Street Address / Area *
+Google Maps Link (Optional)
+Availability Status
+🟢 Available Now (Ready for immediate drives)
+🟡 On Standby (Approaching eligibility/close-range only)
+🔴 Resting Phase (Recovery period post-donation)
+Register Donor
+Edit Registered Donor Details
+🟢 Available Now
+🟡 On Standby
+🔴 Resting Phase
+Save Changes
+Edit Urgent Blood Request
+Patient Name *
+Hospital Name *
+Patient Location / Address *
+Contact Details *
+Units Required *
+Urgency Level *
+Normal
+Urgent
+Critical (Immediate Seva Need)
+Request Status
+Accepted (Volunteer Claimed)
+Remove My Registration
+Registered Contact Number
+Enter the exact contact number you used while registering.
+Remove My Name
+Update My Availability
+New Availability Status
+Update Status
+Claim Certificate
+Did you recently donate blood? Enter your registered email address to receive your official Certificate of Appreciation.
+Registered Email Address
+View My Certificate
+Your Certificate
+⬇ Download
+✉ Email to Me
+" alt="Tatkhalsa Logo" crossorigin="anonymous" style="height: 90px; width: auto; object-fit: contain;"
+Certificate of Appreciation
+TATKHALSA BLOOD ON CALL
+This certificate is proudly presented to
+[Name]
+in profound recognition of your selfless commitment to saving lives. Your blood donation through the Tatkhalsa Blood On Call stands as a true testament to humanity, compassion, and the spirit of selfless service.
+[Date]
+Date of Issue
+OFFICIAL
+NETWORK
+MEMBER
+S. Prabhjot Singh
+President, Tatkhalsa
+";
+    const selState = "
+";
+    const selDistrict = "
+';
+        if (districtSelect) districtSelect.innerHTML = '
+';
+        if (regDistrictSelect) regDistrictSelect.innerHTML = '
+Anonymized
+No registered blood donors found.
+💻 IP:
+Edit
+Delete
+No emergency blood requests found.
+` : `
+Fulfill
+Reset Search
+Privacy Policy
+1. Information We Collect
+We collect information you provide directly to us, such as when you volunteer, donate, register as a blood donor, submit an emergency blood request, or contact us. The types of personal information we may collect include your name, email address, physical address, and phone number.
+IP Address Logging & Anti-Spam Security:
+To prevent spam, fraudulent entries, and misuse of our community Blood On Call, we securely log the IP address and registration timestamp associated with all blood donor registrations and emergency blood requests. To protect user privacy, IP address data is automatically and permanently purged or anonymized after exactly 30 days.
+2. How We Use Information
+We use the information we collect to provide, maintain, and improve our services. We use this information to:
+Send you technical notices, updates, security alerts, and support and administrative messages.
+Respond to your comments, questions, and requests and provide customer service.
+Facilitate Tatkhalsa Blood On Call, including notifying matched donors about nearby emergency blood requests and allowing individuals in need to reach out to available local donors.
+Process donations securely.
+3. Privacy & Blood On Call
+When you register as a blood donor, your explicit contact details and exact location are protected and remain private. Contact information is only shared when an Emergency Blood Request is explicitly submitted through our portal. We prioritize your privacy and anonymity wherever possible. Donor details can be removed from our systems anytime by using the "Remove My Name" functionality.
+4. Data Sharing
+We do not share your personal information with third parties except as necessary to provide our services (e.g., payment processing for donations) or as required by law.
+5. Contact Us
+If you have any questions about this Privacy Policy, please contact us at:
+Our Seva Projects
+"ਘਾਲਿ ਖਾਇ ਕਿਛੁ ਹਥਹੁ ਦੇਇ ॥ ਨਾਨਕ ਰਾਹੁ ਪਛਾਣਹਿ ਸੇਇ ॥"
+One who works for what they eat, and gives some of what they have - O Nanak, they know the Path.
+Critical Emergency SOS Active
+Vast regions are currently affected by emergency flood crisis levels. Our rapid-action volunteer squads are mobilized directly across affected villages in Punjab, delivering daily immediate emergency intervention including:
+Freshly prepared nutritious Langar meals distributed twice daily
+Critical survival packs (dry non-perishable food, water bottles, and hygiene kits)
+Specially organized temporary medical relief stations with qualified doctors
+Clean livestock fodder and animal welfare aid
+Mobilization Target Covered
+78% Complete
+Support Flood Relief SOS
+12k+
+Meals Served
+45+
+Villages Met
+150+
+Active Sevadaars
+Explore Our Ongoing Initiatives
+Humanitarian Relief
+Healthcare Seva
+Heritage & History
+Youth & Sports
+General Charity
+General Charity & Rehabilitation Relief
+" alt="General Charity Support" /
+We provide essential baseline support for vulnerable low-income families and single parent households. Our charity framework distributes winter blankets, hot weather relief items, monthly groceries, and covers basic shelter restoration in times of acute distress.
+18,000+
+Blankets Distributed
+350+
+Families Sustained
+Punjab Wide
+Coverage Scope
+Continuous Support
+Read Details
+" alt="Blood On Call Logo" /
+A meticulously structured 24/7 rapid helpline matching blood donors with patients experiencing emergency health crises, surgeries, or cancer treatments across major Punjab hospitals.
+24/7 Active Helpline
+Emergency Response
+Disaster Rapid Response Squad
+" alt="Punjab flood response team" /
+Our trained, local youth team standing ready to handle natural calamities, severe weather events, and community evacuations, working safely in coordination with local authorities.
+100% Mobilized
+Preservation Board
+Sikh History & Heritage Review Board
+" alt="Preserving Sikh Heritage" /
+Dedicated to academic preservation, historical accuracy, and community education. We host dedicated panel roundtables, build peer-reviewed literature references, and archive ancient manuscripts to guarantee the exact and authentic representation of rich Sikh history and core principles globally.
+12+
+Scholars Engaged
+85%
+Archiving Catalogued
+Global
+Academic Reach
+Aesthetic Preservation
+Development
+Youth Kabaddi & Sports Champions
+" alt="Kabaddi and Athletic support" /
+Steering Punjab's bright youth away from drug abuse and screen isolation. We build local sports clubs, distribute fitness gears, and organize traditional Shashtar & sports championships.
+Healthy Punjab
+Community Welfare
+Eco-Sikh Environmental Stewardship
+" alt="Tree planting stewardship" /
+Upholding the Gurbani vision of 'Pavan Guru Paani Pita' (Air as Guru, Water as Father). We carry out systematic local tree plantation drives, seed sharing, and pure clean-water filtration.
+Sustainable Lifestyle
+Initiative category coming soon
+We are currently finalizing structured blueprints for this specific seva department.
+Our Seva in Action
+Preserving Sikh Heritage
+Active Langar Sewa
+Hola Mohalla Welfare
+Preserving Sikh Archives
+ਸੇਵਾ ਕਰਤ ਹੋਇ ਨਿਹਕਾਮੀ ॥ ਤਿਸ ਕੋ ਹੋਤ ਪਰਾਪਤਿ ਸੁਆਮੀ ॥
+seva karat hoi nihkaamee || tis ko hot paraapat suaamee ||
+"One who performs selfless service without thought of reward, shall attain the Lord Master."
+Sri Guru Granth Sahib Ji — Ang 286
+Category
+Project Title
+Detailed description paragraph 1.
+Detailed description paragraph 2.
+Project Metadata & Integrity Info:
+Sikh Principles Basis
+Vand Chhako (Sharing) & Sarbat da Bhala
+Relief Tracking Auditing
+100% Inspected & Direct Distribution
+Funding Source
+Dasvandh & Public Charitable Donations
+Support This Seva Project
+Close
+Terms and Conditions
+Last Updated:
+1. Acceptance of Terms
+By accessing and using this website, you accept and agree to be bound by the terms and provision of this agreement. In addition, when using these particular services, you shall be subject to any posted guidelines or rules applicable to such services.
+2. Blood On Call Disclaimer
+The Tatkhalsa Blood On Call is a voluntary platform designed to connect blood donors with those in need. We do not guarantee the availability of donors, nor do we perform medical screening of donors. It is the responsibility of the medical professionals at the respective hospitals to screen and verify any blood donation for safety. We accept no liability for any medical complications or issues that arise from donations facilitated through this platform.
+3. Donations & Contributions
+All financial contributions are voluntary and non-refundable. Funds are utilized directly for our Seva projects as deemed appropriate by the Tatkhalsa Foundation trust. We ensure complete transparency, but direct tracking of specific micro-funds to singular activities is not possible.
+4. Code of Conduct
+Our platform and community operate on the principles of Seva. Any misuse of the contact information provided (such as spamming donors), abusive behavior, or fraudulent requests will result in an immediate and permanent ban from accessing our services.
+Anti-Spam Verification:
+To secure our digital directory, every blood donor registration and emergency request records the user's active IP address. These records are retained strictly for a rolling period of 30 days to identify, check, and ban spam. No IP data is sold, repurposed, or stored beyond this safety timeframe.
+5. Changes to Terms
+We reserve the right to modify these terms at any time. We do so by posting and drawing attention to the updated terms on this site. Your decision to continue to visit and make use of the site after such changes have been made constitutes your formal acceptance of the new Terms of Service.
+6. Contact Us
+If you have any questions about these Terms, please contact us at:
+Volunteer With Us
+Get Involved
+Join Our Volunteer Network
+Become part of a dedicated team committed to serving communities
+              through blood contribution drives, relief missions, and
+              humanitarian projects.
+Phone
+Message / Skills
+Become A Volunteer
+ਨਾ ਕੋ ਬੈਰੀ ਨਹੀ ਬਿਗਾਨਾ ਸਗਲ ਸੰਗਿ ਹਮ ਕਉ ਬਨਿ ਆਈ ॥
+Na Ko Bairee Nahee Bigaanaa Sagal Sang Ham Kau Ban Aaee ||
+"No one is my enemy, and no one is a stranger to us; we are in harmony with everyone."
+Sri Guru Granth Sahib Ji — Ang 1299
