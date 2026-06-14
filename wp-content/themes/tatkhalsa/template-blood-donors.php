@@ -2057,8 +2057,11 @@ document.addEventListener("DOMContentLoaded", function() {
         const message = encodeURIComponent(`Sat Sri Akal ${name} Ji, this is a volunteer verification message from the Blood On Call network (Tatkhalsa Foundation). Please confirm your availability and blood group. Waheguru Ji Ka Khalsa, Waheguru Ji Ki Fateh.`);
         const waLink = `https://api.whatsapp.com/send?phone=${phone}&text=${message}`;
 
+        // Open WA immediately to avoid popup blocker on async delayed execution
+        window.open(waLink, '_blank');
+
         // Toggle verification in the backend if admin desires
-        if (confirm(`Do you want to toggle the verification status for ${name}?\n\nClick "OK" to toggle (current: ${isVerified ? 'Verified' : 'Unverified'}) and write them a message.\nClick "Cancel" to skip toggling but still send the WhatsApp message.`)) {
+        if (confirm(`Do you want to toggle the verification status for ${name} in the system database?\n\n(Current: ${isVerified ? 'Verified' : 'Unverified'})`)) {
             try {
                 const res = await fetch('/api/admin/verify-donor', {
                     method: 'POST',
@@ -2074,8 +2077,6 @@ document.addEventListener("DOMContentLoaded", function() {
                 console.error("Error verifying donor.", e);
             }
         }
-        
-        window.open(waLink, '_blank');
     };
 
     window.deleteDonor = async function(id) {

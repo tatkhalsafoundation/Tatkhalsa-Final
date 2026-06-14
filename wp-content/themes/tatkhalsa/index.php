@@ -57,12 +57,7 @@ get_header();
     </div>
 
     <h1>Serving Humanity Through Seva, Compassion, and Community Action</h1>
-    <p>
-      Tatkhalsa Foundation is a registered non-profit organization dedicated
-      to humanitarian relief, healthcare support, youth development,
-      environmental initiatives, and preservation of Sikh heritage across
-      Punjab and beyond.
-    </p>
+    <p>Tatkhalsa Foundation is a registered non-profit organization dedicated to humanitarian relief, healthcare support, youth development, environmental initiatives, and preservation of Sikh heritage across Punjab and beyond.</p>
 
     <div class="trust-badges">
       <div class="badge-container" data-badge-id="ngo">

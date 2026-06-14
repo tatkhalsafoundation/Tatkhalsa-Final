@@ -2368,10 +2368,75 @@
       })();
     </script>
     
-    <script src="<?php echo get_template_directory_uri(); ?>/lang-dict.js"></script>
     <script type="text/javascript">
-      // Inherit the dictionary loaded from lang-dict.js
-      const punjabiDictionary = (typeof masterPunjabiDictionary !== 'undefined') ? masterPunjabiDictionary : {};
+      const punjabiDictionary = {
+        "Home Page": "ਮੁੱਖ ਪੰਨਾ",
+        "Home": "ਮੁੱਖ ਪੰਨਾ",
+        "About Tatkhalsa": "ਸਾਡੇ ਬਾਰੇ",
+        "About Us": "ਸਾਡੇ ਬਾਰੇ",
+        "About": "ਬਾਰੇ",
+        "Our Projects": "ਸਾਡੇ ਪ੍ਰੋਜੈਕਟ",
+        "Our Seva Projects": "ਸਾਡੇ ਪ੍ਰੋਜੈਕਟ",
+        "Projects": "ਪ੍ਰੋਜੈਕਟ",
+        "Register as Volunteer": "ਵਲੰਟੀਅਰ ਬਣੋ",
+        "Join as Volunteer": "ਵਲੰਟੀਅਰ ਬਣੋ",
+        "Join as Sevadar": "ਸੇਵਾਦਾਰ ਵਜੋਂ ਸ਼ਾਮਲ ਹੋਵੋ",
+        "Volunteer": "ਵਲੰਟੀਅਰ",
+        "Blood On Call": "ਬਲੱਡ ਆਨ ਕਾਲ",
+        "Blood Network": "ਬਲੱਡ ਨੈੱਟਵਰਕ",
+        "Contact Us": "ਸੰਪਰਕ ਕਰੋ",
+        "Contact": "ਸੰਪਰਕ",
+        "Contact Information": "ਸੰਪਰਕ ਜਾਣਕਾਰੀ",
+        "Email:": "ਈਮੇਲ:",
+        "Contribute Now": "ਹੁਣੇ ਯੋਗਦਾਨ ਪਾਓ",
+        "Explore Seva...": "ਸੇਵਾ ਦੀ ਚੋਣ ਕਰੋ...",
+        "Serving Humanity Through Seva, Compassion, and Community Action": "ਸੇਵਾ, ਦਇਆ ਅਤੇ ਭਾਈਚਾਰਕ ਕਾਰਵਾਈ ਰਾਹੀਂ ਇਨਸਾਨੀਅਤ ਦੀ ਸੇਵਾ",
+        "Tatkhalsa Foundation is a registered non-profit organization dedicated to humanitarian relief, healthcare support, youth development, environmental initiatives, and preservation of Sikh heritage across Punjab and beyond.": "ਤੱਤਖਾਲਸਾ ਫਾਊਂਡੇਸ਼ਨ ਇੱਕ ਰਜਿਸਟਰਡ ਗੈਰ-ਲਾਭਕਾਰੀ ਸੰਸਥਾ ਹੈ ਜੋ ਮਨੁੱਖਤਾਵਾਦੀ ਰਾਹਤ, ਸਿਹਤ ਸੰਭਾਲ, ਨੌਜਵਾਨਾਂ ਦੇ ਵਿਕਾਸ, ਵਾਤਾਵਰਣ ਦੀਆਂ ਪਹਿਲਕਦਮੀਆਂ, ਅਤੇ ਪੰਜਾਬ ਭਰ ਵਿੱਚ ਸਿੱਖ ਵਿਰਾਸਤ ਦੀ ਸੰਭਾਲ ਲਈ ਸਮਰਪਿਤ ਹੈ।",
+        "We call upon the youth and every compassionate soul to step forward. A single act of contribution can give a family their loved one back. Register your name today to become someone's emergency hero.": "ਅਸੀਂ ਨੌਜਵਾਨਾਂ ਅਤੇ ਹਰ ਦਿਆਲੂ ਰੂਹ ਨੂੰ ਅੱਗੇ ਆਉਣ ਦਾ ਸੱਦਾ ਦਿੰਦੇ ਹਾਂ। ਯੋਗਦਾਨ ਦਾ ਇੱਕ ਕੰਮ ਕਿਸੇ ਪਰਿਵਾਰ ਨੂੰ ਉਨ੍ਹਾਂ ਦੇ ਅਜ਼ੀਜ਼ ਨੂੰ ਵਾਪਸ ਦੇ ਸਕਦਾ ਹੈ। ਕਿਸੇ ਦੇ ਐਮਰਜੈਂਸੀ ਹੀਰੋ ਬਣਨ ਲਈ ਅੱਜ ਹੀ ਆਪਣਾ ਨਾਮ ਰਜਿਸਟਰ ਕਰੋ।",
+        "Save Lives Today": "ਅੱਜ ਹੀ ਜਾਨਾਂ ਬਚਾਓ",
+        "Take the Pledge.": "ਸਹੁੰ ਚੁੱਕੋ।",
+        "Join Blood On Call.": "ਬਲੱਡ ਆਨ ਕਾਲ ਵਿੱਚ ਸ਼ਾਮਲ ਹੋਵੋ।",
+        "Register as a Donor": "ਖੂਨਦਾਨੀ ਵਜੋਂ ਰਜਿਸਟਰ ਕਰੋ",
+        "Request Blood 🚨": "ਖੂਨ ਦੀ ਬੇਨਤੀ ਕਰੋ 🚨",
+        "Current Campaigns": "ਮੌਜੂਦਾ ਮੁਹਿੰਮਾਂ",
+        "Tatkhalsa Foundation Seva": "ਤੱਤਖਾਲਸਾ ਫਾਊਂਡੇਸ਼ਨ ਸੇਵਾ",
+        "Financial Transparency": "ਵਿੱਤੀ ਪਾਰਦਰਸ਼ਤਾ",
+        "Annual Budget Allocation": "ਸਾਲਾਨਾ ਬਜਟ ਅਲਾਟਮੈਂਟ",
+        "We are committed to full accountability. Here is how our resources are allocated to maximize our impact on the community.": "ਅਸੀਂ ਪੂਰੀ ਜਵਾਬਦੇਹੀ ਲਈ ਵਚਨਬੱਧ ਹਾਂ। ਇੱਥੇ ਦੱਸਿਆ ਗਿਆ ਹੈ ਕਿ ਸਾਡੇ ਸਾਧਨ ਭਾਈਚਾਰੇ 'ਤੇ ਵੱਧ ਤੋਂ ਵੱਧ ਪ੍ਰਭਾਵ ਪਾਉਣ ਲਈ ਕਿਵੇਂ ਵਰਤੇ ਜਾਂਦੇ ਹਨ।",
+        "Community Programs": "ਭਾਈਚਾਰਕ ਪ੍ਰੋਗਰਾਮ",
+        "Education & Youth": "ਸਿੱਖਿਆ ਅਤੇ ਨੌਜਵਾਨ",
+        "Disaster Relief": "ਆਫ਼ਤ ਰਾਹਤ",
+        "Admin & Ops": "ਪ੍ਰਬੰਧਕੀ ਅਤੇ ਸੰਚਾਲਨ",
+        "View All Campaigns": "ਸਾਰੀਆਂ ਮੁਹਿੰਮਾਂ ਦੇਖੋ",
+        "Seva Ledger & Gateway Hub": "ਸੇਵਾ ਸੂਚੀ ਅਤੇ ਗੇਟਵੇ ਹੱਬ",
+        "Cancer Patient Nimrat Kaur": "ਕੈਂਸਰ ਮਰੀਜ਼ ਨਿਮਰਤ ਕੌਰ",
+        "Punjab Flood Relief 2025": "ਪੰਜਾਬ ਹੜ੍ਹ ਰਾਹਤ 2025",
+        "Essential Grocery Help": "ਜ਼ਰੂਰੀ ਕਰਿਆਨੇ ਦੀ ਮਦਦ",
+        "1984 Victim Families": "1984 ਪੀੜਤ ਪਰਿਵਾਰ",
+        "Gursikh Marriages Seva": "ਗੁਰਸਿੱਖ ਵਿਆਹ ਸੇਵਾ",
+        "View Campaign": "ਮੁਹਿੰਮ ਦੇਖੋ",
+        "Quick Links": "ਮੁੱਖ ਲਿੰਕ",
+        "Blood Donor Connect": "ਖੂਨਦਾਨ ਕਰਨ ਵਾਲੇ ਨਾਲ ਸੰਪਰਕ ਕਰੋ",
+        "Emergency Dashboard": "ਐਮਰਜੈਂਸੀ ਡੈਸ਼ਬੋਰਡ",
+        "All Rights Reserved.": "ਸਾਰੇ ਹੱਕ ਰਾਖਵੇਂ ਹਨ।",
+        "Terms & Conditions": "ਨਿਯਮ ਅਤੇ ਸ਼ਰਤਾਂ",
+        "Privacy Policy": "ਗੁਪਤਤਾ ਨੀਤੀ",
+        "Blog": "ਬਲੌਗ",
+        "Join Seva": "ਸੇਵਾ ਵਿੱਚ ਸ਼ਾਮਲ ਹੋਵੋ",
+        "Registrations": "ਰਜਿਸਟ੍ਰੇਸ਼ਨਾਂ",
+        "✓ 12A Registered": "✓ 12A ਰਜਿਸਟਰਡ",
+        "12A Registered": "12A ਰਜਿਸਟਰਡ",
+        "✓ 80G Approved": "✓ 80G ਮਨਜ਼ੂਰ",
+        "80G Approved": "80G ਮਨਜ਼ੂਰ",
+        "✓ CSR Eligible": "✓ CSR ਯੋਗ",
+        "CSR Eligible": "CSR ਯੋਗ",
+        "✓ Registered NGO": "✓ ਰਜਿਸਟਰਡ NGO",
+        "Registered NGO": "ਰਜਿਸਟਰਡ NGO",
+        "Tatkhalsa": "Tatkhalsa",
+        "Foundation": "Foundation",
+        "Address: GF 37, Bazidpur,": "ਪਤਾ: GF 37, ਬਜ਼ੀਦਪੁਰ,",
+        "SBS Nagar, Punjab - 144518": "ਐਸ ਬੀ ਐਸ ਨਗਰ, ਪੰਜਾਬ - 144518"
+      };
 
       const englishDictionary = Object.fromEntries(Object.entries(punjabiDictionary).map(([k, v]) => [v, k]));
 
@@ -2382,7 +2447,9 @@
           if (text) {
              const dict = lang === 'pa' ? punjabiDictionary : englishDictionary;
              if (dict[text]) {
-                 node.textContent = originalText.replace(node.textContent.trim(), dict[text]);
+                 const leadingSpace = originalText.match(/^\s*/)[0];
+                 const trailingSpace = originalText.match(/\s*$/)[0];
+                 node.textContent = leadingSpace + dict[text] + trailingSpace;
              }
           }
         } else if (node.nodeType === Node.ELEMENT_NODE) {
@@ -2432,23 +2499,29 @@
       });
     </script>
     
-    <!-- Global Floating Language Switcher -->
-    <div style="position: fixed; bottom: 20px; left: 20px; z-index: 9999; display: flex; gap: 5px; background: var(--bg-shade-1, #1a1a1a); padding: 5px; border-radius: 30px; border: 1px solid rgba(255,255,255,0.2); box-shadow: 0 4px 12px rgba(0,0,0,0.5);">
-      <button onclick="tatkhalsaSetLanguage('en')" style="padding: 8px 12px; border-radius: 20px; border: none; background: transparent; color: white; cursor: pointer; font-weight: 600; font-size: 0.8rem; outline: none;" id="lang-btn-en">EN</button>
-      <button onclick="tatkhalsaSetLanguage('pa')" style="padding: 8px 12px; border-radius: 20px; border: none; background: transparent; color: white; cursor: pointer; font-weight: 600; font-size: 0.8rem; outline: none;" id="lang-btn-pa">ਪੰਜਾਬੀ</button>
-    </div>
     <script>
       document.addEventListener("DOMContentLoaded", () => {
           const savedLang = localStorage.getItem('tatkhalsa_lang') || 'en';
-          if(savedLang === 'pa') {
-              document.getElementById('lang-btn-pa').style.background = 'var(--secondary, #d4af37)';
-              document.getElementById('lang-btn-pa').style.color = '#000';
-          } else {
-              document.getElementById('lang-btn-en').style.background = 'var(--secondary, #d4af37)';
-              document.getElementById('lang-btn-en').style.color = '#000';
+          
+          const desktopPa = document.querySelector('.lang-selector-desktop button[onclick*="pa"]');
+          const desktopEn = document.querySelector('.lang-selector-desktop button[onclick*="en"]');
+          
+          if (desktopPa && desktopEn) {
+              if (savedLang === 'pa') {
+                  desktopPa.style.background = 'var(--secondary, #d4af37)';
+                  desktopPa.style.color = '#000';
+                  desktopEn.style.background = 'transparent';
+                  desktopEn.style.color = '#fff';
+              } else {
+                  desktopEn.style.background = 'var(--secondary, #d4af37)';
+                  desktopEn.style.color = '#000';
+                  desktopPa.style.background = 'transparent';
+                  desktopPa.style.color = '#fff';
+              }
           }
       });
     </script>
+
 
     <?php wp_footer(); ?>
   </body>
