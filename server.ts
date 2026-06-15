@@ -719,6 +719,71 @@ async function startServer() {
     });
   });
 
+  const otpStore = new Map();
+
+  app.post("/api/admin/send-otp", async (req, res) => {
+    const { contact } = req.body || {};
+    if (!contact) {
+      return res.status(400).json({ success: false, message: "Contact number is required." });
+    }
+
+    const META_WHATSAPP_PHONE_NUMBER_ID = process.env.META_WHATSAPP_PHONE_NUMBER_ID;
+    const META_WHATSAPP_ACCESS_TOKEN = process.env.META_WHATSAPP_ACCESS_TOKEN;
+
+    if (!META_WHATSAPP_PHONE_NUMBER_ID || !META_WHATSAPP_ACCESS_TOKEN) {
+      // Mock mode if Meta WhatsApp API is not configured
+      const otp = "123456";
+      otpStore.set(contact, otp);
+      return res.json({ success: true, message: "OTP sent in mock mode.", mock: true });
+    }
+
+    try {
+      const otp = Math.floor(100000 + Math.random() * 900000).toString();
+      otpStore.set(contact, otp);
+
+      // format number for whatsapp (API requires phone without '+')
+      let toNum = contact.replace(/[^0-9]/g, '');
+
+      const response = await fetch(`https://graph.facebook.com/v19.0/${META_WHATSAPP_PHONE_NUMBER_ID}/messages`, {
+        method: "POST",
+        headers: {
+          "Authorization": `Bearer ${META_WHATSAPP_ACCESS_TOKEN}`,
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          messaging_product: "whatsapp",
+          recipient_type: "individual",
+          to: toNum,
+          type: "text",
+          text: {
+            preview_url: false,
+            body: `Your Tatkhalsa Foundation verification OTP is ${otp}. Do not share this with anyone.`
+          }
+        })
+      });
+
+      const data = await response.json();
+      if (!response.ok) {
+        throw new Error(data.error?.message || "Failed to send message via Meta WhatsApp API");
+      }
+
+      return res.json({ success: true, message: "OTP sent successfully." });
+    } catch (error: any) {
+      console.error("Meta WhatsApp error:", error.message || error);
+      return res.status(500).json({ success: false, message: "Failed to send OTP via WhatsApp." });
+    }
+  });
+
+  app.post("/api/admin/verify-otp", (req, res) => {
+    const { contact, otp } = req.body || {};
+    const expectedOtp = otpStore.get(contact);
+    if (!expectedOtp || expectedOtp !== otp) {
+      return res.status(400).json({ success: false, message: "Invalid or expired OTP." });
+    }
+    otpStore.delete(contact);
+    return res.json({ success: true, message: "OTP verified correctly." });
+  });
+
   // Edit Donor API Route
   app.post("/api/admin/edit-donor", (req, res) => {
     const { id, name, bloodGroup, email, contact, address, availabilityStatus } = req.body || {};

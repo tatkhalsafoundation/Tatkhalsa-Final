@@ -61,6 +61,46 @@ if ( ! empty( $address_terms ) ) {
 $donors_query = new WP_Query( $args );
 ?>
 
+<style>
+/* Dark Mode Enhancements for Reg Forms */
+[data-theme="dark"] .modal-content {
+    background: #111827 !important;
+    color: #f3f4f6 !important;
+    border: 1px solid rgba(255,255,255,0.1) !important;
+}
+
+[data-theme="dark"] .modal-content h2,
+[data-theme="dark"] .modal-content h3,
+[data-theme="dark"] .modal-content label {
+    color: #f3f4f6 !important;
+}
+
+[data-theme="dark"] .modal-content input,
+[data-theme="dark"] .modal-content select,
+[data-theme="dark"] .modal-content textarea {
+    background: #1f2937 !important;
+    color: #f3f4f6 !important;
+    border: 1px solid rgba(255, 255, 255, 0.2) !important;
+}
+
+/* OTP Button Custom Dark Mode Styling */
+[data-theme="dark"] #sendOtpBtn {
+    background: #FFCC00 !important; /* Bright Gold Box */
+    color: #111111 !important; /* Dark Text */
+    border: 1px solid #D4AF37 !important;
+}
+
+[data-theme="dark"] #verifyOtpBtn {
+    background: #25D366 !important; /* Bright Green Box */
+    color: #111111 !important; /* Dark Text */
+    border: 1px solid #10b981 !important;
+}
+
+[data-theme="dark"] .modal-close {
+    color: #f3f4f6 !important;
+}
+</style>
+
 <div class="blood-donors-page" style="padding: 60px 0; background: var(--body-bg); min-height: 80vh;">
     <div class="container">
         
@@ -1489,7 +1529,7 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     };
 
-    window.simulateSendOtp = function() {
+    window.simulateSendOtp = async function() {
         const contact = document.getElementById('contactDetails').value;
         if (!contact) {
             alert('Please enter a valid contact number first.');
@@ -1500,23 +1540,55 @@ document.addEventListener("DOMContentLoaded", function() {
         otpStatus.innerText = 'Sending OTP via WhatsApp...';
         otpStatus.style.color = '#ff9f43';
         
-        setTimeout(() => {
-            otpStatus.innerText = 'Test OTP is 123456';
-            otpStatus.style.color = 'var(--text-light)';
-        }, 1500);
+        try {
+            const res = await fetch('/api/admin/send-otp', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ contact })
+            });
+            const data = await res.json();
+            if (data.success) {
+                if (data.mock) {
+                    otpStatus.innerText = 'WhatsApp configured in mock mode. Test OTP is 123456';
+                    otpStatus.style.color = 'var(--text-light)';
+                } else {
+                    otpStatus.innerText = 'OTP Sent! Check your WhatsApp.';
+                    otpStatus.style.color = 'var(--accent-green)';
+                }
+            } else {
+                otpStatus.innerText = data.message || 'Failed to send OTP.';
+                otpStatus.style.color = 'var(--accent-red)';
+            }
+        } catch (e) {
+            otpStatus.innerText = 'Network error while sending OTP.';
+            otpStatus.style.color = 'var(--accent-red)';
+        }
     };
 
-    window.simulateVerifyOtp = function() {
+    window.simulateVerifyOtp = async function() {
+        const contact = document.getElementById('contactDetails').value;
         const otpVal = document.getElementById('otpValue').value;
         const otpStatus = document.getElementById('otpStatus');
-        if (otpVal === '123456') {
-            otpStatus.innerText = 'OTP Verified Successfully!';
-            otpStatus.style.color = 'var(--accent-green)';
-            document.getElementById('verifyOtpBtn').innerText = 'Verified';
-            document.getElementById('verifyOtpBtn').disabled = true;
-            document.getElementById('sendOtpBtn').style.display = 'none';
-        } else {
-            otpStatus.innerText = 'Invalid OTP. Please try again.';
+        
+        try {
+            const res = await fetch('/api/admin/verify-otp', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ contact, otp: otpVal })
+            });
+            const data = await res.json();
+            if (data.success) {
+                otpStatus.innerText = 'OTP Verified Successfully!';
+                otpStatus.style.color = 'var(--accent-green)';
+                document.getElementById('verifyOtpBtn').innerText = 'Verified';
+                document.getElementById('verifyOtpBtn').disabled = true;
+                document.getElementById('sendOtpBtn').style.display = 'none';
+            } else {
+                otpStatus.innerText = data.message || 'Invalid OTP. Please try again.';
+                otpStatus.style.color = 'var(--accent-red)';
+            }
+        } catch (e) {
+            otpStatus.innerText = 'Network error during verification.';
             otpStatus.style.color = 'var(--accent-red)';
         }
     };
