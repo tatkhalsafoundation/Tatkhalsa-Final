@@ -762,7 +762,15 @@ async function startServer() {
         })
       });
 
-      const data = await response.json();
+      const textData = await response.text();
+      let data;
+      try {
+        data = JSON.parse(textData);
+      } catch (e) {
+        console.error("Meta WhatsApp parsing error. Received text:", textData);
+        data = { error: { message: "Invalid response from Meta API: " + textData.substring(0, 100) } };
+      }
+
       if (!response.ok) {
         console.error("Meta WhatsApp error data:", data);
         return res.status(400).json({ success: false, message: data.error?.message || "Failed to send message via Meta API" });
