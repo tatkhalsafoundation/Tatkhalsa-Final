@@ -744,22 +744,50 @@ async function startServer() {
       // format number for whatsapp (API requires phone without '+')
       let toNum = String(contact).replace(/[^0-9]/g, '');
 
+      // Check if user has specified a template in environment variables
+      const WA_TEMPLATE_NAME = process.env.META_WHATSAPP_OTP_TEMPLATE;
+
+      const payload = WA_TEMPLATE_NAME
+        ? {
+            messaging_product: "whatsapp",
+            recipient_type: "individual",
+            to: toNum,
+            type: "template",
+            template: {
+              name: WA_TEMPLATE_NAME,
+              language: { code: "en" },
+              components: [
+                {
+                  type: "body",
+                  parameters: [{ type: "text", text: otp }]
+                },
+                {
+                  type: "button",
+                  sub_type: "url",
+                  index: "0",
+                  parameters: [{ type: "text", text: otp }]
+                }
+              ]
+            }
+          }
+        : {
+            messaging_product: "whatsapp",
+            recipient_type: "individual",
+            to: toNum,
+            type: "text",
+            text: {
+              preview_url: false,
+              body: `Your Tatkhalsa Foundation verification OTP is ${otp}. Do not share this with anyone.`
+            }
+          };
+
       const response = await fetch(`https://graph.facebook.com/v19.0/${META_WHATSAPP_PHONE_NUMBER_ID}/messages`, {
         method: "POST",
         headers: {
           "Authorization": `Bearer ${META_WHATSAPP_ACCESS_TOKEN}`,
           "Content-Type": "application/json"
         },
-        body: JSON.stringify({
-          messaging_product: "whatsapp",
-          recipient_type: "individual",
-          to: toNum,
-          type: "text",
-          text: {
-            preview_url: false,
-            body: `Your Tatkhalsa Foundation verification OTP is ${otp}. Do not share this with anyone.`
-          }
-        })
+        body: JSON.stringify(payload)
       });
 
       const textData = await response.text();
