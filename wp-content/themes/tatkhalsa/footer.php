@@ -158,6 +158,12 @@
         </div>
 
         <form id="bloodRequestForm" method="POST" action="" enctype="multipart/form-data">
+          <div style="margin-bottom: 15px;">
+            <label style="display: block; font-size: 0.78rem; text-transform: uppercase; color: var(--primary); font-weight: 700; margin-bottom: 6px;">Doctor's Request Slip / Form Photo <span style="color:#ff334b;">*</span></label>
+            <p style="font-size: 0.75rem; color: rgba(255,255,255,0.6); margin-bottom: 8px;">Please upload a clear photo of the doctor's prescription or hospital blood request form (from camera or gallery) to verify emergency. <strong style="color: #ff334b;">STRICT WARNING: Do not upload any other photo. Only authentic hospital documents are accepted.</strong></p>
+            <input type="file" name="doctorSlip" id="doctorSlipInput" required accept="image/*" style="width: 100%; padding: 8px; background: rgba(255,255,255,0.03); border: 1.2px dashed rgba(255,255,255,0.2); border-radius: 6px; color: #fff; font-size: 0.85rem; box-sizing: border-box; outline: none; cursor: pointer;" onfocus="this.style.borderColor='#ff334b'" onchange="this.style.borderColor='rgba(0,191,117,0.5)'" title="Take a photo or choose from gallery">
+          </div>
+
           <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px;">
             <div>
               <label style="display: block; font-size: 0.78rem; text-transform: uppercase; color: var(--primary); font-weight: 700; margin-bottom: 6px;">Patient Full Name <span style="color:#ff334b;">*</span></label>
@@ -206,12 +212,6 @@
           <div style="margin-bottom: 15px;">
             <label style="display: block; font-size: 0.78rem; text-transform: uppercase; color: var(--primary); font-weight: 700; margin-bottom: 6px;">Hospital Name & Detail <span style="color:#ff334b;">*</span></label>
             <input type="text" name="hospitalName" required placeholder="e.g. PGIMER Ward 4, Fortis Hospital Amritsar" style="width: 100%; padding: 10px 12px; background: rgba(255,255,255,0.03); border: 1.2px solid rgba(255,255,255,0.1); border-radius: 6px; color: #fff; font-size: 0.9rem; box-sizing: border-box; outline: none;" onfocus="this.style.borderColor='#ff334b'">
-          </div>
-
-          <div style="margin-bottom: 15px;">
-            <label style="display: block; font-size: 0.78rem; text-transform: uppercase; color: var(--primary); font-weight: 700; margin-bottom: 6px;">Doctor's Request Slip / Form Photo <span style="color:#ff334b;">*</span></label>
-            <p style="font-size: 0.75rem; color: rgba(255,255,255,0.6); margin-bottom: 8px;">Please upload a clear photo of the doctor's prescription or hospital blood request form (from camera or gallery) to verify emergency.</p>
-            <input type="file" name="doctorSlip" id="doctorSlipInput" required accept="image/*" style="width: 100%; padding: 8px; background: rgba(255,255,255,0.03); border: 1.2px dashed rgba(255,255,255,0.2); border-radius: 6px; color: #fff; font-size: 0.85rem; box-sizing: border-box; outline: none; cursor: pointer;" onfocus="this.style.borderColor='#ff334b'" onchange="this.style.borderColor='rgba(0,191,117,0.5)'" title="Take a photo or choose from gallery">
           </div>
 
           <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px;">
