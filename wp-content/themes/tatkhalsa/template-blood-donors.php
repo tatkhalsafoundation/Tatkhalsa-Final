@@ -1560,7 +1560,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 otpStatus.style.color = 'var(--accent-red)';
             }
         } catch (e) {
-            otpStatus.innerText = 'Network error while sending OTP.';
+            otpStatus.innerText = 'Error: ' + e.message;
             otpStatus.style.color = 'var(--accent-red)';
         }
     };
@@ -1588,7 +1588,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 otpStatus.style.color = 'var(--accent-red)';
             }
         } catch (e) {
-            otpStatus.innerText = 'Network error during verification.';
+            otpStatus.innerText = 'Error: ' + e.message;
             otpStatus.style.color = 'var(--accent-red)';
         }
     };
