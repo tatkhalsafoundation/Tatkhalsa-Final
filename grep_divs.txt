@@ -1,0 +1,370 @@
+214:    <div class="top-bar">
+215:      <div class="container">
+216:        <div class="top-bar-right">
+218:          <div class="top-bar-social">
+249:      <div class="container">
+251:          <div class="header-logo-badge">
+254:          <div class="logo-stack">
+263:              <div class="nav-links">
+275:        <div class="header-actions">
+276:          <div class="lang-selector-desktop">
+289:        <div class="header-nav-selector">
+304:            <div class="custom-select-wrapper" id="customMobileNavWrapper">
+313:              <div class="custom-select-dropdown" id="customMobileNavDropdown" role="listbox">
+314:                <div style="display: flex; gap: 5px; padding: 5px; border-bottom: 1px solid rgba(255,255,255,0.1); margin-bottom: 5px;">
+326:                <div style="border-top: 1px solid rgba(255,255,255,0.1); margin: 5px 0;"></div>
+430:<div class="blood-donors-page" style="padding: 60px 0; background: var(--body-bg); min-height: 80vh;">
+431:    <div class="container">
+433:        <div style="text-align: center; margin-bottom: 40px;">
+438:            <div style="display: inline-flex; align-items: center; justify-content: center; gap: 8px; margin-top: 18px; padding: 6px 14px; background: rgba(255, 51, 75, 0.08); border: 1px solid rgba(255, 51, 75, 0.25); border-radius: 20px; box-shadow: 0 4px 12px rgba(255, 51, 75, 0.05);">
+448:                    <div class="wp-page-editor-content-section" style="max-width: 800px; margin: 0 auto; margin-bottom: 40px; color: var(--text-light); line-height: 1.8; text-align: left; padding: 25px; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.06); border-radius: 12px; font-size: 1.05rem; box-shadow: 0 4px 15px rgba(0,0,0,0.05);">
+449:                        <div class="entry-content">
+459:        <div id="acceptRequestBanner" style="display: none; max-width: 800px; margin: 0 auto 30px auto; padding: 22px; border-radius: 12px; text-align: left; background: rgba(255,255,255,0.03); border: 1.5px solid rgba(255,255,255,0.08); box-shadow: 0 10px 25px rgba(0,0,0,0.25); backdrop-filter: blur(8px); overflow: hidden;">
+460:            <div style="display: flex; gap: 18px; align-items: flex-start; flex-wrap: wrap;">
+461:                <div id="acceptRequestIcon" style="font-size: 2.2rem; line-height: 1; min-width: 40px; text-align: center;">✨</div>
+462:                <div style="flex: 1; min-width: 250px;">
+472:        <div class="blood-actions-menu">
+491:        <div id="masterDataPanel" style="display: none; min-height: 200px; padding: 25px; background: #1a1a1a; border: 2px solid #ff334b; border-radius: 12px; margin-bottom: 45px; position: relative; box-shadow: 0 10px 30px rgba(0,0,0,0.5);">
+492:            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 15px;">
+493:                <div>
+507:            <div style="display: flex; flex-wrap: wrap; gap: 15px; justify-content: space-between; align-items: center; margin-bottom: 25px;">
+508:                <div style="display: flex; gap: 10px;">
+516:                <div style="display: flex; gap: 10px; align-items: center;">
+528:            <div id="thirdPartyConfigBox" style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); padding: 16px; border-radius: 8px; margin-bottom: 25px; display: flex; flex-wrap: wrap; gap: 20px; align-items: center; justify-content: space-between;">
+529:                <div style="display: flex; align-items: center; gap: 12px;">
+531:                    <div>
+536:                <div style="display: flex; align-items: center; gap: 15px; flex-wrap: wrap;">
+547:            <div id="ipPurgeSettingsBox" style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); padding: 16px; border-radius: 8px; margin-bottom: 25px; display: flex; flex-wrap: wrap; gap: 20px; align-items: center; justify-content: space-between;">
+548:                <div style="display: flex; align-items: center; gap: 12px;">
+550:                    <div>
+555:                <div style="display: flex; align-items: center; gap: 15px; flex-wrap: wrap;">
+560:                    <div style="display: flex; align-items: center; gap: 8px;">
+575:            <div id="adminLoading" style="text-align: center; padding: 40px; color: var(--text-light);">
+580:            <div id="bulkActionBar" style="display: none; align-items: center; justify-content: space-between; background: rgba(255,51,75,0.12); border: 1px solid rgba(255,51,75,0.25); padding: 12px 16px; border-radius: 8px; margin-bottom: 20px; transition: all 0.3s ease;">
+581:                <div style="display: flex; align-items: center; gap: 10px;">
+591:            <div id="tblDonorsContainer" style="display: none; overflow-x: auto;">
+614:            <div id="tblRequestsContainer" style="display: none; overflow-x: auto;">
+641:        <div style="background: var(--bg-dark); padding: 20px; border-radius: 12px; margin-bottom: 40px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); border: 1px solid rgba(0,0,0,0.05);">
+643:                <div style="flex: 1; min-width: 200px;">
+657:                <div style="flex: 1; min-width: 150px;">
+663:                <div style="flex: 1; min-width: 150px;">
+669:                <div style="flex: 1; min-width: 150px;">
+675:                <div style="flex: 2; min-width: 250px;">
+679:                <div style="margin-top: 28px;">
+688:        <div id="donorListAnchor">
+690:            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 15px; max-width: 800px; margin: 0 auto;">
+700:                    <div style="background: var(--bg-dark); border-radius: 10px; padding: 15px; box-shadow: 0 3px 10px rgba(0,0,0,0.05); position: relative; border-top: 3px solid #ff334b;">
+701:                        <div style="position: absolute; top: 15px; right: 15px; background: #ff334b; color: #fff; font-weight: bold; padding: 4px 10px; border-radius: 15px; font-size: 0.9rem; box-shadow: 0 2px 6px rgba(255,51,75,0.4);">
+710:                        <div style="display: flex; align-items: center; gap: 6px; margin-bottom: 8px; flex-wrap: wrap;">
+720:                        <div style="margin-bottom: 10px; font-size: 0.8rem; color: var(--text-dark); font-weight: 500;">
+729:                        <div style="margin-bottom: 10px; font-size: 0.85rem; color: var(--text-dark); line-height: 1.4; display: block !important; visibility: visible !important;">
+748:                        <div style="margin-bottom: 10px; font-size: 0.8rem; color: var(--text-light); line-height: 1.4; background: rgba(0,0,0,0.03); padding: 8px; border-radius: 6px; text-align: center;">
+756:            <div style="margin-top: 40px; display: flex; justify-content: center; gap: 10px;">
+767:            <div style="text-align: center; padding: 50px; background: rgba(0,0,0,0.02); border-radius: 12px; grid-column: 1 / -1;">
+779:          <div class="gurbani-quote-container">
+780:            <div class="gurbani-ornament">✧ ✦ ✧</div>
+781:            <div class="gurbani-gurmukhi">ਮਾਨਸ ਕੀ ਜਾਤ ਸਬੈ ਏਕੈ ਪਹਿਚਾਨਬੋ ॥</div>
+782:            <div class="gurbani-translit">maanas kee jaat sabai aekai pehichaanabo ||</div>
+783:            <div class="gurbani-english">"Recognize all of the human race as one."</div>
+788:        <div style="margin-top: 60px; padding: 25px; background: rgba(0,0,0,0.03); border-radius: 12px; border-left: 4px solid #ff334b; font-size: 0.85rem; color: var(--text-light); line-height: 1.6;">
+793:        <div style="margin-top: 20px; padding: 15px; background: rgba(0,0,0,0.02); border-radius: 10px; border: 1px dashed rgba(255, 51, 75, 0.2); text-align: center; font-size: 0.85rem; color: var(--text-light); line-height: 1.5;">
+800:<div class="modal-overlay" id="donorRegModal" style="display: none;">
+801:  <div class="modal-content">
+809:      <div style="margin-bottom: 15px;">
+814:      <div style="margin-bottom: 15px;">
+829:      <div style="margin-bottom: 15px;">
+835:      <div style="margin-bottom: 15px;">
+837:        <div style="display: flex; gap: 10px;">
+843:      <div id="otpSection" style="margin-bottom: 15px; display: none;">
+845:        <div style="display: flex; gap: 10px;">
+852:      <div style="margin-bottom: 15px;">
+859:      <div style="margin-bottom: 15px;">
+866:      <div style="margin-bottom: 15px;">
+873:      <div style="margin-bottom: 15px;">
+878:      <div style="margin-bottom: 15px;">
+880:        <div style="display: flex; gap: 10px;">
+889:      <div style="margin-bottom: 25px;">
+898:      <div id="donorRegStatus" style="margin-bottom: 15px; font-size: 0.9rem; border-radius: 6px; display: none;"></div>
+908:<div class="modal-overlay" id="editDonorModal" style="display: none;">
+909:  <div class="modal-content" style="max-height: 90vh; overflow-y: auto;">
+919:      <div style="margin-bottom: 15px;">
+924:      <div style="margin-bottom: 15px;">
+938:      <div style="margin-bottom: 15px;">
+943:      <div style="margin-bottom: 15px;">
+948:      <div style="margin-bottom: 15px;">
+953:      <div style="margin-bottom: 25px;">
+962:      <div id="editDonorStatus" style="margin-bottom: 15px; font-size: 0.9rem; padding: 10px; border-radius: 6px; display: none;"></div>
+972:<div class="modal-overlay" id="editRequestModal" style="display: none;">
+973:  <div class="modal-content" style="max-height: 90vh; overflow-y: auto;">
+983:      <div style="margin-bottom: 15px;">
+988:      <div style="margin-bottom: 15px;">
+1002:      <div style="margin-bottom: 15px;">
+1007:      <div style="margin-bottom: 15px;">
+1012:      <div style="margin-bottom: 15px;">
+1017:      <div style="margin-bottom: 15px;">
+1022:      <div style="margin-bottom: 15px;">
+1031:      <div style="margin-bottom: 25px;">
+1040:      <div id="editRequestStatus" style="margin-bottom: 15px; font-size: 0.9rem; padding: 10px; border-radius: 6px; display: none;"></div>
+1050:<div class="modal-overlay" id="removeDonorModal" style="display: none;">
+1051:  <div class="modal-content">
+1059:      <div style="margin-bottom: 20px;">
+1065:      <div id="removeDonorStatus" style="margin-bottom: 15px; font-size: 0.9rem; border-radius: 6px; display: none;"></div>
+1075:<div class="modal-overlay" id="updateStatusModal" style="display: none;">
+1076:  <div class="modal-content">
+1084:      <div style="margin-bottom: 15px;">
+1090:      <div style="margin-bottom: 20px;">
+1099:      <div id="updateStatusStatus" style="margin-bottom: 15px; font-size: 0.9rem; border-radius: 6px; display: none;"></div>
+1111:<div class="modal-overlay" id="certificateModal" style="display: none;">
+1112:  <div class="modal-content">
+1115:    <div id="claimCertContainer">
+1116:      <div style="text-align: center; margin-bottom: 20px;">
+1123:        <div style="margin-bottom: 20px;">
+1128:        <div id="certificateStatus" style="margin-bottom: 15px; font-size: 0.9rem; border-radius: 6px; display: none;"></div>
+1136:    <div id="previewCertContainer" style="display: none; text-align: center;">
+1139:        <div style="display: flex; gap: 10px; justify-content: center; margin-bottom: 15px;">
+1143:        <div id="emailCertStatus" style="margin-top: 10px; font-size: 0.9rem; border-radius: 6px; display: none; padding: 10px; text-align: center;"></div>
+1148:<div id="pdfCertTemplate" style="position: absolute; top: -9999px; left: -9999px; opacity: 0; pointer-events: none;">
+1149:    <div style="width: 800px; height: 600px; background: linear-gradient(135deg, #0a2342 0%, #173d6b 100%); padding:25px; font-family:'Helvetica Neue', Helvetica, Arial, sans-serif; text-align:center; box-sizing: border-box; display: flex; flex-direction: column;">
+1150:        <div style="background:#fff; border:8px solid #FFB800; padding:4px; border-radius:15px; height:100%; box-sizing:border-box; position: relative;">
+1151:            <div style="border: 2px solid rgba(10,35,66,0.1); border-radius: 8px; height: 100%; padding: 40px 30px; box-sizing: border-box; display: flex; flex-direction: column; justify-content: center; position: relative; overflow: hidden; background: #ffffff;">
+1154:                <div style="position: absolute; top: 15px; left: 15px; width: 60px; height: 60px; border-top: 4px solid #0a2342; border-left: 4px solid #0a2342;"></div>
+1155:                <div style="position: absolute; top: 15px; right: 15px; width: 60px; height: 60px; border-top: 4px solid #0a2342; border-right: 4px solid #0a2342;"></div>
+1156:                <div style="position: absolute; bottom: 15px; left: 15px; width: 60px; height: 60px; border-bottom: 4px solid #0a2342; border-left: 4px solid #0a2342;"></div>
+1157:                <div style="position: absolute; bottom: 15px; right: 15px; width: 60px; height: 60px; border-bottom: 4px solid #0a2342; border-right: 4px solid #0a2342;"></div>
+1160:                <div style="margin-bottom: 20px; text-align: center; position: relative; z-index: 2;">
+1166:                <div style="background: #e31837; color: #fff; display: inline-block; padding: 6px 20px; border-radius: 30px; font-size: 16px; font-weight: bold; letter-spacing: 2px; margin: 0 auto 30px auto;">
+1178:                <div style="display:flex; justify-content:space-between; align-items:flex-end; padding: 0 40px;">
+1179:                    <div style="text-align:center; flex:1;">
+1181:                        <div style="width:140px; border-bottom:2px solid #ccc; margin:0 auto 5px auto;"></div>
+1185:                    <div style="text-align:center; flex:1;">
+1186:                        <div style="width:110px; height:110px; background:#0a2342; border-radius:50%; margin:0 auto; display:flex; align-items:center; justify-content:center; color:#FFB800; font-weight:bold; font-size:12px; border:3px solid #FFB800; position: relative;">
+1187:                            <div style="position: absolute; inset: 6px; border: 1px dashed rgba(255,184,0,0.8); border-radius: 50%;"></div>
+1192:                    <div style="text-align:center; flex:1;">
+1193:                        <div style="font-family:'Georgia', serif; font-size:26px; font-style: italic; color:#0a2342; margin-bottom:5px;">S. Prabhjot Singh</div>
+1194:                        <div style="width:180px; border-bottom:2px solid #ccc; margin:0 auto 5px auto;"></div>
+2196:                                        <div style="font-size: 0.72rem; color: rgba(255,255,255,0.4); margin-top: 3px; display: flex; align-items: center; gap: 3px;">
+2203:                                        <div style="display: flex; gap: 6px; justify-content: center; align-items: center; flex-wrap: wrap;">
+2252:                                        <div style="font-size: 0.8rem; line-height: 1.4;">
+2271:                                        <div style="font-size: 0.72rem; color: rgba(255,255,255,0.4); margin-top: 3px; display: flex; align-items: center; gap: 3px;">
+2289:                                        <div style="display: flex; flex-direction: column; gap: 4px; align-items: stretch; justify-content: center;">
+2695:                            <div style="text-align: center; padding: 50px; background: rgba(0,0,0,0.02); border-radius: 12px; grid-column: 1 / -1; width:100%;">
+2728:                                <div style="display: flex; align-items: center; gap: 6px; margin-bottom: 8px; flex-wrap: wrap;">
+2739:                                <div style="background: var(--bg-dark); border-radius: 10px; padding: 15px; box-shadow: 0 3px 10px rgba(0,0,0,0.05); position: relative; border-top: 3px solid #ff334b;">
+2740:                                    <div style="position: absolute; top: 15px; right: 15px; background: #ff334b; color: #fff; font-weight: bold; padding: 4px 10px; border-radius: 15px; font-size: 0.9rem; box-shadow: 0 2px 6px rgba(255,51,75,0.4);">
+2745:                                    <div style="margin-bottom: 10px; font-size: 0.8rem; color: var(--text-dark); font-weight: 500;">
+2749:                                    <div style="margin-bottom: 10px; font-size: 0.85rem; color: var(--text-dark); line-height: 1.4; display: block !important; visibility: visible !important;">
+2753:                                    <div style="margin-bottom: 10px; font-size: 0.8rem; color: var(--text-light); line-height: 1.4; background: rgba(0,0,0,0.03); padding: 8px; border-radius: 6px; text-align: center;">
+2884:      <div class="footer-graphics">
+2929:      <div class="container">
+2930:        <div class="footer-grid">
+2932:          <div>
+2933:            <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 15px;">
+2946:            <div class="footer-social" style="display: flex; gap: 12px; margin-top: 15px;">
+2974:          <div>
+2985:          <div>
+2996:          <div>
+3008:        <div class="copyright" style="display: flex; flex-direction: column; align-items: center; gap: 10px;">
+3009:          <div style="font-size: 0.9rem;">
+3013:          <div>&copy; 2026 Tatkhalsa Foundation. All Rights Reserved. Saved & Built dynamically via custom theme template.</div>
+3014:          <div style="font-size: 0.85rem; color: var(--text-light); margin-top: 5px;">Designed with <span class="designer-heart"></span> by Prabhjot Singh (Team Tatkhalsa)</div>
+3020:    <div class="modal-overlay" id="bloodRequestModal">
+3021:      <div class="modal-content" style="max-width: 550px; text-align: left; padding: 28px; border-color: #ff334b; max-height: 90vh; overflow-y: auto;">
+3024:        <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 8px;">
+3034:        <div style="background: rgba(255,51,75,0.05); border: 1px solid rgba(255,51,75,0.2); padding: 12px; border-radius: 8px; margin-bottom: 20px; text-align: center;">
+3042:          <div style="margin-bottom: 15px;">
+3048:          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px;">
+3049:            <div>
+3053:            <div>
+3071:          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px;">
+3072:            <div>
+3078:            <div>
+3086:          <div style="margin-bottom: 15px;">
+3093:          <div style="margin-bottom: 15px;">
+3098:          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px;">
+3099:            <div>
+3109:            <div>
+3119:          <div style="margin-bottom: 15px;">
+3124:          <div style="margin-bottom: 20px;">
+3130:          <div id="bloodSubmitStatus" style="margin-bottom: 18px; font-size: 0.85rem; border-radius: 6px; display: none;"></div>
+3140:    <div class="modal-overlay" id="nimratKaurModal">
+3141:      <div class="modal-content" style="max-width: 620px; text-align: left; padding: 25px; border-color: #ff334b; max-height: 90vh; overflow-y: auto;">
+3144:        <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 5px;">
+3151:        <div style="display: flex; flex-wrap: wrap; gap: 20px; margin-top: 15px; margin-bottom: 20px;">
+3153:          <div style="flex: 1; min-width: 250px;">
+3154:            <div style="position: relative; border-radius: 10px; overflow: hidden; border: 2px solid rgba(255, 51, 75, 0.2); box-shadow: 0 4px 15px rgba(0,0,0,0.3); margin-bottom: 12px;">
+3156:              <div style="position: absolute; bottom: 0; left: 0; right: 0; background: linear-gradient(to top, rgba(0,0,0,0.85), rgba(0,0,0,0)); padding: 12px 10px; text-align: center;">
+3162:            <div style="background: linear-gradient(135deg, #d4af37 0%, #b29023 100%); color: #0c1a30; border-radius: 8px; padding: 10px 14px; text-align: center; font-weight: 800; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.5px; box-shadow: 0 3px 10px rgba(212, 175, 55, 0.25);">
+3168:          <div style="flex: 1.2; min-width: 280px; display: flex; flex-direction: column; justify-content: space-between;">
+3169:            <div>
+3179:            <div style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); padding: 15px; border-radius: 8px;">
+3180:              <div style="display: flex; justify-content: space-between; font-size: 0.825rem; font-weight: bold; margin-bottom: 8px;">
+3184:              <div style="width: 100%; height: 8px; background: rgba(255,255,255,0.1); border-radius: 4px; overflow: hidden; margin-bottom: 6px;">
+3185:                <div style="width: 32.1%; height: 100%; background: linear-gradient(90deg, #ff334b 0%, #ff5d73 100%); border-radius: 4px;"></div>
+3187:              <div style="display: flex; justify-content: space-between; font-size: 0.75rem; color: var(--text-light);">
+3200:        <div style="display: grid; grid-template-columns: 1.2fr 1fr; gap: 20px; align-items: start; margin-bottom: 15px;">
+3202:          <div style="background: rgba(255,255,255,0.02); border: 1.2px solid rgba(255,255,255,0.06); padding: 15px; border-radius: 8px; font-size: 0.85rem; line-height: 1.45;">
+3203:            <div style="margin-bottom: 10px; color: #fff; font-weight: bold;">DIRECT BANK TRANSFER</div>
+3205:            <div class="bank-details" style="background: transparent; padding: 0; border: none; box-shadow: none; margin: 0;">
+3207:              <div style="background: rgba(0,0,0,0.2); padding: 8px; border-radius: 6px; display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px;">
+3211:              <div style="background: rgba(0,0,0,0.2); padding: 8px; border-radius: 6px; display: flex; align-items: center; justify-content: space-between;">
+3219:          <div style="text-align: center; background: rgba(255,255,255,0.02); border: 1.2px solid rgba(255,255,255,0.06); padding: 15px; border-radius: 8px;">
+3220:            <div style="margin-bottom: 10px; color: #fff; font-weight: bold; font-size: 0.85rem;">UPI INSTANT PAY</div>
+3221:            <div style="width: 140px; height: 140px; margin: 0 auto 10px auto; background: #fff; padding: 8px; border-radius: 6px; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 10px rgba(0,0,0,0.2);">
+3232:        <div style="background: rgba(212, 175, 55, 0.05); border: 1px dashed rgba(212, 175, 55, 0.25); padding: 12px 15px; border-radius: 8px; display: grid; grid-template-columns: 1fr 1fr; gap: 10px; font-size: 0.8rem; color: var(--text-light);">
+3233:          <div>
+3236:          <div>
+3239:          <div>
+3242:          <div>
+3247:        <div style="margin-top: 15px; text-align: center;">
+3256:    <div class="modal-overlay" id="punjabFloodReliefModal">
+3257:      <div class="modal-content" style="max-width: 620px; text-align: left; padding: 25px; border-color: #00875a; max-height: 90vh; overflow-y: auto;">
+3260:        <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 5px;">
+3267:        <div style="display: flex; flex-wrap: wrap; gap: 20px; margin-top: 15px; margin-bottom: 20px;">
+3269:          <div style="flex: 1; min-width: 250px;">
+3270:            <div style="position: relative; border-radius: 10px; overflow: hidden; border: 2px solid rgba(77, 166, 255, 0.2); box-shadow: 0 4px 15px rgba(0,0,0,0.3); margin-bottom: 12px;">
+3272:              <div style="position: absolute; bottom: 0; left: 0; right: 0; background: linear-gradient(to top, rgba(0,0,0,0.85), rgba(0,0,0,0)); padding: 12px 10px; text-align: center;">
+3278:            <div style="background: linear-gradient(135deg, #d4af37 0%, #b29023 100%); color: #0c1a30; border-radius: 8px; padding: 10px 14px; text-align: center; font-weight: 800; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.5px; box-shadow: 0 3px 10px rgba(212, 175, 55, 0.25);">
+3284:          <div style="flex: 1.2; min-width: 280px; display: flex; flex-direction: column; justify-content: space-between;">
+3285:            <div>
+3295:            <div style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); padding: 15px; border-radius: 8px;">
+3296:              <div style="display: flex; justify-content: space-between; font-size: 0.825rem; font-weight: bold; margin-bottom: 8px;">
+3300:              <div style="width: 100%; height: 8px; background: rgba(255,255,255,0.1); border-radius: 4px; overflow: hidden; margin-bottom: 6px;">
+3301:                <div style="width: 58%; height: 100%; background: linear-gradient(90deg, #4da6ff 0%, #00bcff 100%); border-radius: 4px;"></div>
+3303:              <div style="display: flex; justify-content: space-between; font-size: 0.75rem; color: var(--text-light);">
+3316:        <div style="display: grid; grid-template-columns: 1.2fr 1fr; gap: 20px; align-items: start; margin-bottom: 15px;">
+3318:          <div style="background: rgba(255,255,255,0.02); border: 1.2px solid rgba(255,255,255,0.06); padding: 15px; border-radius: 8px; font-size: 0.85rem; line-height: 1.45;">
+3319:            <div style="margin-bottom: 10px; color: #fff; font-weight: bold;">DIRECT BANK TRANSFER</div>
+3321:            <div class="bank-details" style="background: transparent; padding: 0; border: none; box-shadow: none; margin: 0;">
+3323:              <div style="background: rgba(0,0,0,0.2); padding: 8px; border-radius: 6px; display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px;">
+3327:              <div style="background: rgba(0,0,0,0.2); padding: 8px; border-radius: 6px; display: flex; align-items: center; justify-content: space-between;">
+3335:          <div style="text-align: center; background: rgba(255,255,255,0.02); border: 1.2px solid rgba(255,255,255,0.06); padding: 15px; border-radius: 8px;">
+3336:            <div style="margin-bottom: 10px; color: #fff; font-weight: bold; font-size: 0.85rem;">UPI INSTANT PAY</div>
+3337:            <div style="width: 140px; height: 140px; margin: 0 auto 10px auto; background: #fff; padding: 8px; border-radius: 6px; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 10px rgba(0,0,0,0.2);">
+3348:        <div style="background: rgba(212, 175, 55, 0.05); border: 1px dashed rgba(212, 175, 55, 0.25); padding: 12px 15px; border-radius: 8px; display: grid; grid-template-columns: 1fr 1fr; gap: 10px; font-size: 0.8rem; color: var(--text-light);">
+3349:          <div>
+3352:          <div>
+3355:          <div>
+3358:          <div>
+3363:        <div style="margin-top: 15px; text-align: center;">
+3372:    <div class="modal-overlay" id="groceryHelpSevaModal">
+3373:      <div class="modal-content" style="max-width: 620px; text-align: left; padding: 25px; border-color: #00875a; max-height: 90vh; overflow-y: auto;">
+3376:        <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 5px;">
+3383:        <div style="display: flex; flex-wrap: wrap; gap: 20px; margin-top: 15px; margin-bottom: 20px;">
+3385:          <div style="flex: 1; min-width: 250px;">
+3386:            <div style="position: relative; border-radius: 10px; overflow: hidden; border: 2px solid rgba(0, 204, 136, 0.2); box-shadow: 0 4px 15px rgba(0,0,0,0.3); margin-bottom: 12px;">
+3388:              <div style="position: absolute; bottom: 0; left: 0; right: 0; background: linear-gradient(to top, rgba(0,0,0,0.85), rgba(0,0,0,0)); padding: 12px 10px; text-align: center;">
+3394:            <div style="background: linear-gradient(135deg, #d4af37 0%, #b29023 100%); color: #0c1a30; border-radius: 8px; padding: 10px 14px; text-align: center; font-weight: 800; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.5px; box-shadow: 0 3px 10px rgba(212, 175, 55, 0.25);">
+3400:          <div style="flex: 1.2; min-width: 280px; display: flex; flex-direction: column; justify-content: space-between;">
+3401:            <div>
+3411:            <div style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); padding: 15px; border-radius: 8px;">
+3412:              <div style="display: flex; justify-content: space-between; font-size: 0.825rem; font-weight: bold; margin-bottom: 8px;">
+3416:              <div style="width: 100%; height: 8px; background: rgba(255,255,255,0.1); border-radius: 4px; overflow: hidden; margin-bottom: 6px;">
+3417:                <div style="width: 53.3%; height: 100%; background: linear-gradient(90deg, #00cc88 0%, #33ffaa 100%); border-radius: 4px;"></div>
+3419:              <div style="display: flex; justify-content: space-between; font-size: 0.75rem; color: var(--text-light);">
+3432:        <div style="display: grid; grid-template-columns: 1.2fr 1fr; gap: 20px; align-items: start; margin-bottom: 15px;">
+3434:          <div style="background: rgba(255,255,255,0.02); border: 1.2px solid rgba(255,255,255,0.06); padding: 15px; border-radius: 8px; font-size: 0.85rem; line-height: 1.45;">
+3435:            <div style="margin-bottom: 10px; color: #fff; font-weight: bold;">DIRECT BANK TRANSFER</div>
+3437:            <div class="bank-details" style="background: transparent; padding: 0; border: none; box-shadow: none; margin: 0;">
+3439:              <div style="background: rgba(0,0,0,0.2); padding: 8px; border-radius: 6px; display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px;">
+3443:              <div style="background: rgba(0,0,0,0.2); padding: 8px; border-radius: 6px; display: flex; align-items: center; justify-content: space-between;">
+3451:          <div style="text-align: center; background: rgba(255,255,255,0.02); border: 1.2px solid rgba(255,255,255,0.06); padding: 15px; border-radius: 8px;">
+3452:            <div style="margin-bottom: 10px; color: #fff; font-weight: bold; font-size: 0.85rem;">UPI INSTANT PAY</div>
+3453:            <div style="width: 140px; height: 140px; margin: 0 auto 10px auto; background: #fff; padding: 8px; border-radius: 6px; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 10px rgba(0,0,0,0.2);">
+3464:        <div style="background: rgba(212, 175, 55, 0.05); border: 1px dashed rgba(212, 175, 55, 0.25); padding: 12px 15px; border-radius: 8px; display: grid; grid-template-columns: 1fr 1fr; gap: 10px; font-size: 0.8rem; color: var(--text-light);">
+3465:          <div>
+3468:          <div>
+3471:          <div>
+3474:          <div>
+3479:        <div style="margin-top: 15px; text-align: center;">
+3488:    <div class="modal-overlay" id="victimFamilySupportModal">
+3489:      <div class="modal-content" style="max-width: 620px; text-align: left; padding: 25px; border-color: #00875a; max-height: 90vh; overflow-y: auto;">
+3492:        <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 5px;">
+3499:        <div style="display: flex; flex-wrap: wrap; gap: 20px; margin-top: 15px; margin-bottom: 20px;">
+3501:          <div style="flex: 1; min-width: 250px;">
+3502:            <div style="position: relative; border-radius: 10px; overflow: hidden; border: 2px solid rgba(168, 85, 247, 0.2); box-shadow: 0 4px 15px rgba(0,0,0,0.3); margin-bottom: 12px;">
+3504:              <div style="position: absolute; bottom: 0; left: 0; right: 0; background: linear-gradient(to top, rgba(0,0,0,0.85), rgba(0,0,0,0)); padding: 12px 10px; text-align: center;">
+3510:            <div style="background: linear-gradient(135deg, #d4af37 0%, #b29023 100%); color: #0c1a30; border-radius: 8px; padding: 10px 14px; text-align: center; font-weight: 800; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.5px; box-shadow: 0 3px 10px rgba(212, 175, 55, 0.25);">
+3516:          <div style="flex: 1.2; min-width: 280px; display: flex; flex-direction: column; justify-content: space-between;">
+3517:            <div>
+3527:            <div style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); padding: 15px; border-radius: 8px;">
+3528:              <div style="display: flex; justify-content: space-between; font-size: 0.825rem; font-weight: bold; margin-bottom: 8px;">
+3532:              <div style="width: 100%; height: 8px; background: rgba(255,255,255,0.1); border-radius: 4px; overflow: hidden; margin-bottom: 6px;">
+3533:                <div style="width: 52.5%; height: 100%; background: linear-gradient(90deg, #a855f7 0%, #c084fc 100%); border-radius: 4px;"></div>
+3535:              <div style="display: flex; justify-content: space-between; font-size: 0.75rem; color: var(--text-light);">
+3548:        <div style="display: grid; grid-template-columns: 1.2fr 1fr; gap: 20px; align-items: start; margin-bottom: 15px;">
+3550:          <div style="background: rgba(255,255,255,0.02); border: 1.2px solid rgba(255,255,255,0.06); padding: 15px; border-radius: 8px; font-size: 0.85rem; line-height: 1.45;">
+3551:            <div style="margin-bottom: 10px; color: #fff; font-weight: bold;">DIRECT BANK TRANSFER</div>
+3553:            <div class="bank-details" style="background: transparent; padding: 0; border: none; box-shadow: none; margin: 0;">
+3555:              <div style="background: rgba(0,0,0,0.2); padding: 8px; border-radius: 6px; display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px;">
+3559:              <div style="background: rgba(0,0,0,0.2); padding: 8px; border-radius: 6px; display: flex; align-items: center; justify-content: space-between;">
+3567:          <div style="text-align: center; background: rgba(255,255,255,0.02); border: 1.2px solid rgba(255,255,255,0.06); padding: 15px; border-radius: 8px;">
+3568:            <div style="margin-bottom: 10px; color: #fff; font-weight: bold; font-size: 0.85rem;">UPI INSTANT PAY</div>
+3569:            <div style="width: 140px; height: 140px; margin: 0 auto 10px auto; background: #fff; padding: 8px; border-radius: 6px; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 10px rgba(0,0,0,0.2);">
+3580:        <div style="background: rgba(212, 175, 55, 0.05); border: 1px dashed rgba(212, 175, 55, 0.25); padding: 12px 15px; border-radius: 8px; display: grid; grid-template-columns: 1fr 1fr; gap: 10px; font-size: 0.8rem; color: var(--text-light);">
+3581:          <div>
+3584:          <div>
+3587:          <div>
+3590:          <div>
+3595:        <div style="margin-top: 15px; text-align: center;">
+3604:    <div class="modal-overlay" id="marriagesSevaModal">
+3605:      <div class="modal-content" style="max-width: 620px; text-align: left; padding: 25px; border-color: #00875a; max-height: 90vh; overflow-y: auto;">
+3608:        <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 5px;">
+3615:        <div style="display: flex; flex-wrap: wrap; gap: 20px; margin-top: 15px; margin-bottom: 20px;">
+3617:          <div style="flex: 1; min-width: 250px;">
+3618:            <div style="position: relative; border-radius: 10px; overflow: hidden; border: 2px solid rgba(249, 115, 22, 0.2); box-shadow: 0 4px 15px rgba(0,0,0,0.3); margin-bottom: 12px;">
+3620:              <div style="position: absolute; bottom: 0; left: 0; right: 0; background: linear-gradient(to top, rgba(0,0,0,0.85), rgba(0,0,0,0)); padding: 12px 10px; text-align: center;">
+3626:            <div style="background: linear-gradient(135deg, #d4af37 0%, #b29023 100%); color: #0c1a30; border-radius: 8px; padding: 10px 14px; text-align: center; font-weight: 800; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.5px; box-shadow: 0 3px 10px rgba(212, 175, 55, 0.25);">
+3632:          <div style="flex: 1.2; min-width: 280px; display: flex; flex-direction: column; justify-content: space-between;">
+3633:            <div>
+3643:            <div style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); padding: 15px; border-radius: 8px;">
+3644:              <div style="display: flex; justify-content: space-between; font-size: 0.825rem; font-weight: bold; margin-bottom: 8px;">
+3648:              <div style="width: 100%; height: 8px; background: rgba(255,255,255,0.1); border-radius: 4px; overflow: hidden; margin-bottom: 6px;">
+3649:                <div style="width: 38%; height: 100%; background: linear-gradient(90deg, #f97316 0%, #fb923c 100%); border-radius: 4px;"></div>
+3651:              <div style="display: flex; justify-content: space-between; font-size: 0.75rem; color: var(--text-light);">
+3664:        <div style="display: grid; grid-template-columns: 1.2fr 1fr; gap: 20px; align-items: start; margin-bottom: 15px;">
+3666:          <div style="background: rgba(255,255,255,0.02); border: 1.2px solid rgba(255,255,255,0.06); padding: 15px; border-radius: 8px; font-size: 0.85rem; line-height: 1.45;">
+3667:            <div style="margin-bottom: 10px; color: #fff; font-weight: bold;">DIRECT BANK TRANSFER</div>
+3669:            <div class="bank-details" style="background: transparent; padding: 0; border: none; box-shadow: none; margin: 0;">
+3671:              <div style="background: rgba(0,0,0,0.2); padding: 8px; border-radius: 6px; display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px;">
+3675:              <div style="background: rgba(0,0,0,0.2); padding: 8px; border-radius: 6px; display: flex; align-items: center; justify-content: space-between;">
+3683:          <div style="text-align: center; background: rgba(255,255,255,0.02); border: 1.2px solid rgba(255,255,255,0.06); padding: 15px; border-radius: 8px;">
+3684:            <div style="margin-bottom: 10px; color: #fff; font-weight: bold; font-size: 0.85rem;">UPI INSTANT PAY</div>
+3685:            <div style="width: 140px; height: 140px; margin: 0 auto 10px auto; background: #fff; padding: 8px; border-radius: 6px; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 10px rgba(0,0,0,0.2);">
+3696:        <div style="background: rgba(212, 175, 55, 0.05); border: 1px dashed rgba(212, 175, 55, 0.25); padding: 12px 15px; border-radius: 8px; display: grid; grid-template-columns: 1fr 1fr; gap: 10px; font-size: 0.8rem; color: var(--text-light);">
+3697:          <div>
+3700:          <div>
+3703:          <div>
+3706:          <div>
+3711:        <div style="margin-top: 15px; text-align: center;">
+3720:    <div class="modal-overlay" id="contributionModal">
+3721:      <div class="modal-content" style="padding: 0; max-width: 600px; overflow-y: auto; max-height: 90vh; position: relative;">
+3723:        <div class="contribution-modal-header" style="background: linear-gradient(135deg, var(--primary) 0%, #1a3c6d 100%); position: relative; overflow: hidden;">
+3738:        <div class="contribution-modal-body" style="background: var(--bg-shade-1);">
+3741:          <div style="display: grid; grid-template-columns: 1fr; gap: 20px; text-align: left;">
+3744:            <div style="background: rgba(0, 0, 0, 0.15); border: 1px solid rgba(212, 175, 55, 0.2); border-radius: 16px; padding: 25px; position: relative;" class="bank-details-card">
+3745:              <div style="display: flex; align-items: center; margin-bottom: 15px; color: var(--secondary);">
+3750:              <div style="display: flex; flex-direction: column; gap: 12px;">
+3751:                <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 8px;">
+3755:                <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 8px;">
+3756:                  <div>
+3762:                <div style="display: flex; justify-content: space-between; align-items: center;">
+3763:                  <div>
+3773:            <div style="background: rgba(0, 0, 0, 0.15); border: 1px solid rgba(212, 175, 55, 0.2); border-radius: 16px; padding: 25px;" class="upi-section-card">
+3774:              <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px;">
+3775:                <div style="display: flex; align-items: center; color: var(--secondary);">
+3781:              <div class="amount-buttons" id="amountButtons" style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 25px;">
+3788:              <div class="upi-qr-wrapper">
+3789:                <div class="qr-container" style="margin: 0; flex-shrink: 0; background: #fff; padding: 8px; border-radius: 12px; width: 120px; height: 120px; display: flex; align-items: center; justify-content: center;">
+3799:                <div style="flex-grow: 1; display: flex; flex-direction: column; justify-content: center;">
+3800:                  <div style="color: var(--text-light); font-size: 0.85rem; margin-bottom: 5px;">Scan QR or copy UPI ID</div>
+3803:                  <div class="upi-qr-actions">
+3819:          <div style="background: rgba(0, 0, 0, 0.15); border: 1px solid rgba(212, 175, 55, 0.2); border-radius: 16px; padding: 25px; margin-top: 20px;">
+3820:            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; cursor: pointer;" onclick="document.getElementById('upiSyncFormContainer').style.display = document.getElementById('upiSyncFormContainer').style.display === 'none' ? 'block' : 'none';">
+3821:              <div style="display: flex; align-items: center; color: var(--secondary);">
+3823:                <div>
+3831:            <div id="upiSyncFormContainer" style="display: none; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 15px;">
+3835:                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+3849:              <div id="upiSyncMsg" style="display: none; margin-top: 15px; font-size: 0.9rem; padding: 10px; border-radius: 8px; background: rgba(0,0,0,0.2);"></div>
+3921:          <div style="text-align: center; margin-top: 25px; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.05);">
+4816:                htmlContent += `<div style="margin-top: 15px; border-top: 1px solid rgba(0,0,0,0.1); padding-top: 10px;">
+4831:                htmlContent += `<div style="margin-top: 10px; color: var(--text-dark);">No registered donors found for this blood group, but our sevadars have been alerted!</div>`;

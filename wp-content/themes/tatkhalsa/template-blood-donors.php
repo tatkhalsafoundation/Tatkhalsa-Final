@@ -85,15 +85,27 @@ $donors_query = new WP_Query( $args );
 
 /* OTP Button Custom Dark Mode Styling */
 [data-theme="dark"] #sendOtpBtn {
-    background: #FFCC00 !important; /* Bright Gold Box */
-    color: #111111 !important; /* Dark Text */
-    border: 1px solid #D4AF37 !important;
+    background: #ff334b !important; /* Primary Red */
+    color: #ffffff !important; /* White Text */
+    border: 1px solid #ff334b !important;
 }
 
 [data-theme="dark"] #verifyOtpBtn {
-    background: #25D366 !important; /* Bright Green Box */
-    color: #111111 !important; /* Dark Text */
-    border: 1px solid #10b981 !important;
+    background: #ff334b !important; /* Primary Red */
+    color: #ffffff !important; /* White Text */
+    border: 1px solid #ff334b !important;
+}
+
+[data-theme="light"] #sendOtpBtn {
+    background: #ff334b !important;
+    color: #ffffff !important;
+    border: 1px solid #ff334b !important;
+}
+
+[data-theme="light"] #verifyOtpBtn {
+    background: #ff334b !important;
+    color: #ffffff !important;
+    border: 1px solid #ff334b !important;
 }
 
 [data-theme="dark"] .modal-close {
@@ -106,7 +118,7 @@ $donors_query = new WP_Query( $args );
         
         <div style="text-align: center; margin-bottom: 40px;">
             <h1 style="color: var(--text-dark); font-size: 2.5rem; margin-bottom: 10px;">Blood On Call</h1>
-            <p style="color: var(--text-light); font-size: 1.1rem; max-width: 600px; margin: 0 auto;">
+            <p class="scroll-reveal" style="color: var(--text-light); font-size: 1.1rem; max-width: 600px; margin: 0 auto;">
                 Connect with verified blood donors in your area or register yourself to save lives.
             </p>
             <div style="display: inline-flex; align-items: center; justify-content: center; gap: 8px; margin-top: 18px; padding: 6px 14px; background: rgba(255, 51, 75, 0.08); border: 1px solid rgba(255, 51, 75, 0.25); border-radius: 20px; box-shadow: 0 4px 12px rgba(255, 51, 75, 0.05);">
@@ -312,53 +324,6 @@ $donors_query = new WP_Query( $args );
             </div>
         </div>
 
-        <div style="background: var(--bg-dark); padding: 20px; border-radius: 12px; margin-bottom: 40px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); border: 1px solid rgba(0,0,0,0.05);">
-            <form method="GET" action="" style="display: flex; flex-wrap: wrap; gap: 15px; align-items: center;">
-                <div style="flex: 1; min-width: 200px;">
-                    <label style="display: block; margin-bottom: 8px; font-size: 0.9rem; font-weight: bold; color: var(--text-dark);">Blood Group</label>
-                    <select name="blood_group" style="width: 100%; padding: 10px; border-radius: 6px; border: 1px solid rgba(0,0,0,0.1); background: #fff; color: #333;">
-                        <option value="">All Blood Groups</option>
-                        <option value="A+" <?php echo (isset($_GET['blood_group']) && $_GET['blood_group'] == 'A+') ? 'selected' : ''; ?>>A+</option>
-                        <option value="A-" <?php echo (isset($_GET['blood_group']) && $_GET['blood_group'] == 'A-') ? 'selected' : ''; ?>>A-</option>
-                        <option value="B+" <?php echo (isset($_GET['blood_group']) && $_GET['blood_group'] == 'B+') ? 'selected' : ''; ?>>B+</option>
-                        <option value="B-" <?php echo (isset($_GET['blood_group']) && $_GET['blood_group'] == 'B-') ? 'selected' : ''; ?>>B-</option>
-                        <option value="O+" <?php echo (isset($_GET['blood_group']) && $_GET['blood_group'] == 'O+') ? 'selected' : ''; ?>>O+</option>
-                        <option value="O-" <?php echo (isset($_GET['blood_group']) && $_GET['blood_group'] == 'O-') ? 'selected' : ''; ?>>O-</option>
-                        <option value="AB+" <?php echo (isset($_GET['blood_group']) && $_GET['blood_group'] == 'AB+') ? 'selected' : ''; ?>>AB+</option>
-                        <option value="AB-" <?php echo (isset($_GET['blood_group']) && $_GET['blood_group'] == 'AB-') ? 'selected' : ''; ?>>AB-</option>
-                    </select>
-                </div>
-                <div style="flex: 1; min-width: 150px;">
-                    <label style="display: block; margin-bottom: 8px; font-size: 0.9rem; font-weight: bold; color: var(--text-dark);">Country</label>
-                    <select name="country" id="donorCountry" style="width: 100%; padding: 10px; border-radius: 6px; border: 1px solid rgba(0,0,0,0.1); background: #fff; color: #333;" onchange="updateStates()">
-                        <option value="">Any Country</option>
-                    </select>
-                </div>
-                <div style="flex: 1; min-width: 150px;">
-                    <label style="display: block; margin-bottom: 8px; font-size: 0.9rem; font-weight: bold; color: var(--text-dark);">State</label>
-                    <select name="state" id="donorState" style="width: 100%; padding: 10px; border-radius: 6px; border: 1px solid rgba(0,0,0,0.1); background: #fff; color: #333;" onchange="updateDistricts()">
-                        <option value="">Any State</option>
-                    </select>
-                </div>
-                <div style="flex: 1; min-width: 150px;">
-                    <label style="display: block; margin-bottom: 8px; font-size: 0.9rem; font-weight: bold; color: var(--text-dark);">District / City</label>
-                    <select name="district" id="donorDistrict" style="width: 100%; padding: 10px; border-radius: 6px; border: 1px solid rgba(0,0,0,0.1); background: #fff; color: #333;">
-                        <option value="">Any District</option>
-                    </select>
-                </div>
-                <div style="flex: 2; min-width: 250px;">
-                    <label style="display: block; margin-bottom: 8px; font-size: 0.9rem; font-weight: bold; color: var(--text-dark);">Or Type Location</label>
-                    <input type="text" name="address" value="<?php echo isset($_GET['address']) ? esc_attr($_GET['address']) : ''; ?>" placeholder="Area, Zip Code, etc" style="width: 100%; padding: 10px; border-radius: 6px; border: 1px solid rgba(0,0,0,0.1); background: #fff; color: #333;">
-                </div>
-                <div style="margin-top: 28px;">
-                    <button type="submit" style="background: var(--primary); color: var(--white); border: none; padding: 10px 20px; border-radius: 6px; font-weight: bold; cursor: pointer;">Search</button>
-                    <?php if ( isset($_GET['blood_group']) || isset($_GET['address']) ): ?>
-                        <a href="<?php echo esc_url( get_permalink() ); ?>" style="margin-left: 10px; color: var(--text-light); text-decoration: none; font-size: 0.9rem;">Clear</a>
-                    <?php endif; ?>
-                </div>
-            </form>
-        </div>
-
         <div id="donorListAnchor">
         <?php if ( $donors_query->have_posts() ) : ?>
             <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 15px; max-width: 800px; margin: 0 auto;">
@@ -371,7 +336,7 @@ $donors_query = new WP_Query( $args );
                     $availability = get_post_meta( $post_id, 'availability_status', true );
                     if ( ! $availability ) $availability = 'Available Now';
                 ?>
-                    <div style="background: var(--bg-dark); border-radius: 10px; padding: 15px; box-shadow: 0 3px 10px rgba(0,0,0,0.05); position: relative; border-top: 3px solid #ff334b;">
+                    <div class="scroll-reveal" style="background: var(--bg-dark); border-radius: 10px; padding: 15px; box-shadow: 0 3px 10px rgba(0,0,0,0.05); position: relative; border-top: 3px solid #ff334b;">
                         <div style="position: absolute; top: 15px; right: 15px; background: #ff334b; color: #fff; font-weight: bold; padding: 4px 10px; border-radius: 15px; font-size: 0.9rem; box-shadow: 0 2px 6px rgba(255,51,75,0.4);">
                             <?php echo esc_html( $bg ); ?>
                         </div>
@@ -448,6 +413,49 @@ $donors_query = new WP_Query( $args );
         <?php wp_reset_postdata(); ?>
         </div>
 
+        <div class="scroll-reveal" style="background: var(--bg-dark); padding: 20px; border-radius: 12px; margin-bottom: 40px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); border: 1px solid rgba(0,0,0,0.05);">
+            <form method="GET" action="" style="display: flex; flex-wrap: wrap; gap: 15px; align-items: center;">
+                <div style="flex: 1; min-width: 200px;">
+                    <label style="display: block; margin-bottom: 8px; font-size: 0.9rem; font-weight: bold; color: var(--text-dark);">Blood Group</label>
+                    <select name="blood_group" style="width: 100%; padding: 10px; border-radius: 6px; border: 1px solid rgba(0,0,0,0.1); background: #fff; color: #333;">
+                        <option value="">All Blood Groups</option>
+                        <option value="A+" <?php echo (isset($_GET['blood_group']) && $_GET['blood_group'] == 'A+') ? 'selected' : ''; ?>>A+</option>
+                        <option value="A-" <?php echo (isset($_GET['blood_group']) && $_GET['blood_group'] == 'A-') ? 'selected' : ''; ?>>A-</option>
+                        <option value="B+" <?php echo (isset($_GET['blood_group']) && $_GET['blood_group'] == 'B+') ? 'selected' : ''; ?>>B+</option>
+                        <option value="B-" <?php echo (isset($_GET['blood_group']) && $_GET['blood_group'] == 'B-') ? 'selected' : ''; ?>>B-</option>
+                        <option value="O+" <?php echo (isset($_GET['blood_group']) && $_GET['blood_group'] == 'O+') ? 'selected' : ''; ?>>O+</option>
+                        <option value="O-" <?php echo (isset($_GET['blood_group']) && $_GET['blood_group'] == 'O-') ? 'selected' : ''; ?>>O-</option>
+                        <option value="AB+" <?php echo (isset($_GET['blood_group']) && $_GET['blood_group'] == 'AB+') ? 'selected' : ''; ?>>AB+</option>
+                        <option value="AB-" <?php echo (isset($_GET['blood_group']) && $_GET['blood_group'] == 'AB-') ? 'selected' : ''; ?>>AB-</option>
+                    </select>
+                </div>
+                <div style="flex: 1; min-width: 150px;">
+                    <label style="display: block; margin-bottom: 8px; font-size: 0.9rem; font-weight: bold; color: var(--text-dark);">Country</label>
+                    <select name="country" id="donorCountry" style="width: 100%; padding: 10px; border-radius: 6px; border: 1px solid rgba(0,0,0,0.1); background: #fff; color: #333;" onchange="updateStates()">
+                        <option value="">Any Country</option>
+                    </select>
+                </div>
+                <div style="flex: 1; min-width: 150px;">
+                    <label style="display: block; margin-bottom: 8px; font-size: 0.9rem; font-weight: bold; color: var(--text-dark);">State</label>
+                    <select name="state" id="donorState" style="width: 100%; padding: 10px; border-radius: 6px; border: 1px solid rgba(0,0,0,0.1); background: #fff; color: #333;" onchange="updateDistricts()">
+                        <option value="">Any State</option>
+                    </select>
+                </div>
+                <div style="flex: 1; min-width: 150px;">
+                    <label style="display: block; margin-bottom: 8px; font-size: 0.9rem; font-weight: bold; color: var(--text-dark);">District / City</label>
+                    <select name="district" id="donorDistrict" style="width: 100%; padding: 10px; border-radius: 6px; border: 1px solid rgba(0,0,0,0.1); background: #fff; color: #333;">
+                        <option value="">Any District</option>
+                    </select>
+                </div>
+                <div style="margin-top: 28px;">
+                    <button type="submit" style="background: var(--primary); color: var(--white); border: none; padding: 10px 20px; border-radius: 6px; font-weight: bold; cursor: pointer;">Search</button>
+                    <?php if ( isset($_GET['blood_group']) ): ?>
+                        <a href="<?php echo esc_url( get_permalink() ); ?>" style="margin-left: 10px; color: var(--text-light); text-decoration: none; font-size: 0.9rem;">Clear</a>
+                    <?php endif; ?>
+                </div>
+            </form>
+        </div>
+
         <!-- Gurbani Quote Section -->
         <section class="gurbani-quote-section scroll-reveal" style="background: transparent; border: none; padding: 40px 0 20px; margin-top: 20px;">
           <div class="gurbani-quote-container">
@@ -459,7 +467,7 @@ $donors_query = new WP_Query( $args );
         </section>
 
         <!-- Disclaimer Section -->
-        <div style="margin-top: 60px; padding: 25px; background: rgba(0,0,0,0.03); border-radius: 12px; border-left: 4px solid #ff334b; font-size: 0.85rem; color: var(--text-light); line-height: 1.6;">
+        <div class="scroll-reveal" style="margin-top: 60px; padding: 25px; background: rgba(0,0,0,0.03); border-radius: 12px; border-left: 4px solid #ff334b; font-size: 0.85rem; color: var(--text-light); line-height: 1.6;">
             <strong>Disclaimer:</strong> Tatkhalsa Foundation operates purely as a voluntary community coordination network. We do not run physical blood banks or commercialize medical supplies. All verifications of donor eligibility must be independently validated by certified hospital practitioners at the time of transfusion.
         </div>
 
@@ -549,16 +557,7 @@ $donors_query = new WP_Query( $args );
         <textarea name="address" required rows="2" placeholder="Street, Area, Pin Code" style="width: 100%; padding: 12px; border-radius: 6px; border: 1px solid rgba(0,0,0,0.2); background: #fff; color: #333;"></textarea>
       </div>
 
-      <div style="margin-bottom: 15px;">
-        <label style="display: block; margin-bottom: 8px; color: var(--text-dark); font-weight: bold;">Google Maps Link (Optional)</label>
-        <div style="display: flex; gap: 10px;">
-          <input type="url" name="mapLocation" id="mapLocation" placeholder="Paste link or click icon to get location" style="width: 100%; padding: 12px; border-radius: 6px; border: 1px solid rgba(0,0,0,0.2); background: #fff; color: #333;">
-          <button type="button" onclick="getCurrentLocation()" style="background: rgba(0,0,0,0.05); border: 1px solid rgba(0,0,0,0.2); border-radius: 6px; padding: 0 15px; cursor: pointer; color: var(--text-dark);" title="Get Current Location">
-             📍
-          </button>
-        </div>
-        <small id="locStatus" style="color: var(--text-light); font-size: 0.85rem; display: block; margin-top: 5px;"></small>
-      </div>
+
 
       <div style="margin-bottom: 25px;">
         <label style="display: block; margin-bottom: 8px; color: var(--text-dark); font-weight: bold;">Availability Status</label>
@@ -1464,6 +1463,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
     window.updateStates = function() {
         if (!stateSelect) return;
+        const currentLang = localStorage.getItem('tatkhalsa_lang');
         stateSelect.innerHTML = '<option value="">Any State</option>';
         if (districtSelect) districtSelect.innerHTML = '<option value="">Any District</option>';
         const countryName = countrySelect.value;
@@ -1486,10 +1486,15 @@ document.addEventListener("DOMContentLoaded", function() {
                 });
             }
         }
+        if (currentLang === 'pa' && typeof translateNode === 'function') {
+            translateNode(stateSelect, 'pa');
+            if (districtSelect) translateNode(districtSelect, 'pa');
+        }
     };
 
     window.updateDistricts = async function() {
         if (!districtSelect) return;
+        const currentLang = localStorage.getItem('tatkhalsa_lang');
         districtSelect.innerHTML = '<option value="">Any District</option>';
         const country = countrySelect.value;
         const state = stateSelect.value;
@@ -1504,6 +1509,7 @@ document.addEventListener("DOMContentLoaded", function() {
                     districtSelect.appendChild(option);
                 });
             }
+            if (currentLang === 'pa' && typeof translateNode === 'function') translateNode(districtSelect, 'pa');
             return;
         }
 
@@ -1526,6 +1532,7 @@ document.addEventListener("DOMContentLoaded", function() {
             } catch (e) {
                 console.error("Error fetching cities", e);
             }
+            if (currentLang === 'pa' && typeof translateNode === 'function') translateNode(districtSelect, 'pa');
         }
     };
 
@@ -1541,10 +1548,13 @@ document.addEventListener("DOMContentLoaded", function() {
         otpStatus.style.color = '#ff9f43';
         
         try {
-            const res = await fetch('/api/admin/send-otp', {
+            const params = new URLSearchParams();
+            params.append('action', 'send_whatsapp_otp');
+            params.append('contact', contact);
+            const res = await fetch("<?php echo esc_url(admin_url('admin-ajax.php')); ?>", {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ contact })
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                body: params.toString()
             });
             const data = await res.json();
             if (data.success) {
@@ -1571,10 +1581,14 @@ document.addEventListener("DOMContentLoaded", function() {
         const otpStatus = document.getElementById('otpStatus');
         
         try {
-            const res = await fetch('/api/admin/verify-otp', {
+            const params = new URLSearchParams();
+            params.append('action', 'verify_whatsapp_otp');
+            params.append('contact', contact);
+            params.append('otp', otpVal);
+            const res = await fetch("<?php echo esc_url(admin_url('admin-ajax.php')); ?>", {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ contact, otp: otpVal })
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                body: params.toString()
             });
             const data = await res.json();
             if (data.success) {
@@ -1595,6 +1609,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
     window.updateRegStates = function() {
         if (!regStateSelect) return;
+        const currentLang = localStorage.getItem('tatkhalsa_lang');
         regStateSelect.innerHTML = '<option value="">Select State</option>';
         if (regDistrictSelect) regDistrictSelect.innerHTML = '<option value="">Select District</option>';
         const countryName = regCountrySelect.value;
@@ -1617,10 +1632,15 @@ document.addEventListener("DOMContentLoaded", function() {
                 });
             }
         }
+        if (currentLang === 'pa' && typeof translateNode === 'function') {
+            translateNode(regStateSelect, 'pa');
+            if (regDistrictSelect) translateNode(regDistrictSelect, 'pa');
+        }
     };
 
     window.updateRegDistricts = async function() {
         if (!regDistrictSelect) return;
+        const currentLang = localStorage.getItem('tatkhalsa_lang');
         regDistrictSelect.innerHTML = '<option value="">Select District</option>';
         const country = regCountrySelect.value;
         const state = regStateSelect.value;
@@ -1635,6 +1655,7 @@ document.addEventListener("DOMContentLoaded", function() {
                     regDistrictSelect.appendChild(option);
                 });
             }
+            if (currentLang === 'pa' && typeof translateNode === 'function') translateNode(regDistrictSelect, 'pa');
             return;
         }
 
@@ -1657,6 +1678,7 @@ document.addEventListener("DOMContentLoaded", function() {
             } catch (e) {
                 console.error("Error fetching cities", e);
             }
+            if (currentLang === 'pa' && typeof translateNode === 'function') translateNode(regDistrictSelect, 'pa');
         }
     };
 
@@ -2410,7 +2432,7 @@ document.addEventListener("DOMContentLoaded", function() {
                             ` : '';
 
                             anchor.innerHTML += `
-                                <div style="background: var(--bg-dark); border-radius: 10px; padding: 15px; box-shadow: 0 3px 10px rgba(0,0,0,0.05); position: relative; border-top: 3px solid #ff334b;">
+                                <div class="scroll-reveal" style="background: var(--bg-dark); border-radius: 10px; padding: 15px; box-shadow: 0 3px 10px rgba(0,0,0,0.05); position: relative; border-top: 3px solid #ff334b;">
                                     <div style="position: absolute; top: 15px; right: 15px; background: #ff334b; color: #fff; font-weight: bold; padding: 4px 10px; border-radius: 15px; font-size: 0.9rem; box-shadow: 0 2px 6px rgba(255,51,75,0.4);">
                                         ${donor.bloodGroup}
                                     </div>
@@ -2430,6 +2452,17 @@ document.addEventListener("DOMContentLoaded", function() {
                                 </div>
                             `;
                         });
+                    }
+                    
+                    // Re-trigger scroll reveal for newly added elements
+                    if (typeof reveal === 'function') {
+                        setTimeout(reveal, 50);
+                    }
+                    
+                    // Apply translations to newly loaded content
+                    const currentLang = localStorage.getItem('tatkhalsa_lang');
+                    if (currentLang === 'pa' && typeof translateNode === 'function') {
+                        translateNode(anchor, 'pa');
                     }
                 }
             }

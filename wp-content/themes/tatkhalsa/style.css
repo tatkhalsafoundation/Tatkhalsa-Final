@@ -10,7 +10,7 @@ Text Domain: tatkhalsa-theme
 Tags: clean, gold, navy, ngo, sikh, seva, non-profit, responsive, custom-logo, translation-ready
 */
 
-@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;800&family=Inter:wght@400;500;600;700;800&family=Playfair+Display:wght@600;700;800&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;800&family=Inter:wght@400;500;600;700;800&family=Playfair+Display:wght@600;700;800&display=swap");
 
 /* CSS Variables matching Tatkhalsa branding */
 :root {
@@ -24,21 +24,39 @@ Tags: clean, gold, navy, ngo, sikh, seva, non-profit, responsive, custom-logo, t
   --accent-orange: #ea8545; /* Bright Orange */
   --text-dark: #fdf7e7; /* Cream colour for text in dark mode */
   --text-light: #c4b9a3; /* Darker cream for secondary text */
-  --bg-dark: rgba(8, 17, 35, 0.76); /* Deep Navy Background with elegant transparency for liquid visual depth */
-  --bg-light: rgba(12, 25, 51, 0.84); /* Slightly lighter Navy for cards with elegant transparency */
+  --bg-dark: rgba(
+    8,
+    17,
+    35,
+    0.76
+  ); /* Deep Navy Background with elegant transparency for liquid visual depth */
+  --bg-light: rgba(
+    12,
+    25,
+    51,
+    0.84
+  ); /* Slightly lighter Navy for cards with elegant transparency */
   --bg-shade-1: rgba(5, 10, 21, 0.88);
   --bg-shade-2: rgba(8, 17, 35, 0.76);
   --bg-shade-3: rgba(12, 25, 51, 0.78);
-  --bg-shade-4: rgba(16, 33, 66, 0.80);
-  --bg-shade-5: rgba(20, 42, 84, 0.80);
+  --bg-shade-4: rgba(16, 33, 66, 0.8);
+  --bg-shade-5: rgba(20, 42, 84, 0.8);
   --white: #183366; /* Dark color for formerly white cards */
   --cream: #fdf7e7;
   --font-sans: "Inter", sans-serif;
   --font-serif: "Cinzel", "Playfair Display", serif;
   --body-bg: #040914;
-  --hero-bg: linear-gradient(135deg, rgba(10, 46, 109, 0.98), rgba(5, 26, 64, 0.95));
+  --hero-bg: linear-gradient(
+    135deg,
+    rgba(10, 46, 109, 0.98),
+    rgba(5, 26, 64, 0.95)
+  );
   --hero-text: var(--cream);
-  --hero-overlay-bg: linear-gradient(135deg, rgba(10, 20, 40, 0.85), rgba(5, 10, 20, 0.95));
+  --hero-overlay-bg: linear-gradient(
+    135deg,
+    rgba(10, 20, 40, 0.85),
+    rgba(5, 10, 20, 0.95)
+  );
 }
 
 [data-theme="light"] {
@@ -46,18 +64,26 @@ Tags: clean, gold, navy, ngo, sikh, seva, non-profit, responsive, custom-logo, t
   --text-dark: #0a2342; /* Main text */
   --text-light: #3f5d82; /* secondary text */
   --bg-dark: rgba(220, 240, 255, 0.76); /* sky blue card background */
-  --bg-light: rgba(235, 248, 255, 0.84); 
+  --bg-light: rgba(235, 248, 255, 0.84);
   --bg-shade-1: rgba(210, 235, 255, 0.88);
   --bg-shade-2: rgba(225, 242, 255, 0.76);
   --bg-shade-3: rgba(240, 250, 255, 0.78);
-  --bg-shade-4: rgba(245, 252, 255, 0.80);
-  --bg-shade-5: rgba(255, 255, 255, 0.80);
-  --white: #ffffff; 
+  --bg-shade-4: rgba(245, 252, 255, 0.8);
+  --bg-shade-5: rgba(255, 255, 255, 0.8);
+  --white: #ffffff;
   --cream: #081a30; /* Used as opposite of cream in light mode for borders/buttons */
   --body-bg: #e0f2fe; /* solid light sky blue */
-  --hero-bg: linear-gradient(135deg, rgba(220, 240, 255, 0.92), rgba(235, 248, 255, 0.96));
+  --hero-bg: linear-gradient(
+    135deg,
+    rgba(220, 240, 255, 0.92),
+    rgba(235, 248, 255, 0.96)
+  );
   --hero-text: var(--text-dark);
-  --hero-overlay-bg: linear-gradient(135deg, rgba(220, 240, 255, 0.85), rgba(235, 248, 255, 0.95));
+  --hero-overlay-bg: linear-gradient(
+    135deg,
+    rgba(220, 240, 255, 0.85),
+    rgba(235, 248, 255, 0.95)
+  );
 }
 
 /* Light Theme Inline Style Overrides */
@@ -88,22 +114,23 @@ Tags: clean, gold, navy, ngo, sikh, seva, non-profit, responsive, custom-logo, t
 }
 
 [data-theme="light"] [style*="background: rgba(0,0,0,0.2)"] {
-  background: rgba(0,0,0,0.05) !important;
+  background: rgba(0, 0, 0, 0.05) !important;
 }
 
 [data-theme="light"] [style*="rgba(255,255,255,0.08)"] {
-  border-color: rgba(0,0,0,0.1) !important;
+  border-color: rgba(0, 0, 0, 0.1) !important;
 }
 
 [data-theme="light"] [style*="rgba(255,255,255,0.06)"] {
-  border-color: rgba(0,0,0,0.1) !important;
+  border-color: rgba(0, 0, 0, 0.1) !important;
 }
 
 [data-theme="light"] .campaign-overlay {
-  background: linear-gradient(to top, 
-    rgba(235, 248, 255, 0.98) 0%, 
-    rgba(235, 248, 255, 0.85) 60%, 
-    rgba(235, 248, 255, 0.4) 85%, 
+  background: linear-gradient(
+    to top,
+    rgba(235, 248, 255, 0.98) 0%,
+    rgba(235, 248, 255, 0.85) 60%,
+    rgba(235, 248, 255, 0.4) 85%,
     rgba(235, 248, 255, 0) 100%
   );
   color: var(--text-dark);
@@ -146,7 +173,12 @@ Tags: clean, gold, navy, ngo, sikh, seva, non-profit, responsive, custom-logo, t
 [data-theme="light"] .gurbani-ornament,
 [data-theme="light"] .gurbani-gurmukhi,
 [data-theme="light"] .gurbani-english {
-  background: linear-gradient(to right, #b5952f 0%, #7a651f 50%, #b5952f 100%) !important;
+  background: linear-gradient(
+    to right,
+    #b5952f 0%,
+    #7a651f 50%,
+    #b5952f 100%
+  ) !important;
   background-size: 200% auto !important;
   -webkit-background-clip: text !important;
   background-clip: text !important;
@@ -170,7 +202,8 @@ Tags: clean, gold, navy, ngo, sikh, seva, non-profit, responsive, custom-logo, t
 }
 
 [data-theme="light"] .stats-section::before {
-  background: url('data:image/svg+xml;utf8,<svg width="20" height="20" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><circle cx="2" cy="2" r="1" fill="rgba(10,35,66,0.15)"/></svg>') repeat;
+  background: url('data:image/svg+xml;utf8,<svg width="20" height="20" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><circle cx="2" cy="2" r="1" fill="rgba(10,35,66,0.15)"/></svg>')
+    repeat;
 }
 
 * {
@@ -179,7 +212,8 @@ Tags: clean, gold, navy, ngo, sikh, seva, non-profit, responsive, custom-logo, t
   box-sizing: border-box;
 }
 
-html, body {
+html,
+body {
   overflow-x: clip;
   max-width: 100%;
 }
@@ -484,7 +518,11 @@ h6 {
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: width 0.4s cubic-bezier(0.165, 0.84, 0.44, 1), height 0.4s cubic-bezier(0.165, 0.84, 0.44, 1), margin 0.4s cubic-bezier(0.165, 0.84, 0.44, 1), background 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+  transition:
+    width 0.4s cubic-bezier(0.165, 0.84, 0.44, 1),
+    height 0.4s cubic-bezier(0.165, 0.84, 0.44, 1),
+    margin 0.4s cubic-bezier(0.165, 0.84, 0.44, 1),
+    background 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
   overflow: visible;
   flex-shrink: 0;
 }
@@ -495,7 +533,7 @@ body:has(.hero-gurbani-logo) .header-logo-badge {
   transform: scale(0.7);
 }
 .header-logo-badge::after {
-  content: '';
+  content: "";
   position: absolute;
   width: 100%;
   height: 100%;
@@ -574,7 +612,11 @@ body.scrolled .header-logo-img-new {
 /* Graceful progressive enhancement for browsers supporting text clippings */
 @supports (-webkit-background-clip: text) or (background-clip: text) {
   .logo-text-up {
-    background: linear-gradient(135deg, var(--secondary) 0%, var(--primary) 100%);
+    background: linear-gradient(
+      135deg,
+      var(--secondary) 0%,
+      var(--primary) 100%
+    );
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -693,8 +735,65 @@ body.scrolled .logo-stack {
   box-shadow: 0 4px 15px rgba(209, 61, 82, 0.35);
 }
 .header-donate-btn:hover {
-  background: linear-gradient(135deg, #ff5d73 0%, var(--accent-red) 100%) !important;
+  background: linear-gradient(
+    135deg,
+    #ff5d73 0%,
+    var(--accent-red) 100%
+  ) !important;
   box-shadow: 0 6px 20px rgba(209, 61, 82, 0.55);
+}
+.lang-selector-desktop {
+  display: flex;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  padding: 2px;
+  gap: 2px;
+}
+
+[data-theme="light"] .lang-selector-desktop {
+  background: rgba(0, 0, 0, 0.05);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.header-lang-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: transparent;
+  color: rgba(255, 255, 255, 0.6);
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-family: var(--font-sans);
+}
+
+.header-lang-btn:hover {
+  color: #fff;
+}
+
+.header-lang-btn.active {
+  background: var(--secondary);
+  color: #000 !important;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+[data-theme="light"] .header-lang-btn {
+  color: rgba(0, 0, 0, 0.5);
+}
+
+[data-theme="light"] .header-lang-btn:hover {
+  color: #000;
+}
+
+[data-theme="light"] .header-lang-btn.active {
+  background: var(--primary);
+  color: #ffffff !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 body.scrolled .header-cta-btn {
   padding: 6px 14px;
@@ -707,7 +806,8 @@ body.scrolled .header-cta-btn {
   flex: 1;
   justify-content: center;
 }
-.nav-links a, .nav-links li a {
+.nav-links a,
+.nav-links li a {
   text-decoration: none;
   color: var(--text-dark);
   font-family: var(--font-sans);
@@ -720,8 +820,9 @@ body.scrolled .header-cta-btn {
   position: relative;
   transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
 }
-.nav-links a::after, .nav-links li a::after {
-  content: '';
+.nav-links a::after,
+.nav-links li a::after {
+  content: "";
   position: absolute;
   bottom: 0;
   left: 16px;
@@ -731,11 +832,13 @@ body.scrolled .header-cta-btn {
   transform: scaleX(0);
   transition: transform 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
 }
-.nav-links a:hover, .nav-links li a:hover {
+.nav-links a:hover,
+.nav-links li a:hover {
   color: var(--cream);
   background: rgba(255, 255, 255, 0.03);
 }
-.nav-links a:hover::after, .nav-links li a:hover::after {
+.nav-links a:hover::after,
+.nav-links li a:hover::after {
   transform: scaleX(1);
 }
 /* WordPress dynamic menu item alignment */
@@ -805,7 +908,8 @@ body.scrolled .header-cta-btn {
 .custom-select-wrapper.open .custom-select-btn.icon-only-btn .select-chevron {
   transform: rotate(180deg);
 }
-.custom-select-btn:hover, .custom-select-btn:focus {
+.custom-select-btn:hover,
+.custom-select-btn:focus {
   background: rgba(212, 175, 55, 0.08);
   border-color: var(--secondary);
   box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3);
@@ -843,7 +947,9 @@ body.scrolled .header-cta-btn {
   opacity: 0;
   transform: translateY(12px);
   pointer-events: none;
-  transition: opacity 0.25s cubic-bezier(0.165, 0.84, 0.44, 1), transform 0.25s cubic-bezier(0.165, 0.84, 0.44, 1);
+  transition:
+    opacity 0.25s cubic-bezier(0.165, 0.84, 0.44, 1),
+    transform 0.25s cubic-bezier(0.165, 0.84, 0.44, 1);
 }
 .custom-select-wrapper.open .custom-select-dropdown {
   opacity: 1;
@@ -1119,7 +1225,12 @@ section {
   background: rgba(5, 10, 20, 0.85);
 }
 [data-theme="light"] .about-hero-overlay {
-  background: rgba(220, 240, 255, 0.85); /* Light blue tint matching the theme */
+  background: rgba(
+    220,
+    240,
+    255,
+    0.85
+  ); /* Light blue tint matching the theme */
 }
 .about-grid {
   display: grid;
@@ -1146,11 +1257,7 @@ section {
   left: 0;
   width: 100%;
   height: 100%;
-  background: linear-gradient(
-    to right,
-    rgba(212, 175, 55, 0.2),
-    transparent
-  );
+  background: linear-gradient(to right, rgba(212, 175, 55, 0.2), transparent);
   pointer-events: none;
 }
 .about-image img {
@@ -1169,11 +1276,17 @@ section {
   line-height: 1.8;
 }
 
-[data-theme="light"] section#about:nth-of-type(2) > div:nth-of-type(2) > p:nth-of-type(1) {
-    color: #060034 !important;
+[data-theme="light"]
+  section#about:nth-of-type(2)
+  > div:nth-of-type(2)
+  > p:nth-of-type(1) {
+  color: #060034 !important;
 }
-[data-theme="light"] section#about:nth-of-type(2) > div:nth-of-type(2) > h2:nth-of-type(1) {
-    color: #060034 !important;
+[data-theme="light"]
+  section#about:nth-of-type(2)
+  > div:nth-of-type(2)
+  > h2:nth-of-type(1) {
+  color: #060034 !important;
 }
 
 /* What We Do Services */
@@ -1381,11 +1494,7 @@ section {
 /* Stats */
 .stats-section {
   background:
-    linear-gradient(
-      135deg,
-      rgba(10, 46, 109, 0.98),
-      rgba(5, 26, 64, 0.95)
-    ),
+    linear-gradient(135deg, rgba(10, 46, 109, 0.98), rgba(5, 26, 64, 0.95)),
     url("https://images.unsplash.com/photo-1543332143-4e8c27e3256f?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80")
       center/cover;
   background-attachment: fixed;
@@ -1472,11 +1581,7 @@ section {
   left: 0;
   width: 100%;
   height: 100%;
-  background: linear-gradient(
-    to top,
-    rgba(10, 46, 109, 0.9),
-    transparent
-  );
+  background: linear-gradient(to top, rgba(10, 46, 109, 0.9), transparent);
   opacity: 0;
   transition: opacity 0.3s ease;
   display: flex;
@@ -1646,7 +1751,9 @@ footer .container {
   overflow-y: auto;
   text-align: center;
   position: relative;
-  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5), 0 0 40px rgba(212, 175, 55, 0.1);
+  box-shadow:
+    0 25px 50px -12px rgba(0, 0, 0, 0.5),
+    0 0 40px rgba(212, 175, 55, 0.1);
   animation: modalEnter 0.5s cubic-bezier(0.165, 0.84, 0.44, 1);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
@@ -1805,6 +1912,52 @@ footer .container {
   gap: 10px;
 }
 
+/* Floating language toggle button */
+.lang-toggle-btn {
+  position: fixed;
+  bottom: calc(30px + var(--footer-push, 0px));
+  left: 30px;
+  width: 50px;
+  height: 50px;
+  background: var(--bg-shade-2);
+  color: var(--cream);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 99;
+  transition: background-color 0.4s, color 0.4s, transform 0.4s, box-shadow 0.4s;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+.lang-toggle-btn:hover {
+  background: var(--secondary);
+  color: var(--bg-dark);
+  transform: translateY(-3px);
+}
+
+[data-theme="light"] .lang-toggle-btn {
+  background: #ffffff;
+  color: var(--text-dark);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+[data-theme="light"] .lang-toggle-btn:hover {
+  background: var(--secondary);
+  color: var(--bg-dark);
+}
+
+@media (max-width: 768px) {
+  .lang-toggle-btn {
+    bottom: calc(15px + var(--footer-push, 0px));
+    left: 15px;
+  }
+}
+
+
 /* Floating theme toggle */
 .theme-toggle-floating {
   position: fixed;
@@ -1814,7 +1967,7 @@ footer .container {
   height: 50px;
   background: var(--bg-shade-2);
   color: var(--cream);
-  border: 1px solid rgba(255,255,255,0.1);
+  border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 50%;
   font-size: 1.5rem;
   cursor: pointer;
@@ -1822,7 +1975,11 @@ footer .container {
   align-items: center;
   justify-content: center;
   z-index: 99;
-  transition: background-color 0.4s, color 0.4s, transform 0.4s, box-shadow 0.4s;
+  transition:
+    background-color 0.4s,
+    color 0.4s,
+    transform 0.4s,
+    box-shadow 0.4s;
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
 }
 .theme-toggle-floating:hover {
@@ -1833,11 +1990,18 @@ footer .container {
 [data-theme="light"] .theme-toggle-floating {
   background: #ffffff;
   color: var(--text-dark);
-  border: 1px solid rgba(0,0,0,0.1);
+  border: 1px solid rgba(0, 0, 0, 0.1);
 }
 [data-theme="light"] .theme-toggle-floating:hover {
   background: var(--secondary);
   color: var(--bg-dark);
+}
+
+@media (max-width: 768px) {
+  .theme-toggle-floating {
+    bottom: calc(15px + var(--footer-push, 0px));
+    right: 15px;
+  }
 }
 
 /* Scroll to top button */
@@ -1859,7 +2023,12 @@ footer .container {
   opacity: 0;
   visibility: hidden;
   transform: translateY(20px);
-  transition: opacity 0.4s, visibility 0.4s, transform 0.4s, background-color 0.4s, box-shadow 0.4s;
+  transition:
+    opacity 0.4s,
+    visibility 0.4s,
+    transform 0.4s,
+    background-color 0.4s,
+    box-shadow 0.4s;
   z-index: 999;
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
 }
@@ -1872,6 +2041,13 @@ footer .container {
   background: var(--cream);
   transform: translateY(-5px);
   box-shadow: 0 15px 25px rgba(0, 0, 0, 0.3);
+}
+
+@media (max-width: 768px) {
+  .back-to-top {
+    bottom: calc(75px + var(--footer-push, 0px));
+    right: 15px;
+  }
 }
 
 /* Scroll reveals */
@@ -1944,15 +2120,58 @@ footer .container {
 
 /* SOS Blinking Animation & Classes */
 @keyframes morse-sos {
-  0%, 3%, 6%, 9%, 12%, 15% { opacity: 1; }
-  1.5%, 4.5%, 7.5%, 10.5%, 13.5% { opacity: 0.2; } /* S: 3 short blinks */
-  16.5%, 28.5% { opacity: 0.2; } /* Gap */
-  30%, 36%, 42% { opacity: 1; }
-  33%, 39%, 45% { opacity: 0.2; } /* O: 3 long blinks */
-  46.5%, 58.5% { opacity: 0.2; } /* Gap */
-  60%, 63%, 66%, 69%, 72%, 75% { opacity: 1; }
-  61.5%, 64.5%, 67.5%, 70.5%, 73.5% { opacity: 0.2; } /* S: 3 short blinks */
-  76.5%, 100% { opacity: 0.2; } /* Pause before repeating */
+  0%,
+  3%,
+  6%,
+  9%,
+  12%,
+  15% {
+    opacity: 1;
+  }
+  1.5%,
+  4.5%,
+  7.5%,
+  10.5%,
+  13.5% {
+    opacity: 0.2;
+  } /* S: 3 short blinks */
+  16.5%,
+  28.5% {
+    opacity: 0.2;
+  } /* Gap */
+  30%,
+  36%,
+  42% {
+    opacity: 1;
+  }
+  33%,
+  39%,
+  45% {
+    opacity: 0.2;
+  } /* O: 3 long blinks */
+  46.5%,
+  58.5% {
+    opacity: 0.2;
+  } /* Gap */
+  60%,
+  63%,
+  66%,
+  69%,
+  72%,
+  75% {
+    opacity: 1;
+  }
+  61.5%,
+  64.5%,
+  67.5%,
+  70.5%,
+  73.5% {
+    opacity: 0.2;
+  } /* S: 3 short blinks */
+  76.5%,
+  100% {
+    opacity: 0.2;
+  } /* Pause before repeating */
 }
 .sos-indicator {
   display: inline-flex;
@@ -2026,8 +2245,10 @@ footer .container {
   padding: 5px 12px;
   border-radius: 4px;
   text-decoration: none;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-  transition: opacity 0.2s, transform 0.2s;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition:
+    opacity 0.2s,
+    transform 0.2s;
   white-space: nowrap;
 }
 .sos-banner-btn:hover {
@@ -2103,8 +2324,12 @@ footer .container {
   font-weight: 500;
 }
 @keyframes goldShine {
-  0% { background-position: 0% center; }
-  100% { background-position: -200% center; }
+  0% {
+    background-position: 0% center;
+  }
+  100% {
+    background-position: -200% center;
+  }
 }
 
 .gurbani-source {
@@ -2139,7 +2364,7 @@ footer .container {
     margin-left: 0 !important;
     width: 100% !important;
   }
-  
+
   /* Make social list visible, centered, and touch-accessible */
   .top-bar-social {
     display: flex !important;
@@ -2148,7 +2373,7 @@ footer .container {
     gap: 18px !important;
     width: 100% !important;
   }
-  
+
   .top-bar-social a {
     display: flex !important;
     align-items: center !important;
@@ -2161,7 +2386,7 @@ footer .container {
     border-radius: 50% !important;
     transition: all 0.2s ease-in-out !important;
   }
-  
+
   .top-bar-social a svg {
     width: 18px !important;
     height: 18px !important;
@@ -2170,7 +2395,7 @@ footer .container {
     stroke-linecap: round !important;
     stroke-linejoin: round !important;
   }
-  
+
   /* Target the Instagram SVG components (first child social a elements) with brighter, outstanding pink color */
   .top-bar-social a[href*="instagram.com"] svg,
   .top-bar-social a[href*="instagram.com"] svg rect,
@@ -2179,7 +2404,7 @@ footer .container {
     color: #ff3377 !important;
     stroke: #ff3377 !important;
   }
-  
+
   /* Other social elements color preservation */
   .top-bar-social a[href*="facebook.com"] svg {
     color: #1877f2 !important;
@@ -2214,10 +2439,10 @@ footer .container {
 /* Floating Circular WhatsApp Seva Desk Button */
 .whatsapp-float-fab {
   position: fixed;
-  bottom: calc(30px + var(--footer-push, 0px));
+  bottom: calc(90px + var(--footer-push, 0px));
   left: 30px;
-  width: 58px;
-  height: 58px;
+  width: 50px;
+  height: 50px;
   background-color: #25d366;
   border-radius: 50%;
   display: flex;
@@ -2227,12 +2452,16 @@ footer .container {
   box-shadow: 0 8px 32px rgba(37, 211, 102, 0.4);
   z-index: 9999;
   text-decoration: none;
-  transition: transform 0.3s, background-color 0.3s, box-shadow 0.3s, color 0.3s;
+  transition:
+    transform 0.3s,
+    background-color 0.3s,
+    box-shadow 0.3s,
+    color 0.3s;
 }
 
 /* Pulsing background ring anim */
 .whatsapp-float-fab::before {
-  content: '';
+  content: "";
   position: absolute;
   top: 0;
   left: 0;
@@ -2246,8 +2475,8 @@ footer .container {
 }
 
 .whatsapp-float-fab svg {
-  width: 28px;
-  height: 28px;
+  width: 24px;
+  height: 24px;
   transition: transform 0.3s ease;
 }
 
@@ -2277,7 +2506,9 @@ footer .container {
   top: 50%;
   transform: translateY(-50%) translateX(-10px);
   opacity: 0;
-  transition: opacity 0.3s ease, transform 0.3s ease;
+  transition:
+    opacity 0.3s ease,
+    transform 0.3s ease;
   font-family: var(--font-sans);
   font-size: 0.77rem;
   font-weight: 700;
@@ -2305,11 +2536,16 @@ footer .container {
   }
 }
 
+@media (max-width: 768px) {
+  .whatsapp-float-fab {
+    bottom: calc(75px + var(--footer-push, 0px));
+    left: 15px;
+  }
+}
+
 /* Ensure the floating FAB responds well dynamically, lifting higher if a bottom banner or elements block it on smaller screens */
 @media (max-width: 480px) {
   .whatsapp-float-fab {
-    bottom: calc(20px + var(--footer-push, 0px));
-    left: 20px;
     width: 50px;
     height: 50px;
   }
@@ -2383,7 +2619,10 @@ footer .container {
   height: 520px;
   box-shadow: 0 20px 45px rgba(0, 0, 0, 0.5);
   cursor: pointer;
-  transition: transform 0.3s cubic-bezier(0.25, 1, 0.4, 1), box-shadow 0.3s ease, border-color 0.3s ease;
+  transition:
+    transform 0.3s cubic-bezier(0.25, 1, 0.4, 1),
+    box-shadow 0.3s ease,
+    border-color 0.3s ease;
 }
 
 .campaign-card:hover {
@@ -2441,10 +2680,11 @@ footer .container {
   left: 0;
   right: 0;
   padding: 30px 25px 25px 25px;
-  background: linear-gradient(to top, 
-    rgba(5, 10, 21, 0.98) 0%, 
-    rgba(5, 10, 21, 0.85) 60%, 
-    rgba(5, 10, 21, 0.4) 85%, 
+  background: linear-gradient(
+    to top,
+    rgba(5, 10, 21, 0.98) 0%,
+    rgba(5, 10, 21, 0.85) 60%,
+    rgba(5, 10, 21, 0.4) 85%,
     rgba(5, 10, 21, 0) 100%
   );
   z-index: 8;
@@ -2463,7 +2703,7 @@ footer .container {
 }
 
 .campaign-title {
-  font-family: 'Cinzel', serif;
+  font-family: "Cinzel", serif;
   font-size: 1.5rem;
   font-weight: 700;
   line-height: 1.25;
@@ -2585,23 +2825,32 @@ footer .container {
   }
 }
 
-header:nth-of-type(1) > div:nth-of-type(1) > a:nth-of-type(1) > div:nth-of-type(1) > img:nth-of-type(1) {
-    mix-blend-mode: multiply;
+header:nth-of-type(1)
+  > div:nth-of-type(1)
+  > a:nth-of-type(1)
+  > div:nth-of-type(1)
+  > img:nth-of-type(1) {
+  mix-blend-mode: multiply;
 }
 
 footer#footer:nth-of-type(1) > div:nth-of-type(2) > div:nth-of-type(2) {
-    color: #ffffff;
+  color: #ffffff;
 }
 
-[data-theme="light"] footer#footer:nth-of-type(1) > div:nth-of-type(2) > div:nth-of-type(2) {
-    color: var(--text-dark);
+[data-theme="light"]
+  footer#footer:nth-of-type(1)
+  > div:nth-of-type(2)
+  > div:nth-of-type(2) {
+  color: var(--text-dark);
 }
 
 [data-theme="light"] .modal-content {
   background: #ffffff !important;
   color: #0a2342 !important;
   border: 1px solid rgba(0, 0, 0, 0.15) !important;
-  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15), 0 0 40px rgba(10, 35, 66, 0.05) !important;
+  box-shadow:
+    0 25px 50px -12px rgba(0, 0, 0, 0.15),
+    0 0 40px rgba(10, 35, 66, 0.05) !important;
 }
 
 [data-theme="light"] .modal-content h2 {
@@ -2723,10 +2972,10 @@ footer#footer:nth-of-type(1) > div:nth-of-type(2) > div:nth-of-type(2) {
 }
 
 .designer-heart::before {
-  content: '🩵';
+  content: "🩵";
 }
 [data-theme="light"] .designer-heart::before {
-  content: '💙';
+  content: "💙";
 }
 
 /* Blood On Call Actions Menu styling */
@@ -2755,14 +3004,22 @@ footer#footer:nth-of-type(1) > div:nth-of-type(2) > div:nth-of-type(2) {
   background: #ffe38f;
 }
 
-[data-theme="light"] div:nth-of-type(2) > div:nth-of-type(1) > div:nth-of-type(2) > button:nth-of-type(1),
+[data-theme="light"]
+  div:nth-of-type(2)
+  > div:nth-of-type(1)
+  > div:nth-of-type(2)
+  > button:nth-of-type(1),
 [data-theme="light"] .btn-donor-register {
   background: var(--secondary) !important;
   color: #0a2342 !important;
   border: 1px solid rgba(10, 35, 66, 0.2) !important;
   box-shadow: 0 4px 10px rgba(10, 25, 51, 0.15) !important;
 }
-[data-theme="light"] div:nth-of-type(2) > div:nth-of-type(1) > div:nth-of-type(2) > button:nth-of-type(1):hover,
+[data-theme="light"]
+  div:nth-of-type(2)
+  > div:nth-of-type(1)
+  > div:nth-of-type(2)
+  > button:nth-of-type(1):hover,
 [data-theme="light"] .btn-donor-register:hover {
   background: #c39e2e !important;
   color: #000000 !important;
@@ -2868,7 +3125,9 @@ footer#footer:nth-of-type(1) > div:nth-of-type(2) > div:nth-of-type(2) {
   background: #ebf8ff !important;
   color: #0a2342 !important;
   border: 1px solid rgba(10, 35, 66, 0.2) !important;
-  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25), 0 0 40px rgba(10, 35, 66, 0.15) !important;
+  box-shadow:
+    0 25px 50px -12px rgba(0, 0, 0, 0.25),
+    0 0 40px rgba(10, 35, 66, 0.15) !important;
 }
 
 [data-theme="light"] #donorRegModal .modal-content h2,
@@ -2914,12 +3173,16 @@ footer#footer:nth-of-type(1) > div:nth-of-type(2) > div:nth-of-type(2) {
 }
 
 /* Elegant Warm & Cozy Royal Navy/Gold design for registration modal in dark mode */
-:root:not([data-theme="light"]) div#donorRegModal:nth-of-type(3) > div:nth-of-type(1),
+:root:not([data-theme="light"])
+  div#donorRegModal:nth-of-type(3)
+  > div:nth-of-type(1),
 body:not([data-theme="light"]) #donorRegModal .modal-content {
   background: #081123 !important;
   color: #fdf7e7 !important;
   border: 1px solid rgba(212, 175, 55, 0.45) !important;
-  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.6), 0 0 45px rgba(212, 175, 55, 0.25) !important;
+  box-shadow:
+    0 25px 50px -12px rgba(0, 0, 0, 0.6),
+    0 0 45px rgba(212, 175, 55, 0.25) !important;
 }
 
 :root:not([data-theme="light"]) #donorRegModal .modal-content h2 {
@@ -2951,8 +3214,14 @@ body:not([data-theme="light"]) #donorRegModal .modal-content {
   box-shadow: 0 0 10px rgba(212, 175, 55, 0.35) !important;
 }
 
-:root:not([data-theme="light"]) #donorRegModal .modal-content input::placeholder,
-:root:not([data-theme="light"]) #donorRegModal .modal-content textarea::placeholder {
+:root:not([data-theme="light"])
+  #donorRegModal
+  .modal-content
+  input::placeholder,
+:root:not([data-theme="light"])
+  #donorRegModal
+  .modal-content
+  textarea::placeholder {
   color: rgba(212, 175, 55, 0.45) !important;
 }
 
@@ -2970,7 +3239,9 @@ body:not([data-theme="light"]) #donorRegModal .modal-content {
 /* Translucent / Glassmorphic background and overlays for Blood On Call page */
 .blood-donors-page {
   position: relative !important;
-  background-image: linear-gradient(135deg, rgba(4, 9, 20, 0.88), rgba(13, 27, 42, 0.92)), url('https://upload.wikimedia.org/wikipedia/commons/3/30/A_group_of_volunteers_helping_with_daily_food_preparation_for_Langar_at_the_Golden_Temple.jpg') !important;
+  background-image:
+    linear-gradient(135deg, rgba(4, 9, 20, 0.88), rgba(13, 27, 42, 0.92)),
+    url("https://upload.wikimedia.org/wikipedia/commons/3/30/A_group_of_volunteers_helping_with_daily_food_preparation_for_Langar_at_the_Golden_Temple.jpg") !important;
   background-size: cover !important;
   background-position: center !important;
   background-attachment: fixed !important;
@@ -2979,7 +3250,13 @@ body:not([data-theme="light"]) #donorRegModal .modal-content {
 }
 
 [data-theme="light"] .blood-donors-page {
-  background-image: linear-gradient(135deg, rgba(224, 242, 254, 0.85), rgba(186, 230, 253, 0.85)), url('https://upload.wikimedia.org/wikipedia/commons/3/30/A_group_of_volunteers_helping_with_daily_food_preparation_for_Langar_at_the_Golden_Temple.jpg') !important;
+  background-image:
+    linear-gradient(
+      135deg,
+      rgba(224, 242, 254, 0.85),
+      rgba(186, 230, 253, 0.85)
+    ),
+    url("https://upload.wikimedia.org/wikipedia/commons/3/30/A_group_of_volunteers_helping_with_daily_food_preparation_for_Langar_at_the_Golden_Temple.jpg") !important;
 }
 
 /* Glassmorphic search filter and cards with translucent backgrounds */
@@ -2989,10 +3266,15 @@ body:not([data-theme="light"]) #donorRegModal .modal-content {
   -webkit-backdrop-filter: blur(14px) !important;
   border: 1px solid rgba(255, 255, 255, 0.08) !important;
   box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.18) !important;
-  transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease !important;
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease,
+    background 0.3s ease !important;
 }
 
-[data-theme="light"] .blood-donors-page div[style*="background: var(--bg-dark)"] {
+[data-theme="light"]
+  .blood-donors-page
+  div[style*="background: var(--bg-dark)"] {
   background: rgba(255, 255, 255, 0.65) !important;
   border: 1px solid rgba(10, 35, 66, 0.12) !important;
   box-shadow: 0 8px 32px 0 rgba(10, 35, 66, 0.05) !important;
@@ -3002,13 +3284,19 @@ body:not([data-theme="light"]) #donorRegModal .modal-content {
 .blood-donors-page div[style*="background: var(--bg-dark)"]:hover {
   transform: translateY(-4px);
   background: rgba(15, 23, 42, 0.65) !important;
-  box-shadow: 0 12px 40px 0 rgba(0, 0, 0, 0.3), 0 0 15px rgba(255, 51, 75, 0.15) !important;
+  box-shadow:
+    0 12px 40px 0 rgba(0, 0, 0, 0.3),
+    0 0 15px rgba(255, 51, 75, 0.15) !important;
 }
 
-[data-theme="light"] .blood-donors-page div[style*="background: var(--bg-dark)"]:hover {
+[data-theme="light"]
+  .blood-donors-page
+  div[style*="background: var(--bg-dark)"]:hover {
   transform: translateY(-4px);
   background: rgba(255, 255, 255, 0.82) !important;
-  box-shadow: 0 12px 40px 0 rgba(10, 35, 66, 0.08), 0 0 15px rgba(255, 51, 75, 0.1) !important;
+  box-shadow:
+    0 12px 40px 0 rgba(10, 35, 66, 0.08),
+    0 0 15px rgba(255, 51, 75, 0.1) !important;
 }
 
 /* Translucent Administration Data Panel */
@@ -3026,4 +3314,13 @@ body:not([data-theme="light"]) #donorRegModal .modal-content {
   box-shadow: 0 20px 60px rgba(10, 35, 66, 0.12) !important;
 }
 
-
+body.lang-pa .designer-heart {
+  order: 1;
+}
+body.lang-pa .credit-p1 {
+  order: 2;
+  margin-left: 4px;
+}
+body.lang-pa .credit-p2 {
+  order: 3;
+}

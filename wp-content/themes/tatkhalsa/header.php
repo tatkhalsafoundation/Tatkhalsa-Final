@@ -147,6 +147,11 @@
         const savedTheme = localStorage.getItem("tatkhalsa-theme") || "dark";
         document.documentElement.setAttribute("data-theme", savedTheme);
       })();
+
+      function tatkhalsaSetLanguage(lang) {
+          localStorage.setItem('tatkhalsa_lang', lang);
+          window.location.reload();
+      }
     </script>
 
     <style>
@@ -276,14 +281,6 @@
  
         <!-- Header Actions CTA (Desktop/Wide Viewports) -->
         <div class="header-actions">
-          <div class="lang-selector-desktop">
-            <button class="header-cta-btn header-lang-btn" onclick="tatkhalsaSetLanguage('pa')" title="Translate to Punjabi (ਪੰਜਾਬੀ)" style="padding: 0.5rem; background: transparent; border: 1px solid rgba(255,255,255,0.2); color: white; display:flex; align-items:center; justify-content:center; width:36px; height:36px; border-radius:8px;">
-              <span style="font-size: 1.2rem; font-weight:700;">ਪੰ</span>
-            </button>
-            <button class="header-cta-btn header-lang-btn" onclick="tatkhalsaSetLanguage('en')" title="View in English" style="padding: 0.5rem; background: transparent; border: 1px solid rgba(255,255,255,0.2); color: white; display:flex; align-items:center; justify-content:center; width:36px; height:36px; border-radius:8px; margin-left: 5px;">
-              <span style="font-size: 1.2rem; font-weight:700;">EN</span>
-            </button>
-          </div>
           <button onclick="openModal()" class="header-cta-btn header-donate-btn">Contribute Now</button>
           <a href="<?php echo esc_url( home_url( '/volunteer/' ) ); ?>" class="header-cta-btn header-volunteer-btn">Join Seva</a>
         </div>

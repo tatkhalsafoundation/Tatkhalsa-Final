@@ -129,8 +129,8 @@
             <a href="<?php echo esc_url( home_url( '/privacy-policy/' ) ); ?>" style="color: var(--secondary); text-decoration: none; margin: 0 10px;">Privacy Policy</a> | 
             <a href="<?php echo esc_url( home_url( '/terms-conditions/' ) ); ?>" style="color: var(--secondary); text-decoration: none; margin: 0 10px;">Terms & Conditions</a>
           </div>
-          <div>&copy; <?php echo date('Y'); ?> <?php bloginfo( 'name' ); ?>. All Rights Reserved. Saved & Built dynamically via custom theme template.</div>
-          <div style="font-size: 0.85rem; color: var(--text-light); margin-top: 5px;">Designed with <span class="designer-heart"></span> by Prabhjot Singh (Team Tatkhalsa)</div>
+          <div>&copy; <?php echo date('Y'); ?> <?php bloginfo( 'name' ); ?>. <span>All Rights Reserved. Saved & Built dynamically via custom theme template.</span></div>
+          <div class="designer-credit-wrap" style="font-size: 0.85rem; color: var(--text-light); margin-top: 5px; display: flex; justify-content: center; align-items: center; gap: 4px;"><span class="credit-p1">Designed with</span><span class="designer-heart"></span><span class="credit-p2">by Prabhjot Singh (Team Tatkhalsa)</span></div>
         </div>
       </div>
     </footer>
@@ -159,18 +159,18 @@
 
         <form id="bloodRequestForm" method="POST" action="" enctype="multipart/form-data">
           <div style="margin-bottom: 15px;">
-            <label style="display: block; font-size: 0.78rem; text-transform: uppercase; color: var(--primary); font-weight: 700; margin-bottom: 6px;">Doctor's Request Slip / Form Photo <span style="color:#ff334b;">*</span></label>
+            <label style="display: block; font-size: 0.78rem; text-transform: uppercase; color: var(--primary); font-weight: 700; margin-bottom: 6px;">Doctor's Request Slip / Form Photo *</label>
             <p style="font-size: 0.75rem; color: rgba(255,255,255,0.6); margin-bottom: 8px;">Please upload a clear photo of the doctor's prescription or hospital blood request form (from camera or gallery) to verify emergency. <strong style="color: #ff334b;">STRICT WARNING: Do not upload any other photo. Only authentic hospital documents are accepted.</strong></p>
             <input type="file" name="doctorSlip" id="doctorSlipInput" required accept="image/*" style="width: 100%; padding: 8px; background: rgba(255,255,255,0.03); border: 1.2px dashed rgba(255,255,255,0.2); border-radius: 6px; color: #fff; font-size: 0.85rem; box-sizing: border-box; outline: none; cursor: pointer;" onfocus="this.style.borderColor='#ff334b'" onchange="this.style.borderColor='rgba(0,191,117,0.5)'" title="Take a photo or choose from gallery">
           </div>
 
           <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px;">
             <div>
-              <label style="display: block; font-size: 0.78rem; text-transform: uppercase; color: var(--primary); font-weight: 700; margin-bottom: 6px;">Patient Full Name <span style="color:#ff334b;">*</span></label>
+              <label style="display: block; font-size: 0.78rem; text-transform: uppercase; color: var(--primary); font-weight: 700; margin-bottom: 6px;">Patient Full Name *</label>
               <input type="text" name="patientName" required placeholder="Enter patient name" style="width: 100%; padding: 10px 12px; background: rgba(255,255,255,0.03); border: 1.2px solid rgba(255,255,255,0.1); border-radius: 6px; color: #fff; font-size: 0.9rem; box-sizing: border-box; outline: none; transition: border-color 0.2s;" onfocus="this.style.borderColor='#ff334b'">
             </div>
             <div>
-              <label style="display: block; font-size: 0.78rem; text-transform: uppercase; color: var(--primary); font-weight: 700; margin-bottom: 6px;">Blood Group <span style="color:#ff334b;">*</span></label>
+              <label style="display: block; font-size: 0.78rem; text-transform: uppercase; color: var(--primary); font-weight: 700; margin-bottom: 6px;">Blood Group *</label>
               <select name="bloodGroup" required style="width: 100%; padding: 10px 12px; background: #0c1a30; border: 1.2px solid rgba(255,255,255,0.1); border-radius: 6px; color: #fff; font-size: 0.9rem; box-sizing: border-box; outline: none; transition: border-color 0.2s;" onfocus="this.style.borderColor='#ff334b'">
                 <option value="" disabled selected>Select Group</option>
                 <option value="Any">Any Blood Group</option>
@@ -189,13 +189,13 @@
 
           <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px;">
             <div>
-              <label style="display: block; font-size: 0.78rem; text-transform: uppercase; color: var(--primary); font-weight: 700; margin-bottom: 6px;">Country <span style="color:#ff334b;">*</span></label>
+              <label style="display: block; font-size: 0.78rem; text-transform: uppercase; color: var(--primary); font-weight: 700; margin-bottom: 6px;">Country *</label>
               <select name="country" id="reqCountry" required style="width: 100%; padding: 10px 12px; background: #0c1a30; border: 1.2px solid rgba(255,255,255,0.1); border-radius: 6px; color: #fff; font-size: 0.9rem; box-sizing: border-box; outline: none; transition: border-color 0.2s;" onfocus="this.style.borderColor='#ff334b'" onblur="this.style.borderColor='rgba(255,255,255,0.1)'" onchange="updateReqStates()">
                 <option value="">Select Country</option>
               </select>
             </div>
             <div>
-              <label style="display: block; font-size: 0.78rem; text-transform: uppercase; color: var(--primary); font-weight: 700; margin-bottom: 6px;">State <span style="color:#ff334b;">*</span></label>
+              <label style="display: block; font-size: 0.78rem; text-transform: uppercase; color: var(--primary); font-weight: 700; margin-bottom: 6px;">State *</label>
               <select name="state" id="reqState" required style="width: 100%; padding: 10px 12px; background: #0c1a30; border: 1.2px solid rgba(255,255,255,0.1); border-radius: 6px; color: #fff; font-size: 0.9rem; box-sizing: border-box; outline: none; transition: border-color 0.2s;" onfocus="this.style.borderColor='#ff334b'" onblur="this.style.borderColor='rgba(255,255,255,0.1)'" onchange="updateReqDistricts()">
                 <option value="">Select State</option>
               </select>
@@ -203,20 +203,20 @@
           </div>
 
           <div style="margin-bottom: 15px;">
-            <label style="display: block; font-size: 0.78rem; text-transform: uppercase; color: var(--primary); font-weight: 700; margin-bottom: 6px;">District / City <span style="color:#ff334b;">*</span></label>
+            <label style="display: block; font-size: 0.78rem; text-transform: uppercase; color: var(--primary); font-weight: 700; margin-bottom: 6px;">District / City *</label>
             <select name="district" id="reqDistrict" required style="width: 100%; padding: 10px 12px; background: #0c1a30; border: 1.2px solid rgba(255,255,255,0.1); border-radius: 6px; color: #fff; font-size: 0.9rem; box-sizing: border-box; outline: none; transition: border-color 0.2s;" onfocus="this.style.borderColor='#ff334b'" onblur="this.style.borderColor='rgba(255,255,255,0.1)'">
               <option value="">Select District</option>
             </select>
           </div>
 
           <div style="margin-bottom: 15px;">
-            <label style="display: block; font-size: 0.78rem; text-transform: uppercase; color: var(--primary); font-weight: 700; margin-bottom: 6px;">Hospital Name & Detail <span style="color:#ff334b;">*</span></label>
+            <label style="display: block; font-size: 0.78rem; text-transform: uppercase; color: var(--primary); font-weight: 700; margin-bottom: 6px;">Hospital Name & Detail *</label>
             <input type="text" name="hospitalName" required placeholder="e.g. PGIMER Ward 4, Fortis Hospital Amritsar" style="width: 100%; padding: 10px 12px; background: rgba(255,255,255,0.03); border: 1.2px solid rgba(255,255,255,0.1); border-radius: 6px; color: #fff; font-size: 0.9rem; box-sizing: border-box; outline: none;" onfocus="this.style.borderColor='#ff334b'">
           </div>
 
           <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px;">
             <div>
-              <label style="display: block; font-size: 0.78rem; text-transform: uppercase; color: var(--primary); font-weight: 700; margin-bottom: 6px;">Units Required <span style="color:#ff334b;">*</span></label>
+              <label style="display: block; font-size: 0.78rem; text-transform: uppercase; color: var(--primary); font-weight: 700; margin-bottom: 6px;">Units Required *</label>
               <select name="unitsRequired" required style="width: 100%; padding: 10px 12px; background: #0c1a30; border: 1.2px solid rgba(255,255,255,0.1); border-radius: 6px; color: #fff; font-size: 0.9rem; box-sizing: border-box; outline: none;" onfocus="this.style.borderColor='#ff334b'">
                 <option value="1 Unit">1 Unit</option>
                 <option value="2 Units" selected>2 Units</option>
@@ -226,7 +226,7 @@
               </select>
             </div>
             <div>
-              <label style="display: block; font-size: 0.78rem; text-transform: uppercase; color: var(--primary); font-weight: 700; margin-bottom: 6px;">Urgency Level <span style="color:#ff334b;">*</span></label>
+              <label style="display: block; font-size: 0.78rem; text-transform: uppercase; color: var(--primary); font-weight: 700; margin-bottom: 6px;">Urgency Level *</label>
               <select name="urgency" required style="width: 100%; padding: 10px 12px; background: #0c1a30; border: 1.2px solid rgba(255,255,255,0.1); border-radius: 6px; color: #fff; font-size: 0.9rem; box-sizing: border-box; outline: none;" onfocus="this.style.borderColor='#ff334b'">
                 <option value="Urgent" selected>Urgent (Within 12-24 hours)</option>
                 <option value="Normal">Normal (Scheduled/Upcoming Surgery)</option>
@@ -236,7 +236,7 @@
           </div>
 
           <div style="margin-bottom: 15px;">
-            <label style="display: block; font-size: 0.78rem; text-transform: uppercase; color: var(--primary); font-weight: 700; margin-bottom: 6px;">Contact Phone / Details <span style="color:#ff334b;">*</span></label>
+            <label style="display: block; font-size: 0.78rem; text-transform: uppercase; color: var(--primary); font-weight: 700; margin-bottom: 6px;">Contact Phone / Details *</label>
             <input type="text" name="contactDetails" required placeholder="e.g. Phone Number, Alt Number, Relation to patient" style="width: 100%; padding: 10px 12px; background: rgba(255,255,255,0.03); border: 1.2px solid rgba(255,255,255,0.1); border-radius: 6px; color: #fff; font-size: 0.9rem; box-sizing: border-box; outline: none;" onfocus="this.style.borderColor='#ff334b'">
           </div>
 
@@ -1080,6 +1080,12 @@
         }
       </style>
     </div>
+
+    <!-- Language Toggle Button -->
+    <button class="lang-toggle-btn" id="langToggleBtn" onclick="toggleLanguage()" aria-label="Toggle Language" title="Toggle Language">
+      <span class="lang-en-text" style="display: block; font-size: 0.95rem; font-weight:700;">EN</span>
+      <span class="lang-pa-text" style="display: none; font-size: 1.1rem; font-weight:700;">ਪੰ</span>
+    </button>
 
     <!-- Theme Toggle Button -->
     <button class="theme-toggle-floating" id="themeToggleBtn" onclick="toggleTheme()" aria-label="Toggle Theme" title="Toggle Theme">
@@ -2045,6 +2051,7 @@
           const reqCountrySelect = document.getElementById("reqCountry");
           const reqStateSelect = document.getElementById("reqState");
           const reqDistrictSelect = document.getElementById("reqDistrict");
+          const currentLang = localStorage.getItem('tatkhalsa_lang');
 
           if (!reqCountrySelect || !reqStateSelect) return;
           reqStateSelect.innerHTML = '<option value="">Select State</option>';
@@ -2069,12 +2076,17 @@
               });
             }
           }
+          if (currentLang === 'pa' && typeof translateNode === 'function') {
+              translateNode(reqStateSelect, 'pa');
+              if (reqDistrictSelect) translateNode(reqDistrictSelect, 'pa');
+          }
         };
 
         window.updateReqDistricts = async function() {
           const reqCountrySelect = document.getElementById("reqCountry");
           const reqStateSelect = document.getElementById("reqState");
           const reqDistrictSelect = document.getElementById("reqDistrict");
+          const currentLang = localStorage.getItem('tatkhalsa_lang');
 
           if (!reqCountrySelect || !reqStateSelect || !reqDistrictSelect) return;
           reqDistrictSelect.innerHTML = '<option value="">Select District</option>';
@@ -2091,6 +2103,7 @@
                 reqDistrictSelect.appendChild(option);
               });
             }
+            if (currentLang === 'pa' && typeof translateNode === 'function') translateNode(reqDistrictSelect, 'pa');
             return;
           }
 
@@ -2113,6 +2126,7 @@
             } catch (e) {
               console.error("Error fetching cities", e);
             }
+            if (currentLang === 'pa' && typeof translateNode === 'function') translateNode(reqDistrictSelect, 'pa');
           }
         };
 
@@ -2502,8 +2516,171 @@
         "Tatkhalsa": "Tatkhalsa",
         "Foundation": "Foundation",
         "Address: GF 37, Bazidpur,": "ਪਤਾ: GF 37, ਬਜ਼ੀਦਪੁਰ,",
-        "SBS Nagar, Punjab - 144518": "ਐਸ ਬੀ ਐਸ ਨਗਰ, ਪੰਜਾਬ - 144518"
-      };
+        "SBS Nagar, Punjab - 144518": "ਐਸ ਬੀ ਐਸ ਨਗਰ, ਪੰਜਾਬ - 144518",
+        "Connect with verified blood donors in your area or register yourself to save lives.": "ਆਪਣੇ ਖੇਤਰ ਵਿੱਚ ਪ੍ਰਮਾਣਿਤ ਖੂਨਦਾਨੀਆਂ ਨਾਲ ਜੁੜੋ ਜਾਂ ਜਾਨਾਂ ਬਚਾਉਣ ਲਈ ਆਪਣੇ ਆਪ ਨੂੰ ਰਜਿਸਟਰ ਕਰੋ।",
+        "Blood Group": "ਬਲੱਡ ਗਰੁੱਪ",
+        "All Blood Groups": "ਸਾਰੇ ਬਲੱਡ ਗਰੁੱਪ",
+        "Country": "ਦੇਸ਼",
+        "Any Country": "ਕੋਈ ਵੀ ਦੇਸ਼",
+        "State": "ਰਾਜ",
+        "Any State": "ਕੋਈ ਵੀ ਰਾਜ",
+        "District / City": "ਜ਼ਿਲ੍ਹਾ / ਸ਼ਹਿਰ",
+        "Any District": "ਕੋਈ ਵੀ ਜ਼ਿਲ੍ਹਾ",
+        "Or Type Location": "ਜਾਂ ਸਥਾਨ ਟਾਈਪ ਕਰੋ",
+        "Search": "ਖੋਜੋ",
+        "Clear": "ਸਾਫ਼ ਕਰੋ",
+        "Area, Zip Code, etc": "ਖੇਤਰ, ਜ਼ਿਪ ਕੋਡ, ਆਦਿ",
+        "Available Now": "ਹੁਣ ਉਪਲਬਧ",
+        "Unavailable temporarily": "ਅਸਥਾਈ ਤੌਰ 'ਤੇ ਉਪਲਬਧ ਨਹੀਂ",
+        "Location:": "ਸਥਾਨ:",
+        "🔒 Privacy Protected": "🔒 ਗੁਪਤਤਾ ਸੁਰੱਖਿਅਤ",
+        "Verified Sevadar ✓": "ਪ੍ਰਮਾਣਿਤ ਸੇਵਾਦਾਰ ✓",
+        "Disclaimer:": "ਬੇਦਾਅਵਾ:",
+        "No donors found matching your criteria.": "ਤੁਹਾਡੇ ਮਾਪਦੰਡਾਂ ਨਾਲ ਮੇਲ ਖਾਂਦਾ ਕੋਈ ਖੂਨਦਾਨ ਕਰਨ ਵਾਲਾ ਨਹੀਂ ਮਿਲਿਆ।",
+        "Reset Search": "ਖੋਜ ਰੀਸੈਟ ਕਰੋ",
+        "Tatkhalsa Foundation operates purely as a voluntary community coordination network. We do not run physical blood banks or commercialize medical supplies. All verifications of donor eligibility must be independently validated by certified hospital practitioners at the time of transfusion.": "ਤੱਤਖਾਲਸਾ ਫਾਊਂਡੇਸ਼ਨ ਪੂਰੀ ਤਰ੍ਹਾਂ ਇੱਕ ਸਵੈ-ਇੱਛਤ ਭਾਈਚਾਰਕ ਤਾਲਮੇਲ ਨੈੱਟਵਰਕ ਵਜੋਂ ਕੰਮ ਕਰਦੀ ਹੈ। ਅਸੀਂ ਸਰੀਰਕ ਬਲੱਡ ਬੈਂਕ ਨਹੀਂ ਚਲਾਉਂਦੇ ਜਾਂ ਡਾਕਟਰੀ ਸਪਲਾਈ ਦਾ ਵਪਾਰਕੀਕਰਨ ਨਹੀਂ ਕਰਦੇ ਹਾਂ। ਖੂਨ ਚੜ੍ਹਾਉਣ ਦੇ ਸਮੇਂ ਪ੍ਰਮਾਣਿਤ ਹਸਪਤਾਲ ਦੇ ਡਾਕਟਰਾਂ ਦੁਆਰਾ ਖੂਨਦਾਨ ਕਰਨ ਵਾਲੇ ਦੀ ਯੋਗਤਾ ਦੀਆਂ ਸਾਰੀਆਂ ਜਾਂਚਾਂ ਸੁਤੰਤਰ ਤੌਰ 'ਤੇ ਵੈਧ ਹੋਣੀਆਂ ਚਾਹੀਦੀਆਂ ਹਨ।",
+
+        "Full Name *": "ਪੂਰਾ ਨਾਮ *",
+        "Blood Group *": "ਬਲੱਡ ਗਰੁੱਪ *",
+        "Email Address *": "ਈਮੇਲ ਪਤਾ *",
+        "Contact Number *": "ਸੰਪਰਕ ਨੰਬਰ *",
+        "Enter OTP *": "OTP ਦਰਜ ਕਰੋ *",
+        "Country *": "ਦੇਸ਼ *",
+        "State *": "ਰਾਜ *",
+        "District / City *": "ਜ਼ਿਲ੍ਹਾ / ਸ਼ਹਿਰ *",
+        "Street Address / Area *": "ਗਲੀ ਦਾ ਪਤਾ / ਖੇਤਰ *",
+        "Doctor's Request Slip / Form Photo *": "ਡਾਕਟਰ ਦੀ ਬੇਨਤੀ ਸਲਿੱਪ / ਫਾਰਮ ਫੋਟੋ *",
+        "Hospital Name & Detail *": "ਹਸਪਤਾਲ ਦਾ ਨਾਮ ਅਤੇ ਵੇਰਵਾ *",
+        "Units Required *": "ਯੂਨਿਟ ਲੋੜੀਂਦੇ *",
+        "Urgency Level *": "ਐਮਰਜੈਂਸੀ ਪੱਧਰ *",
+        "Contact Phone / Details *": "ਸੰਪਰਕ ਫੋਨ / ਵੇਰਵੇ *",
+        "Patient Full Name *": "ਮਰੀਜ਼ ਦਾ ਪੂਰਾ ਨਾਮ *",
+
+
+        "Register as Blood Donor": "ਖੂਨਦਾਨੀ ਵਜੋਂ ਰਜਿਸਟਰ ਕਰੋ",
+        "Full Name *": "ਪੂਰਾ ਨਾਮ *",
+        "e.g. John Doe": "ਉਦਾਹਰਨ: ਜੌਨ ਡੋਅ",
+        "Blood Group *": "ਬਲੱਡ ਗਰੁੱਪ *",
+        "Select Blood Group": "ਬਲੱਡ ਗਰੁੱਪ ਚੁਣੋ",
+        "Email Address *": "ਈਮੇਲ ਪਤਾ *",
+        "Required to receive blood request alerts from nearby patients.": "ਨੇੜਲੇ ਮਰੀਜ਼ਾਂ ਤੋਂ ਖੂਨ ਬੇਨਤੀ ਅਲਰਟ ਪ੍ਰਾਪਤ ਕਰਨ ਲਈ ਲੋੜੀਂਦਾ ਹੈ।",
+        "e.g. email@example.com": "ਉਦਾਹਰਨ: email@example.com",
+        "Contact Number *": "ਸੰਪਰਕ ਨੰਬਰ *",
+        "e.g. +91 9876543210": "ਉਦਾਹਰਨ: +91 9876543210",
+        "Send OTP": "OTP ਭੇਜੋ",
+        "Enter OTP *": "OTP ਦਰਜ ਕਰੋ *",
+        "e.g. 123456": "ਉਦਾਹਰਨ: 123456",
+        "Verify": "ਪ੍ਰਮਾਣਿਤ ਕਰੋ",
+        "Country *": "ਦੇਸ਼ *",
+        "Select Country": "ਦੇਸ਼ ਚੁਣੋ",
+        "State *": "ਰਾਜ *",
+        "Select State": "ਰਾਜ ਚੁਣੋ",
+        "District / City *": "ਜ਼ਿਲ੍ਹਾ / ਸ਼ਹਿਰ *",
+        "Select District": "ਜ਼ਿਲ੍ਹਾ ਚੁਣੋ",
+        "Street Address / Area *": "ਗਲੀ ਦਾ ਪਤਾ / ਖੇਤਰ *",
+        "Street, Area, Pin Code": "ਗਲੀ, ਖੇਤਰ, ਪਿੰਨ ਕੋਡ",
+        "Availability Status": "ਉਪਲਬਧਤਾ ਸਥਿਤੀ",
+        "🟢 Available Now (Ready for immediate drives)": "🟢 ਹੁਣ ਉਪਲਬਧ (ਤੁਰੰਤ ਡਰਾਈਵਾਂ ਲਈ ਤਿਆਰ)",
+        "🟡 On Standby (Approaching eligibility/close-range only)": "🟡 ਸਟੈਂਡਬਾਏ 'ਤੇ (ਸਿਰਫ਼ ਯੋਗਤਾ/ਨੇੜਲੀ ਸੀਮਾ ਤੱਕ ਪਹੁੰਚਣਾ)",
+        "🔴 Resting Phase (Recovery period post-donation)": "🔴 ਆਰਾਮ ਦਾ ਪੜਾਅ (ਦਾਨ ਤੋਂ ਬਾਅਦ ਰਿਕਵਰੀ ਦੀ ਮਿਆਦ)",
+        "Register Donor": "ਖੂਨਦਾਨੀ ਰਜਿਸਟਰ ਕਰੋ",
+        "Emergency Blood Request": "ਐਮਰਜੈਂਸੀ ਖੂਨ ਬੇਨਤੀ",
+        "Our 24/7 Tatkhalsa Blood On Call coordinates rapid mobilizations of nearby registered donors. Direct email and SMS alerts will be triggered immediately.": "ਸਾਡੀ 24/7 ਤੱਤਖਾਲਸਾ ਬਲੱਡ ਆਨ ਕਾਲ ਨੇੜਲੇ ਪ੍ਰਮਾਣਿਤ ਖੂਨਦਾਨੀਆਂ ਦੀ ਤੇਜ਼ ਲਾਮਬੰਦੀ ਦਾ ਤਾਲਮੇਲ ਕਰਦੀ ਹੈ। ਸਿੱਧੇ ਈਮੇਲ ਅਤੇ SMS ਅਲਰਟ ਤੁਰੰਤ ਸ਼ੁਰੂ ਕੀਤੇ ਜਾਣਗੇ।",
+        "Looking for donors right now?": "ਕੀ ਹੁਣੇ ਖੂਨਦਾਨੀਆਂ ਦੀ ਭਾਲ ਕਰ ਰਹੇ ਹੋ?",
+        "🔍 Browse Available Donors": "🔍 ਉਪਲਬਧ ਖੂਨਦਾਨੀਆਂ ਨੂੰ ਬ੍ਰਾਊਜ਼ ਕਰੋ",
+        "Doctor's Request Slip / Form Photo *": "ਡਾਕਟਰ ਦੀ ਬੇਨਤੀ ਸਲਿੱਪ / ਫਾਰਮ ਫੋਟੋ *",
+        "Please upload a clear photo of the doctor's prescription or hospital blood request form (from camera or gallery) to verify emergency.": "ਕਿਰਪਾ ਕਰਕੇ ਐਮਰਜੈਂਸੀ ਦੀ ਪੁਸ਼ਟੀ ਕਰਨ ਲਈ ਡਾਕਟਰ ਦੀ ਪਰਚੀ ਜਾਂ ਹਸਪਤਾਲ ਦੇ ਖੂਨ ਬੇਨਤੀ ਫਾਰਮ (ਕੈਮਰੇ ਜਾਂ ਗੈਲਰੀ ਤੋਂ) ਦੀ ਸਪਸ਼ਟ ਫੋਟੋ ਅੱਪਲੋਡ ਕਰੋ।",
+        "STRICT WARNING: Do not upload any other photo. Only authentic hospital documents are accepted.": "ਸਖ਼ਤ ਚੇਤਾਵਨੀ: ਕੋਈ ਹੋਰ ਫੋਟੋ ਅੱਪਲੋਡ ਨਾ ਕਰੋ। ਸਿਰਫ਼ ਪ੍ਰਮਾਣਿਕ ਹਸਪਤਾਲ ਦੇ ਦਸਤਾਵੇਜ਼ ਸਵੀਕਾਰ ਕੀਤੇ ਜਾਂਦੇ ਹਨ।",
+        "Patient Full Name *": "ਮਰੀਜ਼ ਦਾ ਪੂਰਾ ਨਾਮ *",
+        "Enter patient name": "ਮਰੀਜ਼ ਦਾ ਨਾਮ ਦਰਜ ਕਰੋ",
+        "  Select Group": "  ਗਰੁੱਪ ਚੁਣੋ", "Select Group": "ਗਰੁੱਪ ਚੁਣੋ",
+        "Any Blood Group": "ਕੋਈ ਵੀ ਬਲੱਡ ਗਰੁੱਪ",
+        "A+ (A Positive)": "A+ (ਏ ਪਾਜ਼ੇਟਿਵ)",
+        "A- (A Negative)": "A- (ਏ ਨੈਗੇਟਿਵ)",
+        "B+ (B Positive)": "B+ (ਬੀ ਪਾਜ਼ੇਟਿਵ)",
+        "B- (B Negative)": "B- (ਬੀ ਨੈਗੇਟਿਵ)",
+        "O+ (O Positive)": "O+ (ਓ ਪਾਜ਼ੇਟਿਵ)",
+        "O- (O Negative)": "O- (ਓ ਨੈਗੇਟਿਵ)",
+        "AB+ (AB Positive)": "AB+ (ਏਬੀ ਪਾਜ਼ੇਟਿਵ)",
+        "AB- (AB Negative)": "AB- (ਏਬੀ ਨੈਗੇਟਿਵ)",
+        "Rare: Bombay Phenotype": "ਦੁਰਲੱਭ: ਬੰਬੇ ਫੀਨੋਟਾਈਪ",
+        "Hospital Name & Detail *": "ਹਸਪਤਾਲ ਦਾ ਨਾਮ ਅਤੇ ਵੇਰਵਾ *",
+        "e.g. PGIMER Ward 4, Fortis Hospital Amritsar": "ਉਦਾਹਰਨ: ਪੀ.ਜੀ.ਆਈ.ਐਮ.ਈ.ਆਰ. ਵਾਰਡ 4, ਫੋਰਟਿਸ ਹਸਪਤਾਲ ਅੰਮ੍ਰਿਤਸਰ",
+        "Units Required *": "ਯੂਨਿਟ ਲੋੜੀਂਦੇ *",
+        "1 Unit": "1 ਯੂਨਿਟ",
+        "2 Units": "2 ਯੂਨਿਟ",
+        "3 Units": "3 ਯੂਨਿਟ",
+        "4 Units": "4 ਯੂਨਿਟ",
+        "5+ Units (Bulk Crisis)": "5+ ਯੂਨਿਟ (ਵੱਡੀ ਐਮਰਜੈਂਸੀ)",
+        "Urgency Level *": "ਐਮਰਜੈਂਸੀ ਪੱਧਰ *",
+        "Urgent (Within 12-24 hours)": "ਜ਼ਰੂਰੀ (12-24 ਘੰਟਿਆਂ ਦੇ ਅੰਦਰ)",
+        "Normal (Scheduled/Upcoming Surgery)": "ਸਧਾਰਨ (ਤਹਿ ਕੀਤੀ/ਆਉਣ ਵਾਲੀ ਸਰਜਰੀ)",
+        "🚨 Critical (Immediate requirement)": "🚨 ਨਾਜ਼ੁਕ (ਤੁਰੰਤ ਲੋੜ)",
+        "Contact Phone / Details *": "ਸੰਪਰਕ ਫੋਨ / ਵੇਰਵੇ *",
+        "e.g. Phone Number, Alt Number, Relation to patient": "ਉਦਾਹਰਨ: ਫ਼ੋਨ ਨੰਬਰ, ਬਦਲਵਾਂ ਨੰਬਰ, ਮਰੀਜ਼ ਨਾਲ ਰਿਸ਼ਤਾ",
+        "Additional Case Notes (Optional)": "ਵਾਧੂ ਕੇਸ ਨੋਟ (ਵਿਕਲਪਿਕ)",
+        "e.g., Any replacement donor available? specialized requirements or conditions": "ਉਦਾਹਰਨ: ਕੀ ਕੋਈ ਬਦਲਵਾਂ ਖੂਨਦਾਨੀ ਉਪਲਬਧ ਹੈ? ਵਿਸ਼ੇਸ਼ ਲੋੜਾਂ ਜਾਂ ਸ਼ਰਤਾਂ",
+        "🚨 Broadcast Emergency Request": "🚨 ਐਮਰਜੈਂਸੀ ਬੇਨਤੀ ਪ੍ਰਸਾਰਿਤ ਕਰੋ",
+        "🐛 Encountered any bug or problem? Please tell us at ": "🐛 ਕੀ ਕੋਈ ਬੱਗ ਜਾਂ ਸਮੱਸਿਆ ਆਈ? ਕਿਰਪਾ ਕਰਕੇ ਸਾਨੂੰ ਇੱਥੇ ਦੱਸੋ ",
+        "Edit Registered Donor Details": "ਰਜਿਸਟਰਡ ਖੂਨਦਾਨੀ ਵੇਰਵੇ ਸੋਧੋ",
+        "🟢 Available Now": "🟢 ਹੁਣ ਉਪਲਬਧ",
+        "🟡 On Standby": "🟡 ਸਟੈਂਡਬਾਏ 'ਤੇ",
+        "🔴 Resting Phase": "🔴 ਆਰਾਮ ਦਾ ਪੜਾਅ",
+        "Save Changes": "ਬਦਲਾਅ ਸੁਰੱਖਿਅਤ ਕਰੋ",
+        "Delete Donor Record (Admin)": "ਦਾਨੀ ਰਿਕਾਰਡ ਮਿਟਾਓ (ਐਡਮਿਨ)",
+        "Availability Status": "ਉਪਲਬਧਤਾ ਸਥਿਤੀ",
+        "Cancel": "ਰੱਦ ਕਰੋ",
+        "Patient Name *": "ਮਰੀਜ਼ ਦਾ ਨਾਮ *",
+        "Hospital Name *": "ਹਸਪਤਾਲ ਦਾ ਨਾਮ *",
+        "Patient Location / Address *": "ਮਰੀਜ਼ ਦਾ ਸਥਾਨ / ਪਤਾ *",
+        "Contact Details *": "ਸੰਪਰਕ ਵੇਰਵੇ *",
+        "Request Status": "ਬੇਨਤੀ ਸਥਿਤੀ",
+        "Registered Contact Number": "ਰਜਿਸਟਰਡ ਸੰਪਰਕ ਨੰਬਰ",
+        "New Availability Status": "ਨਵੀਂ ਉਪਲਬਧਤਾ ਸਥਿਤੀ",
+        "Registered Email Address": "ਰਜਿਸਟਰਡ ਈਮੇਲ ਪਤਾ",
+        "Country": "ਦੇਸ਼",
+        "State": "ਰਾਜ",
+        "District / City": "ਜ਼ਿਲ੍ਹਾ / ਸ਼ਹਿਰ",
+        "Blood Group": "ਬਲੱਡ ਗਰੁੱਪ",
+        "Update My Availability": "ਮੇਰੀ ਉਪਲਬਧਤਾ ਅੱਪਡੇਟ ਕਰੋ"
+      ,
+        "Enter OTP": "OTP ਦਰਜ ਕਰੋ",
+        "Full Name": "ਪੂਰਾ ਨਾਮ",
+        "Contact Number": "ਸੰਪਰਕ ਨੰਬਰ",
+        "District/City": "ਜ਼ਿਲ੍ਹਾ/ਸ਼ਹਿਰ",
+        "Pin Code": "ਪਿੰਨ ਕੋਡ",
+        "Detailed Address / Locality": "ਵਿਸਤ੍ਰਿਤ ਪਤਾ / ਇਲਾਕਾ",
+        "Patient's Name": "ਮਰੀਜ਼ ਦਾ ਨਾਮ",
+        "Hospital Name & Room No.": "ਹਸਪਤਾਲ ਦਾ ਨਾਮ ਅਤੇ ਕਮਰਾ ਨੰ.",
+        "Patient Location": "ਮਰੀਜ਼ ਦਾ ਸਥਾਨ",
+        "Units Required": "ਲੋੜੀਂਦੀਆਂ ਇਕਾਈਆਂ",
+        "Urgency Level": "ਜ਼ਰੂਰੀ ਪੱਧਰ",
+        "Street Address / Area": "ਗਲੀ ਦਾ ਪਤਾ / ਖੇਤਰ",
+        "Doctor's Request Slip / Form Photo": "ਡਾਕਟਰ ਦੀ ਬੇਨਤੀ ਸਲਿੱਪ / ਫਾਰਮ ਫੋਟੋ",
+        "Hospital Name & Detail": "ਹਸਪਤਾਲ ਦਾ ਨਾਮ ਅਤੇ ਵੇਰਵਾ",
+        "Contact Phone / Details": "ਸੰਪਰਕ ਫੋਨ / ਵੇਰਵੇ",
+        "Patient Full Name": "ਮਰੀਜ਼ ਦਾ ਪੂਰਾ ਨਾਮ",
+        "Patient Name": "ਮਰੀਜ਼ ਦਾ ਨਾਮ",
+        "Hospital Name": "ਹਸਪਤਾਲ ਦਾ ਨਾਮ",
+        "Patient Location / Address": "ਮਰੀਜ਼ ਦਾ ਸਥਾਨ / ਪਤਾ",
+        "Privacy Policy": "ਪਰਦੇਦਾਰੀ ਨੀਤੀ",
+        "Terms & Conditions": "ਨਿਯਮ ਅਤੇ ਸ਼ਰਤਾਂ",
+        "All Rights Reserved. Saved & Built dynamically via custom theme template.": "ਸਾਰੇ ਹੱਕ ਰਾਖਵੇਂ ਹਨ। ਕਸਟਮ ਥੀਮ ਟੈਂਪਲੇਟ ਰਾਹੀਂ ਗਤੀਸ਼ੀਲ ਤੌਰ 'ਤੇ ਸੁਰੱਖਿਅਤ ਅਤੇ ਬਣਾਇਆ ਗਿਆ।",
+        "Designed with": "ਨਾਲ਼ ਡਿਜ਼ਾਈਨ ਕੀਤਾ",
+        "by Prabhjot Singh (Team Tatkhalsa)": "ਵਲੋਂ ਪ੍ਰਭਜੋਤ ਸਿੰਘ (ਟੀਮ ਤੱਤ ਖਾਲਸਾ)",
+        "Lives Impacted": "ਪ੍ਰਭਾਵਿਤ ਜੀਵਨ",
+        "Blood On Call": "ਬਲੱਡ ਆਨ ਕਾਲ",
+        "Initiatives": "ਪਹਿਲਕਦਮੀਆਂ",
+        "Volunteers": "ਵਲੰਟੀਅਰ",
+        "Financial Transparency": "ਵਿੱਤੀ ਪਾਰਦਰਸ਼ਤਾ",
+        "Annual Budget Allocation": "ਸਾਲਾਨਾ ਬਜਟ ਵੰਡ",
+        "We are committed to full accountability. Here is how our resources are allocated to maximize our impact on the community.": "ਅਸੀਂ ਪੂਰੀ ਜਵਾਬਦੇਹੀ ਲਈ ਵਚਨਬੱਧ ਹਾਂ। ਇੱਥੇ ਦੱਸਿਆ ਗਿਆ ਹੈ ਕਿ ਭਾਈਚਾਰੇ 'ਤੇ ਸਾਡੇ ਪ੍ਰਭਾਵ ਨੂੰ ਵੱਧ ਤੋਂ ਵੱਧ ਕਰਨ ਲਈ ਸਾਡੇ ਸਰੋਤਾਂ ਨੂੰ ਕਿਵੇਂ ਵੰਡਿਆ ਜਾਂਦਾ ਹੈ।",
+        "Community Programs": "ਭਾਈਚਾਰਕ ਪ੍ਰੋਗਰਾਮ",
+        "Education & Youth": "ਸਿੱਖਿਆ ਅਤੇ ਨੌਜਵਾਨ",
+        "Disaster Relief": "ਆਫ਼ਤ ਰਾਹਤ",
+        "Admin & Ops": "ਪ੍ਰਬੰਧਕੀ ਅਤੇ ਸੰਚਾਲਨ",
+        "Est. Annual": "ਅਨੁਮਾਨਿਤ ਸਾਲਾਨਾ",
+        "Contact Details": "ਸੰਪਰਕ ਵੇਰਵੇ"};
 
       const englishDictionary = Object.fromEntries(Object.entries(punjabiDictionary).map(([k, v]) => [v, k]));
 
@@ -2552,38 +2729,36 @@
         }
       }
 
-      function tatkhalsaSetLanguage(lang) {
-          localStorage.setItem('tatkhalsa_lang', lang);
-          window.location.reload();
-      }
-
       // Automatically apply translation on load if saved
       document.addEventListener("DOMContentLoaded", () => {
           const savedLang = localStorage.getItem('tatkhalsa_lang');
           if (savedLang === 'pa') {
               applyTranslation('pa');
+              document.body.classList.add('lang-pa');
           }
       });
     </script>
     
     <script>
+      function toggleLanguage() {
+          const currentLang = localStorage.getItem('tatkhalsa_lang') || 'en';
+          const newLang = currentLang === 'en' ? 'pa' : 'en';
+          tatkhalsaSetLanguage(newLang);
+      }
+
       document.addEventListener("DOMContentLoaded", () => {
           const savedLang = localStorage.getItem('tatkhalsa_lang') || 'en';
           
-          const desktopPa = document.querySelector('.lang-selector-desktop button[onclick*="pa"]');
-          const desktopEn = document.querySelector('.lang-selector-desktop button[onclick*="en"]');
+          const langEnText = document.querySelector('.lang-en-text');
+          const langPaText = document.querySelector('.lang-pa-text');
           
-          if (desktopPa && desktopEn) {
+          if (langEnText && langPaText) {
               if (savedLang === 'pa') {
-                  desktopPa.style.background = 'var(--secondary, #d4af37)';
-                  desktopPa.style.color = '#000';
-                  desktopEn.style.background = 'transparent';
-                  desktopEn.style.color = '#fff';
+                  langEnText.style.display = 'none';
+                  langPaText.style.display = 'block';
               } else {
-                  desktopEn.style.background = 'var(--secondary, #d4af37)';
-                  desktopEn.style.color = '#000';
-                  desktopPa.style.background = 'transparent';
-                  desktopPa.style.color = '#fff';
+                  langPaText.style.display = 'none';
+                  langEnText.style.display = 'block';
               }
           }
       });
