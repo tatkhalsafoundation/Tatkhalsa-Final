@@ -83,31 +83,6 @@ $donors_query = new WP_Query( $args );
     border: 1px solid rgba(255, 255, 255, 0.2) !important;
 }
 
-/* OTP Button Custom Dark Mode Styling */
-[data-theme="dark"] #sendOtpBtn {
-    background: #ff334b !important; /* Primary Red */
-    color: #ffffff !important; /* White Text */
-    border: 1px solid #ff334b !important;
-}
-
-[data-theme="dark"] #verifyOtpBtn {
-    background: #ff334b !important; /* Primary Red */
-    color: #ffffff !important; /* White Text */
-    border: 1px solid #ff334b !important;
-}
-
-[data-theme="light"] #sendOtpBtn {
-    background: #ff334b !important;
-    color: #ffffff !important;
-    border: 1px solid #ff334b !important;
-}
-
-[data-theme="light"] #verifyOtpBtn {
-    background: #ff334b !important;
-    color: #ffffff !important;
-    border: 1px solid #ff334b !important;
-}
-
 [data-theme="dark"] .modal-close {
     color: #f3f4f6 !important;
 }
@@ -516,19 +491,7 @@ $donors_query = new WP_Query( $args );
       
       <div style="margin-bottom: 15px;">
         <label style="display: block; margin-bottom: 8px; color: var(--text-dark); font-weight: bold;">Contact Number *</label>
-        <div style="display: flex; gap: 10px;">
-          <input type="tel" name="contactDetails" id="contactDetails" required placeholder="e.g. +91 9876543210" style="flex: 1; padding: 12px; border-radius: 6px; border: 1px solid rgba(0,0,0,0.2); background: #fff; color: #333;">
-          <button type="button" id="sendOtpBtn" onclick="window.simulateSendOtp()" style="background: var(--primary); color: #fff; padding: 0 15px; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; white-space: nowrap;">Send OTP</button>
-        </div>
-      </div>
-      
-      <div id="otpSection" style="margin-bottom: 15px; display: none;">
-        <label style="display: block; margin-bottom: 8px; color: var(--text-dark); font-weight: bold;">Enter OTP *</label>
-        <div style="display: flex; gap: 10px;">
-          <input type="text" name="otp" id="otpValue" placeholder="e.g. 123456" style="flex: 1; padding: 12px; border-radius: 6px; border: 1px solid rgba(0,0,0,0.2); background: #fff; color: #333;">
-          <button type="button" id="verifyOtpBtn" onclick="window.simulateVerifyOtp()" style="background: var(--accent-green); color: #fff; padding: 0 15px; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; white-space: nowrap;">Verify</button>
-        </div>
-        <small id="otpStatus" style="color: var(--text-light); font-size: 0.85rem; display: block; margin-top: 5px;"></small>
+        <input type="tel" name="contactDetails" id="contactDetails" required placeholder="e.g. +91 9876543210" style="width: 100%; padding: 12px; border-radius: 6px; border: 1px solid rgba(0,0,0,0.2); background: #fff; color: #333;">
       </div>
       
       <div style="margin-bottom: 15px;">
@@ -1533,70 +1496,6 @@ document.addEventListener("DOMContentLoaded", function() {
                 console.error("Error fetching cities", e);
             }
             if (currentLang === 'pa' && typeof translateNode === 'function') translateNode(districtSelect, 'pa');
-        }
-    };
-
-    window.simulateSendOtp = async function() {
-        const contact = document.getElementById('contactDetails').value;
-        if (!contact) {
-            alert('Please enter a valid contact number first.');
-            return;
-        }
-        document.getElementById('otpSection').style.display = 'block';
-        const otpStatus = document.getElementById('otpStatus');
-        otpStatus.innerText = 'Sending OTP via WhatsApp...';
-        otpStatus.style.color = '#ff9f43';
-        
-        try {
-            const res = await fetch('/api/admin/send-otp', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ contact })
-            });
-            const data = await res.json();
-            if (data.success) {
-                if (data.mock) {
-                    otpStatus.innerText = 'WhatsApp configured in mock mode. Test OTP is 123456';
-                    otpStatus.style.color = 'var(--text-light)';
-                } else {
-                    otpStatus.innerText = 'OTP Sent! Check your WhatsApp.';
-                    otpStatus.style.color = 'var(--accent-green)';
-                }
-            } else {
-                otpStatus.innerText = data.message || 'Failed to send OTP.';
-                otpStatus.style.color = 'var(--accent-red)';
-            }
-        } catch (e) {
-            otpStatus.innerText = 'Error: ' + e.message;
-            otpStatus.style.color = 'var(--accent-red)';
-        }
-    };
-
-    window.simulateVerifyOtp = async function() {
-        const contact = document.getElementById('contactDetails').value;
-        const otpVal = document.getElementById('otpValue').value;
-        const otpStatus = document.getElementById('otpStatus');
-        
-        try {
-            const res = await fetch('/api/admin/verify-otp', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ contact, otp: otpVal })
-            });
-            const data = await res.json();
-            if (data.success) {
-                otpStatus.innerText = 'OTP Verified Successfully!';
-                otpStatus.style.color = 'var(--accent-green)';
-                document.getElementById('verifyOtpBtn').innerText = 'Verified';
-                document.getElementById('verifyOtpBtn').disabled = true;
-                document.getElementById('sendOtpBtn').style.display = 'none';
-            } else {
-                otpStatus.innerText = data.message || 'Invalid OTP. Please try again.';
-                otpStatus.style.color = 'var(--accent-red)';
-            }
-        } catch (e) {
-            otpStatus.innerText = 'Error: ' + e.message;
-            otpStatus.style.color = 'var(--accent-red)';
         }
     };
 
