@@ -1548,13 +1548,10 @@ document.addEventListener("DOMContentLoaded", function() {
         otpStatus.style.color = '#ff9f43';
         
         try {
-            const params = new URLSearchParams();
-            params.append('action', 'send_whatsapp_otp');
-            params.append('contact', contact);
-            const res = await fetch("<?php echo esc_url(admin_url('admin-ajax.php')); ?>", {
+            const res = await fetch('/api/admin/send-otp', {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                body: params.toString()
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ contact })
             });
             const data = await res.json();
             if (data.success) {
@@ -1581,14 +1578,10 @@ document.addEventListener("DOMContentLoaded", function() {
         const otpStatus = document.getElementById('otpStatus');
         
         try {
-            const params = new URLSearchParams();
-            params.append('action', 'verify_whatsapp_otp');
-            params.append('contact', contact);
-            params.append('otp', otpVal);
-            const res = await fetch("<?php echo esc_url(admin_url('admin-ajax.php')); ?>", {
+            const res = await fetch('/api/admin/verify-otp', {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                body: params.toString()
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ contact, otp: otpVal })
             });
             const data = await res.json();
             if (data.success) {

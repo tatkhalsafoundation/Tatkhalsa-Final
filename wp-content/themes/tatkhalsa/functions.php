@@ -3184,30 +3184,3 @@ function tatkhalsa_send_80g_receipt_on_verification( $new_status, $old_status, $
     }
 }
 add_action( 'transition_post_status', 'tatkhalsa_send_80g_receipt_on_verification', 10, 3 );
-
-
-// WhatsApp OTP Actions
-add_action('wp_ajax_send_whatsapp_otp', 'tatkhalsa_send_whatsapp_otp');
-add_action('wp_ajax_nopriv_send_whatsapp_otp', 'tatkhalsa_send_whatsapp_otp');
-function tatkhalsa_send_whatsapp_otp() {
-     = isset(['contact']) ? sanitize_text_field(['contact']) : '';
-    if (empty()) {
-        wp_send_json(array('success' => false, 'message' => 'Contact number is required.'));
-    }
-    
-    // In a real WP environment, you would integrate the Meta WhatsApp API here.
-    wp_send_json(array('success' => true, 'message' => 'OTP sent in mock mode (WordPress).', 'mock' => true));
-}
-
-add_action('wp_ajax_verify_whatsapp_otp', 'tatkhalsa_verify_whatsapp_otp');
-add_action('wp_ajax_nopriv_verify_whatsapp_otp', 'tatkhalsa_verify_whatsapp_otp');
-function tatkhalsa_verify_whatsapp_otp() {
-     = isset(['otp']) ? sanitize_text_field(['otp']) : '';
-     = isset(['contact']) ? sanitize_text_field(['contact']) : '';
-    
-    if (empty() || empty()) {
-        wp_send_json(array('success' => false, 'message' => 'OTP and contact required.'));
-    }
-    
-    wp_send_json(array('success' => true, 'message' => 'OTP verified correctly (WordPress).'));
-}
