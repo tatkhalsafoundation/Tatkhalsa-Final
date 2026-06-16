@@ -791,19 +791,19 @@ if ( ! empty( $download_id ) ) {
             display: flex;
             flex-direction: column;
             align-items: center;
-            width: 74px;
+            width: 92px;
             line-height: 1;
         }
         
         .signature-image-wrapper {
-            height: 28px;
+            height: 35px;
             display: flex;
             align-items: flex-end;
             justify-content: center;
         }
         
         .signature-image-wrapper img {
-            height: 28px;
+            height: 35px;
             width: auto;
             object-fit: contain;
             mix-blend-mode: multiply;
@@ -1727,19 +1727,19 @@ if ( ! empty( $query_member_id ) ) {
             display: flex;
             flex-direction: column;
             align-items: center;
-            width: 74px;
+            width: 92px;
             line-height: 1;
         }
         
         .signature-image-wrapper {
-            height: 28px;
+            height: 35px;
             display: flex;
             align-items: flex-end;
             justify-content: center;
         }
         
         .signature-image-wrapper img {
-            height: 28px;
+            height: 35px;
             width: auto;
             object-fit: contain;
             mix-blend-mode: multiply;
