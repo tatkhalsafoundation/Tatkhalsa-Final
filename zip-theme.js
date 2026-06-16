@@ -7,43 +7,10 @@ try {
   const outputPath = path.join(process.cwd(), 'tatkhalsa.zip');
   const destFolder = 'tatkhalsa';
 
-  // Add the root level WordPress theme files directly
-  const filesToZip = [
-    'style.css',
-    'Logo.png',
-    'Logo.jpg',
-    'functions.php',
-    'header.php',
-    'footer.php',
-    'index.php',
-    'template-about.php',
-    'template-projects.php',
-    'template-volunteer.php'
-  ];
-
   const themeDir = path.join(process.cwd(), 'wp-content', 'themes', 'tatkhalsa');
 
-  filesToZip.forEach(file => {
-    let filePath = path.join(themeDir, file);
-    
-    // Fallback if Logo.png is not present but Logo.jpg exists
-    if (!fs.existsSync(filePath)) {
-      if (file === 'Logo.png') {
-        const jpgPath = path.join(themeDir, 'Logo.jpg');
-        if (fs.existsSync(jpgPath)) {
-          filePath = jpgPath;
-        } else {
-          console.warn(`WARNING: File not found at ${filePath}`);
-          return;
-        }
-      } else {
-        console.warn(`WARNING: File not found at ${filePath}`);
-        return;
-      }
-    }
-    
-    zip.addLocalFile(filePath, destFolder);
-  });
+  // Add the entire local theme folder recursively
+  zip.addLocalFolder(themeDir, destFolder);
   
   // Write the zip file
   zip.writeZip(outputPath);

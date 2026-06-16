@@ -225,6 +225,115 @@ if ( $_SERVER['REQUEST_METHOD'] === 'POST' && isset( $_POST['tkf_verify_action']
         );
         $message = 'Personnel record permanently deleted.';
         $message_type = 'success';
+    } elseif ( $action === 'send_member_email' ) {
+        $id = intval( $_POST['id'] );
+        $member = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM $table_name WHERE id = %d", $id ) );
+        if ( ! $member ) {
+            $message = 'Member not found.';
+            $message_type = 'error';
+        } elseif ( empty( $member->email ) ) {
+            $message = 'Error: This member does not have an email address associated with their profile.';
+            $message_type = 'error';
+        } else {
+            // Retrieve values for email
+            $to = $member->email;
+            $subject = 'Official Identity Verification & ID Card Notification - ' . $member->member_id;
+            $verify_url = esc_url( home_url('/verify/?member_id=' . $member->member_id) );
+            
+            // Build a highly professional responsive HTML email body mimicking Tatkhalsa official brand
+            $body = '
+            <!DOCTYPE html>
+            <html>
+            <head>
+                <meta charset="utf-8">
+                <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                <title>Secured Identity Information</title>
+                <style>
+                    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; line-height: 1.6; color: #2d3748; background-color: #f7fafc; margin: 0; padding: 0; }
+                    .wrapper { background-color: #f7fafc; width: 100%; padding: 40px 0; }
+                    .container { max-width: 600px; margin: 0 auto; background-color: #ffffff; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); overflow: hidden; border: 1px solid #e2e8f0; }
+                    .header { background: #052054; padding: 30px 20px; text-align: center; color: #ffffff; border-bottom: 4px solid #E1A92A; }
+                    .header h2 { margin: 0; font-size: 24px; font-weight: 800; letter-spacing: 1px; text-transform: uppercase; }
+                    .header .sub { font-size: 11px; font-weight: 600; color: #E1A92A; margin-top: 5px; text-transform: uppercase; letter-spacing: 2px; }
+                    .content { padding: 30px; }
+                    .content h3 { font-size: 18px; color: #052054; margin-top: 0; font-weight: 700; border-left: 3px solid #E1A92A; padding-left: 10px; }
+                    .info-card { background: #f8fafc; border: 1px solid #edf2f7; border-radius: 8px; padding: 20px; margin: 20px 0; }
+                    .info-row { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px dashed #edf2f7; }
+                    .info-row:last-child { border-bottom: none; }
+                    .info-label { font-weight: 700; color: #718096; font-size: 12px; text-transform: uppercase; }
+                    .info-value { font-weight: 600; color: #1a202c; font-size: 13px; text-align: right; }
+                    .btn-wrap { text-align: center; margin: 30px 0; }
+                    .btn-verify { display: inline-block; background-color: #E1A92A; color: #052054 !important; text-decoration: none; font-weight: 800; font-size: 13px; letter-spacing: 0.5px; padding: 14px 28px; border-radius: 6px; text-transform: uppercase; box-shadow: 0 4px 10px rgba(225, 169, 42, 0.25); border: 1px solid #d49a1f; transition: all 0.2s ease; }
+                    .footer { text-align: center; font-size: 11px; color: #718096; margin-top: 30px; border-top: 1px solid #edf2f7; padding: 20px; background: #fafcb4; background-color: #f7fafc; }
+                    .footer p { margin: 4px 0; }
+                </style>
+            </head>
+            <body>
+                <div class="wrapper">
+                    <div class="container">
+                        <div class="header">
+                            <h2>TATKHALSA FOUNDATION</h2>
+                            <div class="sub">Secured Personnel Identity Directory</div>
+                        </div>
+                        <div class="content">
+                            <h3>Official Identity Manifest Activation</h3>
+                            <p>Sat Sri Akal, <strong>' . esc_html( $member->full_name ) . '</strong>,</p>
+                            <p>Your official credentials and secure registration status have been successfully configured on the Tatkhalsa secure identity verification subsystem.</p>
+                            
+                            <div class="info-card">
+                                <div class="info-row">
+                                    <span class="info-label">Personnel Member ID</span>
+                                    <span class="info-value" style="font-family: monospace;">' . esc_html( $member->member_id ) . '</span>
+                                </div>
+                                <div class="info-row">
+                                    <span class="info-label">Role Capacity</span>
+                                    <span class="info-value">' . esc_html( $member->designation ) . '</span>
+                                </div>
+                                <div class="info-row">
+                                    <span class="info-label">Security Cleared Status</span>
+                                    <span class="info-value" style="color: #2f855a;">● ' . esc_html( $member->status ) . '</span>
+                                </div>
+                                <div class="info-row">
+                                    <span class="info-label">Term Expiration</span>
+                                    <span class="info-value">' . esc_html( tkf_format_date( $member->expiry_date, 'PERMANENT BENEFICIARY / LIFETIME' ) ) . '</span>
+                                </div>
+                            </div>
+                            
+                            <p>To view your official digitized smart ID card, access secure bank remittance details, or self-print your verification pass, tap the button below:</p>
+                            
+                            <div class="btn-wrap">
+                                <a href="' . $verify_url . '" class="btn-verify">View & Validate Smart ID Card</a>
+                            </div>
+                            
+                            <p style="font-size: 13px; color: #718096; margin-top: 20px;">If scanning a physical barcoded tag or QR sticker on your card, it will land directly back to this same verified directory status profile for official confirmation.</p>
+                        </div>
+                        <div class="footer">
+                            <p>This notification was securely triggered by the Tatkhalsa Engineering Division on behalf of the foundation trustees.</p>
+                            <p>Sender Authority: <strong>tech-team@tatkhalsa.in</strong></p>
+                            <p>Security inquiries or correction requests: <a href="mailto:info@tatkhalsa.in" style="color: #052054; text-decoration: underline;">info@tatkhalsa.in</a></p>
+                            <p style="margin-top: 15px; font-weight: bold;">&copy; ' . date('Y') . ' Tatkhalsa Foundation. All Rights Reserved.</p>
+                        </div>
+                    </div>
+                </div>
+            </body>
+            </html>';
+            
+            // Set Headers to specify HTML content and the precise From address
+            $headers = array(
+                'Content-Type: text/html; charset=UTF-8',
+                'From: Tatkhalsa Tech Team <tech-team@tatkhalsa.in>',
+                'Reply-To: Tatkhalsa Info <info@tatkhalsa.in>'
+            );
+            
+            $sent = wp_mail( $to, $subject, $body, $headers );
+            if ( $sent ) {
+                $message = 'Direct official verification email successfully dispatched to ' . esc_html( $to ) . ' from tech-team@tatkhalsa.in.';
+                $message_type = 'success';
+            } else {
+                $message = 'Error: System mail agent failed to deliver email. Please check your server SMTP settings.';
+                $message_type = 'error';
+            }
+        }
     }
 }
 
@@ -1834,306 +1943,43 @@ if ( ! empty( $query_member_id ) ) {
             
             <div class="verify-card verify-card-active">
                 <div class="verify-banner-active">
-                    ✓ VERIFIED OFFICIAL REPRESENTATIVE OF TATKHALSA FOUNDATION
-                </div>
-                
-                <!-- Scaler wrapper containing the horizontal luxury ID card replica -->
-                <div class="card-viewport-scaler">
-                    <?php
-                    $mid_upper = strtoupper( $member->member_id );
-                    $theme_class = 'theme-staff';
-                    if ( strpos( $mid_upper, 'TKF-VOL' ) !== false ) {
-                        $theme_class = 'theme-volunteer';
-                    } elseif ( strpos( $mid_upper, 'TKF-DIR' ) !== false || strpos( $mid_upper, 'TKF-ADM' ) !== false || strpos( $mid_upper, 'TKF-TRU' ) !== false ) {
-                        $theme_class = 'theme-director';
-                    } elseif ( strpos( $mid_upper, 'TKF-MEM' ) !== false ) {
-                        $theme_class = 'theme-member';
-                    } elseif ( strpos( $mid_upper, 'TKF-SEC' ) !== false ) {
-                        $theme_class = 'theme-security';
-                    }
-                    ?>
-                    <div class="id-card-wrapper <?php echo esc_attr( $theme_class ); ?>">
-                        <!-- Wavy background vector curves inside card -->
-                        <svg class="id-header-curve-svg" viewBox="0 0 324 204" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg" style="position: absolute; top:0; left:0; width:324px; height:204px; z-index:1; pointer-events:none;">
-                            <path d="M 0,0 L 324,0 L 324,45 C 270,51 210,31 150,43 C 90,55 50,42 0,46 Z" fill="#E1A92A" />
-                            <path d="M 0,0 L 324,0 L 324,43 C 270,48 210,28 150,40 C 90,52 50,40 0,43 Z" fill="var(--id-primary)" />
-                        </svg>
-
-                        <!-- Watermark Overlay behind card profile details -->
-                        <div class="id-watermark-overlay" style="background-image: url('<?php echo esc_url($logo_url); ?>');"></div>
-
-                        <!-- Card Top Header -->
-                        <div class="id-header">
-                            <div class="id-header-left">
-                                <img src="<?php echo esc_url($logo_url); ?>" class="id-header-logo" alt="Logo">
-                                <div class="id-header-text">
-                                    <h3 class="id-org-title">TATKHALSA</h3>
-                                    <p class="id-org-motto">FOUNDATION</p>
-                                    <p class="id-org-reg">CIN: U88900PB2023NPL059225</p>
-                                </div>
-                            </div>
-                            <div class="id-header-right">
-                                <div class="secured-badge">
-                                    <svg class="lock-icon-svg" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="width: 10px; height: 10px;">
-                                        <circle cx="12" cy="12" r="11" stroke="#E1A92A" stroke-width="2"/>
-                                        <rect x="8" y="11" width="8" height="6" rx="1.5" fill="#E1A92A"/>
-                                        <path d="M10 11V9C10 7.89543 10.8954 7 12 7C13.1046 7 14 7.89543 14 9V11" stroke="#E1A92A" stroke-width="1.8" stroke-linecap="round"/>
-                                    </svg>
-                                    <div class="secured-text">
-                                        <span>VERIFIED</span>
-                                        <strong>& SECURED</strong>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <!-- Card Main Body -->
-                        <div class="id-content-main">
-                            <!-- Left Column -->
-                            <div class="id-col-left">
-                                <div class="id-photo-container">
-                                    <?php if ( ! empty( $member->photo_url ) ) : ?>
-                                        <img src="<?php echo esc_url( $member->photo_url ); ?>" alt="Member Photo">
-                                    <?php else: ?>
-                                        <img src="<?php echo esc_url($logo_url); ?>" alt="Default Logo" style="object-fit: contain; padding: 6px; background:#f4f6f9;">
-                                    <?php endif; ?>
-                                </div>
-                                
-                                <div class="id-badge-info-navy">
-                                    <span class="badge-label">MEMBER ID</span>
-                                    <span class="badge-value"><?php echo esc_html( $member->member_id ); ?></span>
-                                    
-                                    <!-- Code 128 / Code 39 simulated vector barcode -->
-                                    <div class="barcode-box">
-                                        <div class="barcode-bar thick"></div>
-                                        <div class="barcode-bar thin"></div>
-                                        <div class="barcode-bar med"></div>
-                                        <div class="barcode-bar thick"></div>
-                                        <div class="barcode-bar thin"></div>
-                                        <div class="barcode-bar med"></div>
-                                        <div class="barcode-bar thick"></div>
-                                        <div class="barcode-bar thin"></div>
-                                        <div class="barcode-bar thick"></div>
-                                        <div class="barcode-bar med"></div>
-                                        <div class="barcode-bar thin"></div>
-                                        <div class="barcode-bar med"></div>
-                                        <div class="barcode-bar thick"></div>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <!-- Right Column -->
-                            <div class="id-col-right">
-                                <!-- Name and Designation -->
-                                <div class="profile-title-block">
-                                    <h2 class="profile-fullname"><?php echo esc_html( $member->full_name ); ?></h2>
-                                    <div class="profile-designation"><?php echo esc_html( $member->designation ); ?></div>
-                                    <div class="title-divider-line"></div>
-                                </div>
-                                
-                                <!-- Meta Rows list -->
-                                <div class="profile-meta-list">
-                                    <!-- Row 1: CONTACT -->
-                                    <div class="meta-item-row">
-                                        <div class="meta-icon-circle">
-                                            <svg class="meta-svg-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                                                <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
-                                            </svg>
-                                        </div>
-                                        <div class="meta-content-wrapper">
-                                            <span class="meta-row-label">CONTACT NO</span>
-                                            <span class="meta-row-val"><?php echo esc_html( $member->mobile ?: 'N/A' ); ?></span>
-                                        </div>
-                                    </div>
-                                    
-                                    <!-- Row 2: EMAIL -->
-                                    <div class="meta-item-row">
-                                        <div class="meta-icon-circle">
-                                            <svg class="meta-svg-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                                                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
-                                                <polyline points="22,6 12,13 2,6" />
-                                            </svg>
-                                        </div>
-                                        <div class="meta-content-wrapper">
-                                            <span class="meta-row-label">EMAIL ADDRESS</span>
-                                            <span class="meta-row-val"><?php echo esc_html( $member->email ?: 'N/A' ); ?></span>
-                                        </div>
-                                    </div>
-                                    
-                                    <!-- Row 3: BLOOD GROUP -->
-                                    <div class="meta-item-row">
-                                        <div class="meta-icon-circle">
-                                            <svg class="meta-svg-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                                                <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
-                                            </svg>
-                                        </div>
-                                        <div class="meta-content-wrapper">
-                                            <span class="meta-row-label">BLOOD GROUP</span>
-                                            <span class="meta-row-val"><?php echo esc_html( $member->blood_group ?: 'N/A' ); ?></span>
-                                        </div>
-                                    </div>
-
-                                    <!-- Row 4: EXPIRY DATE -->
-                                    <div class="meta-item-row">
-                                        <div class="meta-icon-circle">
-                                            <svg class="meta-svg-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                                                <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
-                                                <line x1="16" y1="2" x2="16" y2="6" />
-                                                <line x1="8" y1="2" x2="8" y2="6" />
-                                                <line x1="3" y1="10" x2="21" y2="10" />
-                                            </svg>
-                                        </div>
-                                        <div class="meta-content-wrapper">
-                                            <span class="meta-row-label">EXPIRY DATE</span>
-                                            <span class="meta-row-val"><?php echo esc_html( tkf_format_date( $member->expiry_date, 'N/A' ) ); ?></span>
-                                        </div>
-                                    </div>
-                                </div>
-                                
-                                <!-- Block footer -->
-                                <div class="right-column-footer">
-                                    <div class="signature-block">
-                                        <div class="signature-image-wrapper">
-                                            <img src="https://tatkhalsa.in/wp-content/uploads/2026/06/aba819ad-1c8e-4d21-9849-ef03729a0cc5_removalai_preview-e1781624417937.png" alt="Signature">
-                                        </div>
-                                        <div class="signature-underline"></div>
-                                        <span class="signature-title">AUTHORIZED SIGNATURE</span>
-                                    </div>
-                                    
-                                    <div class="vertical-dash-divider"></div>
-                                    
-                                    <div class="validity-block">
-                                        <span class="validity-label">ISSUE DATE</span>
-                                        <span class="validity-date"><?php echo esc_html( tkf_format_date( $member->issue_date, tkf_format_date( $member->created_at, '16 JUN 2026' ) ) ); ?></span>
-                                    </div>
-                                    
-                                    <?php 
-                                    $verify_self_url = esc_url( home_url('/verify/?member_id=' . $member->member_id) );
-                                    $qr_self_url = 'https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=' . urlencode( $verify_self_url ) . '&margin=0';
-                                    ?>
-                                    <div class="qrcode-badge-container">
-                                        <div class="qr-code-box">
-                                            <img src="<?php echo esc_url($qr_self_url); ?>" alt="QR Code">
-                                        </div>
-                                        <div class="scan-verify-pill">SCAN TO VERIFY</div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <!-- Footer bar -->
-                        <div class="id-bottom-navy-banner">
-                            INTEGRITY &nbsp;&nbsp;&bull;&nbsp;&nbsp; TRANSPARENCY &nbsp;&nbsp;&bull;&nbsp;&nbsp; SECURITY &nbsp;&nbsp;&bull;&nbsp;&nbsp; TRUST
-                        </div>
-                    </div>
-
-                    <!-- BACK SIDE OF ID CARD -->
-                    <div class="id-card-wrapper <?php echo esc_attr( $theme_class ); ?> id-card-back">
-                        <!-- SVG background curves inside the card wrapper for wavy header effect -->
-                        <svg class="id-header-curve-svg" viewBox="0 0 324 204" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg" style="position: absolute; top:0; left:0; width:324px; height:204px; z-index:1; pointer-events:none;">
-                            <!-- Gold ribbon wavy background separator -->
-                            <path d="M 0,0 L 324,0 L 324,45 C 270,51 210,31 150,43 C 90,55 50,42 0,46 Z" fill="#E1A92A" />
-                            <!-- Deep Navy background curve header -->
-                            <path d="M 0,0 L 324,0 L 324,43 C 270,48 210,28 150,40 C 90,52 50,40 0,43 Z" fill="var(--id-primary)" />
-                        </svg>
-
-                        <!-- Watermark Medallion overlay behind info list -->
-                        <div class="id-watermark-overlay" style="background-image: url('<?php echo esc_url($logo_url); ?>');"></div>
-
-                        <!-- Top Header Part -->
-                        <div class="id-header">
-                            <div class="id-header-left">
-                                <img src="<?php echo esc_url($logo_url); ?>" class="id-header-logo" alt="Logo">
-                                <div class="id-header-text">
-                                    <h3 class="id-org-title">TATKHALSA</h3>
-                                    <p class="id-org-motto">FOUNDATION</p>
-                                    <p class="id-org-reg">CIN: U88900PB2023NPL059225</p>
-                                </div>
-                            </div>
-                            <div class="id-header-right">
-                                <div style="font-size: 5px; font-weight: 800; color: #E1A92A; text-align: right; letter-spacing: 0.5px; line-height: 1.1;">
-                                    OFFICIAL DATA &<br>CONTRIBUTIONS
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Back Side Content Area -->
-                        <div class="id-content-main" style="padding: 13px 12px 14px 12px; display: flex; flex-direction: row; gap: 10px; z-index: 10; justify-content: space-between; align-items: center; box-sizing: border-box; height: 137px; width: 100%;">
-                            <!-- Left Column: Bank Account Details -->
-                            <div class="back-details-col" style="flex: 1; display: flex; flex-direction: column; gap: 3px; text-align: left;">
-                                <span style="font-size: 5.5px; font-weight: 800; color: var(--id-primary); letter-spacing: 0.3px; text-transform: uppercase;">DONATIONS & SUPPORT</span>
-                                
-                                <div style="width: 25px; height: 1px; background: #E1A92A; margin: 1px 0 2px 0;"></div>
-                                
-                                <!-- Key-Value Rows for Bank Info in an elegant card-like container overlay -->
-                                <div style="display: flex; flex-direction: column; justify-content: space-between; background: rgba(5, 32, 84, 0.03); border: 0.5px solid rgba(5, 32, 84, 0.1); border-radius: 6px; padding: 6px 8px; box-sizing: border-box; width: 210px; height: 110px;">
-                                    <!-- Beneficiary Details -->
-                                    <div style="display: flex; flex-direction: column; line-height: 1;">
-                                        <span style="font-size: 3.5px; font-weight: 800; color: #718096; text-transform: uppercase; letter-spacing: 0.2px;">BENEFICIARY NAME</span>
-                                        <span style="font-size: 7.5px; font-weight: 700; color: var(--id-primary); letter-spacing: 0.1px;">TATKHALSA FOUNDATION</span>
-                                    </div>
-
-                                    <div style="height: 0.5px; background: rgba(5, 32, 84, 0.06); width: 100%;"></div>
-
-                                    <!-- Account Number -->
-                                    <div style="display: flex; flex-direction: column; line-height: 1;">
-                                        <span style="font-size: 3.5px; font-weight: 800; color: #718096; text-transform: uppercase; letter-spacing: 0.2px;">ACCOUNT NUMBER</span>
-                                        <span style="font-size: 10px; font-weight: 700; color: #1a202c; font-family: 'Courier New', monospace; letter-spacing: 0.8px; margin-top: 1px;">9250 1005 7912 966</span>
-                                    </div>
-
-                                    <div style="height: 0.5px; background: rgba(5, 32, 84, 0.06); width: 100%;"></div>
-
-                                    <!-- IFSC Code & Bank Name Row -->
-                                    <div style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
-                                        <div style="display: flex; flex-direction: column; line-height: 1;">
-                                            <span style="font-size: 3.5px; font-weight: 800; color: #718096; text-transform: uppercase; letter-spacing: 0.2px;">IFSC CODE</span>
-                                            <span style="font-size: 7.5px; font-weight: 700; color: #1a202c; font-family: 'Courier New', monospace; margin-top: 1px;">UTIB0004354</span>
-                                        </div>
-                                        <div style="display: flex; flex-direction: column; line-height: 1; align-items: flex-end; text-align: right;">
-                                            <span style="font-size: 3.5px; font-weight: 800; color: #718096; text-transform: uppercase; letter-spacing: 0.2px; padding-right: 4px;">BANK NAME</span>
-                                            <div style="display: flex; align-items: center; gap: 3px; margin-top: 1.5px;">
-                                                <img src="https://upload.wikimedia.org/wikipedia/commons/1/1a/Axis_Bank_logo.svg" alt="Axis Bank" style="height: 7px; display: block; object-fit: contain;">
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div style="height: 0.5px; background: rgba(5, 32, 84, 0.06); width: 100%;"></div>
-
-                                    <!-- BHIM UPI ID Row -->
-                                    <div style="display: flex; flex-direction: column; line-height: 1;">
-                                        <span style="font-size: 3.5px; font-weight: 800; color: #718096; text-transform: uppercase; letter-spacing: 0.2px;">BHIM UPI ADDRESS</span>
-                                        <div style="display: inline-block; background: rgba(225, 169, 42, 0.1); border: 0.5px solid rgba(225, 169, 42, 0.4); padding: 1.5px 4px; border-radius: 3px; margin-top: 1px; width: fit-content;">
-                                            <span style="font-size: 6.8px; font-weight: 700; color: #2d3748; font-family: 'Courier New', monospace; letter-spacing: -0.1px; display: block;">mab.037215043540097@axisbank</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Right Column: Contribution QR Code -->
-                            <div class="back-qr-col" style="width: 65px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; border-left: 0.5px solid rgba(52, 58, 64, 0.15); padding-left: 10px; box-sizing: border-box; height: 110px; margin-top: 11px;">
-                                <?php 
-                                $upi_url = 'upi://pay?pa=mab.037215043540097@axisbank&pn=Tatkhalsa%20Foundation&cu=INR';
-                                $pay_qr_url = 'https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=' . urlencode( $upi_url ) . '&margin=0';
-                                ?>
-                                <div style="padding: 2.5px; border: 0.75px solid var(--id-primary); border-radius: 4px; background: #ffffff; box-shadow: 0 1px 3px rgba(0,0,0,0.05); box-sizing: border-box; max-width: 50px; max-height: 50px; display: flex; align-items: center; justify-content: center;">
-                                    <img src="<?php echo esc_url($pay_qr_url); ?>" alt="Contribution QR" style="width: 42px; height: 42px; display: block; object-fit: contain;">
-                                </div>
-                                <div style="font-size: 3.5px; font-weight: 900; background: #E1A92A; color: var(--id-primary); padding: 1.5px 4px; border-radius: 2.5px; letter-spacing: 0.2px; text-transform: uppercase; text-align: center; box-shadow: 0 1px 2px rgba(225, 169, 42, 0.2); white-space: nowrap; margin-top: 2px;">
-                                    SCAN TO CONTRIBUTE
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Card Bottom Terms / Policy strip -->
-                        <div class="id-bottom-navy-banner" style="font-size: 3.3px; height: 15px; padding: 0 10px; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; line-height: 1.2; border-top: 1.5px solid #E1A92A; box-sizing: border-box;">
-                            <span style="letter-spacing: 0.15px; font-weight: 500; color: #fff; text-transform: uppercase; font-size: 3.3px;">Registered Section 8 Non-Profit Organization. All donations are tax exempt under Sec 80G.</span>
-                            <span style="letter-spacing: 0.1px; font-weight: 400; color: #cbd5e0; font-size: 3.1px;">If found, please return to office or contact: info@tatkhalsa.in.</span>
-                        </div>
-                    </div>
+                    ✓ SECURE IDENTITY VERIFIED & ACTIVE
                 </div>
 
                 <!-- Structured meta list under card for quick reading -->
-                <div class="post-card-verification-details">
+                <div class="post-card-verification-details" style="padding: 24px 24px 20px 24px; text-align: left;">
+
+                    <!-- Simplified Visual Block showing ONLY Photo and Core Context, NO full card layout, signature or QR for safety -->
+                    <div style="display: flex; flex-direction: row; gap: 24px; align-items: center; border-bottom: 1px solid #edf2f7; padding-bottom: 24px; margin-bottom: 24px; flex-wrap: wrap;">
+
+                        <!-- Secure Avatar Border -->
+                        <div style="width: 120px; height: 135px; border: 3px solid #E1A92A; border-radius: 10px; overflow: hidden; background: #ffffff; box-shadow: 0 4px 15px rgba(5, 32, 84, 0.08); flex-shrink: 0; position: relative;">
+                            <?php if ( ! empty( $member->photo_url ) ) : ?>
+                                <img src="<?php echo esc_url( $member->photo_url ); ?>" alt="Member Photo" style="width: 100%; height: 100%; object-fit: cover; display: block;">
+                            <?php else: ?>
+                                <img src="<?php echo esc_url($logo_url); ?>" alt="Default Logo" style="width: 100%; height: 100%; object-fit: contain; padding: 16px; background:#f4f6f9; box-sizing: border-box; display: block;">
+                            <?php endif; ?>
+
+                            <!-- Floating Active Indicator -->
+                            <div style="position: absolute; bottom: 8px; left: 50%; transform: translateX(-50%); background: #28a745; color: #ffffff; font-size: 8px; font-weight: 800; padding: 3px 8px; border-radius: 99px; letter-spacing: 0.5px; text-transform: uppercase; white-space: nowrap; box-shadow: 0 2px 5px rgba(40,167,69,0.3);">
+                                Active
+                            </div>
+                        </div>
+
+                        <!-- Core Identity Context -->
+                        <div style="flex: 1; min-width: 200px;">
+                            <span style="font-size: 10px; font-weight: 800; color: #E1A92A; letter-spacing: 0.8px; text-transform: uppercase; display: block; margin-bottom: 4px;">TATKHALSA FOUNDATION</span>
+                            <h2 style="font-family: 'Space Grotesk', sans-serif; font-size: 22px; font-weight: 800; color: #052054; margin: 0; text-transform: uppercase; letter-spacing: -0.3px; line-height: 1.15;"><?php echo esc_html( $member->full_name ); ?></h2>
+                            <div style="display: inline-block; background: rgba(5,32,84,0.06); border: 1px solid rgba(5,32,84,0.1); border-radius: 6px; padding: 4px 10px; font-size: 11.5px; font-weight: 700; color: #052054; margin-top: 8px; text-transform: uppercase; letter-spacing: 0.3px;">
+                                <?php echo esc_html( $member->designation ); ?>
+                            </div>
+
+                            <div style="margin-top: 14px; font-size: 11.5px; color: #4a5568; line-height: 1.5; font-weight: 500;">
+                                Secure Personnel ID: <strong style="font-family: monospace; color: #1a202c; font-size: 12.5px; font-weight: 700;"><?php echo esc_html( $member->member_id ); ?></strong>
+                            </div>
+                        </div>
+                    </div>
+
                     <h4 class="post-card-title">Credential Verification Audit Logs</h4>
                     <div class="post-card-grid">
                         <div class="post-card-row">
@@ -2176,6 +2022,23 @@ if ( ! empty( $query_member_id ) ) {
                             <div class="post-card-row">
                                 <span class="post-card-label">Secure Contact No</span>
                                 <span class="post-card-val"><?php echo esc_html( '******' . substr( $member->mobile, -4 ) ); ?></span>
+                            </div>
+                        <?php endif; ?>
+                        <?php if ( ! empty( $member->gov_id ) ) : ?>
+                            <div class="post-card-row">
+                                <span class="post-card-label">Aadhaar Card Number</span>
+                                <span class="post-card-val" style="letter-spacing: 0.5px; font-family: monospace;">
+                                    <?php 
+                                    $raw_gov = trim( $member->gov_id );
+                                    $clean_gov = preg_replace('/[^A-Za-z0-9]/', '', $raw_gov);
+                                    if ( strlen( $clean_gov ) > 4 ) {
+                                        $last_digits = substr( $clean_gov, -4 );
+                                        echo esc_html( '•••• •••• ' . $last_digits );
+                                    } else {
+                                        echo esc_html( '•••• ' . $clean_gov );
+                                    }
+                                    ?>
+                                </span>
                             </div>
                         <?php endif; ?>
                     </div>
@@ -2600,6 +2463,22 @@ if ( ! empty( $query_member_id ) ) {
                                         
                                         <!-- Download ID Button -->
                                         <a href="<?php echo esc_url( home_url('/verify/?download_id=' . $mem->member_id) ); ?>" target="_blank" class="action-btn" style="background:#28a745; display: flex; align-items: center; justify-content: center;">Print ID</a>
+
+                                        <!-- Direct Mail to them Button (From tech-team@tatkhalsa.in) -->
+                                        <?php if ( ! empty( $mem->email ) ) : ?>
+                                            <form method="POST" action="" style="margin:0;" onsubmit="return confirm('Are you sure you want to directly mail this ID card and credential information to: <?php echo esc_attr($mem->email); ?> from tech-team@tatkhalsa.in?');">
+                                                <?php wp_nonce_field( 'tkf_verify_admin_action', 'tkf_verify_nonce' ); ?>
+                                                <input type="hidden" name="tkf_verify_action" value="send_member_email">
+                                                <input type="hidden" name="id" value="<?php echo esc_attr( $mem->id ); ?>">
+                                                <button type="submit" class="action-btn" style="background: #e1a92a; color: #052054; border: none; font-weight: 700;" title="Send Credentials to <?php echo esc_attr($mem->email); ?> from tech-team@tatkhalsa.in">
+                                                    Send
+                                                </button>
+                                            </form>
+                                        <?php else : ?>
+                                            <button class="action-btn" style="background: #cbd5e0; color: #718096; border: none; cursor: not-allowed; opacity: 0.65;" disabled title="No Email associated with this identity">
+                                                Send
+                                            </button>
+                                        <?php endif; ?>
                                     </div>
                                 </td>
                             </tr>
