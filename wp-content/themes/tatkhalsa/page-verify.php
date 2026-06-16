@@ -10,6 +10,20 @@
 global $wpdb;
 $table_name = $wpdb->prefix . 'tkf_verifications';
 
+// Helper function to safely format dates and avoid database default-fallback issues
+if ( ! function_exists( 'tkf_format_date' ) ) {
+    function tkf_format_date( $date_str, $fallback = 'N/A' ) {
+        if ( empty( $date_str ) || $date_str === '0000-00-00' || $date_str === '0000-00-00 00:00:00' ) {
+            return $fallback;
+        }
+        $ts = strtotime( $date_str );
+        if ( ! $ts || $ts <= 0 ) {
+            return $fallback;
+        }
+        return strtoupper( date( 'd M Y', $ts ) );
+    }
+}
+
 // 1. DATABASE SETUP & ARCHITECTURE: Automatically build the table if it does not exist
 $charset_collate = $wpdb->get_charset_collate();
 $sql = "CREATE TABLE IF NOT EXISTS $table_name (
@@ -80,7 +94,9 @@ if ( $_SERVER['REQUEST_METHOD'] === 'POST' && isset( $_POST['tkf_verify_action']
         $designation = sanitize_text_field( wp_unslash( $_POST['designation'] ) );
         $photo_url   = esc_url_raw( wp_unslash( $_POST['photo_url'] ) );
         $expiry_date = sanitize_text_field( wp_unslash( $_POST['expiry_date'] ) );
+        if ( $expiry_date === '0000-00-00' ) { $expiry_date = ''; }
         $issue_date  = sanitize_text_field( wp_unslash( $_POST['issue_date'] ) );
+        if ( $issue_date === '0000-00-00' ) { $issue_date = ''; }
         $gov_id      = sanitize_text_field( wp_unslash( $_POST['gov_id'] ) );
         $email       = sanitize_email( wp_unslash( $_POST['email'] ) );
         $mobile      = sanitize_text_field( wp_unslash( $_POST['mobile'] ) );
@@ -137,7 +153,9 @@ if ( $_SERVER['REQUEST_METHOD'] === 'POST' && isset( $_POST['tkf_verify_action']
         $designation = sanitize_text_field( wp_unslash( $_POST['designation'] ) );
         $photo_url   = esc_url_raw( wp_unslash( $_POST['photo_url'] ) );
         $expiry_date = sanitize_text_field( wp_unslash( $_POST['expiry_date'] ) );
+        if ( $expiry_date === '0000-00-00' ) { $expiry_date = ''; }
         $issue_date  = sanitize_text_field( wp_unslash( $_POST['issue_date'] ) );
+        if ( $issue_date === '0000-00-00' ) { $issue_date = ''; }
         $gov_id      = sanitize_text_field( wp_unslash( $_POST['gov_id'] ) );
         $email       = sanitize_email( wp_unslash( $_POST['email'] ) );
         $mobile      = sanitize_text_field( wp_unslash( $_POST['mobile'] ) );
@@ -444,7 +462,7 @@ if ( ! empty( $download_id ) ) {
         
         .id-badge-info-navy {
             width: 100%;
-            background: #0A327D;
+            background: #052054;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -777,8 +795,7 @@ if ( ! empty( $download_id ) ) {
                 <div class="id-header-text">
                     <h3 class="id-org-title">TATKHALSA</h3>
                     <p class="id-org-motto">FOUNDATION</p>
-                    <p class="id-org-reg">REGISTRATION STATUS: SECTION 8 NGO</p>
-                    <p class="id-org-reg">CIN: U88900PB2023NPL059225</p>
+                    <p class="id-org-reg">SEC 8 NGO &bull; CIN: U88900PB2023NPL059225</p>
                 </div>
             </div>
             <div class="id-header-right">
@@ -894,7 +911,7 @@ if ( ! empty( $download_id ) ) {
                         </div>
                         <div class="meta-content-wrapper">
                             <span class="meta-row-label">EXPIRY DATE</span>
-                            <span class="meta-row-val"><?php echo $member->expiry_date ? esc_html( date('d M Y', strtotime($member->expiry_date)) ) : 'N/A'; ?></span>
+                            <span class="meta-row-val"><?php echo esc_html( tkf_format_date( $member->expiry_date, 'N/A' ) ); ?></span>
                         </div>
                     </div>
                 </div>
@@ -913,7 +930,7 @@ if ( ! empty( $download_id ) ) {
                     
                     <div class="validity-block">
                         <span class="validity-label">ISSUE DATE</span>
-                        <span class="validity-date"><?php echo !empty($member->issue_date) ? esc_html( date('d M Y', strtotime($member->issue_date)) ) : ($member->created_at ? esc_html( date('d M Y', strtotime($member->created_at)) ) : '16 JUN 2026'); ?></span>
+                        <span class="validity-date"><?php echo esc_html( tkf_format_date( $member->issue_date, tkf_format_date( $member->created_at, '16 JUN 2026' ) ) ); ?></span>
                     </div>
                     
                     <div class="qrcode-badge-container">
@@ -1458,7 +1475,7 @@ if ( ! empty( $query_member_id ) ) {
         
         .qr-code-box {
             padding: 1.5px;
-            border: 0.75px solid #0A327D;
+            border: 0.75px solid #052054;
             border-radius: 3.5px;
             background: #ffffff;
             box-shadow: 0 1px 3px rgba(0,0,0,0.05);
@@ -1474,7 +1491,7 @@ if ( ! empty( $query_member_id ) ) {
             font-size: 3.5px;
             font-weight: 900;
             background: #E1A92A;
-            color: #0A327D;
+            color: #052054;
             padding: 1px 3.5px;
             border-radius: 2px;
             margin-top: 2px;
@@ -1486,7 +1503,7 @@ if ( ! empty( $query_member_id ) ) {
         
         .id-bottom-navy-banner {
             height: 15px;
-            background: #0A327D;
+            background: #052054;
             color: #E1A92A;
             display: flex;
             align-items: center;
@@ -1556,7 +1573,7 @@ if ( ! empty( $query_member_id ) ) {
             margin: 0 0 12px 0;
             font-size: 12px;
             font-weight: 800;
-            color: #0A327D;
+            color: #052054;
             letter-spacing: 0.5px;
             text-transform: uppercase;
             border-left: 3px solid #E1A92A;
@@ -1623,8 +1640,7 @@ if ( ! empty( $query_member_id ) ) {
                                 <div class="id-header-text">
                                     <h3 class="id-org-title">TATKHALSA</h3>
                                     <p class="id-org-motto">FOUNDATION</p>
-                                    <p class="id-org-reg">REGISTRATION STATUS: SECTION 8 NGO</p>
-                                    <p class="id-org-reg">CIN: U88900PB2023NPL059225</p>
+                                    <p class="id-org-reg">SEC 8 NGO &bull; CIN: U88900PB2023NPL059225</p>
                                 </div>
                             </div>
                             <div class="id-header-right">
@@ -1740,7 +1756,7 @@ if ( ! empty( $query_member_id ) ) {
                                         </div>
                                         <div class="meta-content-wrapper">
                                             <span class="meta-row-label">EXPIRY DATE</span>
-                                            <span class="meta-row-val"><?php echo $member->expiry_date ? esc_html( date('d M Y', strtotime($member->expiry_date)) ) : 'N/A'; ?></span>
+                                            <span class="meta-row-val"><?php echo esc_html( tkf_format_date( $member->expiry_date, 'N/A' ) ); ?></span>
                                         </div>
                                     </div>
                                 </div>
@@ -1759,7 +1775,7 @@ if ( ! empty( $query_member_id ) ) {
                                     
                                     <div class="validity-block">
                                         <span class="validity-label">ISSUE DATE</span>
-                                        <span class="validity-date"><?php echo !empty($member->issue_date) ? esc_html( date('d M Y', strtotime($member->issue_date)) ) : ($member->created_at ? esc_html( date('d M Y', strtotime($member->created_at)) ) : '16 JUN 2026'); ?></span>
+                                        <span class="validity-date"><?php echo esc_html( tkf_format_date( $member->issue_date, tkf_format_date( $member->created_at, '16 JUN 2026' ) ) ); ?></span>
                                     </div>
                                     
                                     <?php 
@@ -1803,24 +1819,20 @@ if ( ! empty( $query_member_id ) ) {
                             <span class="post-card-label">Secure Member ID</span>
                             <span class="post-card-val"><?php echo esc_html( $member->member_id ); ?></span>
                         </div>
-                        <?php if ( ! empty( $member->issue_date ) ) : ?>
-                            <div class="post-card-row">
-                                <span class="post-card-label">Card Issue Date</span>
-                                <span class="post-card-val"><?php echo esc_html( date('d M Y', strtotime($member->issue_date)) ); ?></span>
-                            </div>
-                        <?php endif; ?>
+                        <div class="post-card-row">
+                            <span class="post-card-label">Card Issue Date</span>
+                            <span class="post-card-val"><?php echo esc_html( tkf_format_date( $member->issue_date, tkf_format_date( $member->created_at, '16 JUN 2026' ) ) ); ?></span>
+                        </div>
                         <?php if ( ! empty( $member->blood_group ) ) : ?>
                             <div class="post-card-row">
                                 <span class="post-card-label">Medical Blood Group</span>
                                 <span class="post-card-val"><?php echo esc_html( $member->blood_group ); ?></span>
                             </div>
                         <?php endif; ?>
-                        <?php if ( ! empty( $member->expiry_date ) ) : ?>
-                            <div class="post-card-row">
-                                <span class="post-card-label">Card Valid Till</span>
-                                <span class="post-card-val"><?php echo esc_html( date('d M Y', strtotime($member->expiry_date)) ); ?></span>
-                            </div>
-                        <?php endif; ?>
+                        <div class="post-card-row">
+                            <span class="post-card-label">Card Valid Till</span>
+                            <span class="post-card-val"><?php echo esc_html( tkf_format_date( $member->expiry_date, 'PERMANENT BENEFICIARY / LIFETIME' ) ); ?></span>
+                        </div>
                         <?php if ( ! empty( $member->email ) ) : ?>
                             <div class="post-card-row">
                                 <span class="post-card-label">Official Email ID</span>
@@ -1887,10 +1899,60 @@ if ( ! empty( $query_member_id ) ) {
 
     // Check if the current user has global 'manage_options' capabilities
     if ( ! current_user_can( 'manage_options' ) ) {
-        echo '<div style="padding: 120px 20px; text-align: center; min-height: 60vh; font-family: sans-serif;">
-                <h2 style="color: #dc3545; margin-bottom: 15px;">Restricted Access</h2>
-                <p style="font-size: 1.1em; color: #555;">You must be authenticated as an Administrator to view this secure dashboard.</p>
-              </div>';
+        // Render the Official Public Verification Portal!
+        $home_url = esc_url( home_url('/verify/') );
+        ?>
+        <div class="verify-page-wrapper" style="min-height: 85vh; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 40px 20px; font-family: 'Plus Jakarta Sans', sans-serif; background: radial-gradient(circle at 10% 20%, rgba(244, 246, 249, 1) 0%, rgba(235, 239, 244, 1) 100%);">
+            
+            <!-- Background Watermark medallion -->
+            <img src="<?php echo esc_url($logo_url); ?>" class="verify-watermark" alt="" style="position: absolute; width: 450px; opacity: 0.04; pointer-events: none; transform: rotate(-15deg); z-index: 0;">
+
+            <div class="verify-card" style="background: #ffffff; border-radius: 16px; box-shadow: 0 15px 50px rgba(10, 50, 125, 0.08); max-width: 500px; width: 100%; text-align: center; overflow: hidden; position: relative; z-index: 1; border-top: 5px solid #052054; box-sizing: border-box; margin-bottom: 30px;">
+                
+                <div style="background: #052054; color: #ffffff; padding: 25px 20px; display: flex; flex-direction: column; align-items: center; gap: 8px;">
+                    <img src="<?php echo esc_url($logo_url); ?>" alt="Logo" style="height: 48px; width: auto; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.25));">
+                    <h2 style="margin: 5px 0 0 0; font-family: 'Space Grotesk', sans-serif; font-size: 19px; font-weight: 700; letter-spacing: 1px; color: #ffffff;">TATKHALSA FOUNDATION</h2>
+                    <span style="font-size: 11px; font-weight: 600; color: #E1A92A; letter-spacing: 1px; text-transform: uppercase;">Personnel Verification Portal</span>
+                </div>
+
+                <div style="padding: 30px 25px;">
+                    <p style="color: #4a5568; font-size: 14px; line-height: 1.6; margin: 0 0 25px 0; font-weight: 500;">
+                        Scan the secure QR Code printed on the back of any photo ID card, or enter the secure Member ID below to perform an instant credentials integrity audit.
+                    </p>
+
+                    <form method="GET" action="<?php echo $home_url; ?>" style="display: flex; flex-direction: column; gap: 15px;">
+                        <div style="text-align: left;">
+                            <label style="font-size: 12px; font-weight: 700; color: #052054; text-transform: uppercase; letter-spacing: 0.5px; display: block; margin-bottom: 6px;">Secure Member ID</label>
+                            <input type="text" name="member_id" placeholder="e.g. TKF-VOL-2601" required style="width: 100%; padding: 12px 16px; border: 1.5px solid #cbd5e0; border-radius: 8px; font-size: 15px; font-weight: 600; color: #1a202c; box-sizing: border-box; font-family: monospace; transition: border-color 0.2s;" onfocus="this.style.borderColor='#052054';" onblur="this.style.borderColor='#cbd5e0';">
+                        </div>
+                        <button type="submit" style="background: #052054; color: #ffffff; border: none; border-radius: 8px; padding: 14px; font-size: 14px; font-weight: 800; cursor: pointer; text-transform: uppercase; letter-spacing: 0.5px; transition: background 0.2s; box-shadow: 0 4px 12px rgba(5, 32, 84, 0.2);" onmouseover="this.style.background='#031230';" onmouseout="this.style.background='#052054';">
+                            Verify Personnel Identity
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- NGO Details block beneath the search card for public visibility -->
+            <div class="verify-card" style="background: #ffffff; border-radius: 16px; box-shadow: 0 10px 30px rgba(10, 50, 125, 0.04); max-width: 500px; width: 100%; overflow: hidden; position: relative; z-index: 1; box-sizing: border-box; padding: 25px;">
+                <h4 style="margin: 0 0 15px 0; font-size: 11.5px; font-weight: 800; color: #052054; letter-spacing: 0.5px; text-transform: uppercase; border-left: 3px solid #E1A92A; padding-left: 8px;">Registered NGO Details</h4>
+                
+                <div style="display: flex; flex-direction: column; gap: 12px; text-align: left; font-size: 13px; line-height: 1.5;">
+                    <div>
+                        <span style="font-size: 11px; font-weight: 700; color: #718096; text-transform: uppercase; letter-spacing: 0.3px; display: block;">Corporate Identification No (CIN)</span>
+                        <span style="font-family: monospace; font-size: 12.5px; color: #052054; font-weight: 700;">U88900PB2023NPL059225</span>
+                    </div>
+                    <div>
+                        <span style="font-size: 11px; font-weight: 700; color: #718096; text-transform: uppercase; letter-spacing: 0.3px; display: block;">Official Helpline / Email</span>
+                        <span><a href="mailto:info@tatkhalsa.in" style="color: #007bff; text-decoration: none; font-weight: 600;">info@tatkhalsa.in</a></span>
+                    </div>
+                    <div>
+                        <span style="font-size: 11px; font-weight: 700; color: #718096; text-transform: uppercase; letter-spacing: 0.3px; display: block;">Registered Office Address</span>
+                        <span style="color: #4a5568; font-weight: 500;">GF 37, Bazidpur, SBS Nagar, Punjab - 144518</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <?php
         get_footer();
         exit;
     }
@@ -2049,7 +2111,7 @@ if ( ! empty( $query_member_id ) ) {
         }
         .btn-view {
             background: #E1A92A;
-            color: #000;
+            color: #052054;
         }
         .admin-notice {
             padding: 15px 20px;
@@ -2114,11 +2176,11 @@ if ( ! empty( $query_member_id ) ) {
                 <div class="form-row">
                     <div class="form-group">
                         <label for="issue_date">Issue Date</label>
-                        <input type="date" id="issue_date" name="issue_date" value="<?php echo $edit_member && $edit_member->issue_date ? esc_attr( $edit_member->issue_date ) : ''; ?>">
+                        <input type="date" id="issue_date" name="issue_date" value="<?php echo $edit_member && !empty($edit_member->issue_date) && $edit_member->issue_date !== '0000-00-00' ? esc_attr( $edit_member->issue_date ) : ''; ?>">
                     </div>
                     <div class="form-group">
                         <label for="expiry_date">Expiry Date</label>
-                        <input type="date" id="expiry_date" name="expiry_date" value="<?php echo $edit_member && $edit_member->expiry_date ? esc_attr( $edit_member->expiry_date ) : ''; ?>">
+                        <input type="date" id="expiry_date" name="expiry_date" value="<?php echo $edit_member && !empty($edit_member->expiry_date) && $edit_member->expiry_date !== '0000-00-00' ? esc_attr( $edit_member->expiry_date ) : ''; ?>">
                     </div>
                 </div>
 
