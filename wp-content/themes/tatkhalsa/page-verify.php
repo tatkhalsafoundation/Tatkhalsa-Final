@@ -182,8 +182,8 @@ if ( ! empty( $download_id ) ) {
         }
         .id-card-wrapper {
             background: #ffffff;
-            width: 8.6cm;
-            height: 5.4cm;
+            width: 8.56cm;
+            height: 5.40cm;
             border-radius: 8px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.15);
             position: relative;
@@ -377,7 +377,7 @@ if ( ! empty( $download_id ) ) {
                 
                 <div class="id-footer">
                     <div class="id-sign">
-                        <img src="https://tatkhalsa.in/wp-content/uploads/2026/06/aba819ad-1c8e-4d21-9849-ef03729a0cc5_removalai_preview.png" alt="Signature">
+                        <img src="https://tatkhalsa.in/wp-content/uploads/2026/06/aba819ad-1c8e-4d21-9849-ef03729a0cc5_removalai_preview-e1781624417937.png" alt="Signature">
                         <div class="line"></div>
                         <span>Auth. Signatory</span>
                     </div>
