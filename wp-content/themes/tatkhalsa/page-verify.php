@@ -184,32 +184,46 @@ if ( ! empty( $download_id ) ) {
             -webkit-print-color-adjust: exact;
             print-color-adjust: exact;
         }
+        
         .id-card-wrapper {
             background: #ffffff;
-            width: 8.56cm;
-            height: 5.40cm;
+            width: 324px;
+            height: 204px;
             border-radius: 12px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.15);
             position: relative;
             overflow: hidden;
-            border: 1px solid rgba(10, 50, 125, 0.15);
             box-sizing: border-box;
             display: flex;
             flex-direction: column;
         }
+
         @media print {
-            body { background: #fff; }
-            .id-card-wrapper { box-shadow: none; border: 1px solid #0A327D; }
-            .no-print { display: none; }
+            body { 
+                background: #ffffff; 
+                margin: 0; 
+                padding: 0; 
+                display: flex; 
+                justify-content: center; 
+                align-items: center; 
+                height: 100vh; 
+            }
+            .id-card-wrapper { 
+                box-shadow: none; 
+                border: none; 
+                width: 8.56cm;
+                height: 5.40cm;
+            }
+            .no-print { display: none !important; }
         }
         
-        /* Header style inspired by template image */
+        /* Header styling from the magnificent template image */
         .id-header {
-            height: 1.35cm;
-            background: #0A327D;
+            height: 52px;
+            background: #06132D;
             position: relative;
             color: #ffffff;
-            padding: 0 12px;
+            padding: 0 10px;
             display: flex;
             align-items: center;
             justify-content: space-between;
@@ -224,10 +238,10 @@ if ( ! empty( $download_id ) ) {
         }
         
         .id-header-logo {
-            height: 24px;
+            height: 26px;
             width: auto;
             object-fit: contain;
-            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.25));
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
         }
         
         .id-header-text {
@@ -242,19 +256,15 @@ if ( ! empty( $download_id ) ) {
             font-weight: 700;
             letter-spacing: 0.5px;
             color: #ffffff;
-            line-height: 1.1;
-        }
-        
-        .id-org-title span {
-            color: #E1A92A;
+            line-height: 1;
         }
         
         .id-org-motto {
-            margin: 0;
-            font-size: 5.5px;
+            margin: 2px 0 0 0;
+            font-size: 5px;
             font-weight: 500;
             letter-spacing: 0.5px;
-            color: rgba(255, 255, 255, 0.85);
+            color: #C5A059;
             text-transform: uppercase;
             line-height: 1;
         }
@@ -267,98 +277,84 @@ if ( ! empty( $download_id ) ) {
         .secured-badge {
             display: flex;
             align-items: center;
-            background: rgba(225, 169, 42, 0.12);
-            border: 0.75px solid rgba(225, 169, 42, 0.4);
+            background: rgba(185, 151, 91, 0.12);
+            border: 0.75px solid rgba(185, 151, 91, 0.4);
             border-radius: 4px;
-            padding: 2px 5px;
+            padding: 2px 4.5px;
             gap: 4px;
         }
         
         .lock-icon-svg {
-            width: 10px;
-            height: 10px;
-            color: #E1A92A;
+            width: 9.5px;
+            height: 9.5px;
+            color: #C5A059;
         }
         
         .secured-text {
             display: flex;
             flex-direction: column;
             text-align: left;
-            line-height: 1;
+            line-height: 0.95;
         }
         
         .secured-text span {
-            font-size: 4px;
+            font-size: 3.5px;
             color: #ffffff;
             font-weight: 600;
-            letter-spacing: 0.3px;
+            letter-spacing: 0.2px;
         }
         
         .secured-text strong {
-            font-size: 5px;
-            color: #E1A92A;
+            font-size: 4.5px;
+            color: #C5A059;
             font-weight: 800;
-            letter-spacing: 0.3px;
+            letter-spacing: 0.2px;
         }
         
-        /* Dynamic Wave Separator */
-        .id-header-wave-svg {
+        /* Elegant Gold bar Separator */
+        .id-header-gold-bar {
             position: absolute;
-            bottom: -6px;
+            bottom: 0;
             left: 0;
             width: 100%;
-            height: 8px;
-            z-index: 11;
+            height: 3px;
+            background: #C5A059;
+            z-index: 10;
         }
         
-        /* Card Body Layout */
-        .id-body {
-            flex: 1;
+        /* Main Body Content with flex */
+        .id-content-main {
             display: flex;
             flex-direction: row;
-            position: relative;
-            box-sizing: border-box;
-            padding: 10px 12px 0 12px;
-            height: calc(5.40cm - 1.35cm - 0.4cm); /* accounting for footer and header */
-            z-index: 5;
+            height: 137px;
+            width: 100%;
             background: #ffffff;
+            box-sizing: border-box;
+            overflow: hidden;
+            position: relative;
         }
-        
-        .id-body::before {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 60%;
-            transform: translate(-50%, -50%);
-            width: 120px;
-            height: 120px;
-            background-image: url('https://tatkhalsa.in/wp-content/uploads/2026/06/cropped-Logo.png');
-            background-repeat: no-repeat;
-            background-position: center;
-            background-size: contain;
-            opacity: 0.04;
-            filter: grayscale(100%);
-            pointer-events: none;
-            z-index: 0;
-        }
-        
-        /* Left Section: Photo, Member ID box, Barcode */
-        .id-left-col {
-            width: 2.1cm;
+
+        /* Left Column Section: Photo & Navy Badge ID Area */
+        .id-col-left {
+            width: 96px;
             display: flex;
             flex-direction: column;
             align-items: center;
-            z-index: 2;
+            background: #ffffff;
+            padding-top: 8px;
+            box-sizing: border-box;
+            flex-shrink: 0;
+            border-right: 1px solid rgba(10, 50, 125, 0.05);
         }
         
         .id-photo-container {
-            width: 2.1cm;
-            height: 2.25cm;
-            border: 1.5px solid #0A327D;
+            width: 78px;
+            height: 84px;
+            border: 1px solid #06132D;
             border-radius: 6px;
             overflow: hidden;
-            box-shadow: 0 4px 10px rgba(10, 50, 125, 0.15);
-            background: #ffffff;
+            background: #f7fafc;
+            box-shadow: 0 4px 8px rgba(10, 50, 125, 0.1);
         }
         
         .id-photo-container img {
@@ -367,46 +363,50 @@ if ( ! empty( $download_id ) ) {
             object-fit: cover;
         }
         
-        .id-member-badge {
+        .id-badge-info-navy {
             width: 100%;
-            background: #0A327D;
-            border-radius: 4px;
-            margin-top: 4px;
-            padding: 2px 0;
-            text-align: center;
-            color: #ffffff;
-            box-shadow: 0 2px 5px rgba(10, 50, 125, 0.2);
+            background: #06132D;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 5px 0 4px 0;
+            margin-top: auto;
+            box-sizing: border-box;
         }
         
-        .id-member-badge .badge-label {
+        .badge-label {
             font-size: 4px;
             font-weight: 700;
-            letter-spacing: 0.5px;
-            text-transform: uppercase;
-            display: block;
+            color: #ffffff;
+            opacity: 0.8;
+            letter-spacing: 0.3px;
             line-height: 1;
         }
         
-        .id-member-badge .badge-value {
-            font-size: 6.5px;
+        .badge-value {
+            font-size: 7px;
             font-weight: 800;
-            color: #E1A92A;
-            display: block;
-            line-height: 1;
-            margin-top: 1px;
+            color: #C5A059;
             font-family: 'Space Grotesk', sans-serif;
+            letter-spacing: 0.2px;
+            margin-top: 1.5px;
+            line-height: 1;
         }
         
-        /* Authentic Barcode style */
-        .id-barcode-container {
+        /* Realistic barcode */
+        .barcode-box {
             display: flex;
             align-items: center;
             justify-content: center;
-            height: 14px;
-            gap: 1.2px;
-            margin-top: auto;
-            margin-bottom: 2px;
-            width: 100%;
+            height: 10px;
+            width: 78px;
+            background: #ffffff;
+            padding: 1px;
+            border-radius: 2px;
+            margin-top: 3.5px;
+            gap: 1.5px;
+            box-sizing: border-box;
         }
         
         .barcode-bar {
@@ -414,66 +414,92 @@ if ( ! empty( $download_id ) ) {
             height: 100%;
         }
         
-        .barcode-bar.thin { width: 0.6px; }
-        .barcode-bar.med { width: 1.2px; }
-        .barcode-bar.thick { width: 2px; }
+        .barcode-bar.thin { width: 0.8px; }
+        .barcode-bar.med { width: 1.5px; }
+        .barcode-bar.thick { width: 2.2px; }
         
-        /* Right Section details panel */
-        .id-right-col {
+        /* Right Column layout */
+        .id-col-right {
             flex: 1;
-            padding-left: 14px;
+            padding: 7px 10px 4px 10px;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            z-index: 2;
+            box-sizing: border-box;
+            position: relative;
+            background: #ffffff;
+            z-index: 5;
         }
         
-        .id-profile-header {
-            border-bottom: 1px solid rgba(10, 50, 125, 0.08);
-            padding-bottom: 2px;
-            margin-bottom: 4px;
+        /* High Resolution Watermark */
+        .id-col-right::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 100px;
+            height: 100px;
+            background-image: url('https://tatkhalsa.in/wp-content/uploads/2026/06/cropped-Logo.png');
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: contain;
+            opacity: 0.035;
+            z-index: -1;
+            pointer-events: none;
         }
         
-        .id-member-name {
+        .profile-title-block {
+            width: 100%;
+        }
+        
+        .profile-fullname {
             margin: 0;
             font-family: 'Space Grotesk', sans-serif;
             font-size: 13.5px;
             font-weight: 700;
-            color: #0A327D;
+            color: #06132D;
             text-transform: uppercase;
-            letter-spacing: 0.1px;
+            letter-spacing: 0.2px;
             line-height: 1.1;
         }
         
-        .id-member-designation {
+        .profile-designation {
             font-size: 7.5px;
             font-weight: 700;
-            color: #d49514;
+            color: #C5A059;
             text-transform: uppercase;
-            letter-spacing: 0.4px;
+            letter-spacing: 0.5px;
             margin-top: 1px;
             line-height: 1.1;
         }
         
-        /* List with Icons matching the template */
-        .id-info-rows {
+        .title-divider-line {
+            width: 100%;
+            height: 1px;
+            background: #e2e8f0;
+            margin-top: 3.5px;
+        }
+        
+        /* Detail Rows using Circle Icons */
+        .profile-meta-list {
             display: flex;
             flex-direction: column;
-            gap: 3.5px;
+            gap: 4px;
             flex: 1;
-            margin-top: 2px;
+            margin-top: 5px;
         }
         
-        .id-info-row {
+        .meta-item-row {
             display: flex;
             align-items: center;
-            gap: 6px;
+            gap: 5px;
         }
         
-        .info-icon-circle {
+        .meta-icon-circle {
             width: 14px;
             height: 14px;
-            background: #0A327D;
+            background: #06132D;
             color: #ffffff;
             border-radius: 50%;
             display: flex;
@@ -482,169 +508,173 @@ if ( ! empty( $download_id ) ) {
             flex-shrink: 0;
         }
         
-        .info-icon {
-            width: 8px;
-            height: 8px;
+        .meta-svg-icon {
+            width: 7.5px;
+            height: 7.5px;
             color: #ffffff;
             stroke-width: 2.5;
         }
         
-        .info-text-stack {
+        .meta-content-wrapper {
             display: flex;
             flex-direction: column;
             line-height: 1;
         }
         
-        .info-field-label {
-            font-size: 4.5px;
+        .meta-row-label {
+            font-size: 4px;
             font-weight: 800;
-            color: #8892b0;
+            color: #718096;
             text-transform: uppercase;
             letter-spacing: 0.3px;
-            margin-bottom: 1px;
+            margin-bottom: 0px;
         }
         
-        .info-field-value {
+        .meta-row-val {
             font-size: 7.5px;
             font-weight: 700;
-            color: #2d3748;
+            color: #1A202C;
+            word-break: break-all;
         }
         
-        /* Bottom elements: Signature and Expiry */
-        .id-meta-footer {
+        /* Footer Area of the Right Column */
+        .right-column-footer {
             display: flex;
-            justify-content: space-between;
             align-items: flex-end;
+            justify-content: space-between;
+            width: 100%;
             margin-top: auto;
-            padding-bottom: 2px;
+            border-top: 1px solid #f0f0f0;
+            padding-top: 4px;
+            box-sizing: border-box;
         }
         
-        .id-sign-section {
-            text-align: center;
+        .signature-block {
             display: flex;
             flex-direction: column;
             align-items: center;
-            width: 80px;
+            width: 74px;
+            line-height: 1;
         }
         
-        .signature-img-wrap {
-            height: 16px;
+        .signature-image-wrapper {
+            height: 14px;
             display: flex;
             align-items: flex-end;
             justify-content: center;
-            margin-bottom: 1px;
         }
         
-        .signature-img {
-            height: 16px;
+        .signature-image-wrapper img {
+            height: 14px;
             width: auto;
             object-fit: contain;
             mix-blend-mode: multiply;
         }
         
-        .signature-dashed-line {
+        .signature-underline {
             width: 100%;
-            border-bottom: 0.5px dashed #0A327D;
-            margin-bottom: 1.5px;
+            border-bottom: 0.5px dashed #06132D;
+            margin-top: 1px;
+            margin-bottom: 2px;
         }
         
-        .signature-caption {
-            font-size: 4.5px;
+        .signature-title {
+            font-size: 4px;
             font-weight: 800;
-            color: #0A327D;
+            color: #06132D;
+            letter-spacing: 0.2px;
             text-transform: uppercase;
-            letter-spacing: 0.3px;
-            line-height: 1;
+            text-align: center;
         }
         
-        /* Expiry block */
-        .id-meta-divider {
-            height: 22px;
-            border-left: 0.75px solid rgba(10, 50, 125, 0.15);
-            margin: 0 8px;
+        .vertical-dash-divider {
+            height: 18px;
+            border-left: 0.75px solid #e2e8f0;
+            margin: 0 4px;
         }
         
-        .id-expiry-section {
+        .validity-block {
             display: flex;
             flex-direction: column;
             line-height: 1;
             margin-right: auto;
+            padding-left: 2px;
         }
         
-        .expiry-label {
-            font-size: 4.5px;
+        .validity-label {
+            font-size: 4px;
             font-weight: 800;
-            color: #8892b0;
+            color: #718096;
+            letter-spacing: 0.2px;
             text-transform: uppercase;
-            letter-spacing: 0.3px;
-            margin-bottom: 2px;
         }
         
-        .expiry-value {
-            font-size: 7.5px;
+        .validity-date {
+            font-size: 7.2px;
             font-weight: 700;
-            color: #1a202c;
+            color: #1A202C;
+            margin-top: 1.5px;
         }
         
-        /* QR Code Section with SCAN TO VERIFY label */
-        .id-qrcode-section {
+        /* QR Code & Scan badge */
+        .qrcode-badge-container {
             display: flex;
             flex-direction: column;
             align-items: center;
-            margin-left: auto;
+            line-height: 1;
         }
         
-        .qr-code-holder {
+        .qr-code-box {
             padding: 1.5px;
-            border: 0.75px solid #0A327D;
-            border-radius: 4px;
+            border: 0.75px solid #06132D;
+            border-radius: 3.5px;
             background: #ffffff;
-            box-shadow: 0 2px 4px rgba(10, 50, 125, 0.08);
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
         }
         
-        .qr-code-img {
-            width: 25px;
-            height: 25px;
+        .qr-code-box img {
+            width: 22px;
+            height: 22px;
             display: block;
         }
         
-        .scan-verify-btn {
+        .scan-verify-pill {
             font-size: 3.5px;
             font-weight: 900;
-            background: #E1A92A;
-            color: #04122d;
-            padding: 1px 4px;
+            background: #C5A059;
+            color: #06132D;
+            padding: 1px 3.5px;
             border-radius: 2px;
             margin-top: 2px;
-            letter-spacing: 0.3px;
+            letter-spacing: 0.2px;
             text-transform: uppercase;
-            line-height: 1;
-            box-shadow: 0 1px 2px rgba(225, 169, 42, 0.3);
+            box-shadow: 0 1px 2px rgba(185, 151, 91, 0.2);
+            text-align: center;
         }
         
-        /* Bottom Strip */
-        .id-footer-strip {
-            background: #0A327D;
-            color: #E1A92A;
-            text-align: center;
+        /* Bottom Navy Banner */
+        .id-bottom-navy-banner {
+            height: 15px;
+            background: #06132D;
+            color: #C5A059;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             font-size: 5.5px;
-            padding: 3px 0;
             font-weight: 800;
-            letter-spacing: 0.6px;
-            width: 100%;
-            z-index: 20;
-            border-top: 1px solid #E1A92A;
+            letter-spacing: 0.8px;
+            border-top: 1px solid #C5A059;
+            box-sizing: border-box;
             text-transform: uppercase;
-            font-family: 'Space Grotesk', sans-serif;
-            line-height: 1;
+            width: 100%;
         }
         
         .print-btn {
             position: fixed;
             top: 20px;
             right: 20px;
-            background: linear-gradient(135deg, #0A327D, #1345a3);
-            color: #E1A92A;
+            background: linear-gradient(135deg, #06132D, #0A1F45);
+            color: #C5A059;
             border: none;
             padding: 10px 20px;
             border-radius: 6px;
@@ -665,19 +695,20 @@ if ( ! empty( $download_id ) ) {
 <body>
     <button class="no-print print-btn" onclick="window.print()">Print ID Card</button>
     <div class="id-card-wrapper">
-        <!-- Top Header Wave-Ribbon layout from template -->
+        <!-- Top Header -->
         <div class="id-header">
             <div class="id-header-left">
                 <img src="<?php echo esc_url($logo_url); ?>" class="id-header-logo" alt="Logo">
                 <div class="id-header-text">
-                    <h3 class="id-org-title">TATKHALSA <span>FOUNDATION</span></h3>
+                    <h3 class="id-org-title">TATKHALSA</h3>
                     <p class="id-org-motto">Sewa Main Parma Dharam</p>
                 </div>
             </div>
             <div class="id-header-right">
                 <div class="secured-badge">
-                    <svg class="lock-icon-svg" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                    <svg class="lock-icon-svg" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <rect x="5" y="11" width="14" height="11" rx="2" stroke="#C5A059" stroke-width="2.5"/>
+                        <path d="M8 11V7C8 4.79086 9.79086 3 12 3C14.2091 3 16 4.79086 16 7V11" stroke="#C5A059" stroke-width="2.5"/>
                     </svg>
                     <div class="secured-text">
                         <span>VERIFIED</span>
@@ -685,133 +716,127 @@ if ( ! empty( $download_id ) ) {
                     </div>
                 </div>
             </div>
-            
-            <!-- White wave background divider masked over the rest -->
-            <svg class="id-header-wave-svg" viewBox="0 0 100 8" preserveAspectRatio="none">
-                <path d="M0,0 Q50,6 100,0 V8 H0 Z" fill="#ffffff" />
-                <path d="M0,0 Q50,6 100,0" fill="none" stroke="#E1A92A" stroke-width="0.8" />
-            </svg>
+            <!-- Gold bar separator ribbon -->
+            <div class="id-header-gold-bar"></div>
         </div>
         
-        <!-- Main Card Body -->
-        <div class="id-body">
-            <!-- Left Panel -->
-            <div class="id-left-col">
+        <!-- Main Content Area -->
+        <div class="id-content-main">
+            <!-- Left Column -->
+            <div class="id-col-left">
                 <div class="id-photo-container">
                     <?php if ( ! empty( $member->photo_url ) ) : ?>
                         <img src="<?php echo esc_url( $member->photo_url ); ?>" alt="Member Photo">
                     <?php else: ?>
-                        <img src="<?php echo esc_url($logo_url); ?>" alt="Default" style="object-fit: contain; padding: 6px; background:#f4f6f9;">
+                        <img src="<?php echo esc_url($logo_url); ?>" alt="Default Logo" style="object-fit: contain; padding: 6px; background:#f4f6f9;">
                     <?php endif; ?>
                 </div>
                 
-                <div class="id-member-badge">
+                <div class="id-badge-info-navy">
                     <span class="badge-label">MEMBER ID</span>
                     <span class="badge-value"><?php echo esc_html( $member->member_id ); ?></span>
-                </div>
-                
-                <!-- Autogenerated realistic custom SVG-barcode -->
-                <div class="id-barcode-container">
-                    <div class="barcode-bar thick"></div>
-                    <div class="barcode-bar thin"></div>
-                    <div class="barcode-bar med"></div>
-                    <div class="barcode-bar thick"></div>
-                    <div class="barcode-bar thin"></div>
-                    <div class="barcode-bar med"></div>
-                    <div class="barcode-bar thick"></div>
-                    <div class="barcode-bar thin"></div>
-                    <div class="barcode-bar thick"></div>
-                    <div class="barcode-bar med"></div>
-                    <div class="barcode-bar thin"></div>
-                    <div class="barcode-bar thick"></div>
-                    <div class="barcode-bar med"></div>
-                    <div class="barcode-bar thin"></div>
+                    
+                    <!-- Realistic barcode container -->
+                    <div class="barcode-box">
+                        <div class="barcode-bar thick"></div>
+                        <div class="barcode-bar thin"></div>
+                        <div class="barcode-bar med"></div>
+                        <div class="barcode-bar thick"></div>
+                        <div class="barcode-bar thin"></div>
+                        <div class="barcode-bar med"></div>
+                        <div class="barcode-bar thick"></div>
+                        <div class="barcode-bar thin"></div>
+                        <div class="barcode-bar thick"></div>
+                        <div class="barcode-bar med"></div>
+                        <div class="barcode-bar thin"></div>
+                        <div class="barcode-bar med"></div>
+                        <div class="barcode-bar thick"></div>
+                    </div>
                 </div>
             </div>
             
-            <!-- Right Panel -->
-            <div class="id-right-col">
-                <!-- Name and Title -->
-                <div class="id-profile-header">
-                    <h2 class="id-member-name"><?php echo esc_html( $member->full_name ); ?></h2>
-                    <div class="id-member-designation"><?php echo esc_html( $member->designation ); ?></div>
+            <!-- Right Column -->
+            <div class="id-col-right">
+                <!-- Name and Designation -->
+                <div class="profile-title-block">
+                    <h2 class="profile-fullname"><?php echo esc_html( $member->full_name ); ?></h2>
+                    <div class="profile-designation"><?php echo esc_html( $member->designation ); ?></div>
+                    <div class="title-divider-line"></div>
                 </div>
                 
-                <!-- Info Grid Block with Icons -->
-                <div class="id-info-rows">
+                <!-- Information rows -->
+                <div class="profile-meta-list">
                     <!-- BLOOD GROUP -->
-                    <div class="id-info-row">
-                        <div class="info-icon-circle">
-                            <svg class="info-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
+                    <div class="meta-item-row">
+                        <div class="meta-icon-circle">
+                            <svg class="meta-svg-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
                             </svg>
                         </div>
-                        <div class="info-text-stack">
-                            <span class="info-field-label">Blood Group</span>
-                            <span class="info-field-value"><?php echo esc_html( $member->blood_group ?: 'N/A' ); ?></span>
+                        <div class="meta-content-wrapper">
+                            <span class="meta-row-label">BLOOD GROUP</span>
+                            <span class="meta-row-val"><?php echo esc_html( $member->blood_group ?: 'N/A' ); ?></span>
                         </div>
                     </div>
                     
                     <!-- CONTACT -->
-                    <div class="id-info-row">
-                        <div class="info-icon-circle">
-                            <svg class="info-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.94.725l.548 2.2a1 1 0 01-.321.988l-1.305.98a10.582 10.582 0 004.872 4.872l.98-1.305a1 1 0 01.988-.321l2.2.548a1 1 0 01.725.94V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+                    <div class="meta-item-row">
+                        <div class="meta-icon-circle">
+                            <svg class="meta-svg-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M15.05 5A5 5 0 0 1 19 8.95M15.05 1A9 9 0 0 1 23 8.94m-1 7.98v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
                             </svg>
                         </div>
-                        <div class="info-text-stack">
-                            <span class="info-field-label">Contact No</span>
-                            <span class="info-field-value"><?php echo esc_html( $member->mobile ?: 'N/A' ); ?></span>
+                        <div class="meta-content-wrapper">
+                            <span class="meta-row-label">CONTACT NO</span>
+                            <span class="meta-row-val"><?php echo esc_html( $member->mobile ?: 'N/A' ); ?></span>
                         </div>
                     </div>
                     
                     <!-- EMAIL ADDRESS -->
-                    <div class="id-info-row">
-                        <div class="info-icon-circle">
-                            <svg class="info-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                    <div class="meta-item-row">
+                        <div class="meta-icon-circle">
+                            <svg class="meta-svg-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
+                                <polyline points="22,6 12,13 2,6" />
                             </svg>
                         </div>
-                        <div class="info-text-stack">
-                            <span class="info-field-label">Email Address</span>
-                            <span class="info-field-value"><?php echo esc_html( $member->email ?: 'N/A' ); ?></span>
+                        <div class="meta-content-wrapper">
+                            <span class="meta-row-label">EMAIL ADDRESS</span>
+                            <span class="meta-row-val"><?php echo esc_html( $member->email ?: 'N/A' ); ?></span>
                         </div>
                     </div>
                 </div>
                 
-                <!-- Bottom: Signatures, Validity, QR Code -->
-                <div class="id-meta-footer">
-                    <!-- Auth Signature area -->
-                    <div class="id-sign-section">
-                        <div class="signature-img-wrap">
-                            <img src="https://tatkhalsa.in/wp-content/uploads/2026/06/aba819ad-1c8e-4d21-9849-ef03729a0cc5_removalai_preview-e1781624417937.png" alt="Signature" class="signature-img">
+                <!-- Signature and Expiry details row -->
+                <div class="right-column-footer">
+                    <div class="signature-block">
+                        <div class="signature-image-wrapper">
+                            <img src="https://tatkhalsa.in/wp-content/uploads/2026/06/aba819ad-1c8e-4d21-9849-ef03729a0cc5_removalai_preview-e1781624417937.png" alt="Signature">
                         </div>
-                        <div class="signature-dashed-line"></div>
-                        <span class="signature-caption">Auth. Signatory</span>
+                        <div class="signature-underline"></div>
+                        <span class="signature-title">AUTHORIZED SIGNATURE</span>
                     </div>
                     
-                    <div class="id-meta-divider"></div>
+                    <div class="vertical-dash-divider"></div>
                     
-                    <!-- Valid Till -->
-                    <div class="id-expiry-section">
-                        <span class="expiry-label">VALID TILL</span>
-                        <span class="expiry-value"><?php echo $member->expiry_date ? esc_html( date('d M Y', strtotime($member->expiry_date)) ) : 'N/A'; ?></span>
+                    <div class="validity-block">
+                        <span class="validity-label">VALID TILL</span>
+                        <span class="validity-date"><?php echo $member->expiry_date ? esc_html( date('d M Y', strtotime($member->expiry_date)) ) : 'N/A'; ?></span>
                     </div>
                     
-                    <!-- QR Code & Scan badge -->
-                    <div class="id-qrcode-section">
-                        <div class="qr-code-holder">
-                            <img src="<?php echo esc_url($qr_code_url); ?>" alt="QR Code" class="qr-code-img">
+                    <div class="qrcode-badge-container">
+                        <div class="qr-code-box">
+                            <img src="<?php echo esc_url($qr_code_url); ?>" alt="QR Code">
                         </div>
-                        <div class="scan-verify-btn">SCAN TO VERIFY</div>
+                        <div class="scan-verify-pill">SCAN TO VERIFY</div>
                     </div>
                 </div>
             </div>
         </div>
         
-        <!-- Bottom Banner Footer -->
-        <div class="id-footer-strip">
-            WWW.TATKHALSA.IN &nbsp;|&nbsp; INFO@TATKHALSA.IN &nbsp;|&nbsp; SECTION 8 NGO
+        <!-- Bottom Navy Footer strip -->
+        <div class="id-bottom-navy-banner">
+            WWW.TATKHALSA.IN &nbsp;&nbsp;&bull;&nbsp;&nbsp; INFO@TATKHALSA.IN &nbsp;&nbsp;&bull;&nbsp;&nbsp; SECTION 8 NGO
         </div>
     </div>
 </body>
