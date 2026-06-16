@@ -18,7 +18,7 @@ $sql = "CREATE TABLE IF NOT EXISTS $table_name (
     full_name varchar(255) NOT NULL,
     designation varchar(255) NOT NULL,
     photo_url text,
-    expiry_date date,
+    expiry_date date DEFAULT NULL,
     gov_id varchar(100),
     email varchar(255),
     mobile varchar(50),
@@ -31,6 +31,26 @@ $sql = "CREATE TABLE IF NOT EXISTS $table_name (
 
 require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
 dbDelta( $sql );
+
+// Fallback: manually add columns if dbDelta fails
+$columns = $wpdb->get_col("DESC {$table_name}", 0);
+if ( is_array($columns) ) {
+    if ( ! in_array('expiry_date', $columns) ) {
+        $wpdb->query("ALTER TABLE {$table_name} ADD COLUMN expiry_date date DEFAULT NULL");
+    }
+    if ( ! in_array('gov_id', $columns) ) {
+        $wpdb->query("ALTER TABLE {$table_name} ADD COLUMN gov_id varchar(100)");
+    }
+    if ( ! in_array('email', $columns) ) {
+        $wpdb->query("ALTER TABLE {$table_name} ADD COLUMN email varchar(255)");
+    }
+    if ( ! in_array('mobile', $columns) ) {
+        $wpdb->query("ALTER TABLE {$table_name} ADD COLUMN mobile varchar(50)");
+    }
+    if ( ! in_array('blood_group', $columns) ) {
+        $wpdb->query("ALTER TABLE {$table_name} ADD COLUMN blood_group varchar(10)");
+    }
+}
 
 // Process Form Submissions for Admin View
 $message = '';
@@ -68,28 +88,35 @@ if ( $_SERVER['REQUEST_METHOD'] === 'POST' && isset( $_POST['tkf_verify_action']
             $message = 'Member ID already exists.';
             $message_type = 'error';
         } else {
+            $insert_data = array(
+                'member_id'   => $member_id,
+                'full_name'   => $full_name,
+                'designation' => $designation,
+                'photo_url'   => $photo_url,
+                'gov_id'      => $gov_id,
+                'email'       => $email,
+                'mobile'      => $mobile,
+                'blood_group' => $blood_group,
+                'status'      => 'Active'
+            );
+            $insert_format = array( '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s' );
+
+            if ( ! empty( $expiry_date ) ) {
+                $insert_data['expiry_date'] = $expiry_date;
+                $insert_format[] = '%s';
+            }
+
             $inserted = $wpdb->insert(
                 $table_name,
-                array(
-                    'member_id'   => $member_id,
-                    'full_name'   => $full_name,
-                    'designation' => $designation,
-                    'photo_url'   => $photo_url,
-                    'expiry_date' => $expiry_date,
-                    'gov_id'      => $gov_id,
-                    'email'       => $email,
-                    'mobile'      => $mobile,
-                    'blood_group' => $blood_group,
-                    'status'      => 'Active'
-                ),
-                array( '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s' )
+                $insert_data,
+                $insert_format
             );
 
             if ( $inserted ) {
                 $message = 'New personnel record added successfully.';
                 $message_type = 'success';
             } else {
-                $message = 'Database error: Failed to add member.';
+                $message = 'Database error: Failed to add member. ' . $wpdb->last_error;
                 $message_type = 'error';
             }
         }
@@ -119,7 +146,7 @@ if ( $_SERVER['REQUEST_METHOD'] === 'POST' && isset( $_POST['tkf_verify_action']
     }
 }
 
-// Intercept routing logic for printing ID Card
+    // Intercept routing logic for printing ID Card
 $download_id = isset( $_GET['download_id'] ) ? sanitize_text_field( wp_unslash( $_GET['download_id'] ) ) : '';
 if ( ! empty( $download_id ) ) {
     // Current user can check
@@ -132,7 +159,7 @@ if ( ! empty( $download_id ) ) {
         wp_die( 'Member not found.' );
     }
 
-    $logo_url = get_template_directory_uri() . '/Logo.png'; 
+    $logo_url = function_exists('tatkhalsa_get_logo_url') ? tatkhalsa_get_logo_url() : get_template_directory_uri() . '/Logo.png'; 
     $verify_url = esc_url( home_url('/verify/?member_id=' . $member->member_id) );
     $qr_code_url = 'https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=' . urlencode( $verify_url ) . '&margin=0';
 ?>
@@ -349,7 +376,7 @@ if ( ! empty( $query_member_id ) ) {
     $member = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM $table_name WHERE member_id = %s", $query_member_id ) );
 
     // Fetch the official logo as watermark
-    $logo_url = get_template_directory_uri() . '/Logo.png'; 
+    $logo_url = function_exists('tatkhalsa_get_logo_url') ? tatkhalsa_get_logo_url() : get_template_directory_uri() . '/Logo.png'; 
     ?>
     <style>
         .verify-page-wrapper {
