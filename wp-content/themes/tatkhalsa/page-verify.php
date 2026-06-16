@@ -159,7 +159,7 @@ if ( ! empty( $download_id ) ) {
         wp_die( 'Member not found.' );
     }
 
-    $logo_url = function_exists('tatkhalsa_get_logo_url') ? tatkhalsa_get_logo_url() : get_template_directory_uri() . '/Logo.png'; 
+    $logo_url = 'https://tatkhalsa.in/wp-content/uploads/2026/06/cropped-Logo.png'; 
     $verify_url = esc_url( home_url('/verify/?member_id=' . $member->member_id) );
     $qr_code_url = 'https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=' . urlencode( $verify_url ) . '&margin=0';
 ?>
@@ -188,7 +188,7 @@ if ( ! empty( $download_id ) ) {
             box-shadow: 0 10px 30px rgba(0,0,0,0.15);
             position: relative;
             overflow: hidden;
-            border: 1px solid #ccc;
+            border: 2px solid #E1A92A;
             box-sizing: border-box;
             print-color-adjust: exact;
             -webkit-print-color-adjust: exact;
@@ -197,7 +197,7 @@ if ( ! empty( $download_id ) ) {
         }
         @media print {
             body { background: #fff; }
-            .id-card-wrapper { box-shadow: none; border: 1px solid #000; }
+            .id-card-wrapper { box-shadow: none; border: 2px solid #0A327D; }
             .no-print { display: none; }
         }
         /* Design matches Tatkhalsa theme */
@@ -207,7 +207,7 @@ if ( ! empty( $download_id ) ) {
             color: #E1A92A;
             text-align: center;
             padding: 10px 5px;
-            border-right: 4px solid #E1A92A;
+            border-right: 3px solid #E1A92A;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -233,7 +233,7 @@ if ( ! empty( $download_id ) ) {
             border: 2px solid #E1A92A;
             background: #fff;
             margin-bottom: 5px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
         }
         .id-right {
             padding: 12px 15px;
@@ -241,10 +241,10 @@ if ( ! empty( $download_id ) ) {
             position: relative;
             display: flex;
             flex-direction: column;
-            justify-content: center;
+            justify-content: flex-start;
         }
         .id-name {
-            font-size: 16px;
+            font-size: 15px;
             font-weight: 800;
             color: #0A327D;
             margin: 0 0 2px;
@@ -253,7 +253,7 @@ if ( ! empty( $download_id ) ) {
         }
         .id-role {
             font-size: 9px;
-            color: #555;
+            color: #E1A92A;
             font-weight: 800;
             text-transform: uppercase;
             margin: 0 0 8px;
@@ -263,23 +263,47 @@ if ( ! empty( $download_id ) ) {
             grid-template-columns: 1fr 1fr;
             text-align: left;
             font-size: 8px;
-            color: #444;
+            color: #333;
             row-gap: 4px;
             column-gap: 10px;
-            margin-bottom: 0px;
+            margin-bottom: 10px;
         }
         .id-grid strong {
             color: #0A327D;
             font-size: 7px;
         }
-        .id-qr {
+        .id-footer {
             position: absolute;
             bottom: 10px;
+            left: 15px;
             right: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+        }
+        .id-sign {
+            text-align: center;
+            margin-bottom: 2px;
+        }
+        .id-sign img {
+            height: 18px;
+            object-fit: contain;
+            margin-bottom: 2px;
+        }
+        .id-sign .line {
+            width: 60px;
+            border-bottom: 1px solid #0A327D;
+            margin-bottom: 2px;
+        }
+        .id-sign span {
+            font-size: 6px;
+            color: #0A327D;
+            font-weight: bold;
+            text-transform: uppercase;
         }
         .id-qr img {
-            width: 50px;
-            height: 50px;
+            width: 45px;
+            height: 45px;
             border: 2px solid #E1A92A;
             padding: 2px;
             background: #fff;
@@ -351,8 +375,15 @@ if ( ! empty( $download_id ) ) {
                     <div><strong>CONTACT:</strong><br><?php echo esc_html( $member->mobile ?: 'N/A' ); ?></div>
                 </div>
                 
-                <div class="id-qr">
-                    <img src="<?php echo esc_url($qr_code_url); ?>" alt="QR Code to Verify">
+                <div class="id-footer">
+                    <div class="id-sign">
+                        <img src="https://tatkhalsa.in/wp-content/uploads/2026/06/aba819ad-1c8e-4d21-9849-ef03729a0cc5_removalai_preview.png" alt="Signature">
+                        <div class="line"></div>
+                        <span>Auth. Signatory</span>
+                    </div>
+                    <div class="id-qr">
+                        <img src="<?php echo esc_url($qr_code_url); ?>" alt="QR Code to Verify">
+                    </div>
                 </div>
             </div>
         </div>
@@ -376,7 +407,7 @@ if ( ! empty( $query_member_id ) ) {
     $member = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM $table_name WHERE member_id = %s", $query_member_id ) );
 
     // Fetch the official logo as watermark
-    $logo_url = function_exists('tatkhalsa_get_logo_url') ? tatkhalsa_get_logo_url() : get_template_directory_uri() . '/Logo.png'; 
+    $logo_url = 'https://tatkhalsa.in/wp-content/uploads/2026/06/cropped-Logo.png'; 
     ?>
     <style>
         .verify-page-wrapper {
