@@ -1007,7 +1007,9 @@ async function startServer() {
     "privacy-policy": "template-privacy.php",
     "privacy-policy.php": "template-privacy.php",
     "terms-conditions": "template-terms.php",
-    "terms-conditions.php": "template-terms.php"
+    "terms-conditions.php": "template-terms.php",
+    "verify": "page-verify.php",
+    "verify.php": "page-verify.php"
   };
 
   // Serve robots.txt dynamically to match the live server configuration
