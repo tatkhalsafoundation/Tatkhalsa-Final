@@ -259,12 +259,27 @@ if ( ! empty( $download_id ) ) {
             background: #e0e4e8;
             font-family: 'Plus Jakarta Sans', sans-serif;
             display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
             margin: 0;
+            padding: 30px 20px;
+            box-sizing: border-box;
+            gap: 25px;
             -webkit-print-color-adjust: exact;
             print-color-adjust: exact;
+        }
+        
+        .print-cards-container {
+            display: flex;
+            flex-direction: row;
+            gap: 25px;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+            width: 100%;
+            max-width: 1200px;
         }
         
         .id-card-wrapper {
@@ -280,6 +295,7 @@ if ( ! empty( $download_id ) ) {
             flex-direction: column;
             --id-primary: #052054;
             --id-accent: #E1A92A;
+            flex-shrink: 0;
         }
 
         .id-card-wrapper.theme-staff {
@@ -307,16 +323,24 @@ if ( ! empty( $download_id ) ) {
                 background: #ffffff; 
                 margin: 0; 
                 padding: 0; 
-                display: flex; 
-                justify-content: center; 
-                align-items: center; 
-                height: 100vh; 
+                display: block;
+                min-height: auto;
+            }
+            .print-cards-container {
+                display: block;
+                width: auto;
+                max-width: none;
             }
             .id-card-wrapper { 
                 box-shadow: none; 
-                border: none; 
+                border: 0.5px solid #cbd5e0; 
                 width: 8.56cm;
                 height: 5.40cm;
+                page-break-after: always;
+                margin: 0 auto;
+            }
+            .id-card-wrapper:last-child {
+                page-break-after: avoid;
             }
             .no-print { display: none !important; }
         }
@@ -814,7 +838,9 @@ if ( ! empty( $download_id ) ) {
     }
     ?>
     <button class="no-print print-btn" onclick="window.print()">Print ID Card</button>
-    <div class="id-card-wrapper <?php echo esc_attr( $theme_class ); ?>">
+    <div class="print-cards-container">
+        <!-- FRONT SIDE OF CARD -->
+        <div class="id-card-wrapper <?php echo esc_attr( $theme_class ); ?>">
         <!-- SVG background curves inside the card wrapper for wavy header effect -->
         <svg class="id-header-curve-svg" viewBox="0 0 324 204" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg" style="position: absolute; top:0; left:0; width:324px; height:204px; z-index:1; pointer-events:none;">
             <!-- Gold ribbon wavy background separator -->
@@ -833,7 +859,7 @@ if ( ! empty( $download_id ) ) {
                 <div class="id-header-text">
                     <h3 class="id-org-title">TATKHALSA</h3>
                     <p class="id-org-motto">FOUNDATION</p>
-                    <p class="id-org-reg">SEC 8 NGO &bull; CIN: U88900PB2023NPL059225</p>
+                    <p class="id-org-reg">CIN: U88900PB2023NPL059225</p>
                 </div>
             </div>
             <div class="id-header-right">
@@ -986,6 +1012,94 @@ if ( ! empty( $download_id ) ) {
             INTEGRITY &nbsp;&nbsp;&bull;&nbsp;&nbsp; TRANSPARENCY &nbsp;&nbsp;&bull;&nbsp;&nbsp; SECURITY &nbsp;&nbsp;&bull;&nbsp;&nbsp; TRUST
         </div>
     </div>
+
+    <!-- BACK SIDE OF ID CARD -->
+    <div class="id-card-wrapper <?php echo esc_attr( $theme_class ); ?> id-card-back">
+        <!-- SVG background curves inside the card wrapper for wavy header effect -->
+        <svg class="id-header-curve-svg" viewBox="0 0 324 204" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg" style="position: absolute; top:0; left:0; width:324px; height:204px; z-index:1; pointer-events:none;">
+            <!-- Gold ribbon wavy background separator -->
+            <path d="M 0,0 L 324,0 L 324,45 C 270,51 210,31 150,43 C 90,55 50,42 0,46 Z" fill="#E1A92A" />
+            <!-- Deep Navy background curve header -->
+            <path d="M 0,0 L 324,0 L 324,43 C 270,48 210,28 150,40 C 90,52 50,40 0,43 Z" fill="var(--id-primary)" />
+        </svg>
+
+        <!-- Watermark Medallion overlay behind info list -->
+        <div class="id-watermark-overlay" style="background-image: url('<?php echo esc_url($logo_url); ?>');"></div>
+
+        <!-- Top Header Part -->
+        <div class="id-header">
+            <div class="id-header-left">
+                <img src="<?php echo esc_url($logo_url); ?>" class="id-header-logo" alt="Logo">
+                <div class="id-header-text">
+                    <h3 class="id-org-title">TATKHALSA</h3>
+                    <p class="id-org-motto">FOUNDATION</p>
+                    <p class="id-org-reg">CIN: U88900PB2023NPL059225</p>
+                </div>
+            </div>
+            <div class="id-header-right">
+                <div style="font-size: 5px; font-weight: 800; color: #E1A92A; text-align: right; letter-spacing: 0.5px; line-height: 1.1;">
+                    OFFICIAL DATA &<br>CONTRIBUTIONS
+                </div>
+            </div>
+        </div>
+
+        <!-- Back Side Content Area -->
+        <div class="id-content-main" style="padding: 10px 12px 6px 12px; display: flex; flex-direction: row; gap: 10px; z-index: 10; justify-content: space-between; box-sizing: border-box; height: 137px; width: 100%;">
+            <!-- Left Column: Bank Account Details -->
+            <div class="back-details-col" style="flex: 1; display: flex; flex-direction: column; gap: 2.5px; text-align: left;">
+                <span style="font-size: 5.5px; font-weight: 800; color: var(--id-primary); letter-spacing: 0.3px; text-transform: uppercase;">DONATIONS & SUPPORT</span>
+                
+                <div style="width: 25px; height: 1px; background: #E1A92A; margin: 1px 0 2px 0;"></div>
+                
+                <!-- Key-Value Rows for Bank Info -->
+                <div style="display: flex; flex-direction: column; gap: 1.5px;">
+                    <div style="display: flex; flex-direction: column; line-height: 1;">
+                        <span style="font-size: 3.5px; font-weight: 800; color: var(--id-primary); text-transform: uppercase; letter-spacing: 0.2px;">ACCOUNT NAME</span>
+                        <span style="font-size: 5.5px; font-weight: 700; color: #333;">TATKHALSA FOUNDATION</span>
+                    </div>
+                    <div style="display: flex; flex-direction: column; line-height: 1;">
+                        <span style="font-size: 3.5px; font-weight: 800; color: var(--id-primary); text-transform: uppercase; letter-spacing: 0.2px;">ACCOUNT NUMBER</span>
+                        <span style="font-size: 5.5px; font-weight: 700; color: #333; font-family: 'Courier New', monospace; letter-spacing: 0.2px;">059225202388900</span>
+                    </div>
+                    <div style="display: flex; gap: 8px;">
+                        <div style="display: flex; flex-direction: column; line-height: 1;">
+                            <span style="font-size: 3.5px; font-weight: 800; color: var(--id-primary); text-transform: uppercase; letter-spacing: 0.2px;">IFSC CODE</span>
+                            <span style="font-size: 5.5px; font-weight: 700; color: #333; font-family: 'Courier New', monospace;">PUNB0059225</span>
+                        </div>
+                        <div style="display: flex; flex-direction: column; line-height: 1;">
+                            <span style="font-size: 3.5px; font-weight: 800; color: var(--id-primary); text-transform: uppercase; letter-spacing: 0.2px;">BANK BRANCH</span>
+                            <span style="font-size: 5.5px; font-weight: 700; color: #333;">PNB, AMRITSAR</span>
+                        </div>
+                    </div>
+                    <div style="display: flex; flex-direction: column; line-height: 1;">
+                        <span style="font-size: 3.5px; font-weight: 800; color: var(--id-primary); text-transform: uppercase; letter-spacing: 0.2px;">UPI TRANSACTION ID</span>
+                        <span style="font-size: 5.5px; font-weight: 700; color: #333; font-family: 'Courier New', monospace;">tatkhalsa@upi</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Column: Contribution QR Code -->
+            <div class="back-qr-col" style="width: 58px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; border-left: 0.5px solid #cbd5e0; padding-left: 8px; box-sizing: border-box;">
+                <?php 
+                $upi_url = 'upi://pay?pa=tatkhalsa@upi&pn=Tatkhalsa%20Foundation&cu=INR';
+                $pay_qr_url = 'https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=' . urlencode( $upi_url ) . '&margin=0';
+                ?>
+                <div style="padding: 2px; border: 0.75px solid var(--id-primary); border-radius: 4px; background: #ffffff; box-shadow: 0 1px 3px rgba(0,0,0,0.05); box-sizing: border-box;">
+                    <img src="<?php echo esc_url($pay_qr_url); ?>" alt="Contribution QR" style="width: 38px; height: 38px; display: block;">
+                </div>
+                <div style="font-size: 3.5px; font-weight: 900; background: #E1A92A; color: var(--id-primary); padding: 1.5px 4px; border-radius: 2px; letter-spacing: 0.2px; text-transform: uppercase; text-align: center; box-shadow: 0 1px 2px rgba(225, 169, 42, 0.2); white-space: nowrap;">
+                    SCAN TO CONTRIBUTE
+                </div>
+            </div>
+        </div>
+
+        <!-- Card Bottom Terms / Policy strip -->
+        <div class="id-bottom-navy-banner" style="font-size: 3.3px; height: 15px; padding: 0 10px; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; line-height: 1.2; border-top: 1.5px solid #E1A92A; box-sizing: border-box;">
+            <span style="letter-spacing: 0.15px; font-weight: 500; color: #fff; text-transform: uppercase; font-size: 3.3px;">Registered Section 8 Non-Profit Organization. All donations are tax exempt under Sec 80G.</span>
+            <span style="letter-spacing: 0.1px; font-weight: 400; color: #cbd5e0; font-size: 3.1px;">If found, please return to office or contact: info@tatkhalsa.in.</span>
+        </div>
+    </div>
+</div>
 </body>
 </html>
 <?php
@@ -1051,6 +1165,12 @@ if ( ! empty( $query_member_id ) ) {
         /* Verification Status Banners */
         .verify-card-active {
             border: 2px solid #E1A92A;
+            transition: max-width 0.3s ease;
+        }
+        @media (min-width: 768px) {
+            .verify-card.verify-card-active {
+                max-width: 1000px;
+            }
         }
         .verify-banner-active {
             background: linear-gradient(135deg, #28a745, #218838);
@@ -1066,10 +1186,12 @@ if ( ! empty( $query_member_id ) ) {
         /* Responsive Card Scaling Viewport Wrapper */
         .card-viewport-scaler {
             display: flex;
+            flex-direction: column;
             align-items: center;
             justify-content: center;
             width: 100%;
             padding: 24px 0;
+            gap: 20px;
             overflow: visible;
             box-sizing: border-box;
         }
@@ -1091,6 +1213,7 @@ if ( ! empty( $query_member_id ) ) {
             transition: transform 0.25s ease;
             --id-primary: #052054;
             --id-accent: #E1A92A;
+            flex-shrink: 0;
         }
 
         .id-card-wrapper.theme-staff {
@@ -1119,17 +1242,30 @@ if ( ! empty( $query_member_id ) ) {
             }
             .card-viewport-scaler {
                 padding: 10px 0;
-                height: 180px;
+                gap: 10px;
             }
         }
         
-        @media (min-width: 480px) {
+        @media (min-width: 480px) and (max-width: 767px) {
             .id-card-wrapper {
-                transform: scale(1.35);
+                transform: scale(1.15);
                 box-shadow: 0 15px 45px rgba(10, 50, 125, 0.16);
             }
             .card-viewport-scaler {
+                padding: 40px 0;
+                gap: 55px;
+            }
+        }
+
+        @media (min-width: 768px) {
+            .card-viewport-scaler {
+                flex-direction: row;
                 padding: 55px 0;
+                gap: 140px;
+            }
+            .id-card-wrapper {
+                transform: scale(1.35);
+                box-shadow: 0 15px 45px rgba(10, 50, 125, 0.16);
             }
         }
         
@@ -1716,7 +1852,7 @@ if ( ! empty( $query_member_id ) ) {
                                 <div class="id-header-text">
                                     <h3 class="id-org-title">TATKHALSA</h3>
                                     <p class="id-org-motto">FOUNDATION</p>
-                                    <p class="id-org-reg">SEC 8 NGO &bull; CIN: U88900PB2023NPL059225</p>
+                                    <p class="id-org-reg">CIN: U88900PB2023NPL059225</p>
                                 </div>
                             </div>
                             <div class="id-header-right">
@@ -1871,6 +2007,93 @@ if ( ! empty( $query_member_id ) ) {
                         <!-- Footer bar -->
                         <div class="id-bottom-navy-banner">
                             INTEGRITY &nbsp;&nbsp;&bull;&nbsp;&nbsp; TRANSPARENCY &nbsp;&nbsp;&bull;&nbsp;&nbsp; SECURITY &nbsp;&nbsp;&bull;&nbsp;&nbsp; TRUST
+                        </div>
+                    </div>
+
+                    <!-- BACK SIDE OF ID CARD -->
+                    <div class="id-card-wrapper <?php echo esc_attr( $theme_class ); ?> id-card-back">
+                        <!-- SVG background curves inside the card wrapper for wavy header effect -->
+                        <svg class="id-header-curve-svg" viewBox="0 0 324 204" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg" style="position: absolute; top:0; left:0; width:324px; height:204px; z-index:1; pointer-events:none;">
+                            <!-- Gold ribbon wavy background separator -->
+                            <path d="M 0,0 L 324,0 L 324,45 C 270,51 210,31 150,43 C 90,55 50,42 0,46 Z" fill="#E1A92A" />
+                            <!-- Deep Navy background curve header -->
+                            <path d="M 0,0 L 324,0 L 324,43 C 270,48 210,28 150,40 C 90,52 50,40 0,43 Z" fill="var(--id-primary)" />
+                        </svg>
+
+                        <!-- Watermark Medallion overlay behind info list -->
+                        <div class="id-watermark-overlay" style="background-image: url('<?php echo esc_url($logo_url); ?>');"></div>
+
+                        <!-- Top Header Part -->
+                        <div class="id-header">
+                            <div class="id-header-left">
+                                <img src="<?php echo esc_url($logo_url); ?>" class="id-header-logo" alt="Logo">
+                                <div class="id-header-text">
+                                    <h3 class="id-org-title">TATKHALSA</h3>
+                                    <p class="id-org-motto">FOUNDATION</p>
+                                    <p class="id-org-reg">CIN: U88900PB2023NPL059225</p>
+                                </div>
+                            </div>
+                            <div class="id-header-right">
+                                <div style="font-size: 5px; font-weight: 800; color: #E1A92A; text-align: right; letter-spacing: 0.5px; line-height: 1.1;">
+                                    OFFICIAL DATA &<br>CONTRIBUTIONS
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Back Side Content Area -->
+                        <div class="id-content-main" style="padding: 10px 12px 6px 12px; display: flex; flex-direction: row; gap: 10px; z-index: 10; justify-content: space-between; box-sizing: border-box; height: 137px; width: 100%;">
+                            <!-- Left Column: Bank Account Details -->
+                            <div class="back-details-col" style="flex: 1; display: flex; flex-direction: column; gap: 2.5px; text-align: left;">
+                                <span style="font-size: 5.5px; font-weight: 800; color: var(--id-primary); letter-spacing: 0.3px; text-transform: uppercase;">DONATIONS & SUPPORT</span>
+                                
+                                <div style="width: 25px; height: 1px; background: #E1A92A; margin: 1px 0 2px 0;"></div>
+                                
+                                <!-- Key-Value Rows for Bank Info -->
+                                <div style="display: flex; flex-direction: column; gap: 1.5px;">
+                                    <div style="display: flex; flex-direction: column; line-height: 1;">
+                                        <span style="font-size: 3.5px; font-weight: 800; color: var(--id-primary); text-transform: uppercase; letter-spacing: 0.2px;">ACCOUNT NAME</span>
+                                        <span style="font-size: 5.5px; font-weight: 700; color: #333;">TATKHALSA FOUNDATION</span>
+                                    </div>
+                                    <div style="display: flex; flex-direction: column; line-height: 1;">
+                                        <span style="font-size: 3.5px; font-weight: 800; color: var(--id-primary); text-transform: uppercase; letter-spacing: 0.2px;">ACCOUNT NUMBER</span>
+                                        <span style="font-size: 5.5px; font-weight: 700; color: #333; font-family: 'Courier New', monospace; letter-spacing: 0.2px;">059225202388900</span>
+                                    </div>
+                                    <div style="display: flex; gap: 8px;">
+                                        <div style="display: flex; flex-direction: column; line-height: 1;">
+                                            <span style="font-size: 3.5px; font-weight: 800; color: var(--id-primary); text-transform: uppercase; letter-spacing: 0.2px;">IFSC CODE</span>
+                                            <span style="font-size: 5.5px; font-weight: 700; color: #333; font-family: 'Courier New', monospace;">PUNB0059225</span>
+                                        </div>
+                                        <div style="display: flex; flex-direction: column; line-height: 1;">
+                                            <span style="font-size: 3.5px; font-weight: 800; color: var(--id-primary); text-transform: uppercase; letter-spacing: 0.2px;">BANK BRANCH</span>
+                                            <span style="font-size: 5.5px; font-weight: 700; color: #333;">PNB, AMRITSAR</span>
+                                        </div>
+                                    </div>
+                                    <div style="display: flex; flex-direction: column; line-height: 1;">
+                                        <span style="font-size: 3.5px; font-weight: 800; color: var(--id-primary); text-transform: uppercase; letter-spacing: 0.2px;">UPI TRANSACTION ID</span>
+                                        <span style="font-size: 5.5px; font-weight: 700; color: #333; font-family: 'Courier New', monospace;">tatkhalsa@upi</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Right Column: Contribution QR Code -->
+                            <div class="back-qr-col" style="width: 58px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; border-left: 0.5px solid #cbd5e0; padding-left: 8px; box-sizing: border-box;">
+                                <?php 
+                                $upi_url = 'upi://pay?pa=tatkhalsa@upi&pn=Tatkhalsa%20Foundation&cu=INR';
+                                $pay_qr_url = 'https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=' . urlencode( $upi_url ) . '&margin=0';
+                                ?>
+                                <div style="padding: 2px; border: 0.75px solid var(--id-primary); border-radius: 4px; background: #ffffff; box-shadow: 0 1px 3px rgba(0,0,0,0.05); box-sizing: border-box;">
+                                    <img src="<?php echo esc_url($pay_qr_url); ?>" alt="Contribution QR" style="width: 38px; height: 38px; display: block;">
+                                </div>
+                                <div style="font-size: 3.5px; font-weight: 900; background: #E1A92A; color: var(--id-primary); padding: 1.5px 4px; border-radius: 2px; letter-spacing: 0.2px; text-transform: uppercase; text-align: center; box-shadow: 0 1px 2px rgba(225, 169, 42, 0.2); white-space: nowrap;">
+                                    SCAN TO CONTRIBUTE
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Card Bottom Terms / Policy strip -->
+                        <div class="id-bottom-navy-banner" style="font-size: 3.3px; height: 15px; padding: 0 10px; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; line-height: 1.2; border-top: 1.5px solid #E1A92A; box-sizing: border-box;">
+                            <span style="letter-spacing: 0.15px; font-weight: 500; color: #fff; text-transform: uppercase; font-size: 3.3px;">Registered Section 8 Non-Profit Organization. All donations are tax exempt under Sec 80G.</span>
+                            <span style="letter-spacing: 0.1px; font-weight: 400; color: #cbd5e0; font-size: 3.1px;">If found, please return to office or contact: info@tatkhalsa.in.</span>
                         </div>
                     </div>
                 </div>
