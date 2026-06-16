@@ -287,7 +287,7 @@ if ( ! empty( $download_id ) ) {
         }
 
         .id-card-wrapper.theme-volunteer {
-            --id-primary: #043e2b;
+            --id-primary: #2C3591;
         }
 
         .id-card-wrapper.theme-director {
@@ -561,36 +561,36 @@ if ( ! empty( $download_id ) ) {
         .profile-fullname {
             margin: 0;
             font-family: 'Space Grotesk', sans-serif;
-            font-size: 13.5px;
+            font-size: 13px;
             font-weight: 800;
             color: var(--id-primary);
             text-transform: uppercase;
             letter-spacing: 0.1px;
-            line-height: 1.15;
+            line-height: 1.1;
         }
         
         .profile-designation {
-            font-size: 7.2px;
+            font-size: 7px;
             font-weight: 700;
             color: #E1A92A;
             text-transform: uppercase;
             letter-spacing: 0.5px;
-            margin-top: 1.5px;
-            line-height: 1.1;
+            margin-top: 1px;
+            line-height: 1;
         }
         
         .title-divider-line {
             width: 100%;
             height: 0.75px;
             background: #cbd5e0;
-            margin-top: 3.5px;
+            margin-top: 3px;
         }
         
         /* Detail Rows using Circle Icons */
         .profile-meta-list {
             display: flex;
             flex-direction: column;
-            gap: 2px;
+            gap: 1.5px;
             flex: 1;
             margin-top: 3px;
         }
@@ -602,8 +602,8 @@ if ( ! empty( $download_id ) ) {
         }
         
         .meta-icon-circle {
-            width: 13px;
-            height: 13px;
+            width: 10px;
+            height: 10px;
             background: var(--id-primary);
             color: #ffffff;
             border-radius: 50%;
@@ -614,8 +614,8 @@ if ( ! empty( $download_id ) ) {
         }
         
         .meta-svg-icon {
-            width: 6.5px;
-            height: 6.5px;
+            width: 5px;
+            height: 5px;
             color: #ffffff;
             stroke-width: 2.5;
         }
@@ -649,8 +649,8 @@ if ( ! empty( $download_id ) ) {
             justify-content: space-between;
             width: 100%;
             margin-top: auto;
-            border-top: 1px solid #eef2f6;
-            padding-top: 4px;
+            border-top: 0.75px solid #cbd5e0;
+            padding-top: 2px;
             box-sizing: border-box;
         }
         
@@ -663,14 +663,14 @@ if ( ! empty( $download_id ) ) {
         }
         
         .signature-image-wrapper {
-            height: 42px;
+            height: 28px;
             display: flex;
             align-items: flex-end;
             justify-content: center;
         }
         
         .signature-image-wrapper img {
-            height: 42px;
+            height: 28px;
             width: auto;
             object-fit: contain;
             mix-blend-mode: multiply;
@@ -693,7 +693,7 @@ if ( ! empty( $download_id ) ) {
         }
         
         .vertical-dash-divider {
-            height: 28px;
+            height: 22px;
             border-left: 0.75px solid #cbd5e0;
             margin: 0 4px;
         }
@@ -1098,7 +1098,7 @@ if ( ! empty( $query_member_id ) ) {
         }
 
         .id-card-wrapper.theme-volunteer {
-            --id-primary: #043e2b;
+            --id-primary: #2C3591;
         }
 
         .id-card-wrapper.theme-director {
@@ -1369,35 +1369,35 @@ if ( ! empty( $query_member_id ) ) {
         .profile-fullname {
             margin: 0;
             font-family: 'Space Grotesk', sans-serif;
-            font-size: 13.5px;
+            font-size: 13px;
             font-weight: 800;
             color: var(--id-primary);
             text-transform: uppercase;
             letter-spacing: 0.1px;
-            line-height: 1.15;
+            line-height: 1.1;
         }
         
         .profile-designation {
-            font-size: 7.2px;
+            font-size: 7px;
             font-weight: 700;
             color: #E1A92A;
             text-transform: uppercase;
             letter-spacing: 0.5px;
-            margin-top: 1.5px;
-            line-height: 1.1;
+            margin-top: 1px;
+            line-height: 1;
         }
         
         .title-divider-line {
             width: 100%;
             height: 0.75px;
             background: #cbd5e0;
-            margin-top: 3.5px;
+            margin-top: 3px;
         }
         
         .profile-meta-list {
             display: flex;
             flex-direction: column;
-            gap: 2px;
+            gap: 1.5px;
             flex: 1;
             margin-top: 3px;
         }
@@ -1410,8 +1410,8 @@ if ( ! empty( $query_member_id ) ) {
         }
         
         .meta-icon-circle {
-            width: 13px;
-            height: 13px;
+            width: 10px;
+            height: 10px;
             background: var(--id-primary);
             color: #ffffff;
             border-radius: 50%;
@@ -1422,8 +1422,8 @@ if ( ! empty( $query_member_id ) ) {
         }
         
         .meta-svg-icon {
-            width: 6.5px;
-            height: 6.5px;
+            width: 5px;
+            height: 5px;
             color: #ffffff;
             stroke-width: 2.5;
         }
@@ -1456,8 +1456,8 @@ if ( ! empty( $query_member_id ) ) {
             justify-content: space-between;
             width: 100%;
             margin-top: auto;
-            border-top: 1px solid #eef2f6;
-            padding-top: 4px;
+            border-top: 0.75px solid #cbd5e0;
+            padding-top: 2px;
             box-sizing: border-box;
         }
         
@@ -1470,14 +1470,14 @@ if ( ! empty( $query_member_id ) ) {
         }
         
         .signature-image-wrapper {
-            height: 42px;
+            height: 28px;
             display: flex;
             align-items: flex-end;
             justify-content: center;
         }
         
         .signature-image-wrapper img {
-            height: 42px;
+            height: 28px;
             width: auto;
             object-fit: contain;
             mix-blend-mode: multiply;
@@ -1500,7 +1500,7 @@ if ( ! empty( $query_member_id ) ) {
         }
         
         .vertical-dash-divider {
-            height: 28px;
+            height: 22px;
             border-left: 0.75px solid #cbd5e0;
             margin: 0 4px;
         }
