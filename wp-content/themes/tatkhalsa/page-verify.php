@@ -171,49 +171,31 @@ if ( ! empty( $download_id ) ) {
     <title>ID Card - <?php echo esc_html( $member->member_id ); ?></title>
     <!-- CSS for ID Card Print -->
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;700&display=swap');
+        
         body {
             background: #e0e4e8;
-            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            font-family: 'Plus Jakarta Sans', sans-serif;
             display: flex;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
             margin: 0;
+            -webkit-print-color-adjust: exact;
+            print-color-adjust: exact;
         }
         .id-card-wrapper {
             background: #ffffff;
             width: 8.56cm;
             height: 5.40cm;
-            border-radius: 8px;
+            border-radius: 12px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.15);
             position: relative;
             overflow: hidden;
             border: 2px solid #E1A92A;
             box-sizing: border-box;
-            print-color-adjust: exact;
-            -webkit-print-color-adjust: exact;
             display: flex;
-            flex-direction: column;
-        }
-        .id-card-wrapper::after {
-            content: '';
-            position: absolute;
-            bottom: -30px; right: -30px;
-            width: 100px; height: 100px;
-            background: #0A327D;
-            opacity: 0.05;
-            border-radius: 50%;
-            z-index: 1;
-        }
-        .id-card-wrapper::before {
-            content: '';
-            position: absolute;
-            bottom: 30px; right: -50px;
-            width: 80px; height: 80px;
-            background: #E1A92A;
-            opacity: 0.05;
-            border-radius: 50%;
-            z-index: 1;
+            flex-direction: row;
         }
         @media print {
             body { background: #fff; }
@@ -221,169 +203,277 @@ if ( ! empty( $download_id ) ) {
             .no-print { display: none; }
         }
         
-        .id-top-bar {
-            background: linear-gradient(135deg, #0A327D 0%, #154cbd 100%);
-            color: #E1A92A;
-            height: 1.2cm;
+        /* Left Panel - Deep Blue with brand identity */
+        .id-left-panel {
+            width: 3.1cm;
+            background: linear-gradient(135deg, #0A327D 0%, #05163a 100%);
+            color: #ffffff;
             display: flex;
+            flex-direction: column;
             align-items: center;
-            padding: 0 15px;
-            border-bottom: 3px solid #E1A92A;
+            justify-content: space-between;
+            padding: 10px 5px 12px 5px;
             position: relative;
-            z-index: 10;
+            box-sizing: border-box;
+            border-right: 3px solid #E1A92A;
+            z-index: 5;
         }
-        .id-top-bar img.logo {
+        .id-left-panel::before {
+            content: '';
+            position: absolute;
+            top: -15px; left: -15px;
+            width: 60px; height: 60px;
+            background: radial-gradient(circle, rgba(225, 169, 42, 0.15) 0%, rgba(225, 169, 42, 0) 70%);
+            border-radius: 50%;
+            pointer-events: none;
+        }
+        
+        .id-brand-area {
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+        }
+        .id-left-logo {
             height: 25px;
+            width: auto;
             object-fit: contain;
-            margin-right: 8px;
+            margin-bottom: 3px;
             filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
         }
-        .id-top-bar h3 {
+        .id-left-title {
             margin: 0;
-            font-size: 11px;
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 8px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            color: #E1A92A;
             text-transform: uppercase;
-            letter-spacing: 0.8px;
+            line-height: 1.1;
+        }
+        .id-left-subtitle {
+            font-size: 5px;
+            font-weight: 600;
+            letter-spacing: 1.2px;
             color: #ffffff;
-            text-shadow: 0 1px 2px rgba(0,0,0,0.4);
-            font-weight: 800;
+            opacity: 0.9;
+            text-transform: uppercase;
+            display: block;
+            margin-top: 1px;
+            line-height: 1;
         }
         
-        .watermark {
+        .id-photo-frame {
+            width: 2.1cm;
+            height: 2.4cm;
+            border: 2px solid #E1A92A;
+            border-radius: 6px;
+            overflow: hidden;
+            background: #ffffff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.25);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10;
+        }
+        .id-photo {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .id-left-badge {
+            font-size: 5px;
+            font-weight: 800;
+            background: rgba(225, 169, 42, 0.2);
+            color: #E1A92A;
+            padding: 1px 6px;
+            border-radius: 2px;
+            border: 0.5px solid rgba(225, 169, 42, 0.4);
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+        
+        /* Right Panel Wrapper */
+        .id-right-panel-wrapper {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            height: 100%;
+            box-sizing: border-box;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        /* Right Details Panel */
+        .id-right-panel {
+            flex: 1;
+            background: #ffffff;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 8px 12px 10px 12px;
+            position: relative;
+            box-sizing: border-box;
+            z-index: 1;
+        }
+        .id-right-panel::before {
+            content: '';
             position: absolute;
-            top: 55%;
+            top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            width: 120px;
-            opacity: 0.06;
-            z-index: 2;
-            pointer-events: none;
+            width: 130px;
+            height: 130px;
+            background-image: url('https://tatkhalsa.in/wp-content/uploads/2026/06/cropped-Logo.png');
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: contain;
+            opacity: 0.05;
             filter: grayscale(100%);
+            pointer-events: none;
+            z-index: 0;
+        }
+        .id-right-panel::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 45px;
+            height: 45px;
+            background: linear-gradient(135deg, rgba(14, 50, 125, 0.06) 0%, rgba(14, 50, 125, 0) 100%);
+            clip-path: polygon(100% 0, 0 0, 100% 100%);
+            z-index: 0;
+            pointer-events: none;
         }
         
-        .card-content {
-            display: flex;
-            flex: 1;
+        .id-header-info {
             position: relative;
-            z-index: 10;
-            padding: 10px 10px 20px 10px;
+            z-index: 2;
+            width: 100%;
+            border-bottom: 1.5px solid rgba(10, 50, 125, 0.08);
+            padding-bottom: 4px;
+            margin-bottom: 6px;
+        }
+        .id-name-text {
+            margin: 0;
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 13px;
+            font-weight: 700;
+            color: #0A327D;
+            text-transform: uppercase;
+            letter-spacing: 0.2px;
+            line-height: 1.1;
+        }
+        .id-designation-badge {
+            font-size: 7.5px;
+            font-weight: 700;
+            color: #d49514;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-top: 1px;
+            line-height: 1.1;
+        }
+        
+        .id-details-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            row-gap: 4px;
+            column-gap: 8px;
+            position: relative;
+            z-index: 2;
+            margin-bottom: auto;
+        }
+        .id-grid-item {
+            display: flex;
+            flex-direction: column;
+        }
+        .id-grid-item.full-width {
+            grid-column: span 2;
+        }
+        .id-label {
+            font-size: 5px;
+            font-weight: 800;
+            color: #8892b0;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+            margin-bottom: 0px;
+        }
+        .id-value {
+            font-size: 7.5px;
+            font-weight: 700;
+            color: #1a202c;
+            line-height: 1.2;
+        }
+        
+        /* Bottom row with Signature and QR Code */
+        .id-bottom-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            position: relative;
+            z-index: 2;
+            margin-top: 4px;
+        }
+        
+        .id-sign-block {
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 70px;
+        }
+        .id-signature-img {
+            height: 16px;
+            width: auto;
+            object-fit: contain;
+            margin-bottom: 1px;
+            mix-blend-mode: multiply;
+        }
+        .id-sign-line {
+            width: 100%;
+            border-bottom: 0.75px dashed #0A327D;
+            margin-bottom: 2px;
+        }
+        .id-sign-label {
+            font-size: 5px;
+            font-weight: 800;
+            color: #0A327D;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+        
+        .id-qr-block {
+            padding: 1.5px;
+            border: 1px solid #E1A92A;
+            border-radius: 4px;
+            background: #ffffff;
+            box-shadow: 0 2px 5px rgba(10, 50, 125, 0.08);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .id-qr-img {
+            width: 32px;
+            height: 32px;
+            display: block;
         }
         
         .id-details-footer {
             background: #E1A92A;
             color: #0A327D;
             text-align: center;
-            font-size: 6.5px;
-            padding: 4px 0;
+            font-size: 5.5px;
+            padding: 3px 0;
             font-weight: 800;
-            letter-spacing: 0.5px;
-            position: absolute;
-            bottom: 0;
-            left: 0;
+            letter-spacing: 0.8px;
             width: 100%;
             z-index: 20;
-        }
-        
-        .id-left-col {
-            width: 2.2cm;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-        .id-photo-wrap {
-            position: relative;
-            z-index: 10;
-        }
-        .id-photo {
-            width: 2.0cm;
-            height: 2.3cm;
-            object-fit: cover;
-            border-radius: 6px;
-            border: 2px solid #E1A92A;
-            background: #fff;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.15);
-        }
-        .id-qr {
-            margin-top: auto;
-            text-align: center;
-        }
-        .id-qr img {
-            width: 45px;
-            height: 45px;
-            border: 1.5px solid #0A327D;
-            padding: 2px;
-            background: #fff;
-            border-radius: 4px;
-        }
-        
-        .id-right-col {
-            flex: 1;
-            padding-left: 10px;
-            display: flex;
-            flex-direction: column;
-        }
-        .id-name {
-            font-size: 14px;
-            font-weight: 900;
-            color: #0A327D;
-            margin: 0 0 2px;
+            border-top: 1px solid rgba(10, 50, 125, 0.1);
             text-transform: uppercase;
-            line-height: 1.1;
-            letter-spacing: 0.3px;
-        }
-        .id-role {
-            font-size: 8px;
-            color: #d49514;
-            font-weight: 800;
-            text-transform: uppercase;
-            margin: 0 0 8px;
-            line-height: 1.1;
-        }
-        
-        .id-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            font-size: 7px;
-            color: #333;
-            row-gap: 3px;
-            column-gap: 5px;
-            margin-bottom: auto;
-        }
-        .id-grid .full-width {
-            grid-column: 1 / -1;
-        }
-        .id-grid strong {
-            color: #0A327D;
-            font-size: 6.5px;
-            display: inline-block;
-            margin-bottom: 1px;
-        }
-        
-        .id-footer {
-            display: flex;
-            justify-content: flex-end;
-            align-items: flex-end;
-            margin-top: 5px;
-        }
-        .id-sign {
-            text-align: center;
-        }
-        .id-sign img {
-            height: 18px;
-            object-fit: contain;
-            margin-bottom: 1px;
-        }
-        .id-sign .line {
-            width: 55px;
-            border-bottom: 1px dashed #0A327D;
-            margin-bottom: 2px;
-            margin-left: auto;
-            margin-right: auto;
-        }
-        .id-sign span {
-            font-size: 5.5px;
-            color: #0A327D;
-            font-weight: bold;
-            text-transform: uppercase;
+            font-family: 'Space Grotesk', sans-serif;
         }
         
         .print-btn {
@@ -412,51 +502,71 @@ if ( ! empty( $download_id ) ) {
 <body>
     <button class="no-print print-btn" onclick="window.print()">Print ID Card</button>
     <div class="id-card-wrapper">
-        <img src="<?php echo esc_url($logo_url); ?>" class="watermark" alt="">
-        
-        <div class="id-top-bar">
-            <img src="<?php echo esc_url($logo_url); ?>" class="logo" alt="Tatkhalsa Logo">
-            <h3>Tatkhalsa Foundation</h3>
-        </div>
-        
-        <div class="card-content">
-            <div class="id-left-col">
-                <div class="id-photo-wrap">
-                    <?php if ( ! empty( $member->photo_url ) ) : ?>
-                        <img src="<?php echo esc_url( $member->photo_url ); ?>" alt="Photo" class="id-photo">
-                    <?php else: ?>
-                        <img src="<?php echo esc_url($logo_url); ?>" alt="Tatkhalsa Foundation" class="id-photo" style="object-fit: contain; padding: 10px; background:#f0f0f0;">
-                    <?php endif; ?>
-                </div>
-                <div class="id-qr">
-                    <img src="<?php echo esc_url($qr_code_url); ?>" alt="QR Code to Verify">
-                </div>
+        <!-- Left Panel (Blue) -->
+        <div class="id-left-panel">
+            <div class="id-brand-area">
+                <img src="<?php echo esc_url($logo_url); ?>" class="id-left-logo" alt="Logo">
+                <h3 class="id-left-title">TATKHALSA</h3>
+                <span class="id-left-subtitle">FOUNDATION</span>
             </div>
             
-            <div class="id-right-col">
-                <p class="id-name"><?php echo esc_html( $member->full_name ); ?></p>
-                <p class="id-role"><?php echo esc_html( $member->designation ); ?></p>
-                
-                <div class="id-grid">
-                    <div><strong>ID NO:</strong><br><?php echo esc_html( $member->member_id ); ?></div>
-                    <div><strong>BLOOD:</strong><br><?php echo esc_html( $member->blood_group ?: 'N/A' ); ?></div>
-                    <div><strong>CONTACT:</strong><br><?php echo esc_html( $member->mobile ?: 'N/A' ); ?></div>
-                    <div><strong>VALID:</strong><br><?php echo $member->expiry_date ? esc_html( date('d M Y', strtotime($member->expiry_date)) ) : 'N/A'; ?></div>
-                    <div class="full-width"><strong>EMAIL:</strong><br><?php echo esc_html( $member->email ?: 'N/A' ); ?></div>
+            <div class="id-photo-frame">
+                <?php if ( ! empty( $member->photo_url ) ) : ?>
+                    <img src="<?php echo esc_url( $member->photo_url ); ?>" alt="Photo" class="id-photo">
+                <?php else: ?>
+                    <img src="<?php echo esc_url($logo_url); ?>" alt="Photo" class="id-photo" style="object-fit: contain; padding: 6px; background:#f4f6f9;">
+                <?php endif; ?>
+            </div>
+            
+            <div class="id-left-badge">OFFICIAL ID</div>
+        </div>
+        
+        <!-- Right Panel (White) -->
+        <div class="id-right-panel-wrapper">
+            <div class="id-right-panel">
+                <div class="id-header-info">
+                    <h2 class="id-name-text"><?php echo esc_html( $member->full_name ); ?></h2>
+                    <div class="id-designation-badge"><?php echo esc_html( $member->designation ); ?></div>
                 </div>
                 
-                <div class="id-footer">
-                    <div class="id-sign">
-                        <img src="https://tatkhalsa.in/wp-content/uploads/2026/06/aba819ad-1c8e-4d21-9849-ef03729a0cc5_removalai_preview-e1781624417937.png" alt="Signature">
-                        <div class="line"></div>
-                        <span>Auth. Signatory</span>
+                <div class="id-details-grid">
+                    <div class="id-grid-item">
+                        <span class="id-label">ID NO</span>
+                        <span class="id-value"><?php echo esc_html( $member->member_id ); ?></span>
+                    </div>
+                    <div class="id-grid-item">
+                        <span class="id-label">BLOOD GB</span>
+                        <span class="id-value"><?php echo esc_html( $member->blood_group ?: 'N/A' ); ?></span>
+                    </div>
+                    <div class="id-grid-item">
+                        <span class="id-label">CONTACT</span>
+                        <span class="id-value"><?php echo esc_html( $member->mobile ?: 'N/A' ); ?></span>
+                    </div>
+                    <div class="id-grid-item">
+                        <span class="id-label">VALID TILL</span>
+                        <span class="id-value"><?php echo $member->expiry_date ? esc_html( date('d M Y', strtotime($member->expiry_date)) ) : 'N/A'; ?></span>
+                    </div>
+                    <div class="id-grid-item full-width">
+                        <span class="id-label">EMAIL ADDRESS</span>
+                        <span class="id-value"><?php echo esc_html( $member->email ?: 'N/A' ); ?></span>
+                    </div>
+                </div>
+                
+                <div class="id-bottom-row">
+                    <div class="id-sign-block">
+                        <img src="https://tatkhalsa.in/wp-content/uploads/2026/06/aba819ad-1c8e-4d21-9849-ef03729a0cc5_removalai_preview-e1781624417937.png" alt="Signature" class="id-signature-img">
+                        <div class="id-sign-line"></div>
+                        <span class="id-sign-label">Auth. Signatory</span>
+                    </div>
+                    <div class="id-qr-block">
+                        <img src="<?php echo esc_url($qr_code_url); ?>" alt="QR Code" class="id-qr-img">
                     </div>
                 </div>
             </div>
-        </div>
-        
-        <div class="id-details-footer">
-            WWW.TATKHALSA.IN &nbsp;|&nbsp; INFO@TATKHALSA.IN &nbsp;|&nbsp; SECTION 8 NGO
+            
+            <div class="id-details-footer">
+                WWW.TATKHALSA.IN &nbsp;|&nbsp; INFO@TATKHALSA.IN &nbsp;|&nbsp; SECTION 8 NGO
+            </div>
         </div>
     </div>
 </body>
