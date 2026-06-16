@@ -265,7 +265,22 @@ if ( ! empty( $download_id ) ) {
             flex: 1;
             position: relative;
             z-index: 10;
-            padding: 10px;
+            padding: 10px 10px 20px 10px;
+        }
+        
+        .id-details-footer {
+            background: #E1A92A;
+            color: #0A327D;
+            text-align: center;
+            font-size: 6.5px;
+            padding: 4px 0;
+            font-weight: 800;
+            letter-spacing: 0.5px;
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            z-index: 20;
         }
         
         .id-left-col {
@@ -438,6 +453,10 @@ if ( ! empty( $download_id ) ) {
                     </div>
                 </div>
             </div>
+        </div>
+        
+        <div class="id-details-footer">
+            WWW.TATKHALSA.IN &nbsp;|&nbsp; INFO@TATKHALSA.IN &nbsp;|&nbsp; SECTION 8 NGO
         </div>
     </div>
 </body>
