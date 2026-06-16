@@ -954,114 +954,61 @@ if ( ! empty( $download_id ) ) {
         .print-btn:hover {
             transform: translateY(-2px);
             box-shadow: 0 6px 12px rgba(0,0,0,0.3);
+        }        /* NFC / RFID CONTACTLESS STYLING */
+        .nfc-badge {
+            display: none !important;
+            align-items: center;
+            background: rgba(225, 169, 42, 0.08);
+            border: 0.75px solid rgba(225, 169, 42, 0.45);
+            border-radius: 4px;
+            padding: 2.5px 5.5px;
+            gap: 4px;
+            margin-right: 6px;
         }
 
-        /* SMART CHIP ALIGNMENT & SPACING RULES */
-        .smart-chip-pad {
-            position: absolute;
-            left: 74px;
-            top: 35px;
-            width: 45px;
-            height: 38px;
-            border-radius: 6px;
-            background: linear-gradient(135deg, #f3d47d 0%, #d5ae39 30%, #ffebaa 70%, #aa851e 100%);
-            box-shadow: inset 0 0 3px rgba(0,0,0,0.35), 0 1px 3px rgba(0,0,0,0.2);
-            border: 1px solid #b38e1b;
-            z-index: 20;
-            box-sizing: border-box;
-            display: none;
-            overflow: hidden;
+        .nfc-enabled .nfc-badge {
+            display: flex !important;
         }
 
-        .chip-layout-enabled .smart-chip-pad {
+        .nfc-logo-svg {
+            width: 10px;
+            height: 10px;
+            color: #E1A92A;
             display: block;
         }
 
-        .chip-inner-trace {
-            position: relative;
-            width: 100%;
-            height: 100%;
+        .nfc-text {
+            display: flex;
+            flex-direction: column;
+            text-align: left;
+            line-height: 0.95;
         }
 
-        .chip-inner-trace::before {
-            content: '';
-            position: absolute;
-            top: 0; left: 50%; width: 1.5px; height: 100%;
-            background: rgba(0,0,0,0.2);
-            transform: translateX(-50%);
+        .nfc-text span {
+            font-size: 3.5px;
+            color: #ffffff;
+            font-weight: 600;
+            letter-spacing: 0.2px;
+            text-transform: uppercase;
         }
 
-        .chip-inner-trace::after {
-            content: '';
-            position: absolute;
-            top: 50%; left: 0; width: 100%; height: 1.5px;
-            background: rgba(0,0,0,0.2);
-            transform: translateY(-50%);
-        }
-
-        .smart-chip-pad-detail {
-            position: absolute;
-            border: 1px dashed rgba(0,0,0,0.25);
-            border-radius: 3px;
-            top: 6px; left: 6px; right: 6px; bottom: 6px;
-            pointer-events: none;
-        }
-
-        /* Adjustments under chip-enabled card profile */
-        .chip-layout-enabled .id-col-left {
-            width: 76px !important;
-        }
-
-        .chip-layout-enabled .id-photo-container {
-            width: 62px !important;
-            height: 72px !important;
-        }
-
-        .chip-layout-enabled .id-photo-container img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .chip-layout-enabled .id-badge-info-navy {
-            padding: 3px 0 2px 0 !important;
-        }
-
-        .chip-layout-enabled .badge-value {
-            font-size: 5.6px !important;
-        }
-
-        .chip-layout-enabled .barcode-box {
-            width: 62px !important;
-            height: 8px !important;
-        }
-
-        .chip-layout-enabled .id-header-text {
-            margin-left: 56px !important; /* Move header text clear of the contact chip */
-            transition: margin-left 0.2s ease;
-        }
-
-        .chip-layout-enabled .profile-title-block {
-            padding-left: 48px !important; /* Move profile info clear of the contact chip */
-            box-sizing: border-box;
-            transition: padding-left 0.2s ease;
-        }
-
-        .chip-layout-enabled .profile-fullname {
-            font-size: 11px !important; /* Balance size on shifted area */
-        }
-
-        .chip-layout-enabled .profile-designation {
-            font-size: 6.5px !important;
+        .nfc-text strong {
+            font-size: 4.5px;
+            color: #E1A92A;
+            font-weight: 800;
+            letter-spacing: 0.2px;
+            text-transform: uppercase;
         }
 
         @media print {
-            /* Hide the visual smart chip background during physical card output */
-            .smart-chip-pad {
-                visibility: hidden !important;
-                background: transparent !important;
-                border: none !important;
-                box-shadow: none !important;
+            /* Keep NFC/RFID design visible on print output! */
+            .nfc-badge {
+                display: none;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+            .nfc-enabled .nfc-badge {
+                display: flex !important;
             }
         }
     </style>
@@ -1092,30 +1039,30 @@ if ( ! empty( $download_id ) ) {
             Print ID Card
         </button>
         <div style="background: #ffffff; border: 1.5px solid #052054; padding: 10px 14px; border-radius: 6px; box-shadow: 0 4px 14px rgba(0,0,0,0.15); display: flex; align-items: center; gap: 8px;">
-            <input type="checkbox" id="chip-mode-toggle" style="width: 15px; height: 15px; accent-color: #052054; cursor: pointer;">
-            <label for="chip-mode-toggle" style="color: #052054; font-family: 'Space Grotesk', sans-serif; font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; cursor: pointer; -webkit-user-select: none; user-select: none; white-space: nowrap;">
-                Print on Chip-Based Card
+            <input type="checkbox" id="nfc-mode-toggle" style="width: 15px; height: 15px; accent-color: #052054; cursor: pointer;">
+            <label for="nfc-mode-toggle" style="color: #052054; font-family: 'Space Grotesk', sans-serif; font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; cursor: pointer; -webkit-user-select: none; user-select: none; white-space: nowrap;">
+                Print with NFC / RFID Logo
             </label>
         </div>
     </div>
 
     <script style="display:none;">
     document.addEventListener('DOMContentLoaded', function() {
-        var toggle = document.getElementById('chip-mode-toggle');
+        var toggle = document.getElementById('nfc-mode-toggle');
         if (toggle) {
-            var isChipEnabled = localStorage.getItem('tkf_chip_layout') === 'true';
-            toggle.checked = isChipEnabled;
-            if (isChipEnabled) {
-                document.body.classList.add('chip-layout-enabled');
+            var isNfcEnabled = localStorage.getItem('tkf_nfc_layout') === 'true';
+            toggle.checked = isNfcEnabled;
+            if (isNfcEnabled) {
+                document.body.classList.add('nfc-enabled');
             }
             
             toggle.addEventListener('change', function() {
                 if (this.checked) {
-                    document.body.classList.add('chip-layout-enabled');
-                    localStorage.setItem('tkf_chip_layout', 'true');
+                    document.body.classList.add('nfc-enabled');
+                    localStorage.setItem('tkf_nfc_layout', 'true');
                 } else {
-                    document.body.classList.remove('chip-layout-enabled');
-                    localStorage.setItem('tkf_chip_layout', 'false');
+                    document.body.classList.remove('nfc-enabled');
+                    localStorage.setItem('tkf_nfc_layout', 'false');
                 }
             });
         }
@@ -1125,12 +1072,6 @@ if ( ! empty( $download_id ) ) {
     <div class="print-cards-container">
         <!-- FRONT SIDE OF CARD -->
         <div class="id-card-wrapper <?php echo esc_attr( $theme_class ); ?>">
-            <!-- Smart Chip Layer visual bounds guide -->
-            <div class="smart-chip-pad">
-                <div class="chip-inner-trace">
-                    <div class="smart-chip-pad-detail"></div>
-                </div>
-            </div>
         <!-- SVG background curves inside the card wrapper for wavy header effect -->
         <svg class="id-header-curve-svg" viewBox="0 0 324 204" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg" style="position: absolute; top:0; left:0; width:324px; height:204px; z-index:1; pointer-events:none;">
             <!-- Gold ribbon wavy background separator -->
@@ -1153,6 +1094,18 @@ if ( ! empty( $download_id ) ) {
                 </div>
             </div>
             <div class="id-header-right">
+                <!-- NFC / RFID Contactless Badge -->
+                <div class="nfc-badge">
+                    <svg class="nfc-logo-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round">
+                        <path d="M12 10A2 2 0 0 1 14 12A2 2 0 0 1 12 14" />
+                        <path d="M12 6A6 6 0 0 1 18 12A6 6 0 0 1 12 18" />
+                        <path d="M12 2A10 10 0 0 1 22 12A10 10 0 0 1 12 22" />
+                    </svg>
+                    <div class="nfc-text">
+                        <span>NFC / RFID</span>
+                        <strong>SECURE</strong>
+                    </div>
+                </div>
                 <div class="secured-badge">
                     <svg class="lock-icon-svg" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="width: 10px; height: 10px;">
                         <circle cx="12" cy="12" r="11" stroke="#E1A92A" stroke-width="2"/>
@@ -1335,6 +1288,18 @@ if ( ! empty( $download_id ) ) {
                 </div>
             </div>
             <div class="id-header-right">
+                <!-- NFC / RFID Contactless Badge -->
+                <div class="nfc-badge" style="margin-right: 6px;">
+                    <svg class="nfc-logo-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round">
+                        <path d="M12 10A2 2 0 0 1 14 12A2 2 0 0 1 12 14" />
+                        <path d="M12 6A6 6 0 0 1 18 12A6 6 0 0 1 12 18" />
+                        <path d="M12 2A10 10 0 0 1 22 12A10 10 0 0 1 12 22" />
+                    </svg>
+                    <div class="nfc-text">
+                        <span>NFC / RFID</span>
+                        <strong>SECURE</strong>
+                    </div>
+                </div>
                 <div style="font-size: 5px; font-weight: 800; color: #E1A92A; text-align: right; letter-spacing: 0.5px; line-height: 1.1;">
                     OFFICIAL DATA &<br>CONTRIBUTIONS
                 </div>
