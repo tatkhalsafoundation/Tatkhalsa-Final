@@ -738,6 +738,11 @@ if ( ! empty( $download_id ) ) {
             margin-top: 3px;
         }
         
+        .profile-meta-list.has-alt-mobile {
+            gap: 0.8px;
+            margin-top: 1.5px;
+        }
+        
         .meta-item-row {
             display: flex;
             align-items: center;
@@ -1041,7 +1046,7 @@ if ( ! empty( $download_id ) ) {
                 </div>
                 
                 <!-- Information rows -->
-                <div class="profile-meta-list">
+                <div class="profile-meta-list <?php echo ! empty( $member->alt_mobile ) ? 'has-alt-mobile' : ''; ?>">
                     <!-- Row 1: CONTACT -->
                     <div class="meta-item-row">
                         <div class="meta-icon-circle">
@@ -2093,6 +2098,7 @@ if ( ! empty( $query_member_id ) ) {
                         </div>
                     </div>
 
+                    <?php if ( current_user_can( 'manage_options' ) ) : ?>
                     <!-- Print ID Card Action Button -->
                     <div style="margin-top: 25px; padding-top: 20px; border-top: 1px dashed #e2e8f0; text-align: center;">
                         <span style="font-size: 11px; font-weight: 700; color: #718096; text-transform: uppercase; letter-spacing: 0.5px; display: block; margin-bottom: 12px; font-family: 'Space Grotesk', sans-serif;">Personnel Self-Service Actions</span>
@@ -2107,6 +2113,7 @@ if ( ! empty( $query_member_id ) ) {
                             </a>
                         </div>
                     </div>
+                    <?php endif; ?>
                 </div>
             </div>
 
