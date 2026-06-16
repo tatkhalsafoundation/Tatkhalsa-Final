@@ -278,6 +278,28 @@ if ( ! empty( $download_id ) ) {
             box-sizing: border-box;
             display: flex;
             flex-direction: column;
+            --id-primary: #052054;
+            --id-accent: #E1A92A;
+        }
+
+        .id-card-wrapper.theme-staff {
+            --id-primary: #052054;
+        }
+
+        .id-card-wrapper.theme-volunteer {
+            --id-primary: #043e2b;
+        }
+
+        .id-card-wrapper.theme-director {
+            --id-primary: #5c0612;
+        }
+
+        .id-card-wrapper.theme-member {
+            --id-primary: #2e1154;
+        }
+
+        .id-card-wrapper.theme-security {
+            --id-primary: #1e293b;
         }
 
         @media print {
@@ -354,26 +376,29 @@ if ( ! empty( $download_id ) ) {
             letter-spacing: 0.5px;
             color: #ffffff;
             line-height: 1;
+            white-space: nowrap;
         }
         
         .id-org-motto {
             margin: 1.5px 0 0 0;
-            font-size: 5px;
+            font-size: 5.5px;
             font-weight: 500;
             letter-spacing: 0.5px;
             color: #E1A92A;
             text-transform: uppercase;
             line-height: 1;
+            white-space: nowrap;
         }
         
         .id-org-reg {
             margin: 1.5px 0 0 0;
-            font-size: 3.8px;
+            font-size: 5.2px;
             font-weight: 600;
             letter-spacing: 0.3px;
             color: #cbd5e0;
             text-transform: uppercase;
             line-height: 1;
+            white-space: nowrap;
         }
         
         .id-header-right {
@@ -447,11 +472,11 @@ if ( ! empty( $download_id ) ) {
         .id-photo-container {
             width: 78px;
             height: 84px;
-            border: 1px solid #052054;
+            border: 1px solid var(--id-primary);
             border-radius: 6px;
             overflow: hidden;
             background: #ffffff;
-            box-shadow: 0 3px 6px rgba(5, 32, 84, 0.08);
+            box-shadow: 0 3px 6px rgba(0, 0, 0, 0.08);
         }
         
         .id-photo-container img {
@@ -462,7 +487,7 @@ if ( ! empty( $download_id ) ) {
         
         .id-badge-info-navy {
             width: 100%;
-            background: #052054;
+            background: var(--id-primary);
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -538,7 +563,7 @@ if ( ! empty( $download_id ) ) {
             font-family: 'Space Grotesk', sans-serif;
             font-size: 13.5px;
             font-weight: 800;
-            color: #052054;
+            color: var(--id-primary);
             text-transform: uppercase;
             letter-spacing: 0.1px;
             line-height: 1.15;
@@ -579,7 +604,7 @@ if ( ! empty( $download_id ) ) {
         .meta-icon-circle {
             width: 13px;
             height: 13px;
-            background: #052054;
+            background: var(--id-primary);
             color: #ffffff;
             border-radius: 50%;
             display: flex;
@@ -604,7 +629,7 @@ if ( ! empty( $download_id ) ) {
         .meta-row-label {
             font-size: 3.8px;
             font-weight: 800;
-            color: #052054;
+            color: var(--id-primary);
             text-transform: uppercase;
             letter-spacing: 0.3px;
             margin-bottom: 0.5px;
@@ -638,14 +663,14 @@ if ( ! empty( $download_id ) ) {
         }
         
         .signature-image-wrapper {
-            height: 26px;
+            height: 42px;
             display: flex;
             align-items: flex-end;
             justify-content: center;
         }
         
         .signature-image-wrapper img {
-            height: 26px;
+            height: 42px;
             width: auto;
             object-fit: contain;
             mix-blend-mode: multiply;
@@ -653,7 +678,7 @@ if ( ! empty( $download_id ) ) {
         
         .signature-underline {
             width: 100%;
-            border-bottom: 0.5px dashed #052054;
+            border-bottom: 0.5px dashed var(--id-primary);
             margin-top: 1px;
             margin-bottom: 2px;
         }
@@ -661,7 +686,7 @@ if ( ! empty( $download_id ) ) {
         .signature-title {
             font-size: 4px;
             font-weight: 800;
-            color: #052054;
+            color: var(--id-primary);
             letter-spacing: 0.2px;
             text-transform: uppercase;
             text-align: center;
@@ -684,7 +709,7 @@ if ( ! empty( $download_id ) ) {
         .validity-label {
             font-size: 4px;
             font-weight: 800;
-            color: #052054;
+            color: var(--id-primary);
             letter-spacing: 0.2px;
             text-transform: uppercase;
         }
@@ -706,7 +731,7 @@ if ( ! empty( $download_id ) ) {
         
         .qr-code-box {
             padding: 1.5px;
-            border: 0.75px solid #052054;
+            border: 0.75px solid var(--id-primary);
             border-radius: 3.5px;
             background: #ffffff;
             box-shadow: 0 1px 3px rgba(0,0,0,0.05);
@@ -722,7 +747,7 @@ if ( ! empty( $download_id ) ) {
             font-size: 3.5px;
             font-weight: 900;
             background: #E1A92A;
-            color: #052054;
+            color: var(--id-primary);
             padding: 1px 3.5px;
             border-radius: 2px;
             margin-top: 2px;
@@ -735,7 +760,7 @@ if ( ! empty( $download_id ) ) {
         /* Bottom Navy Banner */
         .id-bottom-navy-banner {
             height: 15px;
-            background: #052054;
+            background: var(--id-primary);
             color: #E1A92A;
             display: flex;
             align-items: center;
@@ -775,14 +800,27 @@ if ( ! empty( $download_id ) ) {
     </style>
 </head>
 <body>
+    <?php
+    $mid_upper = strtoupper( $member->member_id );
+    $theme_class = 'theme-staff';
+    if ( strpos( $mid_upper, 'TKF-VOL' ) !== false ) {
+        $theme_class = 'theme-volunteer';
+    } elseif ( strpos( $mid_upper, 'TKF-DIR' ) !== false || strpos( $mid_upper, 'TKF-ADM' ) !== false || strpos( $mid_upper, 'TKF-TRU' ) !== false ) {
+        $theme_class = 'theme-director';
+    } elseif ( strpos( $mid_upper, 'TKF-MEM' ) !== false ) {
+        $theme_class = 'theme-member';
+    } elseif ( strpos( $mid_upper, 'TKF-SEC' ) !== false ) {
+        $theme_class = 'theme-security';
+    }
+    ?>
     <button class="no-print print-btn" onclick="window.print()">Print ID Card</button>
-    <div class="id-card-wrapper">
+    <div class="id-card-wrapper <?php echo esc_attr( $theme_class ); ?>">
         <!-- SVG background curves inside the card wrapper for wavy header effect -->
         <svg class="id-header-curve-svg" viewBox="0 0 324 204" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg" style="position: absolute; top:0; left:0; width:324px; height:204px; z-index:1; pointer-events:none;">
             <!-- Gold ribbon wavy background separator -->
             <path d="M 0,0 L 324,0 L 324,45 C 270,51 210,31 150,43 C 90,55 50,42 0,46 Z" fill="#E1A92A" />
             <!-- Deep Navy background curve header -->
-            <path d="M 0,0 L 324,0 L 324,43 C 270,48 210,28 150,40 C 90,52 50,40 0,43 Z" fill="#052054" />
+            <path d="M 0,0 L 324,0 L 324,43 C 270,48 210,28 150,40 C 90,52 50,40 0,43 Z" fill="var(--id-primary)" />
         </svg>
 
         <!-- Watermark Medallion overlay behind info list -->
@@ -1051,6 +1089,28 @@ if ( ! empty( $query_member_id ) ) {
             transform: scale(1.0);
             transform-origin: center;
             transition: transform 0.25s ease;
+            --id-primary: #052054;
+            --id-accent: #E1A92A;
+        }
+
+        .id-card-wrapper.theme-staff {
+            --id-primary: #052054;
+        }
+
+        .id-card-wrapper.theme-volunteer {
+            --id-primary: #043e2b;
+        }
+
+        .id-card-wrapper.theme-director {
+            --id-primary: #5c0612;
+        }
+
+        .id-card-wrapper.theme-member {
+            --id-primary: #2e1154;
+        }
+
+        .id-card-wrapper.theme-security {
+            --id-primary: #1e293b;
         }
 
         @media (max-width: 380px) {
@@ -1127,26 +1187,29 @@ if ( ! empty( $query_member_id ) ) {
             letter-spacing: 0.5px;
             color: #ffffff;
             line-height: 1;
+            white-space: nowrap;
         }
         
         .id-org-motto {
             margin: 1.5px 0 0 0;
-            font-size: 5px;
+            font-size: 5.5px;
             font-weight: 500;
             letter-spacing: 0.5px;
             color: #E1A92A;
             text-transform: uppercase;
             line-height: 1;
+            white-space: nowrap;
         }
         
         .id-org-reg {
             margin: 1.5px 0 0 0;
-            font-size: 3.8px;
+            font-size: 5.2px;
             font-weight: 600;
             letter-spacing: 0.3px;
             color: #cbd5e0;
             text-transform: uppercase;
             line-height: 1;
+            white-space: nowrap;
         }
         
         .id-header-right {
@@ -1218,11 +1281,11 @@ if ( ! empty( $query_member_id ) ) {
         .id-photo-container {
             width: 78px;
             height: 84px;
-            border: 1px solid #052054;
+            border: 1px solid var(--id-primary);
             border-radius: 6px;
             overflow: hidden;
             background: #ffffff;
-            box-shadow: 0 3px 6px rgba(5, 32, 84, 0.08);
+            box-shadow: 0 3px 6px rgba(0,0,0,0.08);
         }
         
         .id-photo-container img {
@@ -1233,7 +1296,7 @@ if ( ! empty( $query_member_id ) ) {
         
         .id-badge-info-navy {
             width: 100%;
-            background: #052054;
+            background: var(--id-primary);
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -1308,7 +1371,7 @@ if ( ! empty( $query_member_id ) ) {
             font-family: 'Space Grotesk', sans-serif;
             font-size: 13.5px;
             font-weight: 800;
-            color: #052054;
+            color: var(--id-primary);
             text-transform: uppercase;
             letter-spacing: 0.1px;
             line-height: 1.15;
@@ -1349,7 +1412,7 @@ if ( ! empty( $query_member_id ) ) {
         .meta-icon-circle {
             width: 13px;
             height: 13px;
-            background: #052054;
+            background: var(--id-primary);
             color: #ffffff;
             border-radius: 50%;
             display: flex;
@@ -1374,7 +1437,7 @@ if ( ! empty( $query_member_id ) ) {
         .meta-row-label {
             font-size: 3.8px;
             font-weight: 800;
-            color: #052054;
+            color: var(--id-primary);
             text-transform: uppercase;
             letter-spacing: 0.3px;
             margin-bottom: 0.5px;
@@ -1407,14 +1470,14 @@ if ( ! empty( $query_member_id ) ) {
         }
         
         .signature-image-wrapper {
-            height: 26px;
+            height: 42px;
             display: flex;
             align-items: flex-end;
             justify-content: center;
         }
         
         .signature-image-wrapper img {
-            height: 26px;
+            height: 42px;
             width: auto;
             object-fit: contain;
             mix-blend-mode: multiply;
@@ -1422,7 +1485,7 @@ if ( ! empty( $query_member_id ) ) {
         
         .signature-underline {
             width: 100%;
-            border-bottom: 0.5px dashed #052054;
+            border-bottom: 0.5px dashed var(--id-primary);
             margin-top: 1px;
             margin-bottom: 2px;
         }
@@ -1430,7 +1493,7 @@ if ( ! empty( $query_member_id ) ) {
         .signature-title {
             font-size: 4px;
             font-weight: 800;
-            color: #052054;
+            color: var(--id-primary);
             letter-spacing: 0.2px;
             text-transform: uppercase;
             text-align: center;
@@ -1454,7 +1517,7 @@ if ( ! empty( $query_member_id ) ) {
         .validity-label {
             font-size: 4px;
             font-weight: 800;
-            color: #052054;
+            color: var(--id-primary);
             letter-spacing: 0.2px;
             text-transform: uppercase;
         }
@@ -1475,7 +1538,7 @@ if ( ! empty( $query_member_id ) ) {
         
         .qr-code-box {
             padding: 1.5px;
-            border: 0.75px solid #052054;
+            border: 0.75px solid var(--id-primary);
             border-radius: 3.5px;
             background: #ffffff;
             box-shadow: 0 1px 3px rgba(0,0,0,0.05);
@@ -1491,7 +1554,7 @@ if ( ! empty( $query_member_id ) ) {
             font-size: 3.5px;
             font-weight: 900;
             background: #E1A92A;
-            color: #052054;
+            color: var(--id-primary);
             padding: 1px 3.5px;
             border-radius: 2px;
             margin-top: 2px;
@@ -1503,7 +1566,7 @@ if ( ! empty( $query_member_id ) ) {
         
         .id-bottom-navy-banner {
             height: 15px;
-            background: #052054;
+            background: var(--id-primary);
             color: #E1A92A;
             display: flex;
             align-items: center;
@@ -1623,11 +1686,24 @@ if ( ! empty( $query_member_id ) ) {
                 
                 <!-- Scaler wrapper containing the horizontal luxury ID card replica -->
                 <div class="card-viewport-scaler">
-                    <div class="id-card-wrapper">
+                    <?php
+                    $mid_upper = strtoupper( $member->member_id );
+                    $theme_class = 'theme-staff';
+                    if ( strpos( $mid_upper, 'TKF-VOL' ) !== false ) {
+                        $theme_class = 'theme-volunteer';
+                    } elseif ( strpos( $mid_upper, 'TKF-DIR' ) !== false || strpos( $mid_upper, 'TKF-ADM' ) !== false || strpos( $mid_upper, 'TKF-TRU' ) !== false ) {
+                        $theme_class = 'theme-director';
+                    } elseif ( strpos( $mid_upper, 'TKF-MEM' ) !== false ) {
+                        $theme_class = 'theme-member';
+                    } elseif ( strpos( $mid_upper, 'TKF-SEC' ) !== false ) {
+                        $theme_class = 'theme-security';
+                    }
+                    ?>
+                    <div class="id-card-wrapper <?php echo esc_attr( $theme_class ); ?>">
                         <!-- Wavy background vector curves inside card -->
                         <svg class="id-header-curve-svg" viewBox="0 0 324 204" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg" style="position: absolute; top:0; left:0; width:324px; height:204px; z-index:1; pointer-events:none;">
                             <path d="M 0,0 L 324,0 L 324,45 C 270,51 210,31 150,43 C 90,55 50,42 0,46 Z" fill="#E1A92A" />
-                            <path d="M 0,0 L 324,0 L 324,43 C 270,48 210,28 150,40 C 90,52 50,40 0,43 Z" fill="#052054" />
+                            <path d="M 0,0 L 324,0 L 324,43 C 270,48 210,28 150,40 C 90,52 50,40 0,43 Z" fill="var(--id-primary)" />
                         </svg>
 
                         <!-- Watermark Overlay behind card profile details -->
