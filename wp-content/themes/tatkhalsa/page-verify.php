@@ -19,6 +19,7 @@ $sql = "CREATE TABLE IF NOT EXISTS $table_name (
     designation varchar(255) NOT NULL,
     photo_url text,
     expiry_date date DEFAULT NULL,
+    issue_date date DEFAULT NULL,
     gov_id varchar(100),
     email varchar(255),
     mobile varchar(50),
@@ -37,6 +38,9 @@ $columns = $wpdb->get_col("DESC {$table_name}", 0);
 if ( is_array($columns) ) {
     if ( ! in_array('expiry_date', $columns) ) {
         $wpdb->query("ALTER TABLE {$table_name} ADD COLUMN expiry_date date DEFAULT NULL");
+    }
+    if ( ! in_array('issue_date', $columns) ) {
+        $wpdb->query("ALTER TABLE {$table_name} ADD COLUMN issue_date date DEFAULT NULL");
     }
     if ( ! in_array('gov_id', $columns) ) {
         $wpdb->query("ALTER TABLE {$table_name} ADD COLUMN gov_id varchar(100)");
@@ -76,6 +80,7 @@ if ( $_SERVER['REQUEST_METHOD'] === 'POST' && isset( $_POST['tkf_verify_action']
         $designation = sanitize_text_field( wp_unslash( $_POST['designation'] ) );
         $photo_url   = esc_url_raw( wp_unslash( $_POST['photo_url'] ) );
         $expiry_date = sanitize_text_field( wp_unslash( $_POST['expiry_date'] ) );
+        $issue_date  = sanitize_text_field( wp_unslash( $_POST['issue_date'] ) );
         $gov_id      = sanitize_text_field( wp_unslash( $_POST['gov_id'] ) );
         $email       = sanitize_email( wp_unslash( $_POST['email'] ) );
         $mobile      = sanitize_text_field( wp_unslash( $_POST['mobile'] ) );
@@ -106,6 +111,11 @@ if ( $_SERVER['REQUEST_METHOD'] === 'POST' && isset( $_POST['tkf_verify_action']
                 $insert_format[] = '%s';
             }
 
+            if ( ! empty( $issue_date ) ) {
+                $insert_data['issue_date'] = $issue_date;
+                $insert_format[] = '%s';
+            }
+
             $inserted = $wpdb->insert(
                 $table_name,
                 $insert_data,
@@ -117,6 +127,60 @@ if ( $_SERVER['REQUEST_METHOD'] === 'POST' && isset( $_POST['tkf_verify_action']
                 $message_type = 'success';
             } else {
                 $message = 'Database error: Failed to add member. ' . $wpdb->last_error;
+                $message_type = 'error';
+            }
+        }
+    } elseif ( $action === 'edit_member' ) {
+        $id          = intval( $_POST['id'] );
+        $member_id   = sanitize_text_field( wp_unslash( $_POST['member_id'] ) );
+        $full_name   = sanitize_text_field( wp_unslash( $_POST['full_name'] ) );
+        $designation = sanitize_text_field( wp_unslash( $_POST['designation'] ) );
+        $photo_url   = esc_url_raw( wp_unslash( $_POST['photo_url'] ) );
+        $expiry_date = sanitize_text_field( wp_unslash( $_POST['expiry_date'] ) );
+        $issue_date  = sanitize_text_field( wp_unslash( $_POST['issue_date'] ) );
+        $gov_id      = sanitize_text_field( wp_unslash( $_POST['gov_id'] ) );
+        $email       = sanitize_email( wp_unslash( $_POST['email'] ) );
+        $mobile      = sanitize_text_field( wp_unslash( $_POST['mobile'] ) );
+        $blood_group = sanitize_text_field( wp_unslash( $_POST['blood_group'] ) );
+
+        // Protect against SQL Injection: Check if member ID exists securely on other records
+        $exists = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM $table_name WHERE member_id = %s AND id != %d", $member_id, $id ) );
+
+        if ( $exists ) {
+            $message = 'Member ID already exists.';
+            $message_type = 'error';
+        } else {
+            $update_data = array(
+                'member_id'   => $member_id,
+                'full_name'   => $full_name,
+                'designation' => $designation,
+                'photo_url'   => $photo_url,
+                'gov_id'      => $gov_id,
+                'email'       => $email,
+                'mobile'      => $mobile,
+                'blood_group' => $blood_group,
+            );
+            $update_format = array( '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s' );
+
+            $update_data['expiry_date'] = ! empty( $expiry_date ) ? $expiry_date : null;
+            $update_format[] = '%s';
+
+            $update_data['issue_date'] = ! empty( $issue_date ) ? $issue_date : null;
+            $update_format[] = '%s';
+
+            $updated = $wpdb->update(
+                $table_name,
+                $update_data,
+                array( 'id' => $id ),
+                $update_format,
+                array( '%d' )
+            );
+
+            if ( $updated !== false ) {
+                $message = 'Personnel record updated successfully.';
+                $message_type = 'success';
+            } else {
+                $message = 'Database error: Failed to update member. ' . $wpdb->last_error;
                 $message_type = 'error';
             }
         }
@@ -275,11 +339,21 @@ if ( ! empty( $download_id ) ) {
         }
         
         .id-org-motto {
-            margin: 2px 0 0 0;
+            margin: 1.5px 0 0 0;
             font-size: 5px;
             font-weight: 500;
             letter-spacing: 0.5px;
             color: #E1A92A;
+            text-transform: uppercase;
+            line-height: 1;
+        }
+        
+        .id-org-reg {
+            margin: 1.5px 0 0 0;
+            font-size: 3.8px;
+            font-weight: 600;
+            letter-spacing: 0.3px;
+            color: #cbd5e0;
             text-transform: uppercase;
             line-height: 1;
         }
@@ -355,11 +429,11 @@ if ( ! empty( $download_id ) ) {
         .id-photo-container {
             width: 78px;
             height: 84px;
-            border: 1px solid #0A327D;
+            border: 1px solid #052054;
             border-radius: 6px;
             overflow: hidden;
             background: #ffffff;
-            box-shadow: 0 3px 6px rgba(10, 50, 125, 0.08);
+            box-shadow: 0 3px 6px rgba(5, 32, 84, 0.08);
         }
         
         .id-photo-container img {
@@ -446,7 +520,7 @@ if ( ! empty( $download_id ) ) {
             font-family: 'Space Grotesk', sans-serif;
             font-size: 13.5px;
             font-weight: 800;
-            color: #0A327D;
+            color: #052054;
             text-transform: uppercase;
             letter-spacing: 0.1px;
             line-height: 1.15;
@@ -473,9 +547,9 @@ if ( ! empty( $download_id ) ) {
         .profile-meta-list {
             display: flex;
             flex-direction: column;
-            gap: 4px;
+            gap: 2px;
             flex: 1;
-            margin-top: 4px;
+            margin-top: 3px;
         }
         
         .meta-item-row {
@@ -487,7 +561,7 @@ if ( ! empty( $download_id ) ) {
         .meta-icon-circle {
             width: 13px;
             height: 13px;
-            background: #0A327D;
+            background: #052054;
             color: #ffffff;
             border-radius: 50%;
             display: flex;
@@ -512,7 +586,7 @@ if ( ! empty( $download_id ) ) {
         .meta-row-label {
             font-size: 3.8px;
             font-weight: 800;
-            color: #0A327D;
+            color: #052054;
             text-transform: uppercase;
             letter-spacing: 0.3px;
             margin-bottom: 0.5px;
@@ -561,7 +635,7 @@ if ( ! empty( $download_id ) ) {
         
         .signature-underline {
             width: 100%;
-            border-bottom: 0.5px dashed #0A327D;
+            border-bottom: 0.5px dashed #052054;
             margin-top: 1px;
             margin-bottom: 2px;
         }
@@ -569,7 +643,7 @@ if ( ! empty( $download_id ) ) {
         .signature-title {
             font-size: 4px;
             font-weight: 800;
-            color: #0A327D;
+            color: #052054;
             letter-spacing: 0.2px;
             text-transform: uppercase;
             text-align: center;
@@ -592,7 +666,7 @@ if ( ! empty( $download_id ) ) {
         .validity-label {
             font-size: 4px;
             font-weight: 800;
-            color: #0A327D;
+            color: #052054;
             letter-spacing: 0.2px;
             text-transform: uppercase;
         }
@@ -614,7 +688,7 @@ if ( ! empty( $download_id ) ) {
         
         .qr-code-box {
             padding: 1.5px;
-            border: 0.75px solid #0A327D;
+            border: 0.75px solid #052054;
             border-radius: 3.5px;
             background: #ffffff;
             box-shadow: 0 1px 3px rgba(0,0,0,0.05);
@@ -630,7 +704,7 @@ if ( ! empty( $download_id ) ) {
             font-size: 3.5px;
             font-weight: 900;
             background: #E1A92A;
-            color: #0A327D;
+            color: #052054;
             padding: 1px 3.5px;
             border-radius: 2px;
             margin-top: 2px;
@@ -643,7 +717,7 @@ if ( ! empty( $download_id ) ) {
         /* Bottom Navy Banner */
         .id-bottom-navy-banner {
             height: 15px;
-            background: #0A327D;
+            background: #052054;
             color: #E1A92A;
             display: flex;
             align-items: center;
@@ -663,7 +737,7 @@ if ( ! empty( $download_id ) ) {
             position: fixed;
             top: 20px;
             right: 20px;
-            background: linear-gradient(135deg, #0A327D, #051a44);
+            background: linear-gradient(135deg, #052054, #051a44);
             color: #E1A92A;
             border: none;
             padding: 10px 20px;
@@ -690,7 +764,7 @@ if ( ! empty( $download_id ) ) {
             <!-- Gold ribbon wavy background separator -->
             <path d="M 0,0 L 324,0 L 324,45 C 270,51 210,31 150,43 C 90,55 50,42 0,46 Z" fill="#E1A92A" />
             <!-- Deep Navy background curve header -->
-            <path d="M 0,0 L 324,0 L 324,43 C 270,48 210,28 150,40 C 90,52 50,40 0,43 Z" fill="#0A327D" />
+            <path d="M 0,0 L 324,0 L 324,43 C 270,48 210,28 150,40 C 90,52 50,40 0,43 Z" fill="#052054" />
         </svg>
 
         <!-- Watermark Medallion overlay behind info list -->
@@ -702,7 +776,8 @@ if ( ! empty( $download_id ) ) {
                 <img src="<?php echo esc_url($logo_url); ?>" class="id-header-logo" alt="Logo">
                 <div class="id-header-text">
                     <h3 class="id-org-title">TATKHALSA</h3>
-                    <p class="id-org-motto">Sewa Main Parma Dharam</p>
+                    <p class="id-org-motto">FOUNDATION</p>
+                    <p class="id-org-reg">REGISTRATION STATUS: SECTION 8 NGO</p>
                 </div>
             </div>
             <div class="id-header-right">
@@ -766,44 +841,59 @@ if ( ! empty( $download_id ) ) {
                 
                 <!-- Information rows -->
                 <div class="profile-meta-list">
-                    <!-- Row 1: DEPARTMENT -->
+                    <!-- Row 1: CONTACT -->
                     <div class="meta-item-row">
                         <div class="meta-icon-circle">
                             <svg class="meta-svg-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
-                                <circle cx="12" cy="7" r="4" />
+                                <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
                             </svg>
                         </div>
                         <div class="meta-content-wrapper">
-                            <span class="meta-row-label">DEPARTMENT / MISSION</span>
-                            <span class="meta-row-val">Social Service & Relief Operations</span>
+                            <span class="meta-row-label">CONTACT NO</span>
+                            <span class="meta-row-val"><?php echo esc_html( $member->mobile ?: 'N/A' ); ?></span>
                         </div>
                     </div>
                     
-                    <!-- Row 2: AUTHORITY -->
+                    <!-- Row 2: EMAIL -->
                     <div class="meta-item-row">
                         <div class="meta-icon-circle">
                             <svg class="meta-svg-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
-                                <path d="M9 11l2 2 4-4" />
+                                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
+                                <polyline points="22,6 12,13 2,6" />
                             </svg>
                         </div>
                         <div class="meta-content-wrapper">
-                            <span class="meta-row-label">VERIFICATION AUTHORITY</span>
-                            <span class="meta-row-val">Approved Volunteer Personnel of TKF</span>
+                            <span class="meta-row-label">EMAIL ADDRESS</span>
+                            <span class="meta-row-val"><?php echo esc_html( $member->email ?: 'N/A' ); ?></span>
                         </div>
                     </div>
                     
-                    <!-- Row 3: ACCESS & SECURITY -->
+                    <!-- Row 3: BLOOD GROUP -->
                     <div class="meta-item-row">
                         <div class="meta-icon-circle">
                             <svg class="meta-svg-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                                <path d="M22 12h-4l-3 9L9 3l-3 9H2" />
+                                <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
                             </svg>
                         </div>
                         <div class="meta-content-wrapper">
-                            <span class="meta-row-label">ACCESS LEVEL / EXTRA DATA</span>
-                            <span class="meta-row-val">Active Duty • Blood Group: <?php echo esc_html( $member->blood_group ?: 'N/A' ); ?></span>
+                            <span class="meta-row-label">BLOOD GROUP</span>
+                            <span class="meta-row-val"><?php echo esc_html( $member->blood_group ?: 'N/A' ); ?></span>
+                        </div>
+                    </div>
+
+                    <!-- Row 4: EXPIRY DATE -->
+                    <div class="meta-item-row">
+                        <div class="meta-icon-circle">
+                            <svg class="meta-svg-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
+                                <line x1="16" y1="2" x2="16" y2="6" />
+                                <line x1="8" y1="2" x2="8" y2="6" />
+                                <line x1="3" y1="10" x2="21" y2="10" />
+                            </svg>
+                        </div>
+                        <div class="meta-content-wrapper">
+                            <span class="meta-row-label">EXPIRY DATE</span>
+                            <span class="meta-row-val"><?php echo $member->expiry_date ? esc_html( date('d M Y', strtotime($member->expiry_date)) ) : 'N/A'; ?></span>
                         </div>
                     </div>
                 </div>
@@ -822,7 +912,7 @@ if ( ! empty( $download_id ) ) {
                     
                     <div class="validity-block">
                         <span class="validity-label">ISSUE DATE</span>
-                        <span class="validity-date"><?php echo $member->created_at ? esc_html( date('d M Y', strtotime($member->created_at)) ) : '16 JUN 2026'; ?></span>
+                        <span class="validity-date"><?php echo !empty($member->issue_date) ? esc_html( date('d M Y', strtotime($member->issue_date)) ) : ($member->created_at ? esc_html( date('d M Y', strtotime($member->created_at)) ) : '16 JUN 2026'); ?></span>
                     </div>
                     
                     <div class="qrcode-badge-container">
@@ -1022,11 +1112,21 @@ if ( ! empty( $query_member_id ) ) {
         }
         
         .id-org-motto {
-            margin: 2px 0 0 0;
+            margin: 1.5px 0 0 0;
             font-size: 5px;
             font-weight: 500;
             letter-spacing: 0.5px;
             color: #E1A92A;
+            text-transform: uppercase;
+            line-height: 1;
+        }
+        
+        .id-org-reg {
+            margin: 1.5px 0 0 0;
+            font-size: 3.8px;
+            font-weight: 600;
+            letter-spacing: 0.3px;
+            color: #cbd5e0;
             text-transform: uppercase;
             line-height: 1;
         }
@@ -1100,11 +1200,11 @@ if ( ! empty( $query_member_id ) ) {
         .id-photo-container {
             width: 78px;
             height: 84px;
-            border: 1px solid #0A327D;
+            border: 1px solid #052054;
             border-radius: 6px;
             overflow: hidden;
             background: #ffffff;
-            box-shadow: 0 3px 6px rgba(10, 50, 125, 0.08);
+            box-shadow: 0 3px 6px rgba(5, 32, 84, 0.08);
         }
         
         .id-photo-container img {
@@ -1115,7 +1215,7 @@ if ( ! empty( $query_member_id ) ) {
         
         .id-badge-info-navy {
             width: 100%;
-            background: #0A327D;
+            background: #052054;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -1190,7 +1290,7 @@ if ( ! empty( $query_member_id ) ) {
             font-family: 'Space Grotesk', sans-serif;
             font-size: 13.5px;
             font-weight: 800;
-            color: #0A327D;
+            color: #052054;
             text-transform: uppercase;
             letter-spacing: 0.1px;
             line-height: 1.15;
@@ -1216,9 +1316,9 @@ if ( ! empty( $query_member_id ) ) {
         .profile-meta-list {
             display: flex;
             flex-direction: column;
-            gap: 4px;
+            gap: 2px;
             flex: 1;
-            margin-top: 4px;
+            margin-top: 3px;
         }
         
         .meta-item-row {
@@ -1231,7 +1331,7 @@ if ( ! empty( $query_member_id ) ) {
         .meta-icon-circle {
             width: 13px;
             height: 13px;
-            background: #0A327D;
+            background: #052054;
             color: #ffffff;
             border-radius: 50%;
             display: flex;
@@ -1256,7 +1356,7 @@ if ( ! empty( $query_member_id ) ) {
         .meta-row-label {
             font-size: 3.8px;
             font-weight: 800;
-            color: #0A327D;
+            color: #052054;
             text-transform: uppercase;
             letter-spacing: 0.3px;
             margin-bottom: 0.5px;
@@ -1304,7 +1404,7 @@ if ( ! empty( $query_member_id ) ) {
         
         .signature-underline {
             width: 100%;
-            border-bottom: 0.5px dashed #0A327D;
+            border-bottom: 0.5px dashed #052054;
             margin-top: 1px;
             margin-bottom: 2px;
         }
@@ -1312,7 +1412,7 @@ if ( ! empty( $query_member_id ) ) {
         .signature-title {
             font-size: 4px;
             font-weight: 800;
-            color: #0A327D;
+            color: #052054;
             letter-spacing: 0.2px;
             text-transform: uppercase;
             text-align: center;
@@ -1336,7 +1436,7 @@ if ( ! empty( $query_member_id ) ) {
         .validity-label {
             font-size: 4px;
             font-weight: 800;
-            color: #0A327D;
+            color: #052054;
             letter-spacing: 0.2px;
             text-transform: uppercase;
         }
@@ -1509,7 +1609,7 @@ if ( ! empty( $query_member_id ) ) {
                         <!-- Wavy background vector curves inside card -->
                         <svg class="id-header-curve-svg" viewBox="0 0 324 204" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg" style="position: absolute; top:0; left:0; width:324px; height:204px; z-index:1; pointer-events:none;">
                             <path d="M 0,0 L 324,0 L 324,45 C 270,51 210,31 150,43 C 90,55 50,42 0,46 Z" fill="#E1A92A" />
-                            <path d="M 0,0 L 324,0 L 324,43 C 270,48 210,28 150,40 C 90,52 50,40 0,43 Z" fill="#0A327D" />
+                            <path d="M 0,0 L 324,0 L 324,43 C 270,48 210,28 150,40 C 90,52 50,40 0,43 Z" fill="#052054" />
                         </svg>
 
                         <!-- Watermark Overlay behind card profile details -->
@@ -1521,7 +1621,8 @@ if ( ! empty( $query_member_id ) ) {
                                 <img src="<?php echo esc_url($logo_url); ?>" class="id-header-logo" alt="Logo">
                                 <div class="id-header-text">
                                     <h3 class="id-org-title">TATKHALSA</h3>
-                                    <p class="id-org-motto">Sewa Main Parma Dharam</p>
+                                    <p class="id-org-motto">FOUNDATION</p>
+                                    <p class="id-org-reg">REGISTRATION STATUS: SECTION 8 NGO</p>
                                 </div>
                             </div>
                             <div class="id-header-right">
@@ -1585,44 +1686,59 @@ if ( ! empty( $query_member_id ) ) {
                                 
                                 <!-- Meta Rows list -->
                                 <div class="profile-meta-list">
-                                    <!-- Row 1 -->
+                                    <!-- Row 1: CONTACT -->
                                     <div class="meta-item-row">
                                         <div class="meta-icon-circle">
                                             <svg class="meta-svg-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                                                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
-                                                <circle cx="12" cy="7" r="4" />
+                                                <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
                                             </svg>
                                         </div>
                                         <div class="meta-content-wrapper">
-                                            <span class="meta-row-label">DEPARTMENT / MISSION</span>
-                                            <span class="meta-row-val">Social Service & Relief Operations</span>
+                                            <span class="meta-row-label">CONTACT NO</span>
+                                            <span class="meta-row-val"><?php echo esc_html( $member->mobile ?: 'N/A' ); ?></span>
                                         </div>
                                     </div>
                                     
-                                    <!-- Row 2 -->
+                                    <!-- Row 2: EMAIL -->
                                     <div class="meta-item-row">
                                         <div class="meta-icon-circle">
                                             <svg class="meta-svg-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                                                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
-                                                <path d="M9 11l2 2 4-4" />
+                                                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
+                                                <polyline points="22,6 12,13 2,6" />
                                             </svg>
                                         </div>
                                         <div class="meta-content-wrapper">
-                                            <span class="meta-row-label">VERIFICATION AUTHORITY</span>
-                                            <span class="meta-row-val">Approved Volunteer Personnel of TKF</span>
+                                            <span class="meta-row-label">EMAIL ADDRESS</span>
+                                            <span class="meta-row-val"><?php echo esc_html( $member->email ?: 'N/A' ); ?></span>
                                         </div>
                                     </div>
                                     
-                                    <!-- Row 3 -->
+                                    <!-- Row 3: BLOOD GROUP -->
                                     <div class="meta-item-row">
                                         <div class="meta-icon-circle">
                                             <svg class="meta-svg-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                                                <path d="M22 12h-4l-3 9L9 3l-3 9H2" />
+                                                <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
                                             </svg>
                                         </div>
                                         <div class="meta-content-wrapper">
-                                            <span class="meta-row-label">ACCESS LEVEL / EXTRA DATA</span>
-                                            <span class="meta-row-val">Active Duty • Blood Group: <?php echo esc_html( $member->blood_group ?: 'N/A' ); ?></span>
+                                            <span class="meta-row-label">BLOOD GROUP</span>
+                                            <span class="meta-row-val"><?php echo esc_html( $member->blood_group ?: 'N/A' ); ?></span>
+                                        </div>
+                                    </div>
+
+                                    <!-- Row 4: EXPIRY DATE -->
+                                    <div class="meta-item-row">
+                                        <div class="meta-icon-circle">
+                                            <svg class="meta-svg-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                                <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
+                                                <line x1="16" y1="2" x2="16" y2="6" />
+                                                <line x1="8" y1="2" x2="8" y2="6" />
+                                                <line x1="3" y1="10" x2="21" y2="10" />
+                                            </svg>
+                                        </div>
+                                        <div class="meta-content-wrapper">
+                                            <span class="meta-row-label">EXPIRY DATE</span>
+                                            <span class="meta-row-val"><?php echo $member->expiry_date ? esc_html( date('d M Y', strtotime($member->expiry_date)) ) : 'N/A'; ?></span>
                                         </div>
                                     </div>
                                 </div>
@@ -1641,7 +1757,7 @@ if ( ! empty( $query_member_id ) ) {
                                     
                                     <div class="validity-block">
                                         <span class="validity-label">ISSUE DATE</span>
-                                        <span class="validity-date"><?php echo $member->created_at ? esc_html( date('d M Y', strtotime($member->created_at)) ) : '16 JUN 2026'; ?></span>
+                                        <span class="validity-date"><?php echo !empty($member->issue_date) ? esc_html( date('d M Y', strtotime($member->issue_date)) ) : ($member->created_at ? esc_html( date('d M Y', strtotime($member->created_at)) ) : '16 JUN 2026'); ?></span>
                                     </div>
                                     
                                     <?php 
@@ -1685,6 +1801,12 @@ if ( ! empty( $query_member_id ) ) {
                             <span class="post-card-label">Secure Member ID</span>
                             <span class="post-card-val"><?php echo esc_html( $member->member_id ); ?></span>
                         </div>
+                        <?php if ( ! empty( $member->issue_date ) ) : ?>
+                            <div class="post-card-row">
+                                <span class="post-card-label">Card Issue Date</span>
+                                <span class="post-card-val"><?php echo esc_html( date('d M Y', strtotime($member->issue_date)) ); ?></span>
+                            </div>
+                        <?php endif; ?>
                         <?php if ( ! empty( $member->blood_group ) ) : ?>
                             <div class="post-card-row">
                                 <span class="post-card-label">Medical Blood Group</span>
@@ -1754,6 +1876,13 @@ if ( ! empty( $query_member_id ) ) {
 
     // Fetch all members to populate table directory
     $members = $wpdb->get_results( "SELECT * FROM $table_name ORDER BY created_at DESC" );
+
+    // Fetch member to edit if edit_id is set
+    $edit_id = isset( $_GET['edit_id'] ) ? intval( $_GET['edit_id'] ) : 0;
+    $edit_member = null;
+    if ( $edit_id ) {
+        $edit_member = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM $table_name WHERE id = %d", $edit_id ) );
+    }
     ?>
     <style>
         .admin-dashboard {
@@ -1764,7 +1893,7 @@ if ( ! empty( $query_member_id ) ) {
             min-height: 70vh;
         }
         .admin-dashboard h1 {
-            color: #0A327D;
+            color: #052054;
             border-bottom: 2px solid #E1A92A;
             padding-bottom: 15px;
             margin-bottom: 30px;
@@ -1815,10 +1944,10 @@ if ( ! empty( $query_member_id ) ) {
         }
         .form-group input:focus {
             outline: none;
-            border-color: #0A327D;
+            border-color: #052054;
         }
         .admin-btn {
-            background: #0A327D;
+            background: #052054;
             color: #ffffff;
             padding: 12px 24px;
             border: none;
@@ -1830,7 +1959,7 @@ if ( ! empty( $query_member_id ) ) {
             margin-top: 10px;
         }
         .admin-btn:hover {
-            background: #061e4d;
+            background: #031333;
         }
         .admin-table-container {
             overflow-x: auto;
@@ -1929,63 +2058,76 @@ if ( ! empty( $query_member_id ) ) {
         <?php endif; ?>
 
         <div class="admin-form-container">
-            <h3>Register Authentic Personnel</h3>
+            <h3><?php echo $edit_member ? 'Edit Secure Identity: ' . esc_html($edit_member->member_id) : 'Register Authentic Personnel'; ?></h3>
             <!-- Clean input-sanitized HTML Form -->
             <form method="POST" action="">
                 <?php wp_nonce_field( 'tkf_verify_admin_action', 'tkf_verify_nonce' ); ?>
-                <input type="hidden" name="tkf_verify_action" value="add_member">
+                <input type="hidden" name="tkf_verify_action" value="<?php echo $edit_member ? 'edit_member' : 'add_member'; ?>">
+                <?php if ( $edit_member ) : ?>
+                    <input type="hidden" name="id" value="<?php echo esc_attr( $edit_member->id ); ?>">
+                <?php endif; ?>
                 
                 <div class="form-row">
                     <div class="form-group">
                         <label for="member_id">Unique Member ID *</label>
-                        <input type="text" id="member_id" name="member_id" required placeholder="e.g. TKF-VOL-2601">
+                        <input type="text" id="member_id" name="member_id" required value="<?php echo $edit_member ? esc_attr( $edit_member->member_id ) : ''; ?>" placeholder="e.g. TKF-VOL-2601">
                     </div>
                     <div class="form-group" style="flex: 2;">
                         <label for="full_name">Legal Full Name *</label>
-                        <input type="text" id="full_name" name="full_name" required placeholder="e.g. Gurpreet Singh">
+                        <input type="text" id="full_name" name="full_name" required value="<?php echo $edit_member ? esc_attr( $edit_member->full_name ) : ''; ?>" placeholder="e.g. Gurpreet Singh">
                     </div>
                 </div>
                 
                 <div class="form-row">
                     <div class="form-group">
                         <label for="designation">Department Designation *</label>
-                        <input type="text" id="designation" name="designation" required placeholder="e.g. Field Medical Coordinator">
+                        <input type="text" id="designation" name="designation" required value="<?php echo $edit_member ? esc_attr( $edit_member->designation ) : ''; ?>" placeholder="e.g. Field Medical Coordinator">
                     </div>
                     <div class="form-group">
                         <label for="photo_url">Secure Portrait URL (Optional)</label>
-                        <input type="url" id="photo_url" name="photo_url" placeholder="https://tatkhalsa.in/secure/portrait.jpg">
+                        <input type="url" id="photo_url" name="photo_url" value="<?php echo $edit_member ? esc_url( $edit_member->photo_url ) : ''; ?>" placeholder="https://tatkhalsa.in/secure/portrait.jpg">
                         <small style="color: #666; font-size: 0.85em; display: block; margin-top: 5px;">Tip: Upload the photo to your WordPress Media Library (Dashboard > Media > Add New), click on the image, copy the "File URL", and paste it here.</small>
                     </div>
                 </div>
 
                 <div class="form-row">
                     <div class="form-group">
-                        <label for="expiry_date">Expiry Date</label>
-                        <input type="date" id="expiry_date" name="expiry_date">
+                        <label for="issue_date">Issue Date</label>
+                        <input type="date" id="issue_date" name="issue_date" value="<?php echo $edit_member && $edit_member->issue_date ? esc_attr( $edit_member->issue_date ) : ''; ?>">
                     </div>
                     <div class="form-group">
+                        <label for="expiry_date">Expiry Date</label>
+                        <input type="date" id="expiry_date" name="expiry_date" value="<?php echo $edit_member && $edit_member->expiry_date ? esc_attr( $edit_member->expiry_date ) : ''; ?>">
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
                         <label for="gov_id">Government ID Number</label>
-                        <input type="text" id="gov_id" name="gov_id" placeholder="e.g. Aadhaar or PAN">
+                        <input type="text" id="gov_id" name="gov_id" value="<?php echo $edit_member ? esc_attr( $edit_member->gov_id ) : ''; ?>" placeholder="e.g. Aadhaar or PAN">
                     </div>
                     <div class="form-group">
                         <label for="blood_group">Blood Group</label>
-                        <input type="text" id="blood_group" name="blood_group" placeholder="e.g. B+">
+                        <input type="text" id="blood_group" name="blood_group" value="<?php echo $edit_member ? esc_attr( $edit_member->blood_group ) : ''; ?>" placeholder="e.g. B+">
                     </div>
                 </div>
                 
                 <div class="form-row">
                     <div class="form-group">
                         <label for="email">Email Address</label>
-                        <input type="email" id="email" name="email" placeholder="e.g. info@domain.com">
+                        <input type="email" id="email" name="email" value="<?php echo $edit_member ? esc_attr( $edit_member->email ) : ''; ?>" placeholder="e.g. info@domain.com">
                     </div>
                     <div class="form-group">
                         <label for="mobile">Mobile Number</label>
-                        <input type="text" id="mobile" name="mobile" placeholder="e.g. +91 9876543210">
+                        <input type="text" id="mobile" name="mobile" value="<?php echo $edit_member ? esc_attr( $edit_member->mobile ) : ''; ?>" placeholder="e.g. +91 9876543210">
                     </div>
                 </div>
 
-                <div class="form-group">
-                    <button type="submit" class="admin-btn">Onboard Secure Identity</button>
+                <div class="form-group" style="display: flex; align-items: center;">
+                    <button type="submit" class="admin-btn"><?php echo $edit_member ? 'Update Secure Identity' : 'Onboard Secure Identity'; ?></button>
+                    <?php if ( $edit_member ) : ?>
+                        <a href="<?php echo esc_url( remove_query_arg('edit_id') ); ?>" class="action-btn" style="background: #6c757d; margin-left: 10px; display: inline-flex; align-items: center; justify-content: center; height: 42px; padding: 0 20px; border-radius: 6px; text-decoration: none; font-weight: 700; color: #fff; margin-top: 10px;">Cancel Edit</a>
+                    <?php endif; ?>
                 </div>
             </form>
         </div>
@@ -2017,6 +2159,9 @@ if ( ! empty( $query_member_id ) ) {
                                 </td>
                                 <td>
                                     <div class="action-td-flex">
+                                        <!-- Edit Personnel Record -->
+                                        <a href="<?php echo esc_url( add_query_arg( 'edit_id', $mem->id ) ); ?>" class="action-btn" style="background: #007bff; display: flex; align-items: center; justify-content: center;" title="Edit Personnel Record">Edit</a>
+
                                         <!-- Update Trigger Nonce Form -->
                                         <form method="POST" action="" style="margin:0;">
                                             <?php wp_nonce_field( 'tkf_verify_admin_action', 'tkf_verify_nonce' ); ?>
