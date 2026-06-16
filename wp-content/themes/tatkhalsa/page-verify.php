@@ -188,164 +188,197 @@ if ( ! empty( $download_id ) ) {
             box-shadow: 0 10px 30px rgba(0,0,0,0.15);
             position: relative;
             overflow: hidden;
-            border: 3px solid #0A327D;
+            border: 2px solid #E1A92A;
             box-sizing: border-box;
             print-color-adjust: exact;
             -webkit-print-color-adjust: exact;
             display: flex;
-            flex-direction: row;
+            flex-direction: column;
+        }
+        .id-card-wrapper::after {
+            content: '';
+            position: absolute;
+            bottom: -30px; right: -30px;
+            width: 100px; height: 100px;
+            background: #0A327D;
+            opacity: 0.05;
+            border-radius: 50%;
+            z-index: 1;
         }
         .id-card-wrapper::before {
             content: '';
             position: absolute;
-            top: 2px; left: 2px; right: 2px; bottom: 2px;
-            border: 2px solid #E1A92A;
-            border-radius: 4px;
-            pointer-events: none;
-            z-index: 5;
+            bottom: 30px; right: -50px;
+            width: 80px; height: 80px;
+            background: #E1A92A;
+            opacity: 0.05;
+            border-radius: 50%;
+            z-index: 1;
         }
         @media print {
             body { background: #fff; }
-            .id-card-wrapper { box-shadow: none; }
+            .id-card-wrapper { box-shadow: none; border: 2px solid #0A327D; }
             .no-print { display: none; }
         }
-        /* Design matches Tatkhalsa theme */
-        .id-left {
-            width: 3.3cm;
-            background: #0A327D;
+        
+        .id-top-bar {
+            background: linear-gradient(135deg, #0A327D 0%, #154cbd 100%);
             color: #E1A92A;
-            text-align: center;
-            padding: 10px 5px;
-            border-right: 3px solid #E1A92A;
+            height: 1.2cm;
             display: flex;
-            flex-direction: column;
             align-items: center;
-            justify-content: center;
+            padding: 0 15px;
+            border-bottom: 3px solid #E1A92A;
             position: relative;
             z-index: 10;
         }
-        .id-left img.logo {
-            height: 30px;
+        .id-top-bar img.logo {
+            height: 25px;
             object-fit: contain;
-            margin-bottom: 5px;
+            margin-right: 8px;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
         }
-        .id-left h3 {
-            margin: 0 0 10px;
-            font-size: 8px;
+        .id-top-bar h3 {
+            margin: 0;
+            font-size: 11px;
             text-transform: uppercase;
-            letter-spacing: 0.5px;
-            color: #E1A92A;
+            letter-spacing: 0.8px;
+            color: #ffffff;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.4);
+            font-weight: 800;
         }
-        .id-photo {
-            width: 70px;
-            height: 70px;
-            object-fit: cover;
-            border-radius: 8px;
-            border: 2px solid #E1A92A;
-            background: #fff;
-            margin-bottom: 5px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        
+        .watermark {
+            position: absolute;
+            top: 55%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 120px;
+            opacity: 0.06;
+            z-index: 2;
+            pointer-events: none;
+            filter: grayscale(100%);
         }
-        .id-right {
-            padding: 12px 15px;
+        
+        .card-content {
+            display: flex;
             flex: 1;
             position: relative;
+            z-index: 10;
+            padding: 10px;
+        }
+        
+        .id-left-col {
+            width: 2.2cm;
             display: flex;
             flex-direction: column;
-            justify-content: flex-start;
+            align-items: center;
         }
-        .id-name {
-            font-size: 15px;
-            font-weight: 800;
-            color: #0A327D;
-            margin: 0 0 2px;
-            text-transform: uppercase;
-            line-height: 1.1;
+        .id-photo-wrap {
+            position: relative;
+            z-index: 10;
         }
-        .id-role {
-            font-size: 9px;
-            color: #E1A92A;
-            font-weight: 800;
-            text-transform: uppercase;
-            margin: 0 0 8px;
+        .id-photo {
+            width: 2.0cm;
+            height: 2.3cm;
+            object-fit: cover;
+            border-radius: 6px;
+            border: 2px solid #E1A92A;
+            background: #fff;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.15);
         }
-        .id-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            text-align: left;
-            font-size: 8px;
-            color: #333;
-            row-gap: 4px;
-            column-gap: 10px;
-            margin-bottom: 10px;
-        }
-        .id-grid strong {
-            color: #0A327D;
-            font-size: 7px;
-        }
-        .id-footer {
-            position: absolute;
-            bottom: 10px;
-            left: 15px;
-            right: 15px;
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-end;
-        }
-        .id-sign {
+        .id-qr {
+            margin-top: auto;
             text-align: center;
-            margin-bottom: 2px;
-        }
-        .id-sign img {
-            height: 18px;
-            object-fit: contain;
-            margin-bottom: 2px;
-        }
-        .id-sign .line {
-            width: 60px;
-            border-bottom: 1px solid #0A327D;
-            margin-bottom: 2px;
-        }
-        .id-sign span {
-            font-size: 6px;
-            color: #0A327D;
-            font-weight: bold;
-            text-transform: uppercase;
         }
         .id-qr img {
             width: 45px;
             height: 45px;
-            border: 2px solid #E1A92A;
+            border: 1.5px solid #0A327D;
             padding: 2px;
             background: #fff;
             border-radius: 4px;
         }
-        .watermark {
-            position: absolute;
-            top: 50%;
-            left: 65%;
-            transform: translate(-50%, -50%);
-            width: 140px;
-            opacity: 0.08;
-            z-index: 0;
-            pointer-events: none;
-            filter: grayscale(100%);
-        }
-        .card-content {
-            position: relative;
-            z-index: 10;
+        
+        .id-right-col {
+            flex: 1;
+            padding-left: 10px;
             display: flex;
-            width: 100%;
-            height: 100%;
+            flex-direction: column;
         }
+        .id-name {
+            font-size: 14px;
+            font-weight: 900;
+            color: #0A327D;
+            margin: 0 0 2px;
+            text-transform: uppercase;
+            line-height: 1.1;
+            letter-spacing: 0.3px;
+        }
+        .id-role {
+            font-size: 8px;
+            color: #d49514;
+            font-weight: 800;
+            text-transform: uppercase;
+            margin: 0 0 8px;
+            line-height: 1.1;
+        }
+        
+        .id-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            font-size: 7px;
+            color: #333;
+            row-gap: 3px;
+            column-gap: 5px;
+            margin-bottom: auto;
+        }
+        .id-grid .full-width {
+            grid-column: 1 / -1;
+        }
+        .id-grid strong {
+            color: #0A327D;
+            font-size: 6.5px;
+            display: inline-block;
+            margin-bottom: 1px;
+        }
+        
+        .id-footer {
+            display: flex;
+            justify-content: flex-end;
+            align-items: flex-end;
+            margin-top: 5px;
+        }
+        .id-sign {
+            text-align: center;
+        }
+        .id-sign img {
+            height: 18px;
+            object-fit: contain;
+            margin-bottom: 1px;
+        }
+        .id-sign .line {
+            width: 55px;
+            border-bottom: 1px dashed #0A327D;
+            margin-bottom: 2px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .id-sign span {
+            font-size: 5.5px;
+            color: #0A327D;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+        
         .print-btn {
             position: fixed;
             top: 20px;
             right: 20px;
-            background: #0A327D;
+            background: linear-gradient(135deg, #0A327D, #1345a3);
             color: #E1A92A;
             border: none;
-            padding: 12px 24px;
+            padding: 10px 20px;
             border-radius: 6px;
             font-weight: 800;
             cursor: pointer;
@@ -353,10 +386,11 @@ if ( ! empty( $download_id ) ) {
             text-transform: uppercase;
             letter-spacing: 1px;
             transition: all 0.2s;
+            z-index: 100;
         }
         .print-btn:hover {
-            background: #061e4d;
             transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.3);
         }
     </style>
 </head>
@@ -364,27 +398,36 @@ if ( ! empty( $download_id ) ) {
     <button class="no-print print-btn" onclick="window.print()">Print ID Card</button>
     <div class="id-card-wrapper">
         <img src="<?php echo esc_url($logo_url); ?>" class="watermark" alt="">
+        
+        <div class="id-top-bar">
+            <img src="<?php echo esc_url($logo_url); ?>" class="logo" alt="Tatkhalsa Logo">
+            <h3>Tatkhalsa Foundation</h3>
+        </div>
+        
         <div class="card-content">
-            <div class="id-left">
-                <img src="<?php echo esc_url($logo_url); ?>" class="logo" alt="Tatkhalsa Logo">
-                <h3>Tatkhalsa Foundation</h3>
-                
-                <?php if ( ! empty( $member->photo_url ) ) : ?>
-                    <img src="<?php echo esc_url( $member->photo_url ); ?>" alt="Photo" class="id-photo">
-                <?php else: ?>
-                    <img src="<?php echo esc_url($logo_url); ?>" alt="Tatkhalsa Foundation" class="id-photo" style="object-fit: contain; padding: 10px; background:#f0f0f0;">
-                <?php endif; ?>
+            <div class="id-left-col">
+                <div class="id-photo-wrap">
+                    <?php if ( ! empty( $member->photo_url ) ) : ?>
+                        <img src="<?php echo esc_url( $member->photo_url ); ?>" alt="Photo" class="id-photo">
+                    <?php else: ?>
+                        <img src="<?php echo esc_url($logo_url); ?>" alt="Tatkhalsa Foundation" class="id-photo" style="object-fit: contain; padding: 10px; background:#f0f0f0;">
+                    <?php endif; ?>
+                </div>
+                <div class="id-qr">
+                    <img src="<?php echo esc_url($qr_code_url); ?>" alt="QR Code to Verify">
+                </div>
             </div>
             
-            <div class="id-right">
+            <div class="id-right-col">
                 <p class="id-name"><?php echo esc_html( $member->full_name ); ?></p>
                 <p class="id-role"><?php echo esc_html( $member->designation ); ?></p>
                 
                 <div class="id-grid">
-                    <div><strong>MEMBER ID:</strong><br><?php echo esc_html( $member->member_id ); ?></div>
+                    <div><strong>ID NO:</strong><br><?php echo esc_html( $member->member_id ); ?></div>
                     <div><strong>BLOOD:</strong><br><?php echo esc_html( $member->blood_group ?: 'N/A' ); ?></div>
-                    <div><strong>VALID TILL:</strong><br><?php echo $member->expiry_date ? esc_html( date('d M Y', strtotime($member->expiry_date)) ) : 'N/A'; ?></div>
                     <div><strong>CONTACT:</strong><br><?php echo esc_html( $member->mobile ?: 'N/A' ); ?></div>
+                    <div><strong>VALID:</strong><br><?php echo $member->expiry_date ? esc_html( date('d M Y', strtotime($member->expiry_date)) ) : 'N/A'; ?></div>
+                    <div class="full-width"><strong>EMAIL:</strong><br><?php echo esc_html( $member->email ?: 'N/A' ); ?></div>
                 </div>
                 
                 <div class="id-footer">
@@ -392,9 +435,6 @@ if ( ! empty( $download_id ) ) {
                         <img src="https://tatkhalsa.in/wp-content/uploads/2026/06/aba819ad-1c8e-4d21-9849-ef03729a0cc5_removalai_preview-e1781624417937.png" alt="Signature">
                         <div class="line"></div>
                         <span>Auth. Signatory</span>
-                    </div>
-                    <div class="id-qr">
-                        <img src="<?php echo esc_url($qr_code_url); ?>" alt="QR Code to Verify">
                     </div>
                 </div>
             </div>
