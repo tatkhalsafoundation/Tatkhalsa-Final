@@ -37,6 +37,7 @@ $sql = "CREATE TABLE IF NOT EXISTS $table_name (
     gov_id varchar(100),
     email varchar(255),
     mobile varchar(50),
+    alt_mobile varchar(50),
     blood_group varchar(10),
     status varchar(50) DEFAULT 'Active' NOT NULL,
     created_at timestamp DEFAULT CURRENT_TIMESTAMP NOT NULL,
@@ -64,6 +65,9 @@ if ( is_array($columns) ) {
     }
     if ( ! in_array('mobile', $columns) ) {
         $wpdb->query("ALTER TABLE {$table_name} ADD COLUMN mobile varchar(50)");
+    }
+    if ( ! in_array('alt_mobile', $columns) ) {
+        $wpdb->query("ALTER TABLE {$table_name} ADD COLUMN alt_mobile varchar(50)");
     }
     if ( ! in_array('blood_group', $columns) ) {
         $wpdb->query("ALTER TABLE {$table_name} ADD COLUMN blood_group varchar(10)");
@@ -100,6 +104,7 @@ if ( $_SERVER['REQUEST_METHOD'] === 'POST' && isset( $_POST['tkf_verify_action']
         $gov_id      = sanitize_text_field( wp_unslash( $_POST['gov_id'] ) );
         $email       = sanitize_email( wp_unslash( $_POST['email'] ) );
         $mobile      = sanitize_text_field( wp_unslash( $_POST['mobile'] ) );
+        $alt_mobile  = sanitize_text_field( wp_unslash( $_POST['alt_mobile'] ) );
         $blood_group = sanitize_text_field( wp_unslash( $_POST['blood_group'] ) );
 
         // Protect against SQL Injection: Check if member ID exists securely
@@ -117,10 +122,11 @@ if ( $_SERVER['REQUEST_METHOD'] === 'POST' && isset( $_POST['tkf_verify_action']
                 'gov_id'      => $gov_id,
                 'email'       => $email,
                 'mobile'      => $mobile,
+                'alt_mobile'  => $alt_mobile,
                 'blood_group' => $blood_group,
                 'status'      => 'Active'
             );
-            $insert_format = array( '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s' );
+            $insert_format = array( '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s' );
 
             if ( ! empty( $expiry_date ) ) {
                 $insert_data['expiry_date'] = $expiry_date;
@@ -159,6 +165,7 @@ if ( $_SERVER['REQUEST_METHOD'] === 'POST' && isset( $_POST['tkf_verify_action']
         $gov_id      = sanitize_text_field( wp_unslash( $_POST['gov_id'] ) );
         $email       = sanitize_email( wp_unslash( $_POST['email'] ) );
         $mobile      = sanitize_text_field( wp_unslash( $_POST['mobile'] ) );
+        $alt_mobile  = sanitize_text_field( wp_unslash( $_POST['alt_mobile'] ) );
         $blood_group = sanitize_text_field( wp_unslash( $_POST['blood_group'] ) );
 
         // Protect against SQL Injection: Check if member ID exists securely on other records
@@ -176,9 +183,10 @@ if ( $_SERVER['REQUEST_METHOD'] === 'POST' && isset( $_POST['tkf_verify_action']
                 'gov_id'      => $gov_id,
                 'email'       => $email,
                 'mobile'      => $mobile,
+                'alt_mobile'  => $alt_mobile,
                 'blood_group' => $blood_group,
             );
-            $update_format = array( '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s' );
+            $update_format = array( '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s' );
 
             $update_data['expiry_date'] = ! empty( $expiry_date ) ? $expiry_date : null;
             $update_format[] = '%s';
@@ -299,10 +307,11 @@ if ( $_SERVER['REQUEST_METHOD'] === 'POST' && isset( $_POST['tkf_verify_action']
                                 </div>
                             </div>
                             
-                            <p>To view your official digitized smart ID card, access secure bank remittance details, or self-print your verification pass, tap the button below:</p>
+                            <p>To view your official digitized smart ID card, access secure bank remittance details, or self-print your verification pass, tap the buttons below:</p>
                             
                             <div class="btn-wrap">
-                                <a href="' . $verify_url . '" class="btn-verify">View & Validate Smart ID Card</a>
+                                <a href="' . $verify_url . '" class="btn-verify" style="margin: 5px; display: inline-block;">View Verification Page</a>
+                                <a href="' . esc_url( home_url('/verify/?download_id=' . $member->member_id . '&public=1') ) . '" class="btn-verify" style="margin: 5px; display: inline-block; background-color: #052054; color: #ffffff !important; border: 1px solid #031538; box-shadow: 0 4px 10px rgba(5,32,84,0.15);">Print / Download ID Card</a>
                             </div>
                             
                             <p style="font-size: 13px; color: #718096; margin-top: 20px;">If scanning a physical barcoded tag or QR sticker on your card, it will land directly back to this same verified directory status profile for official confirmation.</p>
@@ -339,9 +348,10 @@ if ( $_SERVER['REQUEST_METHOD'] === 'POST' && isset( $_POST['tkf_verify_action']
 
     // Intercept routing logic for printing ID Card
 $download_id = isset( $_GET['download_id'] ) ? sanitize_text_field( wp_unslash( $_GET['download_id'] ) ) : '';
+$is_public_print = isset( $_GET['public'] ) && $_GET['public'] === '1';
 if ( ! empty( $download_id ) ) {
     // Current user can check
-    if ( ! current_user_can( 'manage_options' ) ) {
+    if ( ! current_user_can( 'manage_options' ) && ! $is_public_print ) {
         wp_die( 'Unauthorized Access. Administrator rights are required to print ID cards.' );
     }
 
@@ -490,7 +500,7 @@ if ( ! empty( $download_id ) ) {
         }
         
         .id-header-logo {
-            height: 25px;
+            height: 34px;
             width: auto;
             object-fit: contain;
             filter: drop-shadow(0 1.5px 3px rgba(0,0,0,0.35));
@@ -1044,6 +1054,21 @@ if ( ! empty( $download_id ) ) {
                             <span class="meta-row-val"><?php echo esc_html( $member->mobile ?: 'N/A' ); ?></span>
                         </div>
                     </div>
+
+                    <?php if ( ! empty( $member->alt_mobile ) ) : ?>
+                    <!-- Alt Contact row -->
+                    <div class="meta-item-row">
+                        <div class="meta-icon-circle">
+                            <svg class="meta-svg-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
+                            </svg>
+                        </div>
+                        <div class="meta-content-wrapper">
+                            <span class="meta-row-label">ALT CONTACT NO</span>
+                            <span class="meta-row-val"><?php echo esc_html( $member->alt_mobile ); ?></span>
+                        </div>
+                    </div>
+                    <?php endif; ?>
                     
                     <!-- Row 2: EMAIL -->
                     <div class="meta-item-row">
@@ -1429,7 +1454,7 @@ if ( ! empty( $query_member_id ) ) {
         }
         
         .id-header-logo {
-            height: 25px;
+            height: 34px;
             width: auto;
             object-fit: contain;
             filter: drop-shadow(0 1.5px 3px rgba(0,0,0,0.35));
@@ -2024,6 +2049,12 @@ if ( ! empty( $query_member_id ) ) {
                                 <span class="post-card-val"><?php echo esc_html( '******' . substr( $member->mobile, -4 ) ); ?></span>
                             </div>
                         <?php endif; ?>
+                        <?php if ( ! empty( $member->alt_mobile ) ) : ?>
+                            <div class="post-card-row">
+                                <span class="post-card-label">Alt Contact No</span>
+                                <span class="post-card-val"><?php echo esc_html( '******' . substr( $member->alt_mobile, -4 ) ); ?></span>
+                            </div>
+                        <?php endif; ?>
                         <?php if ( ! empty( $member->gov_id ) ) : ?>
                             <div class="post-card-row">
                                 <span class="post-card-label">Aadhaar Card Number</span>
@@ -2059,6 +2090,21 @@ if ( ! empty( $query_member_id ) ) {
                                 <span class="post-card-label">Registered Address</span>
                                 <span class="post-card-val" style="font-weight: 500; color: #4a5568;">GF 37, Bazidpur, SBS Nagar, Punjab - 144518</span>
                             </div>
+                        </div>
+                    </div>
+
+                    <!-- Print ID Card Action Button -->
+                    <div style="margin-top: 25px; padding-top: 20px; border-top: 1px dashed #e2e8f0; text-align: center;">
+                        <span style="font-size: 11px; font-weight: 700; color: #718096; text-transform: uppercase; letter-spacing: 0.5px; display: block; margin-bottom: 12px; font-family: 'Space Grotesk', sans-serif;">Personnel Self-Service Actions</span>
+                        <div style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap;">
+                            <a href="<?php echo esc_url( home_url('/verify/?download_id=' . $member->member_id . '&public=1') ); ?>" target="_blank" style="display: inline-flex; align-items: center; gap: 8px; background-color: #052054; color: #ffffff !important; border: 1px solid #031538; text-decoration: none !important; font-weight: 800; font-size: 12px; letter-spacing: 0.5px; padding: 12px 24px; border-radius: 6px; text-transform: uppercase; box-shadow: 0 4px 10px rgba(5, 32, 84, 0.15); transition: all 0.2s ease; cursor: pointer;">
+                                <svg style="width: 14px; height: 14px; fill: none; stroke: currentColor; stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round;" viewBox="0 0 24 24">
+                                    <polyline points="6 9 6 2 18 2 18 9"></polyline>
+                                    <polyline points="6 14 2 14 2 22 22 22 22 14 18 14"></polyline>
+                                    <rect x="6" y="10" width="12" height="8"></rect>
+                                </svg>
+                                Print / Download ID Card
+                            </a>
                         </div>
                     </div>
                 </div>
@@ -2396,9 +2442,16 @@ if ( ! empty( $query_member_id ) ) {
                         <label for="email">Email Address</label>
                         <input type="email" id="email" name="email" value="<?php echo $edit_member ? esc_attr( $edit_member->email ) : ''; ?>" placeholder="e.g. info@domain.com">
                     </div>
+                </div>
+                
+                <div class="form-row">
                     <div class="form-group">
-                        <label for="mobile">Mobile Number</label>
+                        <label for="mobile">Primary Mobile Number</label>
                         <input type="text" id="mobile" name="mobile" value="<?php echo $edit_member ? esc_attr( $edit_member->mobile ) : ''; ?>" placeholder="e.g. +91 9876543210">
+                    </div>
+                    <div class="form-group">
+                        <label for="alt_mobile">Alternative Contact Number</label>
+                        <input type="text" id="alt_mobile" name="alt_mobile" value="<?php echo $edit_member ? esc_attr( $edit_member->alt_mobile ) : ''; ?>" placeholder="e.g. +91 9876543211">
                     </div>
                 </div>
 
