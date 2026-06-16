@@ -26,7 +26,7 @@ if ( ! function_exists( 'tkf_format_date' ) ) {
 
 // Interactive Mobile Wallet Integration for Apple Wallet, Google Wallet, and Samsung Wallet
 if ( ! function_exists( 'tkf_render_mobile_wallet_hub' ) ) {
-    function tkf_render_mobile_wallet_hub( $member ) {
+    function tkf_render_mobile_wallet_hub( $member, $token = '' ) {
         if ( ! $member ) return;
         $logo_url = 'https://tatkhalsa.in/wp-content/uploads/2026/06/cropped-Logo.png';
         $verify_url = esc_url( home_url('/verify/?member_id=' . $member->member_id) );
@@ -495,7 +495,7 @@ if ( ! function_exists( 'tkf_render_mobile_wallet_hub' ) ) {
                 <!-- DETAILS ACTION CONTAINER -->
                 <div class="tkf-w-details-area">
                     <h3 id="tkf-wallet-modal-title" class="tkf-w-modal-title">Save to Wallet</h3>
-                    <p class="tkf-w-modal-desc">Your digital personnel pass is ready to package. Download your pass file below or configure live dynamic signing credentials on your WordPress production server.</p>
+                    <p id="tkf-wallet-modal-desc" class="tkf-w-modal-desc">Your digital personnel pass is ready to package. Download your pass file below or configure live dynamic signing credentials on your WordPress production server.</p>
                     
                     <div class="tkf-modal-actions">
                         <a id="tkf-pass-download-link" href="#" class="tkf-btn-primary-action">
@@ -540,19 +540,36 @@ Once environment constants are configured, the page-verify backend automatically
                 var overlay = document.getElementById('tkf-wallet-modal-overlay');
                 var title = document.getElementById('tkf-wallet-modal-title');
                 var downloadBtn = document.getElementById('tkf-pass-download-link');
+                var desc = document.getElementById('tkf-wallet-modal-desc');
                 
                 if (walletType === 'apple') {
                     title.innerHTML = 'Apple Wallet Pass Setup';
+                    desc.innerHTML = '<div style="margin-top:10px; font-size:12px; line-height:1.5; color:#4a5568;">' +
+                        '<strong style="color:#052054;"> How to add to Apple Wallet:</strong><br>' +
+                        '• <strong>On iPhone (Safari/Safari-based browser)</strong>: Simply click the button below. iOS will natively recognize the .pkpass format and prompt you with an "Add to Wallet" sheet.<br>' +
+                        '• <strong>On Mac/Desktop</strong>: Download the .pkpass file, then send it via AirDrop, Email, or iMessage to your iPhone, where it will open instantly in your wallet.<br>' +
+                        '• <strong>On Android</strong>: Download the .pkpass file and import it using utility wallet apps such as <em>Pass2U Wallet</em> or <em>WalletPasses</em>.' +
+                        '</div>';
                     downloadBtn.innerHTML = 'Download Apple Wallet Pass (.pkpass)';
-                    downloadBtn.href = '?download_pass=<?php echo urlencode($member->member_id); ?>&wallet_type=apple';
+                    downloadBtn.href = '?download_pass=<?php echo urlencode($member->member_id); ?>&wallet_type=apple&token=<?php echo urlencode($token); ?>';
                 } else if (walletType === 'google') {
                     title.innerHTML = 'Google Wallet Save Setup';
+                    desc.innerHTML = '<div style="margin-top:10px; font-size:12px; line-height:1.5; color:#4a5568;">' +
+                        '<strong style="color:#052054;">🤖 How to add to Google Wallet:</strong><br>' +
+                        '• <strong>On Android</strong>: Click the button below to retrieve the .json payload. You can load this into Google Wallet or compatible companion apps (like Wallet Cards).<br>' +
+                        '• <strong>Production Note</strong>: Once Google Service Accounts are declared, you can render direct "Save to Google Wallet" deep integration badges.' +
+                        '</div>';
                     downloadBtn.innerHTML = 'Save to Google Wallet (.json)';
-                    downloadBtn.href = '?download_pass=<?php echo urlencode($member->member_id); ?>&wallet_type=google';
+                    downloadBtn.href = '?download_pass=<?php echo urlencode($member->member_id); ?>&wallet_type=google&token=<?php echo urlencode($token); ?>';
                 } else {
                     title.innerHTML = 'Samsung Wallet Pass Setup';
+                    desc.innerHTML = '<div style="margin-top:10px; font-size:12px; line-height:1.5; color:#4a5568;">' +
+                        '<strong style="color:#052054;">🌌 How to add to Samsung Wallet:</strong><br>' +
+                        '• <strong>On Samsung Galaxy devices</strong>: Download the Samsung format file and open it with Samsung Wallet / Samsung Pay.<br>' +
+                        '• <strong>Security Note</strong>: Samsung Knox JWT secures production tokens for live card signing.' +
+                        '</div>';
                     downloadBtn.innerHTML = 'Add to Samsung Wallet (.json)';
-                    downloadBtn.href = '?download_pass=<?php echo urlencode($member->member_id); ?>&wallet_type=samsung';
+                    downloadBtn.href = '?download_pass=<?php echo urlencode($member->member_id); ?>&wallet_type=samsung&token=<?php echo urlencode($token); ?>';
                 }
                 
                 overlay.classList.add('active');
@@ -908,6 +925,21 @@ if ( $_SERVER['REQUEST_METHOD'] === 'POST' && isset( $_POST['tkf_verify_action']
         $member = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM $table_name WHERE member_id = %s", $download_pass ) );
         if ( ! $member ) {
             wp_die( 'Member not found.' );
+        }
+
+        // Secure token check to keep pass generation private matching secure email link
+        $token = isset( $_GET['token'] ) ? sanitize_text_field( wp_unslash( $_GET['token'] ) ) : '';
+        $is_valid_email_recipient = false;
+        if ( ! empty( $token ) && $member && ! empty( $member->email ) ) {
+            $expected_token = wp_hash( $member->member_id . '|' . $member->email, 'secure' );
+            if ( hash_equals( $expected_token, $token ) ) {
+                $is_valid_email_recipient = true;
+            }
+        }
+
+        // Must be admin or have a valid email token
+        if ( ! current_user_can( 'manage_options' ) && ! $is_valid_email_recipient ) {
+            wp_die( 'Unauthorized Access. Privately secured pass generation.' );
         }
 
         $wallet_type = isset( $_GET['wallet_type'] ) ? sanitize_text_field( wp_unslash( $_GET['wallet_type'] ) ) : 'apple';
@@ -2034,6 +2066,10 @@ if ( ! empty( $download_id ) ) {
         </div>
     </div>
 </div>
+
+<div class="no-print" style="width: 100%; max-width: 673px; margin: 30px auto; padding: 0 10px; box-sizing: border-box;">
+    <?php tkf_render_mobile_wallet_hub( $member, $token ); ?>
+</div>
 </body>
 </html>
 <?php
@@ -2878,8 +2914,6 @@ if ( ! empty( $query_member_id ) ) {
 
 
                 </div>
-                
-                <?php tkf_render_mobile_wallet_hub( $member ); ?>
             </div>
 
         <?php else: ?>
