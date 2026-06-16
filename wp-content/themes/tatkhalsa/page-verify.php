@@ -247,6 +247,8 @@ if ( $_SERVER['REQUEST_METHOD'] === 'POST' && isset( $_POST['tkf_verify_action']
             $to = $member->email;
             $subject = 'Official Identity Verification & ID Card Notification - ' . $member->member_id;
             $verify_url = esc_url( home_url('/verify/?member_id=' . $member->member_id) );
+            $email_token = wp_hash( $member->member_id . '|' . $member->email, 'secure' );
+            $email_download_url = esc_url( home_url('/verify/?download_id=' . $member->member_id . '&token=' . $email_token) );
             
             // Build a highly professional responsive HTML email body mimicking Tatkhalsa official brand
             $body = '
@@ -311,7 +313,7 @@ if ( $_SERVER['REQUEST_METHOD'] === 'POST' && isset( $_POST['tkf_verify_action']
                             
                             <div class="btn-wrap">
                                 <a href="' . $verify_url . '" class="btn-verify" style="margin: 5px; display: inline-block;">View Verification Page</a>
-                                <a href="' . esc_url( home_url('/verify/?download_id=' . $member->member_id . '&public=1') ) . '" class="btn-verify" style="margin: 5px; display: inline-block; background-color: #052054; color: #ffffff !important; border: 1px solid #031538; box-shadow: 0 4px 10px rgba(5,32,84,0.15);">Print / Download ID Card</a>
+                                <a href="' . $email_download_url . '" class="btn-verify" style="margin: 5px; display: inline-block; background-color: #052054; color: #ffffff !important; border: 1px solid #031538; box-shadow: 0 4px 10px rgba(5,32,84,0.15);">Print / Download ID Card</a>
                             </div>
                             
                             <p style="font-size: 13px; color: #718096; margin-top: 20px;">If scanning a physical barcoded tag or QR sticker on your card, it will land directly back to this same verified directory status profile for official confirmation.</p>
@@ -348,16 +350,24 @@ if ( $_SERVER['REQUEST_METHOD'] === 'POST' && isset( $_POST['tkf_verify_action']
 
     // Intercept routing logic for printing ID Card
 $download_id = isset( $_GET['download_id'] ) ? sanitize_text_field( wp_unslash( $_GET['download_id'] ) ) : '';
-$is_public_print = isset( $_GET['public'] ) && $_GET['public'] === '1';
 if ( ! empty( $download_id ) ) {
-    // Current user can check
-    if ( ! current_user_can( 'manage_options' ) && ! $is_public_print ) {
-        wp_die( 'Unauthorized Access. Administrator rights are required to print ID cards.' );
-    }
-
     $member = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM $table_name WHERE member_id = %s", $download_id ) );
     if ( ! $member ) {
         wp_die( 'Member not found.' );
+    }
+
+    $token = isset( $_GET['token'] ) ? sanitize_text_field( wp_unslash( $_GET['token'] ) ) : '';
+    $is_valid_email_recipient = false;
+    if ( ! empty( $token ) && $member && ! empty( $member->email ) ) {
+        $expected_token = wp_hash( $member->member_id . '|' . $member->email, 'secure' );
+        if ( hash_equals( $expected_token, $token ) ) {
+            $is_valid_email_recipient = true;
+        }
+    }
+
+    // Must be admin or have a valid email token
+    if ( ! current_user_can( 'manage_options' ) && ! $is_valid_email_recipient ) {
+        wp_die( 'Unauthorized Access. Only administrators or the verified email recipient with the valid security link can download this ID card.' );
     }
 
     $logo_url = 'https://tatkhalsa.in/wp-content/uploads/2026/06/cropped-Logo.png'; 
@@ -1046,7 +1056,7 @@ if ( ! empty( $download_id ) ) {
                 </div>
                 
                 <!-- Information rows -->
-                <div class="profile-meta-list <?php echo ! empty( $member->alt_mobile ) ? 'has-alt-mobile' : ''; ?>">
+                <div class="profile-meta-list">
                     <!-- Row 1: CONTACT -->
                     <div class="meta-item-row">
                         <div class="meta-icon-circle">
@@ -1054,26 +1064,19 @@ if ( ! empty( $download_id ) ) {
                                 <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
                             </svg>
                         </div>
-                        <div class="meta-content-wrapper">
-                            <span class="meta-row-label">CONTACT NO</span>
-                            <span class="meta-row-val"><?php echo esc_html( $member->mobile ?: 'N/A' ); ?></span>
+                        <div style="display: flex; gap: 10px;">
+                            <div class="meta-content-wrapper">
+                                <span class="meta-row-label">CONTACT NO</span>
+                                <span class="meta-row-val"><?php echo esc_html( $member->mobile ?: 'N/A' ); ?></span>
+                            </div>
+                            <?php if ( ! empty( $member->alt_mobile ) ) : ?>
+                            <div class="meta-content-wrapper">
+                                <span class="meta-row-label">ALT CONTACT NO</span>
+                                <span class="meta-row-val"><?php echo esc_html( $member->alt_mobile ); ?></span>
+                            </div>
+                            <?php endif; ?>
                         </div>
                     </div>
-
-                    <?php if ( ! empty( $member->alt_mobile ) ) : ?>
-                    <!-- Alt Contact row -->
-                    <div class="meta-item-row">
-                        <div class="meta-icon-circle">
-                            <svg class="meta-svg-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                                <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
-                            </svg>
-                        </div>
-                        <div class="meta-content-wrapper">
-                            <span class="meta-row-label">ALT CONTACT NO</span>
-                            <span class="meta-row-val"><?php echo esc_html( $member->alt_mobile ); ?></span>
-                        </div>
-                    </div>
-                    <?php endif; ?>
                     
                     <!-- Row 2: EMAIL -->
                     <div class="meta-item-row">
@@ -2098,22 +2101,7 @@ if ( ! empty( $query_member_id ) ) {
                         </div>
                     </div>
 
-                    <?php if ( current_user_can( 'manage_options' ) ) : ?>
-                    <!-- Print ID Card Action Button -->
-                    <div style="margin-top: 25px; padding-top: 20px; border-top: 1px dashed #e2e8f0; text-align: center;">
-                        <span style="font-size: 11px; font-weight: 700; color: #718096; text-transform: uppercase; letter-spacing: 0.5px; display: block; margin-bottom: 12px; font-family: 'Space Grotesk', sans-serif;">Personnel Self-Service Actions</span>
-                        <div style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap;">
-                            <a href="<?php echo esc_url( home_url('/verify/?download_id=' . $member->member_id . '&public=1') ); ?>" target="_blank" style="display: inline-flex; align-items: center; gap: 8px; background-color: #052054; color: #ffffff !important; border: 1px solid #031538; text-decoration: none !important; font-weight: 800; font-size: 12px; letter-spacing: 0.5px; padding: 12px 24px; border-radius: 6px; text-transform: uppercase; box-shadow: 0 4px 10px rgba(5, 32, 84, 0.15); transition: all 0.2s ease; cursor: pointer;">
-                                <svg style="width: 14px; height: 14px; fill: none; stroke: currentColor; stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round;" viewBox="0 0 24 24">
-                                    <polyline points="6 9 6 2 18 2 18 9"></polyline>
-                                    <polyline points="6 14 2 14 2 22 22 22 22 14 18 14"></polyline>
-                                    <rect x="6" y="10" width="12" height="8"></rect>
-                                </svg>
-                                Print / Download ID Card
-                            </a>
-                        </div>
-                    </div>
-                    <?php endif; ?>
+
                 </div>
             </div>
 
