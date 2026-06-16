@@ -192,288 +192,451 @@ if ( ! empty( $download_id ) ) {
             box-shadow: 0 10px 30px rgba(0,0,0,0.15);
             position: relative;
             overflow: hidden;
-            border: 2px solid #E1A92A;
+            border: 1px solid rgba(10, 50, 125, 0.15);
             box-sizing: border-box;
             display: flex;
-            flex-direction: row;
+            flex-direction: column;
         }
         @media print {
             body { background: #fff; }
-            .id-card-wrapper { box-shadow: none; border: 2px solid #0A327D; }
+            .id-card-wrapper { box-shadow: none; border: 1px solid #0A327D; }
             .no-print { display: none; }
         }
         
-        /* Left Panel - Deep Blue with brand identity */
-        .id-left-panel {
-            width: 3.1cm;
-            background: linear-gradient(135deg, #0A327D 0%, #05163a 100%);
+        /* Header style inspired by template image */
+        .id-header {
+            height: 1.35cm;
+            background: #0A327D;
+            position: relative;
             color: #ffffff;
+            padding: 0 12px;
             display: flex;
-            flex-direction: column;
             align-items: center;
             justify-content: space-between;
-            padding: 10px 5px 12px 5px;
-            position: relative;
             box-sizing: border-box;
-            border-right: 3px solid #E1A92A;
-            z-index: 5;
-        }
-        .id-left-panel::before {
-            content: '';
-            position: absolute;
-            top: -15px; left: -15px;
-            width: 60px; height: 60px;
-            background: radial-gradient(circle, rgba(225, 169, 42, 0.15) 0%, rgba(225, 169, 42, 0) 70%);
-            border-radius: 50%;
-            pointer-events: none;
+            z-index: 10;
         }
         
-        .id-brand-area {
-            text-align: center;
+        .id-header-left {
             display: flex;
-            flex-direction: column;
             align-items: center;
-            width: 100%;
+            gap: 6px;
         }
-        .id-left-logo {
-            height: 25px;
+        
+        .id-header-logo {
+            height: 24px;
             width: auto;
             object-fit: contain;
-            margin-bottom: 3px;
-            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.25));
         }
-        .id-left-title {
+        
+        .id-header-text {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .id-org-title {
             margin: 0;
             font-family: 'Space Grotesk', sans-serif;
-            font-size: 8px;
+            font-size: 11px;
             font-weight: 700;
             letter-spacing: 0.5px;
-            color: #E1A92A;
-            text-transform: uppercase;
+            color: #ffffff;
             line-height: 1.1;
         }
-        .id-left-subtitle {
-            font-size: 5px;
-            font-weight: 600;
-            letter-spacing: 1.2px;
-            color: #ffffff;
-            opacity: 0.9;
+        
+        .id-org-title span {
+            color: #E1A92A;
+        }
+        
+        .id-org-motto {
+            margin: 0;
+            font-size: 5.5px;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+            color: rgba(255, 255, 255, 0.85);
             text-transform: uppercase;
-            display: block;
-            margin-top: 1px;
             line-height: 1;
         }
         
-        .id-photo-frame {
-            width: 2.1cm;
-            height: 2.4cm;
-            border: 2px solid #E1A92A;
-            border-radius: 6px;
-            overflow: hidden;
-            background: #ffffff;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.25);
+        .id-header-right {
             display: flex;
             align-items: center;
-            justify-content: center;
-            z-index: 10;
         }
-        .id-photo {
+        
+        .secured-badge {
+            display: flex;
+            align-items: center;
+            background: rgba(225, 169, 42, 0.12);
+            border: 0.75px solid rgba(225, 169, 42, 0.4);
+            border-radius: 4px;
+            padding: 2px 5px;
+            gap: 4px;
+        }
+        
+        .lock-icon-svg {
+            width: 10px;
+            height: 10px;
+            color: #E1A92A;
+        }
+        
+        .secured-text {
+            display: flex;
+            flex-direction: column;
+            text-align: left;
+            line-height: 1;
+        }
+        
+        .secured-text span {
+            font-size: 4px;
+            color: #ffffff;
+            font-weight: 600;
+            letter-spacing: 0.3px;
+        }
+        
+        .secured-text strong {
+            font-size: 5px;
+            color: #E1A92A;
+            font-weight: 800;
+            letter-spacing: 0.3px;
+        }
+        
+        /* Dynamic Wave Separator */
+        .id-header-wave-svg {
+            position: absolute;
+            bottom: -6px;
+            left: 0;
+            width: 100%;
+            height: 8px;
+            z-index: 11;
+        }
+        
+        /* Card Body Layout */
+        .id-body {
+            flex: 1;
+            display: flex;
+            flex-direction: row;
+            position: relative;
+            box-sizing: border-box;
+            padding: 10px 12px 0 12px;
+            height: calc(5.40cm - 1.35cm - 0.4cm); /* accounting for footer and header */
+            z-index: 5;
+            background: #ffffff;
+        }
+        
+        .id-body::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 60%;
+            transform: translate(-50%, -50%);
+            width: 120px;
+            height: 120px;
+            background-image: url('https://tatkhalsa.in/wp-content/uploads/2026/06/cropped-Logo.png');
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: contain;
+            opacity: 0.04;
+            filter: grayscale(100%);
+            pointer-events: none;
+            z-index: 0;
+        }
+        
+        /* Left Section: Photo, Member ID box, Barcode */
+        .id-left-col {
+            width: 2.1cm;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            z-index: 2;
+        }
+        
+        .id-photo-container {
+            width: 2.1cm;
+            height: 2.25cm;
+            border: 1.5px solid #0A327D;
+            border-radius: 6px;
+            overflow: hidden;
+            box-shadow: 0 4px 10px rgba(10, 50, 125, 0.15);
+            background: #ffffff;
+        }
+        
+        .id-photo-container img {
             width: 100%;
             height: 100%;
             object-fit: cover;
         }
         
-        .id-left-badge {
-            font-size: 5px;
-            font-weight: 800;
-            background: rgba(225, 169, 42, 0.2);
-            color: #E1A92A;
-            padding: 1px 6px;
-            border-radius: 2px;
-            border: 0.5px solid rgba(225, 169, 42, 0.4);
+        .id-member-badge {
+            width: 100%;
+            background: #0A327D;
+            border-radius: 4px;
+            margin-top: 4px;
+            padding: 2px 0;
+            text-align: center;
+            color: #ffffff;
+            box-shadow: 0 2px 5px rgba(10, 50, 125, 0.2);
+        }
+        
+        .id-member-badge .badge-label {
+            font-size: 4px;
+            font-weight: 700;
             letter-spacing: 0.5px;
             text-transform: uppercase;
+            display: block;
+            line-height: 1;
         }
         
-        /* Right Panel Wrapper */
-        .id-right-panel-wrapper {
-            flex: 1;
+        .id-member-badge .badge-value {
+            font-size: 6.5px;
+            font-weight: 800;
+            color: #E1A92A;
+            display: block;
+            line-height: 1;
+            margin-top: 1px;
+            font-family: 'Space Grotesk', sans-serif;
+        }
+        
+        /* Authentic Barcode style */
+        .id-barcode-container {
             display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            height: 100%;
-            box-sizing: border-box;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        /* Right Details Panel */
-        .id-right-panel {
-            flex: 1;
-            background: #ffffff;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            padding: 8px 12px 10px 12px;
-            position: relative;
-            box-sizing: border-box;
-            z-index: 1;
-        }
-        .id-right-panel::before {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 130px;
-            height: 130px;
-            background-image: url('https://tatkhalsa.in/wp-content/uploads/2026/06/cropped-Logo.png');
-            background-repeat: no-repeat;
-            background-position: center;
-            background-size: contain;
-            opacity: 0.05;
-            filter: grayscale(100%);
-            pointer-events: none;
-            z-index: 0;
-        }
-        .id-right-panel::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            right: 0;
-            width: 45px;
-            height: 45px;
-            background: linear-gradient(135deg, rgba(14, 50, 125, 0.06) 0%, rgba(14, 50, 125, 0) 100%);
-            clip-path: polygon(100% 0, 0 0, 100% 100%);
-            z-index: 0;
-            pointer-events: none;
-        }
-        
-        .id-header-info {
-            position: relative;
-            z-index: 2;
+            align-items: center;
+            justify-content: center;
+            height: 14px;
+            gap: 1.2px;
+            margin-top: auto;
+            margin-bottom: 2px;
             width: 100%;
-            border-bottom: 1.5px solid rgba(10, 50, 125, 0.08);
-            padding-bottom: 4px;
-            margin-bottom: 6px;
         }
-        .id-name-text {
+        
+        .barcode-bar {
+            background: #1a202c;
+            height: 100%;
+        }
+        
+        .barcode-bar.thin { width: 0.6px; }
+        .barcode-bar.med { width: 1.2px; }
+        .barcode-bar.thick { width: 2px; }
+        
+        /* Right Section details panel */
+        .id-right-col {
+            flex: 1;
+            padding-left: 14px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            z-index: 2;
+        }
+        
+        .id-profile-header {
+            border-bottom: 1px solid rgba(10, 50, 125, 0.08);
+            padding-bottom: 2px;
+            margin-bottom: 4px;
+        }
+        
+        .id-member-name {
             margin: 0;
             font-family: 'Space Grotesk', sans-serif;
-            font-size: 13px;
+            font-size: 13.5px;
             font-weight: 700;
             color: #0A327D;
             text-transform: uppercase;
-            letter-spacing: 0.2px;
+            letter-spacing: 0.1px;
             line-height: 1.1;
         }
-        .id-designation-badge {
+        
+        .id-member-designation {
             font-size: 7.5px;
             font-weight: 700;
             color: #d49514;
             text-transform: uppercase;
-            letter-spacing: 0.5px;
+            letter-spacing: 0.4px;
             margin-top: 1px;
             line-height: 1.1;
         }
         
-        .id-details-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            row-gap: 4px;
-            column-gap: 8px;
-            position: relative;
-            z-index: 2;
-            margin-bottom: auto;
-        }
-        .id-grid-item {
+        /* List with Icons matching the template */
+        .id-info-rows {
             display: flex;
             flex-direction: column;
+            gap: 3.5px;
+            flex: 1;
+            margin-top: 2px;
         }
-        .id-grid-item.full-width {
-            grid-column: span 2;
+        
+        .id-info-row {
+            display: flex;
+            align-items: center;
+            gap: 6px;
         }
-        .id-label {
-            font-size: 5px;
+        
+        .info-icon-circle {
+            width: 14px;
+            height: 14px;
+            background: #0A327D;
+            color: #ffffff;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+        
+        .info-icon {
+            width: 8px;
+            height: 8px;
+            color: #ffffff;
+            stroke-width: 2.5;
+        }
+        
+        .info-text-stack {
+            display: flex;
+            flex-direction: column;
+            line-height: 1;
+        }
+        
+        .info-field-label {
+            font-size: 4.5px;
             font-weight: 800;
             color: #8892b0;
             text-transform: uppercase;
             letter-spacing: 0.3px;
-            margin-bottom: 0px;
-        }
-        .id-value {
-            font-size: 7.5px;
-            font-weight: 700;
-            color: #1a202c;
-            line-height: 1.2;
+            margin-bottom: 1px;
         }
         
-        /* Bottom row with Signature and QR Code */
-        .id-bottom-row {
+        .info-field-value {
+            font-size: 7.5px;
+            font-weight: 700;
+            color: #2d3748;
+        }
+        
+        /* Bottom elements: Signature and Expiry */
+        .id-meta-footer {
             display: flex;
             justify-content: space-between;
             align-items: flex-end;
-            position: relative;
-            z-index: 2;
-            margin-top: 4px;
+            margin-top: auto;
+            padding-bottom: 2px;
         }
         
-        .id-sign-block {
+        .id-sign-section {
             text-align: center;
             display: flex;
             flex-direction: column;
             align-items: center;
-            width: 70px;
+            width: 80px;
         }
-        .id-signature-img {
+        
+        .signature-img-wrap {
+            height: 16px;
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+            margin-bottom: 1px;
+        }
+        
+        .signature-img {
             height: 16px;
             width: auto;
             object-fit: contain;
-            margin-bottom: 1px;
             mix-blend-mode: multiply;
         }
-        .id-sign-line {
+        
+        .signature-dashed-line {
             width: 100%;
-            border-bottom: 0.75px dashed #0A327D;
-            margin-bottom: 2px;
+            border-bottom: 0.5px dashed #0A327D;
+            margin-bottom: 1.5px;
         }
-        .id-sign-label {
-            font-size: 5px;
+        
+        .signature-caption {
+            font-size: 4.5px;
             font-weight: 800;
             color: #0A327D;
             text-transform: uppercase;
             letter-spacing: 0.3px;
+            line-height: 1;
         }
         
-        .id-qr-block {
+        /* Expiry block */
+        .id-meta-divider {
+            height: 22px;
+            border-left: 0.75px solid rgba(10, 50, 125, 0.15);
+            margin: 0 8px;
+        }
+        
+        .id-expiry-section {
+            display: flex;
+            flex-direction: column;
+            line-height: 1;
+            margin-right: auto;
+        }
+        
+        .expiry-label {
+            font-size: 4.5px;
+            font-weight: 800;
+            color: #8892b0;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+            margin-bottom: 2px;
+        }
+        
+        .expiry-value {
+            font-size: 7.5px;
+            font-weight: 700;
+            color: #1a202c;
+        }
+        
+        /* QR Code Section with SCAN TO VERIFY label */
+        .id-qrcode-section {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-left: auto;
+        }
+        
+        .qr-code-holder {
             padding: 1.5px;
-            border: 1px solid #E1A92A;
+            border: 0.75px solid #0A327D;
             border-radius: 4px;
             background: #ffffff;
-            box-shadow: 0 2px 5px rgba(10, 50, 125, 0.08);
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            box-shadow: 0 2px 4px rgba(10, 50, 125, 0.08);
         }
-        .id-qr-img {
-            width: 32px;
-            height: 32px;
+        
+        .qr-code-img {
+            width: 25px;
+            height: 25px;
             display: block;
         }
         
-        .id-details-footer {
+        .scan-verify-btn {
+            font-size: 3.5px;
+            font-weight: 900;
             background: #E1A92A;
-            color: #0A327D;
+            color: #04122d;
+            padding: 1px 4px;
+            border-radius: 2px;
+            margin-top: 2px;
+            letter-spacing: 0.3px;
+            text-transform: uppercase;
+            line-height: 1;
+            box-shadow: 0 1px 2px rgba(225, 169, 42, 0.3);
+        }
+        
+        /* Bottom Strip */
+        .id-footer-strip {
+            background: #0A327D;
+            color: #E1A92A;
             text-align: center;
             font-size: 5.5px;
             padding: 3px 0;
             font-weight: 800;
-            letter-spacing: 0.8px;
+            letter-spacing: 0.6px;
             width: 100%;
             z-index: 20;
-            border-top: 1px solid rgba(10, 50, 125, 0.1);
+            border-top: 1px solid #E1A92A;
             text-transform: uppercase;
             font-family: 'Space Grotesk', sans-serif;
+            line-height: 1;
         }
         
         .print-btn {
@@ -502,71 +665,153 @@ if ( ! empty( $download_id ) ) {
 <body>
     <button class="no-print print-btn" onclick="window.print()">Print ID Card</button>
     <div class="id-card-wrapper">
-        <!-- Left Panel (Blue) -->
-        <div class="id-left-panel">
-            <div class="id-brand-area">
-                <img src="<?php echo esc_url($logo_url); ?>" class="id-left-logo" alt="Logo">
-                <h3 class="id-left-title">TATKHALSA</h3>
-                <span class="id-left-subtitle">FOUNDATION</span>
+        <!-- Top Header Wave-Ribbon layout from template -->
+        <div class="id-header">
+            <div class="id-header-left">
+                <img src="<?php echo esc_url($logo_url); ?>" class="id-header-logo" alt="Logo">
+                <div class="id-header-text">
+                    <h3 class="id-org-title">TATKHALSA <span>FOUNDATION</span></h3>
+                    <p class="id-org-motto">Sewa Main Parma Dharam</p>
+                </div>
+            </div>
+            <div class="id-header-right">
+                <div class="secured-badge">
+                    <svg class="lock-icon-svg" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                    </svg>
+                    <div class="secured-text">
+                        <span>VERIFIED</span>
+                        <strong>& SECURED</strong>
+                    </div>
+                </div>
             </div>
             
-            <div class="id-photo-frame">
-                <?php if ( ! empty( $member->photo_url ) ) : ?>
-                    <img src="<?php echo esc_url( $member->photo_url ); ?>" alt="Photo" class="id-photo">
-                <?php else: ?>
-                    <img src="<?php echo esc_url($logo_url); ?>" alt="Photo" class="id-photo" style="object-fit: contain; padding: 6px; background:#f4f6f9;">
-                <?php endif; ?>
-            </div>
-            
-            <div class="id-left-badge">OFFICIAL ID</div>
+            <!-- White wave background divider masked over the rest -->
+            <svg class="id-header-wave-svg" viewBox="0 0 100 8" preserveAspectRatio="none">
+                <path d="M0,0 Q50,6 100,0 V8 H0 Z" fill="#ffffff" />
+                <path d="M0,0 Q50,6 100,0" fill="none" stroke="#E1A92A" stroke-width="0.8" />
+            </svg>
         </div>
         
-        <!-- Right Panel (White) -->
-        <div class="id-right-panel-wrapper">
-            <div class="id-right-panel">
-                <div class="id-header-info">
-                    <h2 class="id-name-text"><?php echo esc_html( $member->full_name ); ?></h2>
-                    <div class="id-designation-badge"><?php echo esc_html( $member->designation ); ?></div>
+        <!-- Main Card Body -->
+        <div class="id-body">
+            <!-- Left Panel -->
+            <div class="id-left-col">
+                <div class="id-photo-container">
+                    <?php if ( ! empty( $member->photo_url ) ) : ?>
+                        <img src="<?php echo esc_url( $member->photo_url ); ?>" alt="Member Photo">
+                    <?php else: ?>
+                        <img src="<?php echo esc_url($logo_url); ?>" alt="Default" style="object-fit: contain; padding: 6px; background:#f4f6f9;">
+                    <?php endif; ?>
                 </div>
                 
-                <div class="id-details-grid">
-                    <div class="id-grid-item">
-                        <span class="id-label">ID NO</span>
-                        <span class="id-value"><?php echo esc_html( $member->member_id ); ?></span>
-                    </div>
-                    <div class="id-grid-item">
-                        <span class="id-label">BLOOD GB</span>
-                        <span class="id-value"><?php echo esc_html( $member->blood_group ?: 'N/A' ); ?></span>
-                    </div>
-                    <div class="id-grid-item">
-                        <span class="id-label">CONTACT</span>
-                        <span class="id-value"><?php echo esc_html( $member->mobile ?: 'N/A' ); ?></span>
-                    </div>
-                    <div class="id-grid-item">
-                        <span class="id-label">VALID TILL</span>
-                        <span class="id-value"><?php echo $member->expiry_date ? esc_html( date('d M Y', strtotime($member->expiry_date)) ) : 'N/A'; ?></span>
-                    </div>
-                    <div class="id-grid-item full-width">
-                        <span class="id-label">EMAIL ADDRESS</span>
-                        <span class="id-value"><?php echo esc_html( $member->email ?: 'N/A' ); ?></span>
-                    </div>
+                <div class="id-member-badge">
+                    <span class="badge-label">MEMBER ID</span>
+                    <span class="badge-value"><?php echo esc_html( $member->member_id ); ?></span>
                 </div>
                 
-                <div class="id-bottom-row">
-                    <div class="id-sign-block">
-                        <img src="https://tatkhalsa.in/wp-content/uploads/2026/06/aba819ad-1c8e-4d21-9849-ef03729a0cc5_removalai_preview-e1781624417937.png" alt="Signature" class="id-signature-img">
-                        <div class="id-sign-line"></div>
-                        <span class="id-sign-label">Auth. Signatory</span>
-                    </div>
-                    <div class="id-qr-block">
-                        <img src="<?php echo esc_url($qr_code_url); ?>" alt="QR Code" class="id-qr-img">
-                    </div>
+                <!-- Autogenerated realistic custom SVG-barcode -->
+                <div class="id-barcode-container">
+                    <div class="barcode-bar thick"></div>
+                    <div class="barcode-bar thin"></div>
+                    <div class="barcode-bar med"></div>
+                    <div class="barcode-bar thick"></div>
+                    <div class="barcode-bar thin"></div>
+                    <div class="barcode-bar med"></div>
+                    <div class="barcode-bar thick"></div>
+                    <div class="barcode-bar thin"></div>
+                    <div class="barcode-bar thick"></div>
+                    <div class="barcode-bar med"></div>
+                    <div class="barcode-bar thin"></div>
+                    <div class="barcode-bar thick"></div>
+                    <div class="barcode-bar med"></div>
+                    <div class="barcode-bar thin"></div>
                 </div>
             </div>
             
-            <div class="id-details-footer">
-                WWW.TATKHALSA.IN &nbsp;|&nbsp; INFO@TATKHALSA.IN &nbsp;|&nbsp; SECTION 8 NGO
+            <!-- Right Panel -->
+            <div class="id-right-col">
+                <!-- Name and Title -->
+                <div class="id-profile-header">
+                    <h2 class="id-member-name"><?php echo esc_html( $member->full_name ); ?></h2>
+                    <div class="id-member-designation"><?php echo esc_html( $member->designation ); ?></div>
+                </div>
+                
+                <!-- Info Grid Block with Icons -->
+                <div class="id-info-rows">
+                    <!-- BLOOD GROUP -->
+                    <div class="id-info-row">
+                        <div class="info-icon-circle">
+                            <svg class="info-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
+                            </svg>
+                        </div>
+                        <div class="info-text-stack">
+                            <span class="info-field-label">Blood Group</span>
+                            <span class="info-field-value"><?php echo esc_html( $member->blood_group ?: 'N/A' ); ?></span>
+                        </div>
+                    </div>
+                    
+                    <!-- CONTACT -->
+                    <div class="id-info-row">
+                        <div class="info-icon-circle">
+                            <svg class="info-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.94.725l.548 2.2a1 1 0 01-.321.988l-1.305.98a10.582 10.582 0 004.872 4.872l.98-1.305a1 1 0 01.988-.321l2.2.548a1 1 0 01.725.94V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+                            </svg>
+                        </div>
+                        <div class="info-text-stack">
+                            <span class="info-field-label">Contact No</span>
+                            <span class="info-field-value"><?php echo esc_html( $member->mobile ?: 'N/A' ); ?></span>
+                        </div>
+                    </div>
+                    
+                    <!-- EMAIL ADDRESS -->
+                    <div class="id-info-row">
+                        <div class="info-icon-circle">
+                            <svg class="info-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                            </svg>
+                        </div>
+                        <div class="info-text-stack">
+                            <span class="info-field-label">Email Address</span>
+                            <span class="info-field-value"><?php echo esc_html( $member->email ?: 'N/A' ); ?></span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Bottom: Signatures, Validity, QR Code -->
+                <div class="id-meta-footer">
+                    <!-- Auth Signature area -->
+                    <div class="id-sign-section">
+                        <div class="signature-img-wrap">
+                            <img src="https://tatkhalsa.in/wp-content/uploads/2026/06/aba819ad-1c8e-4d21-9849-ef03729a0cc5_removalai_preview-e1781624417937.png" alt="Signature" class="signature-img">
+                        </div>
+                        <div class="signature-dashed-line"></div>
+                        <span class="signature-caption">Auth. Signatory</span>
+                    </div>
+                    
+                    <div class="id-meta-divider"></div>
+                    
+                    <!-- Valid Till -->
+                    <div class="id-expiry-section">
+                        <span class="expiry-label">VALID TILL</span>
+                        <span class="expiry-value"><?php echo $member->expiry_date ? esc_html( date('d M Y', strtotime($member->expiry_date)) ) : 'N/A'; ?></span>
+                    </div>
+                    
+                    <!-- QR Code & Scan badge -->
+                    <div class="id-qrcode-section">
+                        <div class="qr-code-holder">
+                            <img src="<?php echo esc_url($qr_code_url); ?>" alt="QR Code" class="qr-code-img">
+                        </div>
+                        <div class="scan-verify-btn">SCAN TO VERIFY</div>
+                    </div>
+                </div>
             </div>
+        </div>
+        
+        <!-- Bottom Banner Footer -->
+        <div class="id-footer-strip">
+            WWW.TATKHALSA.IN &nbsp;|&nbsp; INFO@TATKHALSA.IN &nbsp;|&nbsp; SECTION 8 NGO
         </div>
     </div>
 </body>
