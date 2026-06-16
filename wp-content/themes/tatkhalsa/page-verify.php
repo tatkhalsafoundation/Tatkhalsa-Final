@@ -24,6 +24,559 @@ if ( ! function_exists( 'tkf_format_date' ) ) {
     }
 }
 
+// Interactive Mobile Wallet Integration for Apple Wallet, Google Wallet, and Samsung Wallet
+if ( ! function_exists( 'tkf_render_mobile_wallet_hub' ) ) {
+    function tkf_render_mobile_wallet_hub( $member ) {
+        if ( ! $member ) return;
+        $logo_url = 'https://tatkhalsa.in/wp-content/uploads/2026/06/cropped-Logo.png';
+        $verify_url = esc_url( home_url('/verify/?member_id=' . $member->member_id) );
+        ?>
+        <style>
+            /* MOBILE WALLET STYLING */
+            .tkf-wallet-container {
+                background: #ffffff;
+                border-radius: 14px;
+                padding: 24px;
+                border: 1.5px solid #e2e8f0;
+                box-shadow: 0 4px 15px rgba(5,32,84,0.04);
+                margin: 20px 0;
+                text-align: left;
+                width: 100%;
+                box-sizing: border-box;
+            }
+            .tkf-wallet-title {
+                font-family: 'Space Grotesk', sans-serif;
+                font-size: 14px;
+                font-weight: 800;
+                color: #052054;
+                text-transform: uppercase;
+                letter-spacing: 0.5px;
+                margin: 0 0 4px 0;
+                display: flex;
+                align-items: center;
+                gap: 8px;
+            }
+            .tkf-wallet-subtitle {
+                font-size: 11px;
+                color: #718096;
+                margin: 0 0 20px 0;
+                line-height: 1.4;
+            }
+            .tkf-wallet-grid {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 12px;
+                justify-content: flex-start;
+            }
+            
+            /* Professional Wallet Buttons */
+            .tkf-w-btn {
+                flex: 1;
+                min-width: 165px;
+                height: 44px;
+                border-radius: 8px;
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                text-decoration: none;
+                font-weight: 700;
+                font-size: 11.5px;
+                transition: all 0.2s ease;
+                cursor: pointer;
+                border: none;
+                margin: 0;
+                box-sizing: border-box;
+                gap: 8px;
+                text-transform: uppercase;
+                letter-spacing: 0.2px;
+            }
+            
+            /* Apple Wallet Button Stylings */
+            .tkf-w-btn-apple {
+                background: #000000;
+                color: #ffffff;
+                border: 1px solid #ffffff33;
+                font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+            }
+            .tkf-w-btn-apple:hover {
+                background: #111111;
+                border-color: #ffffff55;
+                transform: translateY(-1.5px);
+                box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+            }
+            
+            /* Google Wallet Button Stylings */
+            .tkf-w-btn-google {
+                background: #000000;
+                color: #ffffff;
+                border: 1px solid #ffffff22;
+                font-family: 'Google Sans', sans-serif;
+            }
+            .tkf-w-btn-google:hover {
+                background: #111111;
+                border-color: #ffffff44;
+                transform: translateY(-1.5px);
+                box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            }
+            
+            /* Samsung Wallet Button Stylings */
+            .tkf-w-btn-samsung {
+                background: #000000;
+                color: #ffffff;
+                border: 1px solid #ffffff22;
+                font-family: 'SamsungOne', sans-serif;
+            }
+            .tkf-w-btn-samsung:hover {
+                background: #0c0c0c;
+                border-color: #ffffff44;
+                transform: translateY(-1.5px);
+                box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            }
+
+            /* MODAL OVERLAY & CARD CAROUSEL */
+            .tkf-wallet-modal-overlay {
+                position: fixed;
+                top: 0; left: 0; width: 100%; height: 100%;
+                background: rgba(5, 14, 30, 0.75);
+                backdrop-filter: blur(8px);
+                -webkit-backdrop-filter: blur(8px);
+                z-index: 100000;
+                display: none;
+                align-items: center;
+                justify-content: center;
+                opacity: 0;
+                transition: opacity 0.3s ease;
+                padding: 16px;
+                box-sizing: border-box;
+                overflow-y: auto;
+            }
+            .tkf-wallet-modal-overlay.active {
+                display: flex;
+                opacity: 1;
+            }
+            .tkf-wallet-modal {
+                background: #ffffff;
+                width: 100%;
+                max-width: 460px;
+                border-radius: 18px;
+                box-shadow: 0 25px 60px rgba(0,0,0,0.35);
+                overflow: hidden;
+                transform: translateY(20px) scale(0.95);
+                transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+                position: relative;
+                box-sizing: border-box;
+                display: flex;
+                flex-direction: column;
+                max-height: 90vh;
+            }
+            .tkf-wallet-modal-overlay.active .tkf-wallet-modal {
+                transform: translateY(0) scale(1);
+            }
+            .tkf-wallet-modal-close {
+                position: absolute;
+                top: 15px; right: 15px;
+                width: 30px; height: 30px;
+                border-radius: 50%;
+                background: rgba(0,0,0,0.06);
+                color: #1a202c;
+                border: none;
+                font-size: 18px;
+                font-weight: 700;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                cursor: pointer;
+                transition: all 0.2s;
+                z-index: 100;
+            }
+            .tkf-wallet-modal-close:hover {
+                background: rgba(0,0,0,0.12);
+                transform: scale(1.05);
+            }
+
+            /* SMARTPHONE PASS PREVIEW WRAPPER */
+            .tkf-w-phone-body {
+                background: #f7fafc;
+                padding: 30px 24px;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                border-bottom: 1px solid #edf2f7;
+            }
+            /* Digital Wallet Pass Mock Graphics */
+            .tkf-w-pass-mock {
+                width: 250px;
+                background: #052054;
+                border-radius: 12px;
+                padding: 16px;
+                box-shadow: 0 10px 25px rgba(5,32,84,0.3);
+                color: #ffffff;
+                box-sizing: border-box;
+                position: relative;
+                font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+                overflow: hidden;
+            }
+            .tkf-w-pass-mock::before {
+                content: '';
+                position: absolute;
+                top: 0; left: 0; width: 100%; height: 3px;
+                background: #E1A92A;
+            }
+            .tkf-w-pass-header {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                border-bottom: 0.5px solid rgba(255,255,255,0.15);
+                padding-bottom: 8px;
+                margin-bottom: 12px;
+            }
+            .tkf-w-pass-org {
+                font-size: 9px;
+                font-weight: 800;
+                letter-spacing: 0.6px;
+                text-transform: uppercase;
+                color: #E1A92A;
+            }
+            .tkf-w-pass-logo {
+                width: 14px;
+                height: 14px;
+                object-fit: contain;
+                filter: brightness(1.1);
+            }
+            .tkf-w-pass-mid-grid {
+                display: flex;
+                gap: 12px;
+                margin-bottom: 12px;
+            }
+            .tkf-w-pass-photo {
+                width: 54px;
+                height: 62px;
+                border-radius: 4px;
+                object-fit: cover;
+                border: 1px solid rgba(225, 169, 42, 0.4);
+                background: #ffffff;
+            }
+            .tkf-w-pass-fields {
+                flex: 1;
+                display: flex;
+                flex-direction: column;
+                gap: 4px;
+                justify-content: center;
+            }
+            .tkf-w-pass-field-lbl {
+                font-size: 6px;
+                font-weight: 600;
+                color: rgba(255,255,255,0.5);
+                text-transform: uppercase;
+                letter-spacing: 0.3px;
+                line-height: 1;
+            }
+            .tkf-w-pass-field-val {
+                font-size: 9px;
+                font-weight: 700;
+                color: #ffffff;
+                line-height: 1.1;
+            }
+            .tkf-w-pass-name {
+                font-size: 11px;
+                font-weight: 800;
+                color: #E1A92A;
+                text-transform: uppercase;
+                letter-spacing: 0.1px;
+            }
+            .tkf-w-pass-barcode-box {
+                background: #ffffff;
+                padding: 6px;
+                border-radius: 6px;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                margin-top: 6px;
+            }
+            .tkf-w-pass-barcode-img {
+                width: 150px;
+                height: 38px;
+                object-fit: fill;
+                image-rendering: pixelated;
+            }
+            .tkf-w-pass-barcode-text {
+                font-size: 6.5px;
+                font-weight: 800;
+                font-family: monospace;
+                color: #1a202c;
+                margin-top: 3px;
+                letter-spacing: 1px;
+            }
+            
+            /* Modal content area */
+            .tkf-w-details-area {
+                padding: 24px;
+                flex: 1;
+                overflow-y: auto;
+                box-sizing: border-box;
+            }
+            .tkf-w-modal-title {
+                font-size: 16px;
+                font-weight: 800;
+                color: #052054;
+                margin: 0 0 6px 0;
+                text-transform: uppercase;
+                letter-spacing: 0.3px;
+                display: flex;
+                align-items: center;
+                gap: 6px;
+            }
+            .tkf-w-modal-desc {
+                font-size: 12px;
+                color: #4a5568;
+                line-height: 1.5;
+                margin: 0 0 20px 0;
+            }
+            
+            /* Download action buttons inside modal */
+            .tkf-modal-actions {
+                display: flex;
+                flex-direction: column;
+                gap: 12px;
+            }
+            .tkf-btn-primary-action {
+                background: linear-gradient(135deg, #052054, #051a44);
+                color: #E1A92A;
+                border: 1px solid #E1A92A99;
+                text-align: center;
+                padding: 11px;
+                border-radius: 8px;
+                font-weight: 800;
+                font-size: 13px;
+                text-transform: uppercase;
+                letter-spacing: 0.5px;
+                cursor: pointer;
+                text-decoration: none;
+                transition: all 0.2s;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                gap: 8px;
+                box-shadow: 0 4px 12px rgba(5,32,84,0.15);
+            }
+            .tkf-btn-primary-action:hover {
+                transform: translateY(-1px);
+                box-shadow: 0 6px 15px rgba(5,32,84,0.25);
+                background: linear-gradient(135deg, #07286a, #051e4f);
+            }
+            
+            /* Admin Toggle / Dev Guide */
+            .tkf-admin-dev-guide {
+                margin-top: 20px;
+                border-top: 1px dashed #cbd5e0;
+                padding-top: 15px;
+            }
+            .tkf-guide-toggle-btn {
+                background: transparent;
+                border: none;
+                color: #052054;
+                font-size: 11px;
+                font-weight: 700;
+                text-decoration: underline;
+                cursor: pointer;
+                padding: 0;
+                display: flex;
+                align-items: center;
+                gap: 4px;
+            }
+            .tkf-guide-body {
+                background: #f7fafc;
+                border-left: 3px solid #E1A92A;
+                padding: 12px;
+                border-radius: 0 6px 6px 0;
+                font-size: 10px;
+                color: #2d3748;
+                line-height: 1.45;
+                font-family: monospace;
+                margin-top: 8px;
+                display: none;
+                word-break: break-all;
+                white-space: pre-wrap;
+            }
+        </style>
+
+        <div class="tkf-wallet-container no-print">
+            <h4 class="tkf-wallet-title">
+                <svg style="width: 14px; height: 14px; fill: currentColor;" viewBox="0 0 24 24">
+                    <path d="M21 18v1c0 1.1-.9 2-2 2H5c-1.11 0-2-.9-2-2V5c0-1.1.89-2 2-2h14c1.1 0 2 .9 2 2v1h-9c-1.11 0-2 .9-2 2v8c0 1.1.89 2 2 2h9zm-9-2h10V8H12v8zm4-2.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/>
+                </svg>
+                SAVE TO SMARTPHONE WALLET
+            </h4>
+            <p class="tkf-wallet-subtitle">Keep your secure personnel credentials directly accessible on your mobile phone with cryptographic verification, biometric security, and lightweight offline access.</p>
+            
+            <div class="tkf-wallet-grid">
+                <!-- Apple Wallet Button -->
+                <button class="tkf-w-btn tkf-w-btn-apple" onclick="tkfOpenWalletModal('apple')">
+                    <svg style="width:13px; height:16px; fill:currentColor;" viewBox="0 0 170 170">
+                        <path d="M150.37 130.25c-2.45 5.66-5.35 10.87-8.71 15.66-4.58 6.53-8.33 11.05-11.22 13.56-4.48 4.12-9.28 6.23-14.42 6.35-3.69 0-8.14-1.05-13.32-3.18-5.19-2.12-9.97-3.17-14.34-3.17-4.58 0-9.49 1.05-14.75 3.17-5.26 2.13-9.5 3.24-12.74 3.35-4.34.13-9.13-1.9-14.37-6.08-3.73-3.05-7.73-7.9-12.01-14.54-5.3-8.1-9.45-17.15-12.47-27.15-3.14-10.37-4.71-20.31-4.71-29.8 0-14.54 3.65-26.33 10.96-35.37 7.3-9.04 16.3-13.6 26.97-13.6 5.56 0 11.5 1.5 17.8 4.5 6.3 3 10.23 4.5 11.8 4.5 1.7 0 5.43-1.4 11.19-4.2 5.76-2.8 11.28-4.2 16.56-4.2 12.08 0 22.21 4.3 30.39 12.9 8.18 8.6 12.44 19.1 12.77 31.5-10.97 6.44-16.3 14.8-15.97 25.1.33 10.3 4.11 18.5 11.35 24.6 7.24 6.1 14.9 9.3 22.97 9.6-1.12 4.9-2.6 9.5-4.45 14zM119.22 4.49c0 8.04-2.86 15.22-8.58 21.56-5.72 6.33-12.57 9.87-20.54 10.61-.17-.83-.26-1.72-.26-2.67 0-7.6 2.82-14.65 8.46-21.13 5.64-6.48 12.63-10.23 20.97-11.25.17.83.25 1.79.25 2.88z"/>
+                    </svg>
+                    Apple Wallet
+                </button>
+
+                <!-- Google Wallet Button -->
+                <button class="tkf-w-btn tkf-w-btn-google" onclick="tkfOpenWalletModal('google')">
+                    <svg style="width:16px; height:16px;" viewBox="0 0 48 48" fill="none">
+                        <path d="M36 12 C33 9, 28 8, 24 8 C15.16 8, 8 15.16, 8 24 C8 32.84, 15.16 40, 24 40 C28 40, 33 39, 36 36" stroke="#4285F4" stroke-width="4.5" stroke-linecap="round" fill="none" />
+                        <path d="M38 18 C40.2 21, 41 24, 41 27 C41 33.08, 36.08 38, 30 38" stroke="#EA4335" stroke-width="4.5" stroke-linecap="round" fill="none" />
+                        <path d="M28 10 C32 10, 36 12, 39 15" stroke="#FBBC05" stroke-width="4.5" stroke-linecap="round" fill="none" />
+                    </svg>
+                    Google Wallet
+                </button>
+
+                <!-- Samsung Wallet Button -->
+                <button class="tkf-w-btn tkf-w-btn-samsung" onclick="tkfOpenWalletModal('samsung')">
+                    <svg style="width:14px; height:14px; fill:currentColor;" viewBox="0 0 24 24">
+                        <path d="M21 11.5a8.38 8.38 0 0 1-1.9 5.3 8.38 8.38 0 0 1-5.3 1.9 8.38 8.38 0 0 1-5.3-1.9 8.38 8.38 0 0 1-1.9-5.3c0-4.6 3.8-8.3 8.3-8.3a8.3 8.3 0 0 1 8.3 8.3zm-8.3-6.2a6.2 6.2 0 1 0 6.2 6.2 6.2 6.2 0 0 0-6.2-6.2z"/>
+                    </svg>
+                    Samsung Wallet
+                </button>
+            </div>
+        </div>
+
+        <!-- WALLET GATEWAY MODAL OVERLAY -->
+        <div id="tkf-wallet-modal-overlay" class="tkf-wallet-modal-overlay no-print" onclick="tkfCloseWalletModal(event)">
+            <div class="tkf-wallet-modal" onclick="event.stopPropagation()">
+                <button class="tkf-wallet-modal-close" onclick="tkfCloseWalletModal(event)">&times;</button>
+                
+                <!-- PASS DEVICE VIEW CONTAINER -->
+                <div class="tkf-w-phone-body">
+                    <div class="tkf-w-pass-mock">
+                        <div class="tkf-w-pass-header">
+                            <span class="tkf-w-pass-org">Tatkhalsa Foundation</span>
+                            <img src="<?php echo esc_url($logo_url); ?>" class="tkf-w-pass-logo" alt="">
+                        </div>
+                        
+                        <div class="tkf-w-pass-mid-grid">
+                            <?php if ( ! empty($member->photo_url) ) : ?>
+                                <img src="<?php echo esc_url($member->photo_url); ?>" class="tkf-w-pass-photo" alt="">
+                            <?php else: ?>
+                                <div class="tkf-w-pass-photo" style="background:#f4f6f9; display:flex; align-items:center; justify-content:center; padding:10px; box-sizing:border-box;">
+                                    <img src="<?php echo esc_url($logo_url); ?>" style="width:100%; height:100%; object-fit:contain;" alt="">
+                                </div>
+                            <?php endif; ?>
+                            
+                            <div class="tkf-w-pass-fields">
+                                <div class="tkf-w-pass-field-lbl">Official Personnel</div>
+                                <div class="tkf-w-pass-name"><?php echo esc_html($member->full_name); ?></div>
+                                
+                                <div style="margin-top: 4px;">
+                                    <div class="tkf-w-pass-field-lbl">Designation</div>
+                                    <div class="tkf-w-pass-field-val" style="font-size: 8px; color: #E1A92A; font-weight:700;"><?php echo esc_html($member->designation); ?></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div style="display:flex; justify-content:space-between; align-items:center; border-top: 0.5px solid rgba(255,255,255,0.1); padding-top: 6px;">
+                            <div>
+                                <span class="tkf-w-pass-field-lbl">Personnel ID</span>
+                                <div class="tkf-w-pass-field-val" style="font-family:monospace; font-size: 8px;"><?php echo esc_html($member->member_id); ?></div>
+                            </div>
+                            <div style="text-align: right;">
+                                <span class="tkf-w-pass-field-lbl">Pass Status</span>
+                                <div class="tkf-w-pass-field-val" style="color:#28a745; font-size: 7.5px; text-transform:uppercase; font-weight:800;">✓ ACTIVE</div>
+                            </div>
+                        </div>
+
+                        <!-- Barcode Section -->
+                        <div class="tkf-w-pass-barcode-box">
+                            <img class="tkf-w-pass-barcode-img" src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=<?php echo urlencode($verify_url); ?>" style="width:85px; height:85px; object-fit:contain;" alt="Barcode">
+                            <span class="tkf-w-pass-barcode-text">MEMBERSHIP CARD SCAN</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- DETAILS ACTION CONTAINER -->
+                <div class="tkf-w-details-area">
+                    <h3 id="tkf-wallet-modal-title" class="tkf-w-modal-title">Save to Wallet</h3>
+                    <p class="tkf-w-modal-desc">Your digital personnel pass is ready to package. Download your pass file below or configure live dynamic signing credentials on your WordPress production server.</p>
+                    
+                    <div class="tkf-modal-actions">
+                        <a id="tkf-pass-download-link" href="#" class="tkf-btn-primary-action">
+                            <svg style="width: 15px; height: 15px; fill: none; stroke: currentColor; stroke-width: 2.5;" viewBox="0 0 24 24">
+                                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                                <polyline points="7 10 12 15 17 10"></polyline>
+                                <line x1="12" y1="15" x2="12" y2="3"></line>
+                            </svg>
+                            Download Digital Pass File
+                        </a>
+                    </div>
+
+                    <!-- Developer Integration Details -->
+                    <div class="tkf-admin-dev-guide">
+                        <button class="tkf-guide-toggle-btn" onclick="tkfToggleDevGuide(event)">
+                            🛠️ Production Certificate Configuration (For Admin)
+                        </button>
+                        <div id="tkf-guide-body" class="tkf-guide-body">To publish fully certified, digitally signed wallet passes directly to iOS and Android devices, integrate your production certs:
+
+1. Apple Wallet (.pkpass):
+Open 'wp-config.php' and define the Apple Developer keys:
+define('APPLE_PASS_TYPE_IDENTIFIER', 'pass.org.tatkhalsa.member');
+define('APPLE_TEAM_IDENTIFIER', 'ABC123XYZ45');
+
+2. Google Wallet:
+Setup Google Pay API Console, download Google Service Key JSON file and declare:
+define('GOOGLE_WALLET_SERVICE_ACCOUNT_EMAIL', 'wallet-service@project.iam.gserviceaccount.com');
+define('GOOGLE_WALLET_PRIVATE_KEY', '-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqh...\n-----END PRIVATE KEY-----');
+
+3. Samsung Wallet:
+Samsung Wallet API JWT uses Knox tokens. Declare:
+define('SAMSUNG_WALLET_JWT_SECRET', 'your-sec-samsung-knox-jwt-token-string');
+
+Once environment constants are configured, the page-verify backend automatically compiles signed headers!</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script>
+            function tkfOpenWalletModal(walletType) {
+                var overlay = document.getElementById('tkf-wallet-modal-overlay');
+                var title = document.getElementById('tkf-wallet-modal-title');
+                var downloadBtn = document.getElementById('tkf-pass-download-link');
+                
+                if (walletType === 'apple') {
+                    title.innerHTML = 'Apple Wallet Pass Setup';
+                    downloadBtn.innerHTML = 'Download Apple Wallet Pass (.pkpass)';
+                    downloadBtn.href = '?download_pass=<?php echo urlencode($member->member_id); ?>&wallet_type=apple';
+                } else if (walletType === 'google') {
+                    title.innerHTML = 'Google Wallet Save Setup';
+                    downloadBtn.innerHTML = 'Save to Google Wallet (.json)';
+                    downloadBtn.href = '?download_pass=<?php echo urlencode($member->member_id); ?>&wallet_type=google';
+                } else {
+                    title.innerHTML = 'Samsung Wallet Pass Setup';
+                    downloadBtn.innerHTML = 'Add to Samsung Wallet (.json)';
+                    downloadBtn.href = '?download_pass=<?php echo urlencode($member->member_id); ?>&wallet_type=samsung';
+                }
+                
+                overlay.classList.add('active');
+            }
+
+            function tkfCloseWalletModal(e) {
+                var overlay = document.getElementById('tkf-wallet-modal-overlay');
+                overlay.classList.remove('active');
+            }
+
+            function tkfToggleDevGuide(e) {
+                if (e) e.preventDefault();
+                var guide = document.getElementById('tkf-guide-body');
+                if (guide.style.display === 'block') {
+                    guide.style.display = 'none';
+                } else {
+                    guide.style.display = 'block';
+                }
+            }
+        </script>
+        <?php
+    }
+}
+
 // 1. DATABASE SETUP & ARCHITECTURE: Automatically build the table if it does not exist
 $charset_collate = $wpdb->get_charset_collate();
 $sql = "CREATE TABLE IF NOT EXISTS $table_name (
@@ -347,6 +900,107 @@ if ( $_SERVER['REQUEST_METHOD'] === 'POST' && isset( $_POST['tkf_verify_action']
         }
     }
 }
+
+
+    // Intercept routing logic for generating/downloading Mobile Wallet Pass
+    $download_pass = isset( $_GET['download_pass'] ) ? sanitize_text_field( wp_unslash( $_GET['download_pass'] ) ) : '';
+    if ( ! empty( $download_pass ) ) {
+        $member = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM $table_name WHERE member_id = %s", $download_pass ) );
+        if ( ! $member ) {
+            wp_die( 'Member not found.' );
+        }
+
+        $wallet_type = isset( $_GET['wallet_type'] ) ? sanitize_text_field( wp_unslash( $_GET['wallet_type'] ) ) : 'apple';
+
+        // Build the JSON pass descriptor payload
+        $pass_data = array(
+            'organizationName' => 'Tatkhalsa Foundation',
+            'passTypeIdentifier' => 'pass.org.tatkhalsa.member.digital',
+            'serialNumber' => 'TKF-' . strtoupper(str_replace('-', '', $member->member_id)),
+            'teamIdentifier' => 'TKF98274H23',
+            'foregroundColor' => '#E1A92A',
+            'backgroundColor' => '#052054',
+            'labelColor' => '#ffffff',
+            'logoText' => 'Tatkhalsa Foundation',
+            'memberInfo' => array(
+                'id' => $member->member_id,
+                'name' => $member->full_name,
+                'designation' => $member->designation,
+                'status' => $member->status,
+                'issue_date' => tkf_format_date( $member->issue_date, '16 JUN 2026' ),
+                'valid_till' => tkf_format_date( $member->expiry_date, 'LIFETIME' ),
+                'blood_group' => ! empty($member->blood_group) ? $member->blood_group : 'N/A'
+            ),
+            'barcode' => array(
+                'message' => $member->member_id,
+                'format' => 'PKBarcodeFormatQR',
+                'messageEncoding' => 'iso-8859-1',
+                'altText' => $member->member_id
+            ),
+            'verificationURL' => esc_url( home_url('/verify/?member_id=' . $member->member_id) )
+        );
+
+        if ( $wallet_type === 'apple' ) {
+            header('Content-Type: application/vnd.apple.pkpass');
+            header('Content-Disposition: attachment; filename="tkf_pass_' . $member->member_id . '.pkpass"');
+            
+            if ( class_exists('ZipArchive') ) {
+                $zip = new ZipArchive();
+                $temp_file = tempnam(sys_get_temp_dir(), 'pkpass');
+                if ( $zip->open($temp_file, ZipArchive::CREATE | ZipArchive::OVERWRITE) === TRUE ) {
+                    $zip->addFromString('pass.json', json_encode($pass_data, JSON_PRETTY_PRINT));
+                    $manifest = array();
+                    $manifest['pass.json'] = sha1(json_encode($pass_data, JSON_PRETTY_PRINT));
+                    $zip->addFromString('manifest.json', json_encode($manifest, JSON_PRETTY_PRINT));
+                    $zip->addFromString('signature', 'Self-Signed Prototype Pass Signature Block');
+                    $zip->close();
+                    
+                    readfile($temp_file);
+                    unlink($temp_file);
+                    exit;
+                }
+            }
+            echo json_encode($pass_data, JSON_PRETTY_PRINT);
+            exit;
+        } elseif ( $wallet_type === 'google' ) {
+            header('Content-Type: application/json');
+            header('Content-Disposition: attachment; filename="tkf_google_wallet_' . $member->member_id . '.json"');
+            echo json_encode(array(
+                'classId' => 'tkf_membership_class',
+                'id' => 'tkf_member_pass_' . $member->member_id,
+                'state' => 'ACTIVE',
+                'logo' => 'https://tatkhalsa.in/wp-content/uploads/2026/06/cropped-Logo.png',
+                'cardTitle' => 'TATKHALSA FOUNDATION',
+                'subheader' => 'SECURE OFFICIAL PERSONNEL',
+                'header' => $member->full_name,
+                'barcode' => array(
+                    'type' => 'QR_CODE',
+                    'value' => $member->member_id,
+                    'alternateText' => $member->member_id
+                ),
+                'hexBackgroundColor' => '#052054',
+                'heroImage' => $member->photo_url,
+                'customFields' => $pass_data['memberInfo']
+            ), JSON_PRETTY_PRINT);
+            exit;
+        } else {
+            header('Content-Type: application/json');
+            header('Content-Disposition: attachment; filename="tkf_samsung_wallet_' . $member->member_id . '.json"');
+            echo json_encode(array(
+                'version' => '1.0',
+                'type' => 'membership',
+                'publisher' => 'Tatkhalsa Foundation',
+                'id' => $member->member_id,
+                'user' => array(
+                    'name' => $member->full_name,
+                    'designation' => $member->designation
+                ),
+                'barcode' => $member->member_id,
+                'customFields' => $pass_data['memberInfo']
+            ), JSON_PRETTY_PRINT);
+            exit;
+        }
+    }
 
     // Intercept routing logic for printing ID Card
 $download_id = isset( $_GET['download_id'] ) ? sanitize_text_field( wp_unslash( $_GET['download_id'] ) ) : '';
@@ -2224,6 +2878,8 @@ if ( ! empty( $query_member_id ) ) {
 
 
                 </div>
+                
+                <?php tkf_render_mobile_wallet_hub( $member ); ?>
             </div>
 
         <?php else: ?>
@@ -2315,8 +2971,27 @@ if ( ! empty( $query_member_id ) ) {
         exit;
     }
 
-    // Fetch all members to populate table directory
-    $members = $wpdb->get_results( "SELECT * FROM $table_name ORDER BY created_at DESC" );
+    // Fetch all members to populate table directory and support dynamic sorting
+    $sort_by = isset( $_GET['sort_by'] ) ? sanitize_text_field( wp_unslash( $_GET['sort_by'] ) ) : 'id_asc';
+    
+    $order_clause = "id ASC"; // Default: Sort data entries number wise (ID: Low to High)
+    if ( $sort_by === 'id_desc' ) {
+        $order_clause = "id DESC";
+    } elseif ( $sort_by === 'member_id_asc' ) {
+        $order_clause = "member_id ASC";
+    } elseif ( $sort_by === 'member_id_desc' ) {
+        $order_clause = "member_id DESC";
+    } elseif ( $sort_by === 'created_at_desc' ) {
+        $order_clause = "created_at DESC";
+    } elseif ( $sort_by === 'created_at_asc' ) {
+        $order_clause = "created_at ASC";
+    } elseif ( $sort_by === 'name_asc' ) {
+        $order_clause = "full_name ASC";
+    } elseif ( $sort_by === 'name_desc' ) {
+        $order_clause = "full_name DESC";
+    }
+    
+    $members = $wpdb->get_results( "SELECT * FROM $table_name ORDER BY $order_clause" );
 
     // Fetch member to edit if edit_id is set
     $edit_id = isset( $_GET['edit_id'] ) ? intval( $_GET['edit_id'] ) : 0;
@@ -2580,7 +3255,22 @@ if ( ! empty( $query_member_id ) ) {
             </form>
         </div>
 
-        <h3 style="color: #333; margin-top: 40px; margin-bottom: 20px;">Secured Record Manifest</h3>
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 40px; margin-bottom: 20px; flex-wrap: wrap; gap: 15px;">
+            <h3 style="color: #333; margin: 0;">Secured Record Manifest</h3>
+            <div style="display: flex; align-items: center; gap: 8px;">
+                <label for="sort_by" style="font-size: 13px; font-weight: 700; color: #4a5568;">Sort Manifest:</label>
+                <select id="sort_by" onchange="window.location.href = this.value;" style="padding: 6px 12px; border-radius: 6px; border: 1.5px solid #cbd5e0; font-size: 13px; font-weight: 600; color: #052054; background-color: #fff; cursor: pointer; box-shadow: 0 1px 3px rgba(0,0,0,0.05); outline: none;">
+                    <option value="<?php echo esc_url( add_query_arg( 'sort_by', 'id_asc' ) ); ?>" <?php selected( $sort_by, 'id_asc' ); ?>>Number Wise (ID: Low to High)</option>
+                    <option value="<?php echo esc_url( add_query_arg( 'sort_by', 'id_desc' ) ); ?>" <?php selected( $sort_by, 'id_desc' ); ?>>Number Wise (ID: High to Low)</option>
+                    <option value="<?php echo esc_url( add_query_arg( 'sort_by', 'member_id_asc' ) ); ?>" <?php selected( $sort_by, 'member_id_asc' ); ?>>Member ID (A-Z)</option>
+                    <option value="<?php echo esc_url( add_query_arg( 'sort_by', 'member_id_desc' ) ); ?>" <?php selected( $sort_by, 'member_id_desc' ); ?>>Member ID (Z-A)</option>
+                    <option value="<?php echo esc_url( add_query_arg( 'sort_by', 'name_asc' ) ); ?>" <?php selected( $sort_by, 'name_asc' ); ?>>Name (A-Z)</option>
+                    <option value="<?php echo esc_url( add_query_arg( 'sort_by', 'name_desc' ) ); ?>" <?php selected( $sort_by, 'name_desc' ); ?>>Name (Z-A)</option>
+                    <option value="<?php echo esc_url( add_query_arg( 'sort_by', 'created_at_desc' ) ); ?>" <?php selected( $sort_by, 'created_at_desc' ); ?>>Registration Date (Newest)</option>
+                    <option value="<?php echo esc_url( add_query_arg( 'sort_by', 'created_at_asc' ) ); ?>" <?php selected( $sort_by, 'created_at_asc' ); ?>>Registration Date (Oldest)</option>
+                </select>
+            </div>
+        </div>
         <div class="admin-table-container">
             <table class="admin-table">
                 <thead>
