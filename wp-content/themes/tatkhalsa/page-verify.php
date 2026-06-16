@@ -1059,21 +1059,23 @@ if ( ! empty( $download_id ) ) {
                     </div>
                     <div style="display: flex; flex-direction: column; line-height: 1;">
                         <span style="font-size: 3.5px; font-weight: 800; color: var(--id-primary); text-transform: uppercase; letter-spacing: 0.2px;">ACCOUNT NUMBER</span>
-                        <span style="font-size: 5.5px; font-weight: 700; color: #333; font-family: 'Courier New', monospace; letter-spacing: 0.2px;">059225202388900</span>
+                        <span style="font-size: 5.5px; font-weight: 700; color: #333; font-family: 'Courier New', monospace; letter-spacing: 0.2px;">925010057912966</span>
                     </div>
                     <div style="display: flex; gap: 8px;">
                         <div style="display: flex; flex-direction: column; line-height: 1;">
                             <span style="font-size: 3.5px; font-weight: 800; color: var(--id-primary); text-transform: uppercase; letter-spacing: 0.2px;">IFSC CODE</span>
-                            <span style="font-size: 5.5px; font-weight: 700; color: #333; font-family: 'Courier New', monospace;">PUNB0059225</span>
+                            <span style="font-size: 5.5px; font-weight: 700; color: #333; font-family: 'Courier New', monospace;">UTIB0004354</span>
                         </div>
                         <div style="display: flex; flex-direction: column; line-height: 1;">
-                            <span style="font-size: 3.5px; font-weight: 800; color: var(--id-primary); text-transform: uppercase; letter-spacing: 0.2px;">BANK BRANCH</span>
-                            <span style="font-size: 5.5px; font-weight: 700; color: #333;">PNB, AMRITSAR</span>
+                            <span style="font-size: 3.5px; font-weight: 800; color: var(--id-primary); text-transform: uppercase; letter-spacing: 0.2px;">BANK NAME</span>
+                            <div style="display: flex; align-items: center; gap: 3px; margin-top: 0.5px;">
+                                <img src="https://upload.wikimedia.org/wikipedia/commons/1/1a/Axis_Bank_logo.svg" alt="Axis Bank" style="height: 5.5px; display: block; object-fit: contain;">
+                            </div>
                         </div>
                     </div>
                     <div style="display: flex; flex-direction: column; line-height: 1;">
                         <span style="font-size: 3.5px; font-weight: 800; color: var(--id-primary); text-transform: uppercase; letter-spacing: 0.2px;">UPI TRANSACTION ID</span>
-                        <span style="font-size: 5.5px; font-weight: 700; color: #333; font-family: 'Courier New', monospace;">tatkhalsa@upi</span>
+                        <span style="font-size: 5.2px; font-weight: 700; color: #333; font-family: 'Courier New', monospace; letter-spacing: -0.1px;">mab.037215043540097@axisbank</span>
                     </div>
                 </div>
             </div>
@@ -1081,7 +1083,7 @@ if ( ! empty( $download_id ) ) {
             <!-- Right Column: Contribution QR Code -->
             <div class="back-qr-col" style="width: 58px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; border-left: 0.5px solid #cbd5e0; padding-left: 8px; box-sizing: border-box;">
                 <?php 
-                $upi_url = 'upi://pay?pa=tatkhalsa@upi&pn=Tatkhalsa%20Foundation&cu=INR';
+                $upi_url = 'upi://pay?pa=mab.037215043540097@axisbank&pn=Tatkhalsa%20Foundation&cu=INR';
                 $pay_qr_url = 'https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=' . urlencode( $upi_url ) . '&margin=0';
                 ?>
                 <div style="padding: 2px; border: 0.75px solid var(--id-primary); border-radius: 4px; background: #ffffff; box-shadow: 0 1px 3px rgba(0,0,0,0.05); box-sizing: border-box;">
@@ -2056,21 +2058,23 @@ if ( ! empty( $query_member_id ) ) {
                                     </div>
                                     <div style="display: flex; flex-direction: column; line-height: 1;">
                                         <span style="font-size: 3.5px; font-weight: 800; color: var(--id-primary); text-transform: uppercase; letter-spacing: 0.2px;">ACCOUNT NUMBER</span>
-                                        <span style="font-size: 5.5px; font-weight: 700; color: #333; font-family: 'Courier New', monospace; letter-spacing: 0.2px;">059225202388900</span>
+                                        <span style="font-size: 5.5px; font-weight: 700; color: #333; font-family: 'Courier New', monospace; letter-spacing: 0.2px;">925010057912966</span>
                                     </div>
                                     <div style="display: flex; gap: 8px;">
                                         <div style="display: flex; flex-direction: column; line-height: 1;">
                                             <span style="font-size: 3.5px; font-weight: 800; color: var(--id-primary); text-transform: uppercase; letter-spacing: 0.2px;">IFSC CODE</span>
-                                            <span style="font-size: 5.5px; font-weight: 700; color: #333; font-family: 'Courier New', monospace;">PUNB0059225</span>
+                                            <span style="font-size: 5.5px; font-weight: 700; color: #333; font-family: 'Courier New', monospace;">UTIB0004354</span>
                                         </div>
                                         <div style="display: flex; flex-direction: column; line-height: 1;">
-                                            <span style="font-size: 3.5px; font-weight: 800; color: var(--id-primary); text-transform: uppercase; letter-spacing: 0.2px;">BANK BRANCH</span>
-                                            <span style="font-size: 5.5px; font-weight: 700; color: #333;">PNB, AMRITSAR</span>
+                                            <span style="font-size: 3.5px; font-weight: 800; color: var(--id-primary); text-transform: uppercase; letter-spacing: 0.2px;">BANK NAME</span>
+                                            <div style="display: flex; align-items: center; gap: 3px; margin-top: 0.5px;">
+                                                <img src="https://upload.wikimedia.org/wikipedia/commons/1/1a/Axis_Bank_logo.svg" alt="Axis Bank" style="height: 5.5px; display: block; object-fit: contain;">
+                                            </div>
                                         </div>
                                     </div>
                                     <div style="display: flex; flex-direction: column; line-height: 1;">
                                         <span style="font-size: 3.5px; font-weight: 800; color: var(--id-primary); text-transform: uppercase; letter-spacing: 0.2px;">UPI TRANSACTION ID</span>
-                                        <span style="font-size: 5.5px; font-weight: 700; color: #333; font-family: 'Courier New', monospace;">tatkhalsa@upi</span>
+                                        <span style="font-size: 5.2px; font-weight: 700; color: #333; font-family: 'Courier New', monospace; letter-spacing: -0.1px;">mab.037215043540097@axisbank</span>
                                     </div>
                                 </div>
                             </div>
@@ -2078,7 +2082,7 @@ if ( ! empty( $query_member_id ) ) {
                             <!-- Right Column: Contribution QR Code -->
                             <div class="back-qr-col" style="width: 58px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; border-left: 0.5px solid #cbd5e0; padding-left: 8px; box-sizing: border-box;">
                                 <?php 
-                                $upi_url = 'upi://pay?pa=tatkhalsa@upi&pn=Tatkhalsa%20Foundation&cu=INR';
+                                $upi_url = 'upi://pay?pa=mab.037215043540097@axisbank&pn=Tatkhalsa%20Foundation&cu=INR';
                                 $pay_qr_url = 'https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=' . urlencode( $upi_url ) . '&margin=0';
                                 ?>
                                 <div style="padding: 2px; border: 0.75px solid var(--id-primary); border-radius: 4px; background: #ffffff; box-shadow: 0 1px 3px rgba(0,0,0,0.05); box-sizing: border-box;">
