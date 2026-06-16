@@ -155,8 +155,8 @@ if ( ! empty( $download_id ) ) {
         }
         .id-card-wrapper {
             background: #ffffff;
-            width: 5.4cm;
-            height: 8.6cm;
+            width: 8.6cm;
+            height: 5.4cm;
             border-radius: 8px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.15);
             position: relative;
@@ -165,6 +165,8 @@ if ( ! empty( $download_id ) ) {
             box-sizing: border-box;
             print-color-adjust: exact;
             -webkit-print-color-adjust: exact;
+            display: flex;
+            flex-direction: row;
         }
         @media print {
             body { background: #fff; }
@@ -172,55 +174,62 @@ if ( ! empty( $download_id ) ) {
             .no-print { display: none; }
         }
         /* Design matches Tatkhalsa theme */
-        .id-top {
+        .id-left {
+            width: 3.2cm;
             background: #0A327D;
             color: #E1A92A;
             text-align: center;
-            padding: 12px 0 8px;
-            border-bottom: 4px solid #E1A92A;
+            padding: 10px 5px;
+            border-right: 4px solid #E1A92A;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
         }
-        .id-top img {
-            height: 35px;
+        .id-left img.logo {
+            height: 30px;
             object-fit: contain;
-            margin-bottom: 4px;
+            margin-bottom: 5px;
         }
-        .id-top h3 {
-            margin: 0;
-            font-size: 10px;
+        .id-left h3 {
+            margin: 0 0 10px;
+            font-size: 8px;
             text-transform: uppercase;
             letter-spacing: 0.5px;
-        }
-        .id-photo-wrapper {
-            text-align: center;
-            margin-top: 15px;
+            color: #E1A92A;
         }
         .id-photo {
-            width: 85px;
-            height: 85px;
+            width: 70px;
+            height: 70px;
             object-fit: cover;
             border-radius: 8px;
             border: 2px solid #E1A92A;
+            background: #fff;
+            margin-bottom: 5px;
             box-shadow: 0 4px 10px rgba(0,0,0,0.1);
         }
-        .id-details {
-            text-align: center;
-            padding: 10px 15px 5px;
+        .id-right {
+            padding: 12px 15px;
+            flex: 1;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
         }
         .id-name {
-            font-size: 14px;
+            font-size: 16px;
             font-weight: 800;
             color: #0A327D;
             margin: 0 0 2px;
             text-transform: uppercase;
-            line-height: 1.2;
-            word-wrap: break-word;
+            line-height: 1.1;
         }
         .id-role {
             font-size: 9px;
             color: #555;
             font-weight: 800;
             text-transform: uppercase;
-            margin: 0 0 10px;
+            margin: 0 0 8px;
         }
         .id-grid {
             display: grid;
@@ -228,26 +237,23 @@ if ( ! empty( $download_id ) ) {
             text-align: left;
             font-size: 8px;
             color: #444;
-            row-gap: 5px;
-            column-gap: 5px;
-            margin-bottom: 10px;
-            border-top: 1px solid #eee;
-            padding-top: 8px;
+            row-gap: 4px;
+            column-gap: 10px;
+            margin-bottom: 0px;
         }
         .id-grid strong {
             color: #0A327D;
             font-size: 7px;
         }
         .id-qr {
-            text-align: center;
             position: absolute;
-            bottom: 12px;
-            width: 100%;
+            bottom: 10px;
+            right: 15px;
         }
         .id-qr img {
-            width: 55px;
-            height: 55px;
-            border: 2px solid #10b981;
+            width: 50px;
+            height: 50px;
+            border: 2px solid #E1A92A;
             padding: 2px;
             background: #fff;
             border-radius: 4px;
@@ -266,6 +272,8 @@ if ( ! empty( $download_id ) ) {
         .card-content {
             position: relative;
             z-index: 1;
+            display: flex;
+            width: 100%;
         }
         .print-btn {
             position: fixed;
@@ -294,12 +302,10 @@ if ( ! empty( $download_id ) ) {
     <div class="id-card-wrapper">
         <img src="<?php echo esc_url($logo_url); ?>" class="watermark" alt="">
         <div class="card-content">
-            <div class="id-top">
-                <img src="<?php echo esc_url($logo_url); ?>" alt="Tatkhalsa Logo">
+            <div class="id-left">
+                <img src="<?php echo esc_url($logo_url); ?>" class="logo" alt="Tatkhalsa Logo">
                 <h3>Tatkhalsa Foundation</h3>
-            </div>
-            
-            <div class="id-photo-wrapper">
+                
                 <?php if ( ! empty( $member->photo_url ) ) : ?>
                     <img src="<?php echo esc_url( $member->photo_url ); ?>" alt="Photo" class="id-photo">
                 <?php else: ?>
@@ -307,7 +313,7 @@ if ( ! empty( $download_id ) ) {
                 <?php endif; ?>
             </div>
             
-            <div class="id-details">
+            <div class="id-right">
                 <p class="id-name"><?php echo esc_html( $member->full_name ); ?></p>
                 <p class="id-role"><?php echo esc_html( $member->designation ); ?></p>
                 
@@ -317,10 +323,10 @@ if ( ! empty( $download_id ) ) {
                     <div><strong>VALID TILL:</strong><br><?php echo $member->expiry_date ? esc_html( date('d M Y', strtotime($member->expiry_date)) ) : 'N/A'; ?></div>
                     <div><strong>CONTACT:</strong><br><?php echo esc_html( $member->mobile ?: 'N/A' ); ?></div>
                 </div>
-            </div>
-            
-            <div class="id-qr">
-                <img src="<?php echo esc_url($qr_code_url); ?>" alt="QR Code to Verify">
+                
+                <div class="id-qr">
+                    <img src="<?php echo esc_url($qr_code_url); ?>" alt="QR Code to Verify">
+                </div>
             </div>
         </div>
     </div>
