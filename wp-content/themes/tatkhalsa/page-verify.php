@@ -18,6 +18,11 @@ $sql = "CREATE TABLE IF NOT EXISTS $table_name (
     full_name varchar(255) NOT NULL,
     designation varchar(255) NOT NULL,
     photo_url text,
+    expiry_date date,
+    gov_id varchar(100),
+    email varchar(255),
+    mobile varchar(50),
+    blood_group varchar(10),
     status varchar(50) DEFAULT 'Active' NOT NULL,
     created_at timestamp DEFAULT CURRENT_TIMESTAMP NOT NULL,
     PRIMARY KEY  (id),
@@ -50,6 +55,11 @@ if ( $_SERVER['REQUEST_METHOD'] === 'POST' && isset( $_POST['tkf_verify_action']
         $full_name   = sanitize_text_field( wp_unslash( $_POST['full_name'] ) );
         $designation = sanitize_text_field( wp_unslash( $_POST['designation'] ) );
         $photo_url   = esc_url_raw( wp_unslash( $_POST['photo_url'] ) );
+        $expiry_date = sanitize_text_field( wp_unslash( $_POST['expiry_date'] ) );
+        $gov_id      = sanitize_text_field( wp_unslash( $_POST['gov_id'] ) );
+        $email       = sanitize_email( wp_unslash( $_POST['email'] ) );
+        $mobile      = sanitize_text_field( wp_unslash( $_POST['mobile'] ) );
+        $blood_group = sanitize_text_field( wp_unslash( $_POST['blood_group'] ) );
 
         // Protect against SQL Injection: Check if member ID exists securely
         $exists = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM $table_name WHERE member_id = %s", $member_id ) );
@@ -65,9 +75,14 @@ if ( $_SERVER['REQUEST_METHOD'] === 'POST' && isset( $_POST['tkf_verify_action']
                     'full_name'   => $full_name,
                     'designation' => $designation,
                     'photo_url'   => $photo_url,
+                    'expiry_date' => $expiry_date,
+                    'gov_id'      => $gov_id,
+                    'email'       => $email,
+                    'mobile'      => $mobile,
+                    'blood_group' => $blood_group,
                     'status'      => 'Active'
                 ),
-                array( '%s', '%s', '%s', '%s', '%s' )
+                array( '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s' )
             );
 
             if ( $inserted ) {
@@ -102,6 +117,217 @@ if ( $_SERVER['REQUEST_METHOD'] === 'POST' && isset( $_POST['tkf_verify_action']
         $message = 'Personnel record permanently deleted.';
         $message_type = 'success';
     }
+}
+
+// Intercept routing logic for printing ID Card
+$download_id = isset( $_GET['download_id'] ) ? sanitize_text_field( wp_unslash( $_GET['download_id'] ) ) : '';
+if ( ! empty( $download_id ) ) {
+    // Current user can check
+    if ( ! current_user_can( 'manage_options' ) ) {
+        wp_die( 'Unauthorized Access. Administrator rights are required to print ID cards.' );
+    }
+
+    $member = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM $table_name WHERE member_id = %s", $download_id ) );
+    if ( ! $member ) {
+        wp_die( 'Member not found.' );
+    }
+
+    $logo_url = get_template_directory_uri() . '/Logo.png'; 
+    $verify_url = esc_url( home_url('/verify/?member_id=' . $member->member_id) );
+    $qr_code_url = 'https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=' . urlencode( $verify_url ) . '&margin=0';
+?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ID Card - <?php echo esc_html( $member->member_id ); ?></title>
+    <!-- CSS for ID Card Print -->
+    <style>
+        body {
+            background: #e0e4e8;
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+        }
+        .id-card-wrapper {
+            background: #ffffff;
+            width: 5.4cm;
+            height: 8.6cm;
+            border-radius: 8px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+            position: relative;
+            overflow: hidden;
+            border: 1px solid #ccc;
+            box-sizing: border-box;
+            print-color-adjust: exact;
+            -webkit-print-color-adjust: exact;
+        }
+        @media print {
+            body { background: #fff; }
+            .id-card-wrapper { box-shadow: none; border: 1px solid #000; }
+            .no-print { display: none; }
+        }
+        /* Design matches Tatkhalsa theme */
+        .id-top {
+            background: #0A327D;
+            color: #E1A92A;
+            text-align: center;
+            padding: 12px 0 8px;
+            border-bottom: 4px solid #E1A92A;
+        }
+        .id-top img {
+            height: 35px;
+            object-fit: contain;
+            margin-bottom: 4px;
+        }
+        .id-top h3 {
+            margin: 0;
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .id-photo-wrapper {
+            text-align: center;
+            margin-top: 15px;
+        }
+        .id-photo {
+            width: 85px;
+            height: 85px;
+            object-fit: cover;
+            border-radius: 8px;
+            border: 2px solid #E1A92A;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+        .id-details {
+            text-align: center;
+            padding: 10px 15px 5px;
+        }
+        .id-name {
+            font-size: 14px;
+            font-weight: 800;
+            color: #0A327D;
+            margin: 0 0 2px;
+            text-transform: uppercase;
+            line-height: 1.2;
+            word-wrap: break-word;
+        }
+        .id-role {
+            font-size: 9px;
+            color: #555;
+            font-weight: 800;
+            text-transform: uppercase;
+            margin: 0 0 10px;
+        }
+        .id-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            text-align: left;
+            font-size: 8px;
+            color: #444;
+            row-gap: 5px;
+            column-gap: 5px;
+            margin-bottom: 10px;
+            border-top: 1px solid #eee;
+            padding-top: 8px;
+        }
+        .id-grid strong {
+            color: #0A327D;
+            font-size: 7px;
+        }
+        .id-qr {
+            text-align: center;
+            position: absolute;
+            bottom: 12px;
+            width: 100%;
+        }
+        .id-qr img {
+            width: 55px;
+            height: 55px;
+            border: 2px solid #10b981;
+            padding: 2px;
+            background: #fff;
+            border-radius: 4px;
+        }
+        .watermark {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 150px;
+            opacity: 0.05;
+            z-index: 0;
+            pointer-events: none;
+            filter: grayscale(100%);
+        }
+        .card-content {
+            position: relative;
+            z-index: 1;
+        }
+        .print-btn {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #0A327D;
+            color: #E1A92A;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 6px;
+            font-weight: 800;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.2s;
+        }
+        .print-btn:hover {
+            background: #061e4d;
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+<body>
+    <button class="no-print print-btn" onclick="window.print()">Print ID Card</button>
+    <div class="id-card-wrapper">
+        <img src="<?php echo esc_url($logo_url); ?>" class="watermark" alt="">
+        <div class="card-content">
+            <div class="id-top">
+                <img src="<?php echo esc_url($logo_url); ?>" alt="Tatkhalsa Logo">
+                <h3>Tatkhalsa Foundation</h3>
+            </div>
+            
+            <div class="id-photo-wrapper">
+                <?php if ( ! empty( $member->photo_url ) ) : ?>
+                    <img src="<?php echo esc_url( $member->photo_url ); ?>" alt="Photo" class="id-photo">
+                <?php else: ?>
+                    <img src="<?php echo esc_url($logo_url); ?>" alt="Tatkhalsa Foundation" class="id-photo" style="object-fit: contain; padding: 10px; background:#f0f0f0;">
+                <?php endif; ?>
+            </div>
+            
+            <div class="id-details">
+                <p class="id-name"><?php echo esc_html( $member->full_name ); ?></p>
+                <p class="id-role"><?php echo esc_html( $member->designation ); ?></p>
+                
+                <div class="id-grid">
+                    <div><strong>MEMBER ID:</strong><br><?php echo esc_html( $member->member_id ); ?></div>
+                    <div><strong>BLOOD:</strong><br><?php echo esc_html( $member->blood_group ?: 'N/A' ); ?></div>
+                    <div><strong>VALID TILL:</strong><br><?php echo $member->expiry_date ? esc_html( date('d M Y', strtotime($member->expiry_date)) ) : 'N/A'; ?></div>
+                    <div><strong>CONTACT:</strong><br><?php echo esc_html( $member->mobile ?: 'N/A' ); ?></div>
+                </div>
+            </div>
+            
+            <div class="id-qr">
+                <img src="<?php echo esc_url($qr_code_url); ?>" alt="QR Code to Verify">
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+<?php
+    exit;
 }
 
 // Intercept routing logic: If member_id query variable is present, show public validation scan view; otherwise, restrict and show admin dashboard
@@ -259,6 +485,21 @@ if ( ! empty( $query_member_id ) ) {
                 <h2 class="verify-name"><?php echo esc_html( $member->full_name ); ?></h2>
                 <div class="verify-role"><?php echo esc_html( $member->designation ); ?></div>
                 
+                <div class="verify-details" style="text-align: left; background: #fff; padding: 15px 25px; font-size: 14px; color: #444; border-top: 1px solid #eef0f2; line-height: 1.8;">
+                    <?php if ( ! empty( $member->blood_group ) ) : ?>
+                    <strong>BLOOD GROUP:</strong> <span style="color: #dc3545; font-weight: bold;"><?php echo esc_html( $member->blood_group ); ?></span><br>
+                    <?php endif; ?>
+                    <?php if ( ! empty( $member->expiry_date ) ) : ?>
+                    <strong>VALID UNTIL:</strong> <?php echo esc_html( date('d M Y', strtotime($member->expiry_date)) ); ?><br>
+                    <?php endif; ?>
+                    <?php if ( ! empty( $member->gov_id ) ) : ?>
+                    <strong>GOV ID:</strong> <?php echo esc_html( substr($member->gov_id, 0, 2) . '******' . substr($member->gov_id, -3) ); ?><br>
+                    <?php endif; ?>
+                    <?php if ( ! empty( $member->mobile ) ) : ?>
+                    <strong>CONTACT:</strong> <?php echo esc_html( '******' . substr($member->mobile, -4) ); ?>
+                    <?php endif; ?>
+                </div>
+
                 <div class="verify-id">
                     <strong>MEMBER ID:</strong> <?php echo esc_html( $member->member_id ); ?>
                 </div>
@@ -354,7 +595,9 @@ if ( ! empty( $query_member_id ) ) {
             font-size: 0.9em;
         }
         .form-group input[type="text"],
-        .form-group input[type="url"] {
+        .form-group input[type="url"],
+        .form-group input[type="email"],
+        .form-group input[type="date"] {
             width: 100%;
             padding: 12px;
             border: 1px solid #ccc;
@@ -503,6 +746,33 @@ if ( ! empty( $query_member_id ) ) {
                     <div class="form-group">
                         <label for="photo_url">Secure Portrait URL (Optional)</label>
                         <input type="url" id="photo_url" name="photo_url" placeholder="https://tatkhalsa.in/secure/portrait.jpg">
+                        <small style="color: #666; font-size: 0.85em; display: block; margin-top: 5px;">Tip: Upload the photo to your WordPress Media Library (Dashboard > Media > Add New), click on the image, copy the "File URL", and paste it here.</small>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="expiry_date">Expiry Date</label>
+                        <input type="date" id="expiry_date" name="expiry_date">
+                    </div>
+                    <div class="form-group">
+                        <label for="gov_id">Government ID Number</label>
+                        <input type="text" id="gov_id" name="gov_id" placeholder="e.g. Aadhaar or PAN">
+                    </div>
+                    <div class="form-group">
+                        <label for="blood_group">Blood Group</label>
+                        <input type="text" id="blood_group" name="blood_group" placeholder="e.g. B+">
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="email">Email Address</label>
+                        <input type="email" id="email" name="email" placeholder="e.g. info@domain.com">
+                    </div>
+                    <div class="form-group">
+                        <label for="mobile">Mobile Number</label>
+                        <input type="text" id="mobile" name="mobile" placeholder="e.g. +91 9876543210">
                     </div>
                 </div>
 
@@ -558,6 +828,9 @@ if ( ! empty( $query_member_id ) ) {
 
                                         <!-- Public Audit Deep-link -->
                                         <a href="<?php echo esc_url( home_url('/verify/?member_id=' . $mem->member_id) ); ?>" target="_blank" class="action-btn btn-view" style="display: flex; align-items: center; justify-content: center;">Scan Test</a>
+                                        
+                                        <!-- Download ID Button -->
+                                        <a href="<?php echo esc_url( home_url('/verify/?download_id=' . $mem->member_id) ); ?>" target="_blank" class="action-btn" style="background:#28a745; display: flex; align-items: center; justify-content: center;">Print ID</a>
                                     </div>
                                 </td>
                             </tr>
