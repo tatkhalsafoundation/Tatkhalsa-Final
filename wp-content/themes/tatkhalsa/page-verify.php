@@ -778,6 +778,7 @@ if ( ! empty( $download_id ) ) {
                     <h3 class="id-org-title">TATKHALSA</h3>
                     <p class="id-org-motto">FOUNDATION</p>
                     <p class="id-org-reg">REGISTRATION STATUS: SECTION 8 NGO</p>
+                    <p class="id-org-reg">CIN: U88900PB2023NPL059225</p>
                 </div>
             </div>
             <div class="id-header-right">
@@ -1623,6 +1624,7 @@ if ( ! empty( $query_member_id ) ) {
                                     <h3 class="id-org-title">TATKHALSA</h3>
                                     <p class="id-org-motto">FOUNDATION</p>
                                     <p class="id-org-reg">REGISTRATION STATUS: SECTION 8 NGO</p>
+                                    <p class="id-org-reg">CIN: U88900PB2023NPL059225</p>
                                 </div>
                             </div>
                             <div class="id-header-right">
@@ -1831,6 +1833,25 @@ if ( ! empty( $query_member_id ) ) {
                                 <span class="post-card-val"><?php echo esc_html( '******' . substr( $member->mobile, -4 ) ); ?></span>
                             </div>
                         <?php endif; ?>
+                    </div>
+
+                    <!-- Registered NGO Details Block -->
+                    <div class="ngo-details-block" style="margin-top: 25px; padding-top: 20px; border-top: 1px dashed #e2e8f0;">
+                        <h4 class="post-card-title" style="margin-bottom: 12px; color: #052054; border-left-color: #052054;">Registered NGO Details</h4>
+                        <div class="post-card-grid">
+                            <div class="post-card-row">
+                                <span class="post-card-label">Corporate Identification No (CIN)</span>
+                                <span class="post-card-val" style="font-family: monospace; font-size: 11.5px; color: #052054;">U88900PB2023NPL059225</span>
+                            </div>
+                            <div class="post-card-row">
+                                <span class="post-card-label">Official Email</span>
+                                <span class="post-card-val"><a href="mailto:info@tatkhalsa.in" style="color: #007bff; text-decoration: none;">info@tatkhalsa.in</a></span>
+                            </div>
+                            <div class="post-card-row" style="grid-column: 1 / -1;">
+                                <span class="post-card-label">Registered Address</span>
+                                <span class="post-card-val" style="font-weight: 500; color: #4a5568;">GF 37, Bazidpur, SBS Nagar, Punjab - 144518</span>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
