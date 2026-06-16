@@ -638,14 +638,14 @@ if ( ! empty( $download_id ) ) {
         }
         
         .signature-image-wrapper {
-            height: 14px;
+            height: 26px;
             display: flex;
             align-items: flex-end;
             justify-content: center;
         }
         
         .signature-image-wrapper img {
-            height: 14px;
+            height: 26px;
             width: auto;
             object-fit: contain;
             mix-blend-mode: multiply;
@@ -668,7 +668,7 @@ if ( ! empty( $download_id ) ) {
         }
         
         .vertical-dash-divider {
-            height: 18px;
+            height: 28px;
             border-left: 0.75px solid #cbd5e0;
             margin: 0 4px;
         }
@@ -1407,14 +1407,14 @@ if ( ! empty( $query_member_id ) ) {
         }
         
         .signature-image-wrapper {
-            height: 14px;
+            height: 26px;
             display: flex;
             align-items: flex-end;
             justify-content: center;
         }
         
         .signature-image-wrapper img {
-            height: 14px;
+            height: 26px;
             width: auto;
             object-fit: contain;
             mix-blend-mode: multiply;
@@ -1437,7 +1437,7 @@ if ( ! empty( $query_member_id ) ) {
         }
         
         .vertical-dash-divider {
-            height: 18px;
+            height: 28px;
             border-left: 0.75px solid #cbd5e0;
             margin: 0 4px;
         }
