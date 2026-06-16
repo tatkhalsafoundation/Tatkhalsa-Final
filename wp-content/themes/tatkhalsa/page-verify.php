@@ -188,21 +188,30 @@ if ( ! empty( $download_id ) ) {
             box-shadow: 0 10px 30px rgba(0,0,0,0.15);
             position: relative;
             overflow: hidden;
-            border: 2px solid #E1A92A;
+            border: 3px solid #0A327D;
             box-sizing: border-box;
             print-color-adjust: exact;
             -webkit-print-color-adjust: exact;
             display: flex;
             flex-direction: row;
         }
+        .id-card-wrapper::before {
+            content: '';
+            position: absolute;
+            top: 2px; left: 2px; right: 2px; bottom: 2px;
+            border: 2px solid #E1A92A;
+            border-radius: 4px;
+            pointer-events: none;
+            z-index: 5;
+        }
         @media print {
             body { background: #fff; }
-            .id-card-wrapper { box-shadow: none; border: 2px solid #0A327D; }
+            .id-card-wrapper { box-shadow: none; }
             .no-print { display: none; }
         }
         /* Design matches Tatkhalsa theme */
         .id-left {
-            width: 3.2cm;
+            width: 3.3cm;
             background: #0A327D;
             color: #E1A92A;
             text-align: center;
@@ -212,6 +221,8 @@ if ( ! empty( $download_id ) ) {
             flex-direction: column;
             align-items: center;
             justify-content: center;
+            position: relative;
+            z-index: 10;
         }
         .id-left img.logo {
             height: 30px;
@@ -312,19 +323,20 @@ if ( ! empty( $download_id ) ) {
         .watermark {
             position: absolute;
             top: 50%;
-            left: 50%;
+            left: 65%;
             transform: translate(-50%, -50%);
-            width: 150px;
-            opacity: 0.05;
+            width: 140px;
+            opacity: 0.08;
             z-index: 0;
             pointer-events: none;
             filter: grayscale(100%);
         }
         .card-content {
             position: relative;
-            z-index: 1;
+            z-index: 10;
             display: flex;
             width: 100%;
+            height: 100%;
         }
         .print-btn {
             position: fixed;
