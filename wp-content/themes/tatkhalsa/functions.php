@@ -1779,6 +1779,17 @@ function tatkhalsa_customize_register( $wp_customize ) {
 			'settings' => $id,
 		) ) );
 	}
+
+	// Blood On Call Tutorial Video Upload / URL
+	$wp_customize->add_setting( 'tatkhalsa_blood_video_url', array(
+		'default'           => 'https://assets.mixkit.co/videos/preview/mixkit-hand-holding-a-smartphone-with-a-yellow-background-41712-large.mp4',
+		'sanitize_callback' => 'esc_url_raw',
+	) );
+	$wp_customize->add_control( new WP_Customize_Upload_Control( $wp_customize, 'tatkhalsa_blood_video_url', array(
+		'label'       => __( 'Blood On Call Tutorial Video (Upload MP4 or paste URL)', 'tatkhalsa-theme' ),
+		'section'     => 'tatkhalsa_other_pages',
+		'settings'    => 'tatkhalsa_blood_video_url',
+	) ) );
 	// Blog Images Section
 	$wp_customize->add_section( 'tatkhalsa_blog', array(
 		'title'    => __( 'Blog Images', 'tatkhalsa-theme' ),

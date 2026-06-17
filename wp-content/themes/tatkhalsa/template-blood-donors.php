@@ -453,7 +453,7 @@ $donors_query = new WP_Query( $args );
 
                     <!-- Custom looping video segment representing mobile tutorial -->
                     <video id="tutorialVideo" loop muted playsinline style="width: 100%; height: 100%; object-fit: cover; background: #000;" onclick="toggleTutorialVideo()">
-                        <source src="https://assets.mixkit.co/videos/preview/mixkit-hand-holding-a-smartphone-with-a-yellow-background-41712-large.mp4" type="video/mp4">
+                        <source src="<?php echo esc_url( get_theme_mod( 'tatkhalsa_blood_video_url', 'https://assets.mixkit.co/videos/preview/mixkit-hand-holding-a-smartphone-with-a-yellow-background-41712-large.mp4' ) ); ?>" type="video/mp4">
                         Your browser does not support the video tag.
                     </video>
 
