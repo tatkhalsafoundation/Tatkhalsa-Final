@@ -79,6 +79,35 @@ async function startServer() {
     // Any remaining dynamic template directory calls
     content = content.replace(/<\?php\s*echo\s*esc_url\(\s*get_template_directory_uri\(\)\s*\);\s*\?>/g, '/');
 
+    // Replace standard get_theme_mod calls with simple strings
+    content = content.replace(/<\?php\s*echo\s*(?:esc_url\s*\(\s*)?get_theme_mod\(\s*['"]([^'"]+)['"]\s*,\s*['"]([^'"]*)['"]\s*\)\s*\)?\s*;?\s*\?>/g, (match, key, defaultVal) => {
+      const themeMods: Record<string, string> = {
+        tatkhalsa_blood_video_url: 'https://assets.mixkit.co/videos/preview/mixkit-hand-holding-a-smartphone-with-a-yellow-background-41712-large.mp4',
+        tatkhalsa_default_hero_bg: 'https://upload.wikimedia.org/wikipedia/commons/3/30/A_group_of_volunteers_helping_with_daily_food_preparation_for_Langar_at_the_Golden_Temple.jpg',
+        tatkhalsa_about_hero_img: 'https://upload.wikimedia.org/wikipedia/commons/3/30/A_group_of_volunteers_helping_with_daily_food_preparation_for_Langar_at_the_Golden_Temple.jpg'
+      };
+      return themeMods[key] !== undefined ? themeMods[key] : defaultVal;
+    });
+
+    // Replace get_theme_mod with stylesheet directory concatenate defaults
+    content = content.replace(/<\?php\s*echo\s*(?:esc_url\s*\(\s*)?get_theme_mod\(\s*['"]([^'"]+)['"]\s*,\s*get_stylesheet_directory_uri\(\)\s*\.\s*['"]([^'"]*)['"]\s*\)\s*\)?\s*;?\s*\?>/g, (match, key, relativePath) => {
+      const themeMods: Record<string, string> = {
+        tatkhalsa_blood_video_url: 'https://assets.mixkit.co/videos/preview/mixkit-hand-holding-a-smartphone-with-a-yellow-background-41712-large.mp4'
+      };
+      if (themeMods[key] !== undefined) {
+        return themeMods[key];
+      }
+      return relativePath;
+    });
+
+    // Replace any remaining get_theme_mod with single argument
+    content = content.replace(/<\?php\s*echo\s*(?:esc_url\s*\(\s*)?get_theme_mod\(\s*['"]([^'"]+)['"]\s*\)\s*\)?\s*;?\s*\?>/g, (match, key) => {
+      const themeMods: Record<string, string> = {
+        tatkhalsa_blood_video_url: 'https://assets.mixkit.co/videos/preview/mixkit-hand-holding-a-smartphone-with-a-yellow-background-41712-large.mp4'
+      };
+      return themeMods[key] || '';
+    });
+
     // Replace WordPress nav menu block
     const navMenuReg = /<\?php\s*if\s*\(\s*has_nav_menu\([\s\S]*?<\?php\s*\}\s*\?>/g;
     content = content.replace(navMenuReg, `
