@@ -431,6 +431,112 @@ $donors_query = new WP_Query( $args );
             </form>
         </div>
 
+        <!-- Video Tutorial Section -->
+        <div class="scroll-reveal" style="max-width: 800px; margin: 40px auto; padding: 30px; background: rgba(255, 255, 255, 0.02); border: 1.5px dashed rgba(255, 51, 75, 0.2); border-radius: 16px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); position: relative; overflow: hidden; background-image: radial-gradient(circle at 10% 20%, rgba(255, 51, 75, 0.02) 0%, transparent 40%);">
+            <div style="text-align: center; margin-bottom: 30px;">
+                <div style="display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; background: rgba(255, 51, 75, 0.1); border-radius: 50%; margin-bottom: 12px; color: #ff334b; font-size: 1.3rem; font-weight: bold;">🎥</div>
+                <h2 style="color: var(--text-dark); margin: 0 0 8px 0; font-size: 1.6rem; font-weight: 800; letter-spacing: -0.5px;">Blood On Call: Video Guide</h2>
+                <p style="color: var(--text-light); font-size: 0.95rem; max-width: 550px; margin: 0 auto; line-height: 1.5;">
+                    Master the system in seconds. Learn how to securely register as a donor, post urgent requisition logs, or verify registry keys.
+                </p>
+            </div>
+
+            <div style="display: flex; gap: 35px; align-items: center; justify-content: center; flex-wrap: wrap;">
+                
+                <!-- Premium Smartphone Container (Mobile Portrait Aspect Ratio) -->
+                <div style="position: relative; width: 260px; height: 462px; background: #07090e; border: 12px solid #161a23; border-radius: 38px; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5); overflow: hidden; flex-shrink: 0; outline: 2px solid rgba(255,255,255,0.05);">
+                    <!-- Dual notch design bar -->
+                    <div style="position: absolute; top: 0; left: 50%; transform: translateX(-50%); width: 110px; height: 18px; background: #161a23; border-bottom-left-radius: 14px; border-bottom-right-radius: 14px; z-index: 10; display: flex; align-items: center; justify-content: center; gap: 6px;">
+                        <span style="width: 5px; height: 5px; background: #222530; border-radius: 50%;"></span>
+                        <span style="width: 30px; height: 3px; background: #0c0e12; border-radius: 1.5px;"></span>
+                    </div>
+
+                    <!-- Custom looping video segment representing mobile tutorial -->
+                    <video id="tutorialVideo" loop muted playsinline style="width: 100%; height: 100%; object-fit: cover; background: #000;" onclick="toggleTutorialVideo()">
+                        <source src="https://assets.mixkit.co/videos/preview/mixkit-hand-holding-a-smartphone-with-a-yellow-background-41712-large.mp4" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+
+                    <!-- Interactive overlay on play state -->
+                    <div id="videoOverlay" onclick="toggleTutorialVideo()" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.45); display: flex; flex-direction: column; align-items: center; justify-content: center; cursor: pointer; transition: all 0.3s ease; z-index: 5;">
+                        <div id="playBtnCircle" style="width: 54px; height: 54px; background: #ff334b; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 6px 20px rgba(255, 51, 75, 0.4); transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);">
+                            <!-- Play Icon Inline -->
+                            <svg id="playIconSVG" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" style="width: 22px; height: 22px; color: #fff; margin-left: 2px;">
+                                <path fill-rule="evenodd" d="M4.5 5.653c0-1.426 1.529-2.33 2.779-1.643l11.54 6.348c1.295.712 1.295 2.573 0 3.285L7.28 19.991c-1.25.687-2.779-.217-2.779-1.643V5.653z" clip-rule="evenodd" />
+                            </svg>
+                            <!-- Pause Icon Inline -->
+                            <svg id="pauseIconSVG" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" style="width: 22px; height: 22px; color: #fff; display: none;">
+                                <path fill-rule="evenodd" d="M6.75 5.25a.75.75 0 01.75-.75H9a.75.75 0 01.75.75v13.5a.75.75 0 01-.75.75H7.5a.75.75 0 01-.75-.75V5.25zm7.5 0A.75.75 0 0115 4.5h1.5a.75.75 0 01.75.75v13.5a.75.75 0 01-.75.75H15a.75.75 0 01-.75-.75V5.25z" clip-rule="evenodd" />
+                            </svg>
+                        </div>
+                        <span id="playLabel" style="color: #fff; font-size: 0.8rem; font-weight: bold; margin-top: 14px; letter-spacing: 0.5px; text-transform: uppercase; background: rgba(0, 0, 0, 0.65); padding: 5px 12px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.1);">Tap to Watch</span>
+                    </div>
+
+                    <!-- Watermark Indicator -->
+                    <div style="position: absolute; bottom: 15px; left: 15px; background: rgba(0,0,0,0.7); padding: 4px 10px; border-radius: 6px; display: flex; align-items: center; gap: 6px; font-size: 0.68rem; color: #fff; font-weight: bold; z-index: 4;">
+                        <span style="display:inline-block; width:6px; height:6px; background:#ff334b; border-radius:50%; animation: pulse 1.5s infinite;"></span>
+                        LIVE PREVIEW
+                    </div>
+                </div>
+
+                <!-- Step-by-Step Interactive Guide Sidebar -->
+                <div style="flex: 1; min-width: 260px;">
+                    <h3 style="color: var(--text-dark); font-size: 1.15rem; font-weight: bold; margin-top: 0; margin-bottom: 18px; display:flex; align-items:center; gap:8px;">
+                        <span>📚</span> Quick-Seek Chapters
+                    </h3>
+                    
+                    <div style="display: flex; flex-direction: column; gap: 14px;">
+                        
+                        <!-- Milestone Step 1 -->
+                        <div class="tutorial-timeline-card" onclick="seekTutorialTo(0)" style="display: flex; gap: 12px; padding: 12px; border-radius: 10px; cursor: pointer; transition: all 0.25s ease; border: 1px solid rgba(255,255,255,0.03); background: rgba(255,255,255,0.015);" onmouseover="this.style.background='rgba(255,51,75,0.04)'; this.style.borderColor='rgba(255,51,75,0.15)'" onmouseout="this.style.background='rgba(255,255,255,0.015)'; this.style.borderColor='rgba(255,255,255,0.03)'">
+                            <span style="font-size: 0.85rem; width: 26px; height: 26px; background: rgba(255, 51, 75, 0.12); color: #ff334b; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 800; flex-shrink: 0; border: 1px solid rgba(255,51,75,0.2);">1</span>
+                            <div>
+                                <h4 style="margin: 0 0 3px 0; color: var(--text-dark); font-size: 0.92rem; font-weight: bold; display:flex; align-items:center; gap:5px;">
+                                    Volunteer Registration <span style="font-size:0.75rem; color:#ff334b; font-weight:normal;">(0:00)</span>
+                                </h4>
+                                <p style="margin: 0; color: var(--text-light); font-size: 0.8rem; line-height: 1.45;">Enter credentials, choose blood group, configure security limits, and opt-in.</p>
+                            </div>
+                        </div>
+
+                        <!-- Milestone Step 2 -->
+                        <div class="tutorial-timeline-card" onclick="seekTutorialTo(15)" style="display: flex; gap: 12px; padding: 12px; border-radius: 10px; cursor: pointer; transition: all 0.25s ease; border: 1px solid rgba(255,255,255,0.03); background: rgba(255,255,255,0.015);" onmouseover="this.style.background='rgba(255,51,75,0.04)'; this.style.borderColor='rgba(255,51,75,0.15)'" onmouseout="this.style.background='rgba(255,255,255,0.015)'; this.style.borderColor='rgba(255,255,255,0.03)'">
+                            <span style="font-size: 0.85rem; width: 26px; height: 26px; background: rgba(255, 51, 75, 0.12); color: #ff334b; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 800; flex-shrink: 0; border: 1px solid rgba(255,51,75,0.2);">2</span>
+                            <div>
+                                <h4 style="margin: 0 0 3px 0; color: var(--text-dark); font-size: 0.92rem; font-weight: bold; display:flex; align-items:center; gap:5px;">
+                                    Emergency Post Requisition <span style="font-size:0.75rem; color:#ff334b; font-weight:normal;">(0:15)</span>
+                                </h4>
+                                <p style="margin: 0; color: var(--text-light); font-size: 0.8rem; line-height: 1.45;">Submit hospital details, upload a validated doctor's slip, and trigger active donor matches.</p>
+                            </div>
+                        </div>
+
+                        <!-- Milestone Step 3 -->
+                        <div class="tutorial-timeline-card" onclick="seekTutorialTo(30)" style="display: flex; gap: 12px; padding: 12px; border-radius: 10px; cursor: pointer; transition: all 0.25s ease; border: 1px solid rgba(255,255,255,0.03); background: rgba(255,255,255,0.015);" onmouseover="this.style.background='rgba(255,51,75,0.04)'; this.style.borderColor='rgba(255,51,75,0.15)'" onmouseout="this.style.background='rgba(255,255,255,0.015)'; this.style.borderColor='rgba(255,255,255,0.03)'">
+                            <span style="font-size: 0.85rem; width: 26px; height: 26px; background: rgba(255, 51, 75, 0.12); color: #ff334b; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 800; flex-shrink: 0; border: 1px solid rgba(255,51,75,0.2);">3</span>
+                            <div>
+                                <h4 style="margin: 0 0 3px 0; color: var(--text-dark); font-size: 0.92rem; font-weight: bold; display:flex; align-items:center; gap:5px;">
+                                    Registry Audit Logs <span style="font-size:0.75rem; color:#ff334b; font-weight:normal;">(0:30)</span>
+                                </h4>
+                                <p style="margin: 0; color: var(--text-light); font-size: 0.8rem; line-height: 1.45;">Enter Registry and Audit IDs to track volunteer acceptances, or manage credentials in real time.</p>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <!-- Meta Action bar below step list -->
+                    <div style="margin-top: 20px; padding-top: 15px; border-top: 1px solid rgba(255,255,255,0.06); display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px;">
+                        <span id="videoStatusMessage" style="color: var(--text-light); font-size: 0.8rem; font-style: italic; display: flex; align-items: center; gap: 4px;">
+                            <span style="font-size:1rem; line-height:1;">💡</span> Click steps to jump video chapter
+                        </span>
+                        <button onclick="restartTutorialVideo()" style="background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255,255,255,0.08); color: var(--text-dark); font-weight: bold; font-size: 0.78rem; padding: 5px 12px; border-radius: 6px; cursor: pointer; transition: all 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.1)'" onmouseout="this.style.background='rgba(255, 255, 255, 0.05)'">
+                            🔁 Restart
+                        </button>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+
         <!-- Gurbani Quote Section -->
         <section class="gurbani-quote-section scroll-reveal" style="background: transparent; border: none; padding: 40px 0 20px; margin-top: 20px;">
           <div class="gurbani-quote-container">
@@ -837,6 +943,81 @@ $donors_query = new WP_Query( $args );
 </div>
 
 <script>
+/**
+ * Video Walkthrough Handlers
+ */
+function toggleTutorialVideo() {
+    const video = document.getElementById('tutorialVideo');
+    const overlay = document.getElementById('videoOverlay');
+    const playCircle = document.getElementById('playBtnCircle');
+    const playSVG = document.getElementById('playIconSVG');
+    const pauseSVG = document.getElementById('pauseIconSVG');
+    const label = document.getElementById('playLabel');
+    
+    if (!video) return;
+
+    if (video.paused) {
+        video.play().then(() => {
+            if (overlay) overlay.style.background = 'rgba(0,0,0,0.15)';
+            if (playCircle) {
+                playCircle.style.transform = 'scale(0.8)';
+                playCircle.style.opacity = '0';
+            }
+            if (playSVG) playSVG.style.display = 'none';
+            if (pauseSVG) pauseSVG.style.display = 'block';
+            if (label) label.style.display = 'none';
+        }).catch(e => {
+            console.error("Video playback interaction error:", e);
+        });
+    } else {
+        video.pause();
+        if (overlay) overlay.style.background = 'rgba(0,0,0,0.45)';
+        if (playCircle) {
+            playCircle.style.transform = 'scale(1)';
+            playCircle.style.opacity = '1';
+        }
+        if (playSVG) playSVG.style.display = 'block';
+        if (pauseSVG) pauseSVG.style.display = 'none';
+        if (label) {
+            label.style.display = 'block';
+            label.innerText = 'Paused';
+        }
+    }
+}
+
+function seekTutorialTo(seconds) {
+    const video = document.getElementById('tutorialVideo');
+    if (!video) return;
+    
+    video.currentTime = seconds;
+    const statusMsg = document.getElementById('videoStatusMessage');
+    
+    if (statusMsg) {
+        if (seconds === 0) statusMsg.innerText = "Chapter 1: Volunteer Registration (0s)";
+        else if (seconds === 15) statusMsg.innerText = "Chapter 2: Emergency Post Request (15s)";
+        else if (seconds === 30) statusMsg.innerText = "Chapter 3: Directory Audit & Registry (30s)";
+    }
+
+    if (video.paused) {
+        toggleTutorialVideo();
+    }
+}
+
+function restartTutorialVideo() {
+    const video = document.getElementById('tutorialVideo');
+    if (!video) return;
+    
+    video.currentTime = 0;
+    const statusMsg = document.getElementById('videoStatusMessage');
+    if (statusMsg) {
+        statusMsg.innerText = "Restarted from beginning (0s)";
+    }
+    
+    if (video.paused) {
+        toggleTutorialVideo();
+    }
+}
+
 function openDonorRegistrationModal() {
     const modal = document.getElementById("donorRegModal");
     if(modal) {
