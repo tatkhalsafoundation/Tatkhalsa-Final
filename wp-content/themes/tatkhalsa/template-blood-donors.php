@@ -457,6 +457,11 @@ $donors_query = new WP_Query( $args );
                         Your browser does not support the video tag.
                     </video>
 
+                    <!-- Persistent Sound Control Button (Mute/Unmute option) -->
+                    <button id="soundToggleButton" onclick="toggleVideoSound(event)" style="position: absolute; top: 18px; right: 18px; width: 36px; height: 36px; background: rgba(13, 27, 42, 0.85); border: 1.5px solid rgba(255, 51, 75, 0.4); border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; color: #fff; font-size: 14px; transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1); z-index: 20; padding: 0; outline: none; box-shadow: 0 4px 12px rgba(255, 51, 75, 0.25);" title="Toggle Sound (Mute/Unmute)" onmouseover="this.style.transform='scale(1.1)'; this.style.background='rgba(255, 51, 75, 0.15)'" onmouseout="this.style.transform='scale(1)'; this.style.background='rgba(13, 27, 42, 0.85)'">
+                        <span id="soundVolIcon" style="display: inline-flex; align-items: center; justify-content: center;">🔇</span>
+                    </button>
+
                     <!-- Interactive overlay on play state -->
                     <div id="videoOverlay" onclick="toggleTutorialVideo()" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.45); display: flex; flex-direction: column; align-items: center; justify-content: center; cursor: pointer; transition: all 0.3s ease; z-index: 5;">
                         <div id="playBtnCircle" style="width: 54px; height: 54px; background: #ff334b; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 6px 20px rgba(255, 51, 75, 0.4); transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);">
@@ -482,41 +487,41 @@ $donors_query = new WP_Query( $args );
                 <!-- Step-by-Step Interactive Guide Sidebar -->
                 <div style="flex: 1; min-width: 260px;">
                     <h3 style="color: var(--text-dark); font-size: 1.15rem; font-weight: bold; margin-top: 0; margin-bottom: 18px; display:flex; align-items:center; gap:8px;">
-                        <span>📚</span> Quick-Seek Chapters
+                        <span>📝</span> How to Register as a Donor
                     </h3>
                     
                     <div style="display: flex; flex-direction: column; gap: 14px;">
                         
-                        <!-- Milestone Step 1 -->
-                        <div class="tutorial-timeline-card" onclick="seekTutorialTo(0)" style="display: flex; gap: 12px; padding: 12px; border-radius: 10px; cursor: pointer; transition: all 0.25s ease; border: 1px solid rgba(255,255,255,0.03); background: rgba(255,255,255,0.015);" onmouseover="this.style.background='rgba(255,51,75,0.04)'; this.style.borderColor='rgba(255,51,75,0.15)'" onmouseout="this.style.background='rgba(255,255,255,0.015)'; this.style.borderColor='rgba(255,255,255,0.03)'">
+                        <!-- Step 1 -->
+                        <div class="tutorial-timeline-card" style="display: flex; gap: 12px; padding: 12px; border-radius: 10px; transition: all 0.25s ease; border: 1px solid rgba(255,255,255,0.03); background: rgba(255,255,255,0.015);" onmouseover="this.style.background='rgba(255,51,75,0.04)'; this.style.borderColor='rgba(255,51,75,0.15)'" onmouseout="this.style.background='rgba(255,255,255,0.015)'; this.style.borderColor='rgba(255,255,255,0.03)'">
                             <span style="font-size: 0.85rem; width: 26px; height: 26px; background: rgba(255, 51, 75, 0.12); color: #ff334b; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 800; flex-shrink: 0; border: 1px solid rgba(255,51,75,0.2);">1</span>
                             <div>
-                                <h4 style="margin: 0 0 3px 0; color: var(--text-dark); font-size: 0.92rem; font-weight: bold; display:flex; align-items:center; gap:5px;">
-                                    Volunteer Registration <span style="font-size:0.75rem; color:#ff334b; font-weight:normal;">(0:00)</span>
+                                <h4 style="margin: 0 0 3px 0; color: var(--text-dark); font-size: 0.92rem; font-weight: bold;">
+                                    Open the Registration Form
                                 </h4>
-                                <p style="margin: 0; color: var(--text-light); font-size: 0.8rem; line-height: 1.45;">Enter credentials, choose blood group, configure security limits, and opt-in.</p>
+                                <p style="margin: 0; color: var(--text-light); font-size: 0.8rem; line-height: 1.45;">Click the red <strong style="color: #ff334b;">"Become a Donor"</strong> button located at the top of the Blood Directory tab.</p>
                             </div>
                         </div>
 
-                        <!-- Milestone Step 2 -->
-                        <div class="tutorial-timeline-card" onclick="seekTutorialTo(15)" style="display: flex; gap: 12px; padding: 12px; border-radius: 10px; cursor: pointer; transition: all 0.25s ease; border: 1px solid rgba(255,255,255,0.03); background: rgba(255,255,255,0.015);" onmouseover="this.style.background='rgba(255,51,75,0.04)'; this.style.borderColor='rgba(255,51,75,0.15)'" onmouseout="this.style.background='rgba(255,255,255,0.015)'; this.style.borderColor='rgba(255,255,255,0.03)'">
+                        <!-- Step 2 -->
+                        <div class="tutorial-timeline-card" style="display: flex; gap: 12px; padding: 12px; border-radius: 10px; transition: all 0.25s ease; border: 1px solid rgba(255,255,255,0.03); background: rgba(255,255,255,0.015);" onmouseover="this.style.background='rgba(255,51,75,0.04)'; this.style.borderColor='rgba(255,51,75,0.15)'" onmouseout="this.style.background='rgba(255,255,255,0.015)'; this.style.borderColor='rgba(255,255,255,0.03)'">
                             <span style="font-size: 0.85rem; width: 26px; height: 26px; background: rgba(255, 51, 75, 0.12); color: #ff334b; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 800; flex-shrink: 0; border: 1px solid rgba(255,51,75,0.2);">2</span>
                             <div>
-                                <h4 style="margin: 0 0 3px 0; color: var(--text-dark); font-size: 0.92rem; font-weight: bold; display:flex; align-items:center; gap:5px;">
-                                    Emergency Post Requisition <span style="font-size:0.75rem; color:#ff334b; font-weight:normal;">(0:15)</span>
+                                <h4 style="margin: 0 0 3px 0; color: var(--text-dark); font-size: 0.92rem; font-weight: bold;">
+                                    Fill in Your Profile Details
                                 </h4>
-                                <p style="margin: 0; color: var(--text-light); font-size: 0.8rem; line-height: 1.45;">Submit hospital details, upload a validated doctor's slip, and trigger active donor matches.</p>
+                                <p style="margin: 0; color: var(--text-light); font-size: 0.8rem; line-height: 1.45;">Enter your name, select your blood group, fill in contact info, and select your state/district location.</p>
                             </div>
                         </div>
 
-                        <!-- Milestone Step 3 -->
-                        <div class="tutorial-timeline-card" onclick="seekTutorialTo(30)" style="display: flex; gap: 12px; padding: 12px; border-radius: 10px; cursor: pointer; transition: all 0.25s ease; border: 1px solid rgba(255,255,255,0.03); background: rgba(255,255,255,0.015);" onmouseover="this.style.background='rgba(255,51,75,0.04)'; this.style.borderColor='rgba(255,51,75,0.15)'" onmouseout="this.style.background='rgba(255,255,255,0.015)'; this.style.borderColor='rgba(255,255,255,0.03)'">
+                        <!-- Step 3 -->
+                        <div class="tutorial-timeline-card" style="display: flex; gap: 12px; padding: 12px; border-radius: 10px; transition: all 0.25s ease; border: 1px solid rgba(255,255,255,0.03); background: rgba(255,255,255,0.015);" onmouseover="this.style.background='rgba(255,51,75,0.04)'; this.style.borderColor='rgba(255,51,75,0.15)'" onmouseout="this.style.background='rgba(255,255,255,0.015)'; this.style.borderColor='rgba(255,255,255,0.03)'">
                             <span style="font-size: 0.85rem; width: 26px; height: 26px; background: rgba(255, 51, 75, 0.12); color: #ff334b; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 800; flex-shrink: 0; border: 1px solid rgba(255,51,75,0.2);">3</span>
                             <div>
-                                <h4 style="margin: 0 0 3px 0; color: var(--text-dark); font-size: 0.92rem; font-weight: bold; display:flex; align-items:center; gap:5px;">
-                                    Registry Audit Logs <span style="font-size:0.75rem; color:#ff334b; font-weight:normal;">(0:30)</span>
+                                <h4 style="margin: 0 0 3px 0; color: var(--text-dark); font-size: 0.92rem; font-weight: bold;">
+                                    Secure Verification & ID
                                 </h4>
-                                <p style="margin: 0; color: var(--text-light); font-size: 0.8rem; line-height: 1.45;">Enter Registry and Audit IDs to track volunteer acceptances, or manage credentials in real time.</p>
+                                <p style="margin: 0; color: var(--text-light); font-size: 0.8rem; line-height: 1.45;">Verify your registration credentials. Upon successful signup, you will instantly receive your unique <strong style="color: #ff334b;">Secure Donor ID</strong>.</p>
                             </div>
                         </div>
 
@@ -525,7 +530,7 @@ $donors_query = new WP_Query( $args );
                     <!-- Meta Action bar below step list -->
                     <div style="margin-top: 20px; padding-top: 15px; border-top: 1px solid rgba(255,255,255,0.06); display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px;">
                         <span id="videoStatusMessage" style="color: var(--text-light); font-size: 0.8rem; font-style: italic; display: flex; align-items: center; gap: 4px;">
-                            <span style="font-size:1rem; line-height:1;">💡</span> Click steps to jump video chapter
+                            <span style="font-size:1rem; line-height:1;">🔊</span> Toggle sound overlay to hear guide audio
                         </span>
                         <button onclick="restartTutorialVideo()" style="background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255,255,255,0.08); color: var(--text-dark); font-weight: bold; font-size: 0.78rem; padding: 5px 12px; border-radius: 6px; cursor: pointer; transition: all 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.1)'" onmouseout="this.style.background='rgba(255, 255, 255, 0.05)'">
                             🔁 Restart
@@ -946,6 +951,32 @@ $donors_query = new WP_Query( $args );
 /**
  * Video Walkthrough Handlers
  */
+function toggleVideoSound(event) {
+    if (event) {
+        event.stopPropagation();
+    }
+    const video = document.getElementById('tutorialVideo');
+    const soundIcon = document.getElementById('soundVolIcon');
+    const btn = document.getElementById('soundToggleButton');
+    if (!video || !soundIcon) return;
+
+    if (video.muted) {
+        video.muted = false;
+        soundIcon.innerText = '🔊';
+        if (btn) {
+            btn.style.border = '1.5px solid #ff334b';
+            btn.style.boxShadow = '0 0 15px rgba(255, 51, 75, 0.6)';
+        }
+    } else {
+        video.muted = true;
+        soundIcon.innerText = '🔇';
+        if (btn) {
+            btn.style.border = '1.5px solid rgba(255, 51, 75, 0.4)';
+            btn.style.boxShadow = '0 4px 12px rgba(255, 51, 75, 0.25)';
+        }
+    }
+}
+
 function toggleTutorialVideo() {
     const video = document.getElementById('tutorialVideo');
     const overlay = document.getElementById('videoOverlay');
