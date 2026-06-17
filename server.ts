@@ -69,6 +69,12 @@ async function startServer() {
     content = content.replace(/<\?php\s*echo\s*esc_url\(\s*home_url\(\s*['"]\/privacy-policy\/['"]\s*\)\s*\);\s*\?>/g, '/privacy-policy');
     content = content.replace(/<\?php\s*echo\s*esc_url\(\s*home_url\(\s*['"]\/terms-conditions\/['"]\s*\)\s*\);\s*\?>/g, '/terms-conditions');
     content = content.replace(/<\?php\s*echo\s*esc_url\(\s*home_url\(\s*['"]\/blood-donors\/['"]\s*\)\s*\);\s*\?>/g, '/blood-donors');
+    content = content.replace(/<\?php\s*echo\s*esc_url\(\s*home_url\(\s*['"]\/blood-on-call\/['"]\s*\)\s*\);\s*\?>/g, '/blood-on-call');
+    content = content.replace(/<\?php\s*echo\s*esc_url\(\s*home_url\(\s*['"]\/blood-on-call['"]\s*\)\s*\);\s*\?>/g, '/blood-on-call');
+    content = content.replace(/<\?php\s*echo\s*esc_url\(\s*home_url\(\s*['"]\/blood-on-can\/['"]\s*\)\s*\);\s*\?>/g, '/blood-on-call');
+    content = content.replace(/<\?php\s*echo\s*esc_url\(\s*home_url\(\s*['"]\/blood-on-can['"]\s*\)\s*\);\s*\?>/g, '/blood-on-call');
+    content = content.replace(/<\?php\s*echo\s*esc_url\(\s*home_url\(\s*['"]\/blood-verify\/['"]\s*\)\s*\);\s*\?>/g, '/blood-verify');
+    content = content.replace(/<\?php\s*echo\s*esc_url\(\s*home_url\(\s*['"]\/blood-verify['"]\s*\)\s*\);\s*\?>/g, '/blood-verify');
 
     // Any remaining dynamic template directory calls
     content = content.replace(/<\?php\s*echo\s*esc_url\(\s*get_template_directory_uri\(\)\s*\);\s*\?>/g, '/');
@@ -1006,6 +1012,12 @@ async function startServer() {
     "blog.php": "template-blog.php",
     "blood-donors": "template-blood-donors.php",
     "blood-donors.php": "template-blood-donors.php",
+    "blood-on-call": "template-blood-donors.php",
+    "blood-on-call.php": "template-blood-donors.php",
+    "blood-on-can": "template-blood-donors.php",
+    "blood-on-can.php": "template-blood-donors.php",
+    "blood-verify": "page-blood-verify.php",
+    "blood-verify.php": "page-blood-verify.php",
     "privacy-policy": "template-privacy.php",
     "privacy-policy.php": "template-privacy.php",
     "terms-conditions": "template-terms.php",

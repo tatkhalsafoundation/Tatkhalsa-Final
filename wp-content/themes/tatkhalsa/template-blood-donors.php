@@ -2283,7 +2283,7 @@ document.addEventListener("DOMContentLoaded", function() {
                         anchor.innerHTML = `
                             <div style="text-align: center; padding: 50px; background: rgba(0,0,0,0.02); border-radius: 12px; grid-column: 1 / -1; width:100%;">
                                 <p style="font-size: 1.2rem; color: var(--text-light); margin-bottom: 20px;">No donors found matching your criteria.</p>
-                                <button onclick="window.location.href='/blood-on-can'" style="background: var(--bg-dark); color: var(--text-dark); border: 1px solid var(--text-dark); padding: 10px 20px; border-radius: 6px; cursor: pointer;">
+                                <button onclick="window.location.href='/blood-on-call'" style="background: var(--bg-dark); color: var(--text-dark); border: 1px solid var(--text-dark); padding: 10px 20px; border-radius: 6px; cursor: pointer;">
                                     Reset Search
                                 </button>
                             </div>

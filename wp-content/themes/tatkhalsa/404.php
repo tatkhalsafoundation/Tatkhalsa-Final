@@ -44,7 +44,7 @@ get_header();
               <a href="<?php echo esc_url( home_url( '/projects' ) ); ?>" style="text-decoration: none; color: var(--primary); font-weight: 500; font-size: 0.95rem; background: #fff; border: 1px solid rgba(0,0,0,0.1); padding: 8px 16px; border-radius: 6px; box-shadow: 0 2px 5px rgba(0,0,0,0.02); transition: all 0.2s ease;">
                 📁 Seva Projects
               </a>
-              <a href="<?php echo esc_url( home_url( '/blood-on-can' ) ); ?>" style="text-decoration: none; color: var(--primary); font-weight: 500; font-size: 0.95rem; background: #fff; border: 1px solid rgba(0,0,0,0.1); padding: 8px 16px; border-radius: 6px; box-shadow: 0 2px 5px rgba(0,0,0,0.02); transition: all 0.2s ease;">
+              <a href="<?php echo esc_url( home_url( '/blood-on-call' ) ); ?>" style="text-decoration: none; color: var(--primary); font-weight: 500; font-size: 0.95rem; background: #fff; border: 1px solid rgba(0,0,0,0.1); padding: 8px 16px; border-radius: 6px; box-shadow: 0 2px 5px rgba(0,0,0,0.02); transition: all 0.2s ease;">
                 🩸 Blood Network
               </a>
               <a href="<?php echo esc_url( home_url( '/volunteer' ) ); ?>" style="text-decoration: none; color: var(--primary); font-weight: 500; font-size: 0.95rem; background: #fff; border: 1px solid rgba(0,0,0,0.1); padding: 8px 16px; border-radius: 6px; box-shadow: 0 2px 5px rgba(0,0,0,0.02); transition: all 0.2s ease;">

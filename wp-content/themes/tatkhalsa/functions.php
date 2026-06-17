@@ -733,12 +733,22 @@ function tatkhalsa_create_verify_page() {
 add_action( 'init', 'tatkhalsa_create_verify_page' );
 
 function tatkhalsa_create_blood_donors_page() {
-    $page_slug = 'blood-on-can';
+    $page_slug = 'blood-on-call';
+    
+    // Check if the old 'blood-on-can' page layout exists and rename it seamlessly
+    $old_page = get_page_by_path( 'blood-on-can' );
+    if ( $old_page ) {
+        wp_update_post( array(
+            'ID'         => $old_page->ID,
+            'post_title' => 'Blood On Call',
+            'post_name'  => 'blood-on-call'
+        ) );
+    }
     
     $page = get_page_by_path( $page_slug );
     if ( ! $page ) {
         wp_insert_post( array(
-            'post_title'     => 'Blood Donors',
+            'post_title'     => 'Blood On Call',
             'post_name'      => $page_slug,
             'post_status'    => 'publish',
             'post_type'      => 'page',
@@ -746,10 +756,35 @@ function tatkhalsa_create_blood_donors_page() {
         ) );
         flush_rewrite_rules();
     } else {
+        if ( $page->post_title !== 'Blood On Call' ) {
+            wp_update_post( array(
+                'ID'         => $page->ID,
+                'post_title' => 'Blood On Call'
+            ) );
+        }
         update_post_meta( $page->ID, '_wp_page_template', 'template-blood-donors.php' );
     }
 }
 add_action( 'init', 'tatkhalsa_create_blood_donors_page' );
+
+function tatkhalsa_create_blood_verify_page() {
+    $page_slug = 'blood-verify';
+    
+    $page = get_page_by_path( $page_slug );
+    if ( ! $page ) {
+        wp_insert_post( array(
+            'post_title'     => 'Blood On Call Verification',
+            'post_name'      => $page_slug,
+            'post_status'    => 'publish',
+            'post_type'      => 'page',
+            'page_template'  => 'page-blood-verify.php'
+        ) );
+        flush_rewrite_rules();
+    } else {
+        update_post_meta( $page->ID, '_wp_page_template', 'page-blood-verify.php' );
+    }
+}
+add_action( 'init', 'tatkhalsa_create_blood_verify_page' );
 
 function tatkhalsa_create_legal_pages() {
     // Privacy Policy
@@ -897,7 +932,7 @@ function tatkhalsa_submit_blood_request() {
 		'accept_request' => '1',
 		'req_id'         => $request_post_id,
 		'donor_id'       => 'general'
-	), home_url( '/blood-on-can/' ) ) );
+	), home_url( '/blood-on-call/' ) ) );
 
 	$body .= "<div style='text-align: center; margin: 25px 0 10px 0;'>";
 	$body .= "<a href='{$app_url}' style='display: inline-block; background-color: #0A327D; color: #ffffff !important; font-weight: bold; font-family: Arial, sans-serif; font-size: 15px; padding: 12px 24px; text-decoration: none; border-radius: 6px; box-shadow: 0 4px 12px rgba(10,50,125,0.25); text-transform: uppercase; letter-spacing: 0.5px;'>🩸 Accept the Request</a>";
@@ -966,7 +1001,7 @@ function tatkhalsa_submit_blood_request() {
 						'accept_request' => '1',
 						'req_id'         => $request_post_id,
 						'donor_id'       => $post_id
-					), home_url( '/blood-on-can/' ) ) );
+					), home_url( '/blood-on-call/' ) ) );
 
 					$donor_subject = 'URGENT: General Blood Request In Your District - ' . $district;
 					$donor_body = "<div style='font-family: Arial, sans-serif; line-height: 1.6; color: #333; max-width: 600px; margin: 0 auto; border: 1px solid #eee; padding: 20px; border-radius: 8px;'>
@@ -1069,7 +1104,7 @@ function tatkhalsa_submit_blood_request() {
 						'accept_request' => '1',
 						'req_id'         => $request_post_id,
 						'donor_id'       => $post_id
-					), home_url( '/blood-on-can/' ) ) );
+					), home_url( '/blood-on-call/' ) ) );
 
 					$donor_subject = 'URGENT: Blood Donation Request in your District - ' . $blood_group;
 					$donor_body = "<div style='font-family: Arial, sans-serif; line-height: 1.6; color: #333; max-width: 600px; margin: 0 auto; border: 1px solid #eee; padding: 20px; border-radius: 8px;'>
@@ -1173,7 +1208,7 @@ function tatkhalsa_submit_blood_request() {
 							'accept_request' => '1',
 							'req_id'         => $request_post_id,
 							'donor_id'       => $post_id
-						), home_url( '/blood-on-can/' ) ) );
+						), home_url( '/blood-on-call/' ) ) );
 
 						$donor_subject = 'URGENT: Blood Donation Request in your State - ' . $blood_group;
 						$donor_body = "<div style='font-family: Arial, sans-serif; line-height: 1.6; color: #333; max-width: 600px; margin: 0 auto; border: 1px solid #eee; padding: 20px; border-radius: 8px;'>

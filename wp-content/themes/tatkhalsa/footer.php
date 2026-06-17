@@ -118,7 +118,7 @@
               <li><a href="<?php echo esc_url( home_url( '/' ) ); ?>">Home</a></li>
               <li><a href="<?php echo esc_url( home_url( '/about/' ) ); ?>">About Us</a></li>
               <li><a href="<?php echo esc_url( home_url( '/blog/' ) ); ?>">Blog</a></li>
-              <li><a href="<?php echo esc_url( home_url( '/blood-on-can/' ) ); ?>">Blood On Call</a></li>
+              <li><a href="<?php echo esc_url( home_url( '/blood-on-call/' ) ); ?>">Blood On Call</a></li>
               <li><a href="<?php echo esc_url( home_url( '/volunteer/' ) ); ?>">Volunteer</a></li>
             </ul>
           </div>
@@ -152,7 +152,7 @@
 
         <div style="background: rgba(255,51,75,0.05); border: 1px solid rgba(255,51,75,0.2); padding: 12px; border-radius: 8px; margin-bottom: 20px; text-align: center;">
           <p style="margin-bottom: 8px; font-size: 0.85rem; color: var(--text-light);">Looking for donors right now?</p>
-          <a href="<?php echo esc_url( home_url( '/blood-on-can/' ) ); ?>" style="display: inline-block; background: #ff334b; color: white; padding: 8px 16px; border-radius: 6px; font-weight: bold; font-size: 0.85rem; text-decoration: none; box-shadow: 0 2px 8px rgba(255,51,75,0.3);">
+          <a href="<?php echo esc_url( home_url( '/blood-on-call/' ) ); ?>" style="display: inline-block; background: #ff334b; color: white; padding: 8px 16px; border-radius: 6px; font-weight: bold; font-size: 0.85rem; text-decoration: none; box-shadow: 0 2px 8px rgba(255,51,75,0.3);">
             🔍 Browse Available Donors
           </a>
         </div>

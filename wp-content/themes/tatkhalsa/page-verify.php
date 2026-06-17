@@ -3203,7 +3203,10 @@ if ( ! empty( $query_member_id ) ) {
 
         <!-- Administrative Quick-Access Sub-Navigation -->
         <div style="display: flex; gap: 15px; margin-bottom: 30px; flex-wrap: wrap;">
-            <a href="<?php echo esc_url( home_url('/blood-donors/?admin=true') ); ?>" target="_blank" style="background: linear-gradient(135deg, #ff334b 0%, #ff5d73 100%); color: #fff; padding: 12px 24px; border-radius: 6px; font-weight: bold; text-decoration: none; box-shadow: 0 4px 15px rgba(255,51,75,0.25); display: inline-flex; align-items: center; gap: 8px; font-size: 0.9rem; transition: transform 0.2s;" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='translateY(0)'">
+            <a href="<?php echo esc_url( home_url('/blood-verify/') ); ?>" style="background: #052054; color: #fff; padding: 12px 24px; border-radius: 6px; font-weight: bold; text-decoration: none; box-shadow: 0 4px 15px rgba(5,32,84,0.2); display: inline-flex; align-items: center; gap: 8px; font-size: 0.9rem; transition: transform 0.2s;" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='translateY(0)'">
+                <span>⚖️</span> Audit Blood On Call Registers
+            </a>
+            <a href="<?php echo esc_url( home_url('/blood-on-call/?admin=true') ); ?>" target="_blank" style="background: linear-gradient(135deg, #ff334b 0%, #ff5d73 100%); color: #fff; padding: 12px 24px; border-radius: 6px; font-weight: bold; text-decoration: none; box-shadow: 0 4px 15px rgba(255,51,75,0.25); display: inline-flex; align-items: center; gap: 8px; font-size: 0.9rem; transition: transform 0.2s;" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='translateY(0)'">
                 <span>🩸</span> Manage & Edit Blood On Call Master Data (Donors & Requests)
             </a>
             <a href="<?php echo esc_url( home_url('/volunteer/') ); ?>" style="background: #E1A92A; color: #052054; padding: 12px 24px; border-radius: 6px; font-weight: bold; text-decoration: none; display: inline-flex; align-items: center; gap: 8px; font-size: 0.9rem; transition: transform 0.2s; box-shadow: 0 4px 15px rgba(225,169,42,0.15);" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='translateY(0)'">

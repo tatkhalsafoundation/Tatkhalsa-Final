@@ -12,8 +12,11 @@ function replaceInDir(dir) {
     } else if (fullPath.endsWith(".php") || fullPath.endsWith(".css") || fullPath.endsWith(".js")) {
       let content = fs.readFileSync(fullPath, "utf-8");
       
-      const newContent = content.replace(/\/blood-donors\//g, "/blood-on-can/")
-                                .replace(/\/blood-donors/g, "/blood-on-can");
+      const newContent = content.replace(/\/blood-donors\//g, "/blood-on-call/")
+                                .replace(/\/blood-donors/g, "/blood-on-call")
+                                .replace(/\/blood-on-can\//g, "/blood-on-call/")
+                                .replace(/\/blood-on-can/g, "/blood-on-call")
+                                .replace(/blood-on-can/g, "blood-on-call");
       
       if (content !== newContent) {
         fs.writeFileSync(fullPath, newContent);
