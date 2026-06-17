@@ -721,7 +721,7 @@ async function startServer() {
 
   // Edit Donor API Route
   app.post("/api/admin/edit-donor", (req, res) => {
-    const { id, name, bloodGroup, email, contact, address, availabilityStatus } = req.body || {};
+    const { id, name, bloodGroup, email, contact, contactDetails, address, availabilityStatus } = req.body || {};
     if (!id) {
       return res.status(400).json({ success: false, message: "Donor ID is required to edit." });
     }
@@ -730,12 +730,14 @@ async function startServer() {
       return res.status(404).json({ success: false, message: "Donor profile not found." });
     }
 
+    const finalContact = contact !== undefined ? contact : contactDetails;
+
     mockDonors[donorIndex] = {
       ...mockDonors[donorIndex],
       name: name !== undefined ? name : mockDonors[donorIndex].name,
       bloodGroup: bloodGroup !== undefined ? bloodGroup : mockDonors[donorIndex].bloodGroup,
       email: email !== undefined ? email : mockDonors[donorIndex].email,
-      contact: contact !== undefined ? contact : mockDonors[donorIndex].contact,
+      contact: finalContact !== undefined ? finalContact : mockDonors[donorIndex].contact,
       address: address !== undefined ? address : mockDonors[donorIndex].address,
       availabilityStatus: availabilityStatus !== undefined ? availabilityStatus : mockDonors[donorIndex].availabilityStatus
     };

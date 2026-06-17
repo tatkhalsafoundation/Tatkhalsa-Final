@@ -1969,6 +1969,7 @@ document.addEventListener("DOMContentLoaded", function() {
             name: document.getElementById('editDonorName').value,
             bloodGroup: document.getElementById('editDonorBloodGroup').value,
             email: document.getElementById('editDonorEmail').value,
+            contact: document.getElementById('editDonorContact').value,
             contactDetails: document.getElementById('editDonorContact').value,
             address: document.getElementById('editDonorAddress').value,
             availabilityStatus: document.getElementById('editDonorAvailability').value

@@ -129,7 +129,7 @@
             <a href="<?php echo esc_url( home_url( '/privacy-policy/' ) ); ?>" style="color: var(--secondary); text-decoration: none; margin: 0 10px;">Privacy Policy</a> | 
             <a href="<?php echo esc_url( home_url( '/terms-conditions/' ) ); ?>" style="color: var(--secondary); text-decoration: none; margin: 0 10px;">Terms & Conditions</a>
           </div>
-          <div>&copy; <?php echo date('Y'); ?> <?php bloginfo( 'name' ); ?>. <span>All Rights Reserved. Saved & Built dynamically via custom theme template.</span></div>
+          <div>&copy; 2023-<?php echo date('Y'); ?> <?php bloginfo( 'name' ); ?>. <span>All Rights Reserved. Saved & Built dynamically via custom theme template.</span></div>
           <div class="designer-credit-wrap" style="font-size: 0.85rem; color: var(--text-light); margin-top: 5px; display: flex; justify-content: center; align-items: center; gap: 4px;"><span class="credit-p1">Designed with</span><span class="designer-heart"></span><span class="credit-p2">by Prabhjot Singh (Team Tatkhalsa)</span></div>
         </div>
       </div>

@@ -892,7 +892,7 @@ if ( $_SERVER['REQUEST_METHOD'] === 'POST' && isset( $_POST['tkf_verify_action']
                             <p>This notification was securely triggered by the Tatkhalsa Engineering Division on behalf of the foundation trustees.</p>
                             <p>Sender Authority: <strong>tech-team@tatkhalsa.in</strong></p>
                             <p>Security inquiries or correction requests: <a href="mailto:info@tatkhalsa.in" style="color: #052054; text-decoration: underline;">info@tatkhalsa.in</a></p>
-                            <p style="margin-top: 15px; font-weight: bold;">&copy; ' . date('Y') . ' Tatkhalsa Foundation. All Rights Reserved.</p>
+                            <p style="margin-top: 15px; font-weight: bold;">&copy; 2023-' . date('Y') . ' Tatkhalsa Foundation. All Rights Reserved.</p>
                         </div>
                     </div>
                 </div>
@@ -3201,6 +3201,16 @@ if ( ! empty( $query_member_id ) ) {
     <div class="admin-dashboard">
         <h1>Tatkhalsa Verification Administration</h1>
 
+        <!-- Administrative Quick-Access Sub-Navigation -->
+        <div style="display: flex; gap: 15px; margin-bottom: 30px; flex-wrap: wrap;">
+            <a href="<?php echo esc_url( home_url('/blood-donors/?admin=true') ); ?>" target="_blank" style="background: linear-gradient(135deg, #ff334b 0%, #ff5d73 100%); color: #fff; padding: 12px 24px; border-radius: 6px; font-weight: bold; text-decoration: none; box-shadow: 0 4px 15px rgba(255,51,75,0.25); display: inline-flex; align-items: center; gap: 8px; font-size: 0.9rem; transition: transform 0.2s;" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='translateY(0)'">
+                <span>🩸</span> Manage & Edit Blood On Call Master Data (Donors & Requests)
+            </a>
+            <a href="<?php echo esc_url( home_url('/volunteer/') ); ?>" style="background: #E1A92A; color: #052054; padding: 12px 24px; border-radius: 6px; font-weight: bold; text-decoration: none; display: inline-flex; align-items: center; gap: 8px; font-size: 0.9rem; transition: transform 0.2s; box-shadow: 0 4px 15px rgba(225,169,42,0.15);" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='translateY(0)'">
+                <span>🤝</span> View Sevadars / Volunteers
+            </a>
+        </div>
+
         <?php if ( ! empty( $message ) ) : ?>
             <div class="admin-notice notice-<?php echo esc_attr( $message_type ); ?>">
                 <?php echo esc_html( $message ); ?>
@@ -3258,7 +3268,17 @@ if ( ! empty( $query_member_id ) ) {
                     </div>
                     <div class="form-group">
                         <label for="blood_group">Blood Group</label>
-                        <input type="text" id="blood_group" name="blood_group" value="<?php echo $edit_member ? esc_attr( $edit_member->blood_group ) : ''; ?>" placeholder="e.g. B+">
+                        <select id="blood_group" name="blood_group" style="width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 6px; font-size: 1rem; cursor: pointer; background: #fff; height: 48px; outline: none; transition: border-color 0.2s;">
+                            <option value="" <?php selected( $edit_member ? $edit_member->blood_group : '', '' ); ?>>Select Blood Group</option>
+                            <option value="A+" <?php selected( $edit_member ? $edit_member->blood_group : '', 'A+' ); ?>>A+</option>
+                            <option value="A-" <?php selected( $edit_member ? $edit_member->blood_group : '', 'A-' ); ?>>A-</option>
+                            <option value="B+" <?php selected( $edit_member ? $edit_member->blood_group : '', 'B+' ); ?>>B+</option>
+                            <option value="B-" <?php selected( $edit_member ? $edit_member->blood_group : '', 'B-' ); ?>>B-</option>
+                            <option value="O+" <?php selected( $edit_member ? $edit_member->blood_group : '', 'O+' ); ?>>O+</option>
+                            <option value="O-" <?php selected( $edit_member ? $edit_member->blood_group : '', 'O-' ); ?>>O-</option>
+                            <option value="AB+" <?php selected( $edit_member ? $edit_member->blood_group : '', 'AB+' ); ?>>AB+</option>
+                            <option value="AB-" <?php selected( $edit_member ? $edit_member->blood_group : '', 'AB-' ); ?>>AB-</option>
+                        </select>
                     </div>
                 </div>
                 
@@ -3311,9 +3331,10 @@ if ( ! empty( $query_member_id ) ) {
                     <tr>
                         <th width="15%">Member Ledger</th>
                         <th width="25%">Full Personnel Name</th>
-                        <th width="20%">Role Capacity</th>
+                        <th width="15%">Role Capacity</th>
+                        <th width="10%">Blood Group</th>
                         <th width="15%">Security Status</th>
-                        <th width="25%">Management Actions</th>
+                        <th width="20%">Management Actions</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -3323,6 +3344,15 @@ if ( ! empty( $query_member_id ) ) {
                                 <td><strong><?php echo esc_html( $mem->member_id ); ?></strong></td>
                                 <td style="font-weight: 500;"><?php echo esc_html( $mem->full_name ); ?></td>
                                 <td><?php echo esc_html( $mem->designation ); ?></td>
+                                <td>
+                                    <?php if ( ! empty( $mem->blood_group ) ) : ?>
+                                        <span style="background: rgba(255,51,75,0.1); color: #ff334b; font-weight: bold; border: 1px solid rgba(255,51,75,0.25); padding: 4px 10px; border-radius: 12px; font-size: 0.8rem; display: inline-block;">
+                                            <?php echo esc_html( $mem->blood_group ); ?>
+                                        </span>
+                                    <?php else : ?>
+                                        <span style="color: #999; font-size: 0.75rem; font-style: italic;">N/A</span>
+                                    <?php endif; ?>
+                                </td>
                                 <td>
                                     <!-- Dynamic Validation Banner Status -->
                                     <span class="status-badge <?php echo $mem->status === 'Active' ? 'status-active' : 'status-inactive'; ?>">
