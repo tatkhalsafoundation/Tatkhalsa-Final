@@ -223,6 +223,54 @@ async function startServer() {
     }
   ];
 
+  // Assign and maintain sequential donor & request IDs to old and new entries
+  function assignSequentialIds() {
+    // Map of old ID to new ID to maintain referential integrity
+    const oldIdToNewIdMap: Record<string, string> = {};
+
+    // Sort donors chronologically
+    const sortedDonors = [...mockDonors].sort((a, b) => {
+      const timeA = typeof a.timestamp === 'string' ? (Date.parse(a.timestamp) || 0) : (a.timestamp || 0);
+      const timeB = typeof b.timestamp === 'string' ? (Date.parse(b.timestamp) || 0) : (b.timestamp || 0);
+      return timeA - timeB;
+    });
+
+    // Re-assign sequential IDs and build index map
+    mockDonors = sortedDonors.map((donor, idx) => {
+      const newId = `donor_${idx + 1}`;
+      if (donor.id) {
+        oldIdToNewIdMap[donor.id] = newId;
+      }
+      return {
+        ...donor,
+        id: newId
+      };
+    });
+
+    // Sort requests chronologically and re-assign IDs while updating acceptedByDonorId
+    const sortedRequests = [...mockRequests].sort((a, b) => {
+      const timeA = typeof a.timestamp === 'string' ? (Date.parse(a.timestamp) || 0) : (a.timestamp || 0);
+      const timeB = typeof b.timestamp === 'string' ? (Date.parse(b.timestamp) || 0) : (b.timestamp || 0);
+      return timeA - timeB;
+    });
+
+    mockRequests = sortedRequests.map((req, idx) => {
+      const newId = `req_${idx + 1}`;
+      let updatedAcceptedDonorId = req.acceptedByDonorId;
+      if (updatedAcceptedDonorId && oldIdToNewIdMap[updatedAcceptedDonorId]) {
+        updatedAcceptedDonorId = oldIdToNewIdMap[updatedAcceptedDonorId];
+      }
+      return {
+        ...req,
+        id: newId,
+        acceptedByDonorId: updatedAcceptedDonorId
+      };
+    });
+  }
+
+  // Initialize sequential clean IDs on server boot
+  assignSequentialIds();
+
   // Mock transaction data to support previews of the automated ledger board
   let mockTransactions = [
     {
@@ -473,7 +521,7 @@ async function startServer() {
       }
 
       const newDonor = {
-        id: "donor_" + Date.now(),
+        id: "donor_" + Date.now(), // Assigned sequentially in assignSequentialIds
         name,
         bloodGroup,
         email,
@@ -484,12 +532,17 @@ async function startServer() {
         timestamp: Date.now()
       };
 
-      mockDonors.unshift(newDonor);
+      mockDonors.push(newDonor);
+      assignSequentialIds();
+
+      // Retrieve the newly formatted sequential ID
+      const savedDonor = mockDonors.find(d => d.email.toLowerCase() === email.toLowerCase() || d.contact === contact);
+      const assignedIdLabel = savedDonor ? savedDonor.id.toUpperCase() : "DONOR_ID";
 
       return res.json({
         success: true,
         data: {
-          message: "Thank you! You have been successfully registered as a blood donor."
+          message: `Thank you! You have been successfully registered as a blood donor. Your assigned Secure Donor ID is: ${assignedIdLabel}`
         }
       });
     }
@@ -531,7 +584,12 @@ async function startServer() {
         doctorSlipUrl: doctorSlipBase64 || "https://images.unsplash.com/photo-1576091160550-2173dba999ef?auto=format&fit=crop&w=800&q=80"
       };
 
-      mockRequests.unshift(newRequest);
+      mockRequests.push(newRequest);
+      assignSequentialIds();
+
+      // Retrieve the newly formatted sequential request ID
+      const savedRequest = mockRequests.find(r => r.contactDetails === contactDetails && r.patientName === patientName);
+      const assignedIdLabel = savedRequest ? savedRequest.id.toUpperCase() : "REQ_ID";
 
       // Perform Mock donor matching with priority: District -> State -> Country
       let matchedDonors: Donor[] = [];
@@ -577,7 +635,7 @@ async function startServer() {
       return res.json({
         success: true,
         data: {
-          message: `Emergency Blood Request submitted successfully! Broadcast notification emails simulated for ${matchedDonors.length} available matching donors in your target area.`,
+          message: `Emergency Blood Request submitted successfully! Your active Registry Audit ID is: ${assignedIdLabel}. Broadcast notification emails simulated for ${matchedDonors.length} available matching donors in your target area.`,
           matched_donors: matchedDonors.map(d => ({
             name: d.name,
             contact: d.contact
@@ -811,6 +869,7 @@ async function startServer() {
     }
     const toDelete = ids ? ids : [id];
     mockDonors = mockDonors.filter(d => !toDelete.includes(d.id));
+    assignSequentialIds();
     return res.json({ success: true, message: "Donor profile(s) deleted from directory." });
   });
 
@@ -821,6 +880,7 @@ async function startServer() {
     }
     const toDelete = ids ? ids : [id];
     mockRequests = mockRequests.filter(r => !toDelete.includes(r.id));
+    assignSequentialIds();
     return res.json({ success: true, message: "Emergency query logs deleted successfully." });
   });
 
@@ -944,11 +1004,13 @@ async function startServer() {
       requestsImportedCount++;
     });
 
+    assignSequentialIds();
+
     return res.json({ 
       success: true, 
       donors_imported: donorsImportedCount,
       requests_imported: requestsImportedCount,
-      message: "Data loaded successfully." 
+      message: "Data loaded successfully and all Donor/Request IDs assigned sequentially." 
     });
   });
 

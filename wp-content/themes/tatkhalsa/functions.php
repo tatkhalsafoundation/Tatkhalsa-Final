@@ -1315,7 +1315,7 @@ function tatkhalsa_submit_blood_request() {
 	}
 
 	wp_send_json_success( array( 
-		'message' => esc_html__( 'Emergency Blood Request submitted successfully! Alerts have been sent to our state sevadars.', 'tatkhalsa-theme' ),
+		'message' => 'Emergency Blood Request submitted successfully! Your active Registry Audit ID is: REQ_' . $request_post_id . '. Alerts have been sent to our state sevadars.',
 		'matched_donors' => $matched_donors
 	) );
 }
@@ -1414,7 +1414,7 @@ function tatkhalsa_submit_blood_donor() {
 		update_post_meta( $post_id, 'donor_ip', tatkhalsa_get_client_ip() );
 		update_post_meta( $post_id, 'registration_time', current_time( 'mysql' ) );
 
-		wp_send_json_success( array( 'message' => 'Thank you for registering as a blood donor!' ) );
+		wp_send_json_success( array( 'message' => 'Thank you for registering as a blood donor! Your assigned Secure Donor ID is: DONOR_' . $post_id ) );
 	} else {
 		wp_send_json_error( array( 'message' => 'Failed to register. Please try again.' ) );
 	}
