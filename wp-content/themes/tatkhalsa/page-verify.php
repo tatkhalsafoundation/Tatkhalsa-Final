@@ -27,6 +27,8 @@ if ( ! function_exists( 'tkf_format_date' ) ) {
 // Interactive Mobile Wallet Integration for Apple Wallet, Google Wallet, and Samsung Wallet
 if ( ! function_exists( 'tkf_render_mobile_wallet_hub' ) ) {
     function tkf_render_mobile_wallet_hub( $member, $token = '' ) {
+        // Save to Wallet option removed for now per user request
+        return;
         if ( ! $member ) return;
         $logo_url = 'https://tatkhalsa.in/wp-content/uploads/2026/06/cropped-Logo.png';
         $verify_url = esc_url( home_url('/verify/?member_id=' . $member->member_id) );

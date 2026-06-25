@@ -3324,3 +3324,16 @@ body.lang-pa .credit-p1 {
 body.lang-pa .credit-p2 {
   order: 3;
 }
+
+/* Prevent floating WhatsApp, Language Toggle, Theme Toggle, and Back to Top from overlapping footer contents on mobile/tablet */
+@media (max-width: 768px) {
+  .footer-grid > div {
+    padding-left: 65px;
+    padding-right: 65px;
+  }
+  .copyright {
+    padding-left: 65px;
+    padding-right: 65px;
+  }
+}
+
