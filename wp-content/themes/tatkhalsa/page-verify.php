@@ -1373,12 +1373,12 @@ if ( ! empty( $download_id ) ) {
             align-items: center;
             justify-content: center;
             height: 10px;
-            width: 78px;
+            width: 90px;
             background: #ffffff;
             padding: 1px;
             border-radius: 2px;
             margin-top: 3px;
-            gap: 1.2px;
+            gap: 1.8px;
             box-sizing: border-box;
         }
         
@@ -1387,14 +1387,14 @@ if ( ! empty( $download_id ) ) {
             height: 100%;
         }
         
-        .barcode-bar.thin { width: 0.8px; }
-        .barcode-bar.med { width: 1.4px; }
-        .barcode-bar.thick { width: 2.2px; }
+        .barcode-bar.thin { width: 1.2px; }
+        .barcode-bar.med { width: 2.2px; }
+        .barcode-bar.thick { width: 3.5px; }
         
         /* Right Column layout */
         .id-col-right {
             flex: 1;
-            padding: 7px 10px 4px 10px;
+            padding: 6px 10px 2.5px 10px;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
@@ -1440,9 +1440,9 @@ if ( ! empty( $download_id ) ) {
         .profile-meta-list {
             display: flex;
             flex-direction: column;
-            gap: 3.5px;
+            gap: 2.5px;
             flex: 1;
-            margin-top: 4px;
+            margin-top: 3px;
         }
         
         .profile-meta-list.has-alt-mobile {
@@ -1511,7 +1511,7 @@ if ( ! empty( $download_id ) ) {
             width: 100%;
             margin-top: auto;
             border-top: 0.75px solid #cbd5e0;
-            padding-top: 2px;
+            padding-top: 1px;
             box-sizing: border-box;
         }
         
@@ -1524,14 +1524,14 @@ if ( ! empty( $download_id ) ) {
         }
         
         .signature-image-wrapper {
-            height: 35px;
+            height: 31px;
             display: flex;
             align-items: flex-end;
             justify-content: center;
         }
         
         .signature-image-wrapper img {
-            height: 35px;
+            height: 31px;
             width: auto;
             object-fit: contain;
             mix-blend-mode: multiply;
@@ -1541,7 +1541,7 @@ if ( ! empty( $download_id ) ) {
             width: 100%;
             border-bottom: 0.5px dashed var(--id-primary);
             margin-top: 1px;
-            margin-bottom: 2px;
+            margin-bottom: 1px;
         }
         
         .signature-title {
@@ -1554,7 +1554,7 @@ if ( ! empty( $download_id ) ) {
         }
         
         .vertical-dash-divider {
-            height: 22px;
+            height: 19px;
             border-left: 0.75px solid #cbd5e0;
             margin: 0 4px;
         }
@@ -2020,30 +2020,30 @@ if ( ! empty( $download_id ) ) {
                 <!-- Key-Value Rows for Bank Info in an elegant card-like container overlay -->
                 <div style="display: flex; flex-direction: column; justify-content: space-between; background: rgba(5, 32, 84, 0.03); border: 0.5px solid rgba(5, 32, 84, 0.1); border-radius: 6px; padding: 6px 8px; box-sizing: border-box; width: 210px; height: 110px;">
                     <!-- Beneficiary Details -->
-                    <div style="display: flex; flex-direction: column; line-height: 1;">
-                        <span style="font-size: 3.5px; font-weight: 800; color: #718096; text-transform: uppercase; letter-spacing: 0.2px;">BENEFICIARY NAME</span>
+                    <div style="display: flex; flex-direction: column; gap: 3.5px; line-height: 1.3;">
+                        <span style="font-size: 4px; font-weight: 800; color: #718096; text-transform: uppercase; letter-spacing: 0.2px;">BENEFICIARY NAME</span>
                         <span style="font-size: 7.5px; font-weight: 700; color: var(--id-primary); letter-spacing: 0.1px;">TATKHALSA FOUNDATION</span>
                     </div>
 
                     <div style="height: 0.5px; background: rgba(5, 32, 84, 0.06); width: 100%;"></div>
 
                     <!-- Account Number -->
-                    <div style="display: flex; flex-direction: column; line-height: 1;">
-                        <span style="font-size: 3.5px; font-weight: 800; color: #718096; text-transform: uppercase; letter-spacing: 0.2px;">ACCOUNT NUMBER</span>
-                        <span style="font-size: 10px; font-weight: 700; color: #1a202c; font-family: 'Courier New', monospace; letter-spacing: 0.8px; margin-top: 1px;">9250 1005 7912 966</span>
+                    <div style="display: flex; flex-direction: column; gap: 3.5px; line-height: 1.3;">
+                        <span style="font-size: 4px; font-weight: 800; color: #718096; text-transform: uppercase; letter-spacing: 0.2px;">ACCOUNT NUMBER</span>
+                        <span style="font-size: 10px; font-weight: 700; color: #1a202c; font-family: 'Courier New', monospace; letter-spacing: 0.8px;">9250 1005 7912 966</span>
                     </div>
 
                     <div style="height: 0.5px; background: rgba(5, 32, 84, 0.06); width: 100%;"></div>
 
                     <!-- IFSC Code & Bank Name Row -->
                     <div style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
-                        <div style="display: flex; flex-direction: column; line-height: 1;">
-                            <span style="font-size: 3.5px; font-weight: 800; color: #718096; text-transform: uppercase; letter-spacing: 0.2px;">IFSC CODE</span>
-                            <span style="font-size: 7.5px; font-weight: 700; color: #1a202c; font-family: 'Courier New', monospace; margin-top: 1px;">UTIB0004354</span>
+                        <div style="display: flex; flex-direction: column; gap: 3.5px; line-height: 1.3;">
+                            <span style="font-size: 4px; font-weight: 800; color: #718096; text-transform: uppercase; letter-spacing: 0.2px;">IFSC CODE</span>
+                            <span style="font-size: 7.5px; font-weight: 700; color: #1a202c; font-family: 'Courier New', monospace;">UTIB0004354</span>
                         </div>
-                        <div style="display: flex; flex-direction: column; line-height: 1; align-items: flex-end; text-align: right;">
-                            <span style="font-size: 3.5px; font-weight: 800; color: #718096; text-transform: uppercase; letter-spacing: 0.2px; padding-right: 4px;">BANK NAME</span>
-                            <div style="display: flex; align-items: center; gap: 3px; margin-top: 1.5px;">
+                        <div style="display: flex; flex-direction: column; gap: 3.5px; line-height: 1.3; align-items: flex-end; text-align: right;">
+                            <span style="font-size: 4px; font-weight: 800; color: #718096; text-transform: uppercase; letter-spacing: 0.2px; padding-right: 4px;">BANK NAME</span>
+                            <div style="display: flex; align-items: center; gap: 3px; margin-top: 0.5px;">
                                 <img src="https://upload.wikimedia.org/wikipedia/commons/1/1a/Axis_Bank_logo.svg" alt="Axis Bank" style="height: 7px; display: block; object-fit: contain;">
                             </div>
                         </div>
@@ -2052,9 +2052,9 @@ if ( ! empty( $download_id ) ) {
                     <div style="height: 0.5px; background: rgba(5, 32, 84, 0.06); width: 100%;"></div>
 
                     <!-- BHIM UPI ID Row -->
-                    <div style="display: flex; flex-direction: column; line-height: 1;">
-                        <span style="font-size: 3.5px; font-weight: 800; color: #718096; text-transform: uppercase; letter-spacing: 0.2px;">BHIM UPI ADDRESS</span>
-                        <div style="display: inline-block; background: rgba(225, 169, 42, 0.1); border: 0.5px solid rgba(225, 169, 42, 0.4); padding: 1.5px 4px; border-radius: 3px; margin-top: 1px; width: fit-content;">
+                    <div style="display: flex; flex-direction: column; gap: 3.5px; line-height: 1.3;">
+                        <span style="font-size: 4px; font-weight: 800; color: #718096; text-transform: uppercase; letter-spacing: 0.2px;">BHIM UPI ADDRESS</span>
+                        <div style="display: inline-block; background: rgba(225, 169, 42, 0.1); border: 0.5px solid rgba(225, 169, 42, 0.4); padding: 1.5px 4px; border-radius: 3px; width: fit-content;">
                             <span style="font-size: 6.8px; font-weight: 700; color: #2d3748; font-family: 'Courier New', monospace; letter-spacing: -0.1px; display: block;">mab.037215043540097@axisbank</span>
                         </div>
                     </div>
@@ -2454,12 +2454,12 @@ if ( ! empty( $query_member_id ) ) {
             align-items: center;
             justify-content: center;
             height: 10px;
-            width: 78px;
+            width: 90px;
             background: #ffffff;
             padding: 1px;
             border-radius: 2px;
             margin-top: 3px;
-            gap: 1.2px;
+            gap: 1.8px;
             box-sizing: border-box;
         }
         
@@ -2468,13 +2468,13 @@ if ( ! empty( $query_member_id ) ) {
             height: 100%;
         }
         
-        .barcode-bar.thin { width: 0.8px; }
-        .barcode-bar.med { width: 1.4px; }
-        .barcode-bar.thick { width: 2.2px; }
+        .barcode-bar.thin { width: 1.2px; }
+        .barcode-bar.med { width: 2.2px; }
+        .barcode-bar.thick { width: 3.5px; }
         
         .id-col-right {
             flex: 1;
-            padding: 7px 10px 4px 10px;
+            padding: 6px 10px 2.5px 10px;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
@@ -2520,9 +2520,9 @@ if ( ! empty( $query_member_id ) ) {
         .profile-meta-list {
             display: flex;
             flex-direction: column;
-            gap: 3.5px;
+            gap: 2.5px;
             flex: 1;
-            margin-top: 4px;
+            margin-top: 3px;
         }
         
         .profile-meta-list.has-alt-mobile {
@@ -2591,7 +2591,7 @@ if ( ! empty( $query_member_id ) ) {
             width: 100%;
             margin-top: auto;
             border-top: 0.75px solid #cbd5e0;
-            padding-top: 2px;
+            padding-top: 1px;
             box-sizing: border-box;
         }
         
@@ -2604,14 +2604,14 @@ if ( ! empty( $query_member_id ) ) {
         }
         
         .signature-image-wrapper {
-            height: 35px;
+            height: 31px;
             display: flex;
             align-items: flex-end;
             justify-content: center;
         }
         
         .signature-image-wrapper img {
-            height: 35px;
+            height: 31px;
             width: auto;
             object-fit: contain;
             mix-blend-mode: multiply;
@@ -2621,7 +2621,7 @@ if ( ! empty( $query_member_id ) ) {
             width: 100%;
             border-bottom: 0.5px dashed var(--id-primary);
             margin-top: 1px;
-            margin-bottom: 2px;
+            margin-bottom: 1px;
         }
         
         .signature-title {
@@ -2634,7 +2634,7 @@ if ( ! empty( $query_member_id ) ) {
         }
         
         .vertical-dash-divider {
-            height: 22px;
+            height: 19px;
             border-left: 0.75px solid #cbd5e0;
             margin: 0 4px;
         }
