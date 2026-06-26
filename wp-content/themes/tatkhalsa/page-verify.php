@@ -1328,13 +1328,29 @@ if ( ! empty( $download_id ) ) {
             overflow: hidden;
             background: #ffffff;
             box-shadow: 0 3px 6px rgba(0, 0, 0, 0.08);
+            position: relative;
         }
         
-        .id-photo-container img {
+        .id-photo-container img.id-photo-blur {
+            position: absolute;
+            top: 0;
+            left: 0;
             width: 100%;
             height: 100%;
             object-fit: cover;
-            object-position: center top;
+            filter: blur(4px) brightness(0.95);
+            opacity: 0.65;
+            z-index: 1;
+            display: block;
+        }
+        
+        .id-photo-container img.id-photo-main {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            z-index: 2;
+            display: block;
         }
         
         .id-badge-info-navy {
@@ -1831,9 +1847,10 @@ if ( ! empty( $download_id ) ) {
             <div class="id-col-left">
                 <div class="id-photo-container">
                     <?php if ( ! empty( $member->photo_url ) ) : ?>
-                        <img src="<?php echo esc_url( $member->photo_url ); ?>" alt="Member Photo">
+                        <img src="<?php echo esc_url( $member->photo_url ); ?>" class="id-photo-blur" alt="Member Photo Background">
+                        <img src="<?php echo esc_url( $member->photo_url ); ?>" class="id-photo-main" alt="Member Photo">
                     <?php else: ?>
-                        <img src="<?php echo esc_url($logo_url); ?>" alt="Default Logo" style="object-fit: contain; padding: 6px; background:#f4f6f9;">
+                        <img src="<?php echo esc_url($logo_url); ?>" alt="Default Logo" style="object-fit: contain; padding: 6px; background:#f4f6f9; position: relative; z-index: 2; width: 100%; height: 100%;">
                     <?php endif; ?>
                 </div>
                 
@@ -2411,13 +2428,29 @@ if ( ! empty( $query_member_id ) ) {
             overflow: hidden;
             background: #ffffff;
             box-shadow: 0 3px 6px rgba(0,0,0,0.08);
+            position: relative;
         }
         
-        .id-photo-container img {
+        .id-photo-container img.id-photo-blur {
+            position: absolute;
+            top: 0;
+            left: 0;
             width: 100%;
             height: 100%;
             object-fit: cover;
-            object-position: center top;
+            filter: blur(4px) brightness(0.95);
+            opacity: 0.65;
+            z-index: 1;
+            display: block;
+        }
+        
+        .id-photo-container img.id-photo-main {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            z-index: 2;
+            display: block;
         }
         
         .id-badge-info-navy {
@@ -2830,9 +2863,10 @@ if ( ! empty( $query_member_id ) ) {
                         <!-- Secure Avatar Border -->
                         <div style="width: 120px; height: 135px; border: 3px solid #E1A92A; border-radius: 10px; overflow: hidden; background: #ffffff; box-shadow: 0 4px 15px rgba(5, 32, 84, 0.08); flex-shrink: 0; position: relative;">
                             <?php if ( ! empty( $member->photo_url ) ) : ?>
-                                <img src="<?php echo esc_url( $member->photo_url ); ?>" alt="Member Photo" style="width: 100%; height: 100%; object-fit: cover; object-position: center top; display: block;">
+                                <img src="<?php echo esc_url( $member->photo_url ); ?>" alt="Member Photo Background" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; filter: blur(4px) brightness(0.95); opacity: 0.65; z-index: 1; display: block;">
+                                <img src="<?php echo esc_url( $member->photo_url ); ?>" alt="Member Photo" style="position: relative; width: 100%; height: 100%; object-fit: contain; z-index: 2; display: block;">
                             <?php else: ?>
-                                <img src="<?php echo esc_url($logo_url); ?>" alt="Default Logo" style="width: 100%; height: 100%; object-fit: contain; padding: 16px; background:#f4f6f9; box-sizing: border-box; display: block;">
+                                <img src="<?php echo esc_url($logo_url); ?>" alt="Default Logo" style="width: 100%; height: 100%; object-fit: contain; padding: 16px; background:#f4f6f9; box-sizing: border-box; display: block; position: relative; z-index: 2;">
                             <?php endif; ?>
 
                             <!-- Floating Active Indicator -->
