@@ -6,6 +6,12 @@
  * and the public-facing landing page for scanning ID cards.
  */
 
+// Force cache-busting headers to prevent stale, cached data display
+if ( ! defined( 'DONOTCACHEPAGE' ) ) {
+    define( 'DONOTCACHEPAGE', true );
+}
+nocache_headers();
+
 // Initialize WordPress Environment
 global $wpdb;
 $table_name = $wpdb->prefix . 'tkf_verifications';
@@ -647,8 +653,8 @@ if ( is_array($columns) ) {
 }
 
 // Process Form Submissions for Admin View
-$message = '';
-$message_type = '';
+$message = isset( $_GET['tkf_msg'] ) ? sanitize_text_field( wp_unslash( $_GET['tkf_msg'] ) ) : '';
+$message_type = isset( $_GET['tkf_msg_type'] ) ? sanitize_text_field( wp_unslash( $_GET['tkf_msg_type'] ) ) : '';
 
 if ( $_SERVER['REQUEST_METHOD'] === 'POST' && isset( $_POST['tkf_verify_action'] ) ) {
     // CSRF Protection via Nonce
@@ -717,8 +723,8 @@ if ( $_SERVER['REQUEST_METHOD'] === 'POST' && isset( $_POST['tkf_verify_action']
             );
 
             if ( $inserted ) {
-                $message = 'New personnel record added successfully.';
-                $message_type = 'success';
+                wp_safe_redirect( add_query_arg( array( 'tkf_msg' => 'New personnel record added successfully.', 'tkf_msg_type' => 'success' ), remove_query_arg( array( 'edit_id', 'tkf_msg', 'tkf_msg_type' ) ) ) );
+                exit;
             } else {
                 $message = 'Database error: Failed to add member. ' . $wpdb->last_error;
                 $message_type = 'error';
@@ -775,8 +781,8 @@ if ( $_SERVER['REQUEST_METHOD'] === 'POST' && isset( $_POST['tkf_verify_action']
             );
 
             if ( $updated !== false ) {
-                $message = 'Personnel record updated successfully.';
-                $message_type = 'success';
+                wp_safe_redirect( add_query_arg( array( 'tkf_msg' => 'Personnel record updated successfully.', 'tkf_msg_type' => 'success' ), remove_query_arg( array( 'edit_id', 'tkf_msg', 'tkf_msg_type' ) ) ) );
+                exit;
             } else {
                 $message = 'Database error: Failed to update member. ' . $wpdb->last_error;
                 $message_type = 'error';
@@ -794,8 +800,9 @@ if ( $_SERVER['REQUEST_METHOD'] === 'POST' && isset( $_POST['tkf_verify_action']
             array( '%s' ),
             array( '%d' )
         );
-        $message = "Personnel status securely updated to $new_status.";
-        $message_type = 'success';
+        $msg = "Personnel status securely updated to $new_status.";
+        wp_safe_redirect( add_query_arg( array( 'tkf_msg' => $msg, 'tkf_msg_type' => 'success' ), remove_query_arg( array( 'edit_id', 'tkf_msg', 'tkf_msg_type' ) ) ) );
+        exit;
     } elseif ( $action === 'delete_member' ) {
         $id = intval( $_POST['id'] );
         $wpdb->delete(
@@ -803,8 +810,9 @@ if ( $_SERVER['REQUEST_METHOD'] === 'POST' && isset( $_POST['tkf_verify_action']
             array( 'id' => $id ),
             array( '%d' )
         );
-        $message = 'Personnel record permanently deleted.';
-        $message_type = 'success';
+        $msg = 'Personnel record permanently deleted.';
+        wp_safe_redirect( add_query_arg( array( 'tkf_msg' => $msg, 'tkf_msg_type' => 'success' ), remove_query_arg( array( 'edit_id', 'tkf_msg', 'tkf_msg_type' ) ) ) );
+        exit;
     } elseif ( $action === 'send_member_email' ) {
         $id = intval( $_POST['id'] );
         $member = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM $table_name WHERE id = %d", $id ) );
@@ -910,8 +918,9 @@ if ( $_SERVER['REQUEST_METHOD'] === 'POST' && isset( $_POST['tkf_verify_action']
             
             $sent = wp_mail( $to, $subject, $body, $headers );
             if ( $sent ) {
-                $message = 'Direct official verification email successfully dispatched to ' . esc_html( $to ) . ' from tech-team@tatkhalsa.in.';
-                $message_type = 'success';
+                $msg = 'Direct official verification email successfully dispatched to ' . $to . ' from tech-team@tatkhalsa.in.';
+                wp_safe_redirect( add_query_arg( array( 'tkf_msg' => $msg, 'tkf_msg_type' => 'success' ), remove_query_arg( array( 'edit_id', 'tkf_msg', 'tkf_msg_type' ) ) ) );
+                exit;
             } else {
                 $message = 'Error: System mail agent failed to deliver email. Please check your server SMTP settings.';
                 $message_type = 'error';
@@ -1431,25 +1440,25 @@ if ( ! empty( $download_id ) ) {
         .profile-meta-list {
             display: flex;
             flex-direction: column;
-            gap: 1.5px;
+            gap: 3.5px;
             flex: 1;
-            margin-top: 3px;
+            margin-top: 4px;
         }
         
         .profile-meta-list.has-alt-mobile {
-            gap: 0.8px;
-            margin-top: 1.5px;
+            gap: 1.8px;
+            margin-top: 2px;
         }
         
         .meta-item-row {
             display: flex;
             align-items: center;
-            gap: 5px;
+            gap: 6px;
         }
         
         .meta-icon-circle {
-            width: 10px;
-            height: 10px;
+            width: 12px;
+            height: 12px;
             background: var(--id-primary);
             color: #ffffff;
             border-radius: 50%;
@@ -1460,10 +1469,10 @@ if ( ! empty( $download_id ) ) {
         }
         
         .meta-svg-icon {
-            width: 5px;
-            height: 5px;
+            width: 6px;
+            height: 6px;
             color: #ffffff;
-            stroke-width: 2.5;
+            stroke-width: 2.8;
         }
         
         .meta-content-wrapper {
@@ -1478,7 +1487,7 @@ if ( ! empty( $download_id ) ) {
             color: var(--id-primary);
             text-transform: uppercase;
             letter-spacing: 0.3px;
-            margin-bottom: 0.5px;
+            margin-bottom: 1.5px;
         }
         
         .meta-row-val {
@@ -1486,6 +1495,12 @@ if ( ! empty( $download_id ) ) {
             font-weight: 600;
             color: #4a5568;
             word-break: break-all;
+        }
+
+        .meta-row-val a {
+            color: inherit !important;
+            text-decoration: none !important;
+            pointer-events: none !important;
         }
         
         /* Footer Area of the Right Column */
@@ -2505,21 +2520,26 @@ if ( ! empty( $query_member_id ) ) {
         .profile-meta-list {
             display: flex;
             flex-direction: column;
-            gap: 1.5px;
+            gap: 3.5px;
             flex: 1;
-            margin-top: 3px;
+            margin-top: 4px;
+        }
+        
+        .profile-meta-list.has-alt-mobile {
+            gap: 1.8px;
+            margin-top: 2px;
         }
         
         .meta-item-row {
             display: flex;
             align-items: center;
-            gap: 5px;
+            gap: 6px;
             text-align: left;
         }
         
         .meta-icon-circle {
-            width: 10px;
-            height: 10px;
+            width: 12px;
+            height: 12px;
             background: var(--id-primary);
             color: #ffffff;
             border-radius: 50%;
@@ -2530,10 +2550,10 @@ if ( ! empty( $query_member_id ) ) {
         }
         
         .meta-svg-icon {
-            width: 5px;
-            height: 5px;
+            width: 6px;
+            height: 6px;
             color: #ffffff;
-            stroke-width: 2.5;
+            stroke-width: 2.8;
         }
         
         .meta-content-wrapper {
@@ -2548,7 +2568,7 @@ if ( ! empty( $query_member_id ) ) {
             color: var(--id-primary);
             text-transform: uppercase;
             letter-spacing: 0.3px;
-            margin-bottom: 0.5px;
+            margin-bottom: 1.5px;
         }
         
         .meta-row-val {
@@ -2556,6 +2576,12 @@ if ( ! empty( $query_member_id ) ) {
             font-weight: 600;
             color: #4a5568;
             word-break: break-all;
+        }
+
+        .meta-row-val a {
+            color: inherit !important;
+            text-decoration: none !important;
+            pointer-events: none !important;
         }
         
         .right-column-footer {

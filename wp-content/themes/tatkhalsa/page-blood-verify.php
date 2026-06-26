@@ -7,6 +7,12 @@
  * the style, visual theme, and responsiveness of page-verify.php.
  */
 
+// Force cache-busting headers to prevent stale, cached data display
+if ( ! defined( 'DONOTCACHEPAGE' ) ) {
+    define( 'DONOTCACHEPAGE', true );
+}
+nocache_headers();
+
 get_header();
 
 // Initialize WordPress Environment
