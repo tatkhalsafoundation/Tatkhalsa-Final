@@ -261,7 +261,7 @@ if ( ! function_exists( 'tkf_render_mobile_wallet_hub' ) ) {
                 width: 54px;
                 height: 62px;
                 border-radius: 4px;
-                object-fit: cover;
+                object-fit: contain;
                 border: 1px solid rgba(225, 169, 42, 0.4);
                 background: #ffffff;
             }
@@ -1332,7 +1332,7 @@ if ( ! empty( $download_id ) ) {
         .id-photo-container img {
             width: 100%;
             height: 100%;
-            object-fit: cover;
+            object-fit: contain;
         }
         
         .id-badge-info-navy {
@@ -2414,7 +2414,7 @@ if ( ! empty( $query_member_id ) ) {
         .id-photo-container img {
             width: 100%;
             height: 100%;
-            object-fit: cover;
+            object-fit: contain;
         }
         
         .id-badge-info-navy {
@@ -2827,7 +2827,7 @@ if ( ! empty( $query_member_id ) ) {
                         <!-- Secure Avatar Border -->
                         <div style="width: 120px; height: 135px; border: 3px solid #E1A92A; border-radius: 10px; overflow: hidden; background: #ffffff; box-shadow: 0 4px 15px rgba(5, 32, 84, 0.08); flex-shrink: 0; position: relative;">
                             <?php if ( ! empty( $member->photo_url ) ) : ?>
-                                <img src="<?php echo esc_url( $member->photo_url ); ?>" alt="Member Photo" style="width: 100%; height: 100%; object-fit: cover; display: block;">
+                                <img src="<?php echo esc_url( $member->photo_url ); ?>" alt="Member Photo" style="width: 100%; height: 100%; object-fit: contain; display: block;">
                             <?php else: ?>
                                 <img src="<?php echo esc_url($logo_url); ?>" alt="Default Logo" style="width: 100%; height: 100%; object-fit: contain; padding: 16px; background:#f4f6f9; box-sizing: border-box; display: block;">
                             <?php endif; ?>
