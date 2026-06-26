@@ -259,7 +259,7 @@ if ( ! function_exists( 'tkf_render_mobile_wallet_hub' ) ) {
             }
             .tkf-w-pass-photo {
                 width: 54px;
-                height: 62px;
+                height: 70px;
                 border-radius: 4px;
                 object-fit: cover;
                 object-position: center top;
@@ -1322,7 +1322,7 @@ if ( ! empty( $download_id ) ) {
         
         .id-photo-container {
             width: 78px;
-            height: 84px;
+            height: 100px;
             border: 1px solid var(--id-primary);
             border-radius: 6px;
             overflow: hidden;
@@ -2422,7 +2422,7 @@ if ( ! empty( $query_member_id ) ) {
         
         .id-photo-container {
             width: 78px;
-            height: 84px;
+            height: 100px;
             border: 1px solid var(--id-primary);
             border-radius: 6px;
             overflow: hidden;
@@ -2861,7 +2861,7 @@ if ( ! empty( $query_member_id ) ) {
                     <div style="display: flex; flex-direction: row; gap: 24px; align-items: center; border-bottom: 1px solid #edf2f7; padding-bottom: 24px; margin-bottom: 24px; flex-wrap: wrap;">
 
                         <!-- Secure Avatar Border -->
-                        <div style="width: 120px; height: 135px; border: 3px solid #E1A92A; border-radius: 10px; overflow: hidden; background: #ffffff; box-shadow: 0 4px 15px rgba(5, 32, 84, 0.08); flex-shrink: 0; position: relative;">
+                        <div style="width: 120px; height: 154px; border: 3px solid #E1A92A; border-radius: 10px; overflow: hidden; background: #ffffff; box-shadow: 0 4px 15px rgba(5, 32, 84, 0.08); flex-shrink: 0; position: relative;">
                             <?php if ( ! empty( $member->photo_url ) ) : ?>
                                 <img src="<?php echo esc_url( $member->photo_url ); ?>" alt="Member Photo Background" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; filter: blur(4px) brightness(0.95); opacity: 0.65; z-index: 1; display: block;">
                                 <img src="<?php echo esc_url( $member->photo_url ); ?>" alt="Member Photo" style="position: relative; width: 100%; height: 100%; object-fit: contain; z-index: 2; display: block;">
