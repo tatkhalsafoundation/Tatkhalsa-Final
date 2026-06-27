@@ -838,6 +838,7 @@ if ( $_SERVER['REQUEST_METHOD'] === 'POST' && isset( $_POST['tkf_verify_action']
             <head>
                 <meta charset="utf-8">
                 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                <meta name="format-detection" content="telephone=no, date=no, address=no, email=no">
                 <title>Secured Identity Information</title>
                 <style>
                     body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; line-height: 1.6; color: #2d3748; background-color: #f7fafc; margin: 0; padding: 0; }
@@ -1077,6 +1078,7 @@ if ( ! empty( $download_id ) ) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="format-detection" content="telephone=no, date=no, address=no, email=no">
     <title>ID Card - <?php echo esc_html( $member->member_id ); ?></title>
     <!-- CSS for ID Card Print -->
     <style>
@@ -1123,6 +1125,17 @@ if ( ! empty( $download_id ) ) {
             --id-primary: #052054;
             --id-accent: #E1A92A;
             flex-shrink: 0;
+        }
+
+        .id-card-wrapper a,
+        .id-card-wrapper a:hover,
+        .id-card-wrapper a:visited,
+        .id-card-wrapper a:active {
+            color: inherit !important;
+            text-decoration: none !important;
+            border-bottom: none !important;
+            pointer-events: none !important;
+            cursor: default !important;
         }
 
         .id-card-wrapper.theme-staff {
@@ -1734,8 +1747,9 @@ if ( ! empty( $download_id ) ) {
             }
         }
     </style>
+    <meta name="format-detection" content="telephone=no, date=no, address=no, email=no">
 </head>
-<body>
+<body class="nfc-enabled">
     <?php
     $mid_upper = strtoupper( $member->member_id );
     $theme_class = 'theme-staff';
@@ -1760,8 +1774,8 @@ if ( ! empty( $download_id ) ) {
             </svg>
             Print ID Card
         </button>
-        <div style="background: #ffffff; border: 1.5px solid #052054; padding: 10px 14px; border-radius: 6px; box-shadow: 0 4px 14px rgba(0,0,0,0.15); display: flex; align-items: center; gap: 8px;">
-            <input type="checkbox" id="nfc-mode-toggle" style="width: 15px; height: 15px; accent-color: #052054; cursor: pointer;">
+        <div style="display: none !important;">
+            <input type="checkbox" id="nfc-mode-toggle" checked style="width: 15px; height: 15px; accent-color: #052054; cursor: pointer;">
             <label for="nfc-mode-toggle" style="color: #052054; font-family: 'Space Grotesk', sans-serif; font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; cursor: pointer; -webkit-user-select: none; user-select: none; white-space: nowrap;">
                 Print with NFC / RFID Logo
             </label>
@@ -1770,23 +1784,11 @@ if ( ! empty( $download_id ) ) {
 
     <script style="display:none;">
     document.addEventListener('DOMContentLoaded', function() {
+        document.body.classList.add('nfc-enabled');
+        localStorage.setItem('tkf_nfc_layout', 'true');
         var toggle = document.getElementById('nfc-mode-toggle');
         if (toggle) {
-            var isNfcEnabled = localStorage.getItem('tkf_nfc_layout') === 'true';
-            toggle.checked = isNfcEnabled;
-            if (isNfcEnabled) {
-                document.body.classList.add('nfc-enabled');
-            }
-            
-            toggle.addEventListener('change', function() {
-                if (this.checked) {
-                    document.body.classList.add('nfc-enabled');
-                    localStorage.setItem('tkf_nfc_layout', 'true');
-                } else {
-                    document.body.classList.remove('nfc-enabled');
-                    localStorage.setItem('tkf_nfc_layout', 'false');
-                }
-            });
+            toggle.checked = true;
         }
     });
     </script>
@@ -2121,6 +2123,7 @@ if ( ! empty( $query_member_id ) ) {
     
     // Fetch matching layout securely from header
     get_header();
+    echo '<meta name="format-detection" content="telephone=no, date=no, address=no, email=no">';
 
     // Fetch the matching record safely using prepared statements protect against SQL Injection
     $member = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM $table_name WHERE member_id = %s", $query_member_id ) );
@@ -2221,6 +2224,17 @@ if ( ! empty( $query_member_id ) ) {
             --id-primary: #052054;
             --id-accent: #E1A92A;
             flex-shrink: 0;
+        }
+
+        .id-card-wrapper a,
+        .id-card-wrapper a:hover,
+        .id-card-wrapper a:visited,
+        .id-card-wrapper a:active {
+            color: inherit !important;
+            text-decoration: none !important;
+            border-bottom: none !important;
+            pointer-events: none !important;
+            cursor: default !important;
         }
 
         .id-card-wrapper.theme-staff {
