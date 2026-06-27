@@ -817,18 +817,30 @@ if ( $_SERVER['REQUEST_METHOD'] === 'POST' && isset( $_POST['tkf_verify_action']
     } elseif ( $action === 'send_member_email' ) {
         $id = intval( $_POST['id'] );
         $member = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM $table_name WHERE id = %d", $id ) );
+        
+        $email_target_type = isset( $_POST['email_target_type'] ) ? sanitize_text_field( wp_unslash( $_POST['email_target_type'] ) ) : 'registered';
+        $custom_email = isset( $_POST['custom_email'] ) ? sanitize_email( wp_unslash( $_POST['custom_email'] ) ) : '';
+        
+        $to = '';
+        if ( $email_target_type === 'custom' && ! empty( $custom_email ) ) {
+            $to = $custom_email;
+        } elseif ( $member ) {
+            $to = $member->email;
+        }
+        
         if ( ! $member ) {
             $message = 'Member not found.';
             $message_type = 'error';
-        } elseif ( empty( $member->email ) ) {
-            $message = 'Error: This member does not have an email address associated with their profile.';
+        } elseif ( empty( $to ) ) {
+            $message = 'Error: No recipient email address provided.';
             $message_type = 'error';
         } else {
             // Retrieve values for email
-            $to = $member->email;
             $subject = 'Official Identity Verification & ID Card Notification - ' . $member->member_id;
             $verify_url = esc_url( home_url('/verify/?member_id=' . $member->member_id) );
-            $email_token = wp_hash( $member->member_id . '|' . $member->email, 'secure' );
+            
+            $salt = ! empty( $member->email ) ? $member->email : 'no-email-fallback-salt';
+            $email_token = wp_hash( $member->member_id . '|' . $salt, 'secure' );
             $email_download_url = esc_url( home_url('/verify/?download_id=' . $member->member_id . '&token=' . $email_token) );
             
             // Build a highly professional responsive HTML email body mimicking Tatkhalsa official brand
@@ -1057,8 +1069,9 @@ if ( ! empty( $download_id ) ) {
 
     $token = isset( $_GET['token'] ) ? sanitize_text_field( wp_unslash( $_GET['token'] ) ) : '';
     $is_valid_email_recipient = false;
-    if ( ! empty( $token ) && $member && ! empty( $member->email ) ) {
-        $expected_token = wp_hash( $member->member_id . '|' . $member->email, 'secure' );
+    if ( ! empty( $token ) && $member ) {
+        $salt = ! empty( $member->email ) ? $member->email : 'no-email-fallback-salt';
+        $expected_token = wp_hash( $member->member_id . '|' . $salt, 'secure' );
         if ( hash_equals( $expected_token, $token ) ) {
             $is_valid_email_recipient = true;
         }
@@ -3423,7 +3436,11 @@ if ( ! empty( $query_member_id ) ) {
                 </thead>
                 <tbody>
                     <?php if ( $members ) : ?>
-                        <?php foreach ( $members as $mem ) : ?>
+                        <?php foreach ( $members as $mem ) : 
+                            $mem_salt = ! empty( $mem->email ) ? $mem->email : 'no-email-fallback-salt';
+                            $mem_token = wp_hash( $mem->member_id . '|' . $mem_salt, 'secure' );
+                            $mem_download_url = esc_url( home_url('/verify/?download_id=' . $mem->member_id . '&token=' . $mem_token) );
+                        ?>
                             <tr>
                                 <td><strong><?php echo esc_html( $mem->member_id ); ?></strong></td>
                                 <td style="font-weight: 500;"><?php echo esc_html( $mem->full_name ); ?></td>
@@ -3444,7 +3461,7 @@ if ( ! empty( $query_member_id ) ) {
                                     </span>
                                 </td>
                                 <td>
-                                    <div class="action-td-flex">
+                                    <div class="action-td-flex" style="flex-wrap: wrap;">
                                         <!-- Edit Personnel Record -->
                                         <a href="<?php echo esc_url( add_query_arg( 'edit_id', $mem->id ) ); ?>" class="action-btn" style="background: #007bff; display: flex; align-items: center; justify-content: center;" title="Edit Personnel Record">Edit</a>
 
@@ -3468,24 +3485,16 @@ if ( ! empty( $query_member_id ) ) {
                                         <!-- Public Audit Deep-link -->
                                         <a href="<?php echo esc_url( home_url('/verify/?member_id=' . $mem->member_id) ); ?>" target="_blank" class="action-btn btn-view" style="display: flex; align-items: center; justify-content: center;">Scan Test</a>
                                         
-                                        <!-- Download ID Button -->
-                                        <a href="<?php echo esc_url( home_url('/verify/?download_id=' . $mem->member_id) ); ?>" target="_blank" class="action-btn" style="background:#28a745; display: flex; align-items: center; justify-content: center;">Print ID</a>
+                                        <!-- Copy Secure Download Link -->
+                                        <button type="button" class="action-btn" style="background: #17a2b8; font-weight: 700; display: flex; align-items: center; justify-content: center;" onclick="copySecureLink(this, '<?php echo esc_js($mem_download_url); ?>')" title="Copy Secure Print Link to Clipboard">Copy Link</button>
 
-                                        <!-- Direct Mail to them Button (From tech-team@tatkhalsa.in) -->
-                                        <?php if ( ! empty( $mem->email ) ) : ?>
-                                            <form method="POST" action="" style="margin:0;" onsubmit="return confirm('Are you sure you want to directly mail this ID card and credential information to: <?php echo esc_attr($mem->email); ?> from tech-team@tatkhalsa.in?');">
-                                                <?php wp_nonce_field( 'tkf_verify_admin_action', 'tkf_verify_nonce' ); ?>
-                                                <input type="hidden" name="tkf_verify_action" value="send_member_email">
-                                                <input type="hidden" name="id" value="<?php echo esc_attr( $mem->id ); ?>">
-                                                <button type="submit" class="action-btn" style="background: #e1a92a; color: #052054; border: none; font-weight: 700;" title="Send Credentials to <?php echo esc_attr($mem->email); ?> from tech-team@tatkhalsa.in">
-                                                    Send
-                                                </button>
-                                            </form>
-                                        <?php else : ?>
-                                            <button class="action-btn" style="background: #cbd5e0; color: #718096; border: none; cursor: not-allowed; opacity: 0.65;" disabled title="No Email associated with this identity">
-                                                Send
-                                            </button>
-                                        <?php endif; ?>
+                                        <!-- Download ID Button -->
+                                        <a href="<?php echo $mem_download_url; ?>" target="_blank" class="action-btn" style="background:#28a745; display: flex; align-items: center; justify-content: center;" title="Print ID Card">Print ID</a>
+
+                                        <!-- Direct Mail or Custom Mail Button (Interactive Modal) -->
+                                        <button type="button" class="action-btn" style="background: #e1a92a; color: #052054; border: none; font-weight: 700; display: flex; align-items: center; justify-content: center;" onclick="openSendModal(<?php echo intval($mem->id); ?>, '<?php echo esc_js($mem->member_id); ?>', '<?php echo esc_js($mem->email); ?>')" title="Send ID Credentials Email">
+                                            Send
+                                        </button>
                                     </div>
                                 </td>
                             </tr>
@@ -3499,6 +3508,134 @@ if ( ! empty( $query_member_id ) ) {
             </table>
         </div>
     </div>
+
+    <!-- Elegant Manual Send Email Modal -->
+    <div id="send-link-modal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 99999; align-items: center; justify-content: center; box-sizing: border-box; padding: 20px;">
+        <div style="background: #ffffff; padding: 25px; border-radius: 12px; max-width: 450px; width: 100%; box-shadow: 0 10px 25px rgba(0,0,0,0.2); border-top: 4px solid #052054; position: relative; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; box-sizing: border-box;">
+            <button onclick="closeSendModal()" style="position: absolute; top: 15px; right: 15px; background: none; border: none; font-size: 24px; cursor: pointer; color: #a0aec0; font-weight: bold; line-height: 1; padding: 0;">&times;</button>
+            <h3 style="margin-top: 0; margin-bottom: 15px; color: #052054; font-size: 1.25rem; font-weight: 800; border-bottom: 1px solid #edf2f7; padding-bottom: 12px;">Send ID Card Download Link</h3>
+            
+            <form method="POST" action="">
+                <?php wp_nonce_field( 'tkf_verify_admin_action', 'tkf_verify_nonce' ); ?>
+                <input type="hidden" name="tkf_verify_action" value="send_member_email">
+                <input type="hidden" id="modal-member-id" name="id" value="">
+                
+                <div style="margin-bottom: 15px;">
+                    <span style="font-size: 11px; font-weight: 700; color: #718096; text-transform: uppercase; letter-spacing: 0.5px; display: block; margin-bottom: 4px;">Member ID</span>
+                    <div id="modal-member-display" style="font-size: 14px; font-weight: bold; color: #1a202c; font-family: monospace; background: #f7fafc; padding: 10px 12px; border-radius: 6px; border: 1px solid #e2e8f0;"></div>
+                </div>
+
+                <div style="margin-bottom: 15px;">
+                    <label style="font-size: 11px; font-weight: 700; color: #052054; text-transform: uppercase; letter-spacing: 0.5px; display: block; margin-bottom: 6px;">Select Recipient Email Option</label>
+                    
+                    <div style="display: flex; flex-direction: column; gap: 10px; background: #f8fafc; padding: 12px; border-radius: 8px; border: 1px solid #edf2f7;">
+                        <label style="display: flex; align-items: center; gap: 8px; cursor: pointer; font-size: 13.5px; font-weight: 500; color: #2d3748; margin: 0;">
+                            <input type="radio" name="email_target_type" value="registered" checked onchange="toggleModalEmailInput(false)" style="cursor: pointer; accent-color: #052054; width: 16px; height: 16px;">
+                            <span>Registered Email: <strong id="modal-registered-email-text" style="color: #052054;"></strong></span>
+                        </label>
+                        
+                        <label style="display: flex; align-items: center; gap: 8px; cursor: pointer; font-size: 13.5px; font-weight: 500; color: #2d3748; margin: 0;">
+                            <input type="radio" name="email_target_type" id="modal-radio-custom" value="custom" onchange="toggleModalEmailInput(true)" style="cursor: pointer; accent-color: #052054; width: 16px; height: 16px;">
+                            <span>Send to a different email address</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div id="modal-custom-email-container" style="display: none; margin-bottom: 20px;">
+                    <label for="modal-custom-email" style="font-size: 11px; font-weight: 700; color: #052054; text-transform: uppercase; letter-spacing: 0.5px; display: block; margin-bottom: 6px;">Recipient Email Address</label>
+                    <input type="email" id="modal-custom-email" name="custom_email" placeholder="e.g. recipient@domain.com" style="width: 100%; padding: 10px 12px; border: 1.5px solid #cbd5e0; border-radius: 6px; font-size: 14px; box-sizing: border-box; transition: border-color 0.2s;" onfocus="this.style.borderColor='#052054';" onblur="this.style.borderColor='#cbd5e0';">
+                </div>
+
+                <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 20px; border-top: 1px solid #edf2f7; padding-top: 15px;">
+                    <button type="button" onclick="closeSendModal()" style="background: #e2e8f0; color: #4a5568; border: none; padding: 10px 18px; border-radius: 6px; font-weight: 700; cursor: pointer; font-size: 13px; transition: background 0.2s;" onmouseover="this.style.background='#cbd5e0'" onmouseout="this.style.background='#e2e8f0'">Cancel</button>
+                    <button type="submit" style="background: #052054; color: #ffffff; border: none; padding: 10px 22px; border-radius: 6px; font-weight: 700; cursor: pointer; font-size: 13px; transition: background 0.2s; box-shadow: 0 4px 10px rgba(5,32,84,0.15);" onmouseover="this.style.background='#031230'" onmouseout="this.style.background='#052054'">Send Secure Link</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+    function copySecureLink(btn, url) {
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(url).then(function() {
+                var originalText = btn.innerHTML;
+                var originalBg = btn.style.backgroundColor;
+                btn.innerHTML = 'Copied! ✓';
+                btn.style.backgroundColor = '#28a745';
+                setTimeout(function() {
+                    btn.innerHTML = originalText;
+                    btn.style.backgroundColor = originalBg;
+                }, 2000);
+            }).catch(function() {
+                fallbackCopy(btn, url);
+            });
+        } else {
+            fallbackCopy(btn, url);
+        }
+    }
+
+    function fallbackCopy(btn, url) {
+        var dummy = document.createElement('input');
+        document.body.appendChild(dummy);
+        dummy.value = url;
+        dummy.select();
+        document.execCommand('copy');
+        document.body.removeChild(dummy);
+        
+        var originalText = btn.innerHTML;
+        var originalBg = btn.style.backgroundColor;
+        btn.innerHTML = 'Copied! ✓';
+        btn.style.backgroundColor = '#28a745';
+        setTimeout(function() {
+            btn.innerHTML = originalText;
+            btn.style.backgroundColor = originalBg;
+        }, 2000);
+    }
+
+    function openSendModal(id, memberId, registeredEmail) {
+        document.getElementById('modal-member-id').value = id;
+        document.getElementById('modal-member-display').textContent = memberId;
+        
+        var emailText = registeredEmail ? registeredEmail : '';
+        var registeredRadioContainer = document.querySelector('input[name="email_target_type"][value="registered"]').parentElement;
+        
+        if (!registeredEmail) {
+            document.getElementById('modal-registered-email-text').textContent = 'None registered';
+            registeredRadioContainer.style.opacity = '0.5';
+            registeredRadioContainer.style.pointerEvents = 'none';
+            
+            document.getElementById('modal-radio-custom').checked = true;
+            toggleModalEmailInput(true);
+        } else {
+            document.getElementById('modal-registered-email-text').textContent = registeredEmail;
+            registeredRadioContainer.style.opacity = '1';
+            registeredRadioContainer.style.pointerEvents = 'auto';
+            
+            document.querySelector('input[name="email_target_type"][value="registered"]').checked = true;
+            toggleModalEmailInput(false);
+        }
+        
+        document.getElementById('send-link-modal').style.display = 'flex';
+    }
+
+    function closeSendModal() {
+        document.getElementById('send-link-modal').style.display = 'none';
+    }
+
+    function toggleModalEmailInput(show) {
+        var container = document.getElementById('modal-custom-email-container');
+        var input = document.getElementById('modal-custom-email');
+        if (show) {
+            container.style.display = 'block';
+            input.required = true;
+            input.focus();
+        } else {
+            container.style.display = 'none';
+            input.required = false;
+            input.value = '';
+        }
+    }
+    </script>
 
     <?php
     get_footer();
