@@ -143,7 +143,8 @@ $donors_query = new WP_Query( $args );
             <button onclick="openRemoveDonorModal()" class="btn-donor-remove">
                 🗑️ Remove My Name
             </button>
-            <button id="btnDonorAdmin" onclick="toggleMasterDataView()" class="btn-donor-admin" style="background: #111111; color: #ffd275; border: 1.5px solid rgba(212,175,55,0.5); padding: 12px 24px; border-radius: 8px; font-weight: bold; cursor: pointer; box-shadow: 0 4px 15px rgba(212,175,55,0.15); transition: all 0.3s ease; display: none; align-items: center; gap: 8px;" onmouseover="this.style.transform='translateY(-2px)'; this.style.background='#d4af37'; this.style.color='#000'; this.style.boxShadow='0 6px 20px rgba(212,175,55,0.45)';" onmouseout="this.style.transform='translateY(0)'; this.style.background='#111111'; this.style.color='#ffd275'; this.style.boxShadow='0 4px 15px rgba(212,175,55,0.15)';">
+            <?php $is_admin = current_user_can('administrator'); ?>
+            <button id="btnDonorAdmin" onclick="toggleMasterDataView()" class="btn-donor-admin" style="background: #111111; color: #ffd275; border: 1.5px solid rgba(212,175,55,0.5); padding: 12px 24px; border-radius: 8px; font-weight: bold; cursor: pointer; box-shadow: 0 4px 15px rgba(212,175,55,0.15); transition: all 0.3s ease; display: <?php echo $is_admin ? 'inline-flex' : 'none'; ?>; align-items: center; gap: 8px;" onmouseover="this.style.transform='translateY(-2px)'; this.style.background='#d4af37'; this.style.color='#000'; this.style.boxShadow='0 6px 20px rgba(212,175,55,0.45)';" onmouseout="this.style.transform='translateY(0)'; this.style.background='#111111'; this.style.color='#ffd275'; this.style.boxShadow='0 4px 15px rgba(212,175,55,0.15)';">
                 ⚙️ Admin Master Data
             </button>
         </div>
