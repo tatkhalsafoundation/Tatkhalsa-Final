@@ -8,6 +8,9 @@ function tatkhalsa_admin_edit_donor() {
     $id = isset($payload['id']) ? str_replace('DONOR_', '', $payload['id']) : 0;
     if (!$id) wp_send_json_error(['message' => 'Invalid ID']);
     
+    if (isset($payload['donorNumber'])) {
+        update_post_meta($id, 'donor_id_number', sanitize_text_field($payload['donorNumber']));
+    }
     update_post_meta($id, 'donor_name', sanitize_text_field($payload['name']));
     update_post_meta($id, 'blood_group', sanitize_text_field($payload['bloodGroup']));
     update_post_meta($id, 'donor_email', sanitize_email($payload['email']));

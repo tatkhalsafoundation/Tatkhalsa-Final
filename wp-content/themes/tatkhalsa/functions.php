@@ -1368,8 +1368,8 @@ add_action( 'init', 'tatkhalsa_register_blood_donor_cpt' );
 function tatkhalsa_get_or_create_donor_id( $post_id ) {
 	$donor_id = get_post_meta( $post_id, 'donor_id_number', true );
 	if ( empty( $donor_id ) ) {
-		$next_id = (int) get_option( 'tatkhalsa_next_donor_id', 1 );
-		$donor_id = 'TKF-DON-' . str_pad($next_id, 2, '0', STR_PAD_LEFT);
+		$next_id = (int) get_option( 'tatkhalsa_next_donor_id', 101 );
+		$donor_id = 'TKF-DON-' . $next_id;
 		update_post_meta( $post_id, 'donor_id_number', $donor_id );
 		update_option( 'tatkhalsa_next_donor_id', $next_id + 1 );
 	}
@@ -3380,11 +3380,11 @@ add_action( 'wp_ajax_nopriv_admin_master_data', 'tatkhalsa_admin_master_data' );
 require_once get_template_directory() . '/admin-newsletter.php';
 require_once get_template_directory() . '/admin-ajax-handlers.php';
 
-// Auto-migrate existing donors to numbered IDs (01 to 69, etc.)
-add_action( 'admin_init', 'tatkhalsa_migrate_existing_donors_to_numbered_ids' );
-function tatkhalsa_migrate_existing_donors_to_numbered_ids() {
+// Auto-migrate existing donors to numbered IDs starting at 101
+add_action( 'init', 'tatkhalsa_migrate_existing_donors_to_numbered_ids_101' );
+function tatkhalsa_migrate_existing_donors_to_numbered_ids_101() {
     // Only run this once
-    if ( get_option( 'tatkhalsa_donors_migrated_to_numbered' ) ) {
+    if ( get_option( 'tatkhalsa_donors_migrated_to_101' ) ) {
         return;
     }
 
@@ -3398,17 +3398,17 @@ function tatkhalsa_migrate_existing_donors_to_numbered_ids() {
 
     // If there are no donors, just mark as migrated so we don't keep running it
     if ( empty( $donors ) ) {
-        update_option( 'tatkhalsa_donors_migrated_to_numbered', true );
+        update_option( 'tatkhalsa_donors_migrated_to_101', true );
         return; 
     }
 
-    $count = 1;
+    $count = 101;
     foreach ( $donors as $d ) {
-        $donor_id_str = 'TKF-DON-' . str_pad( $count, 2, '0', STR_PAD_LEFT );
+        $donor_id_str = 'TKF-DON-' . $count;
         update_post_meta( $d->ID, 'donor_id_number', $donor_id_str );
         $count++;
     }
 
     update_option( 'tatkhalsa_next_donor_id', $count );
-    update_option( 'tatkhalsa_donors_migrated_to_numbered', true );
+    update_option( 'tatkhalsa_donors_migrated_to_101', true );
 }
