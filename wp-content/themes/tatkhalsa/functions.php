@@ -1364,6 +1364,18 @@ function tatkhalsa_register_blood_donor_cpt() {
 }
 add_action( 'init', 'tatkhalsa_register_blood_donor_cpt' );
 
+
+function tatkhalsa_get_or_create_donor_id( $post_id ) {
+	$donor_id = get_post_meta( $post_id, 'donor_id_number', true );
+	if ( empty( $donor_id ) ) {
+		$next_id = (int) get_option( 'tatkhalsa_next_donor_id', 1 );
+		$donor_id = 'TKF-DON-' . $next_id;
+		update_post_meta( $post_id, 'donor_id_number', $donor_id );
+		update_option( 'tatkhalsa_next_donor_id', $next_id + 1 );
+	}
+	return $donor_id;
+}
+
 function tatkhalsa_submit_blood_donor() {
 	if ( ! isset( $_POST['action'] ) || $_POST['action'] !== 'submit_blood_donor' ) {
 		wp_send_json_error( array( 'message' => 'Invalid request.' ) );
@@ -1414,7 +1426,8 @@ function tatkhalsa_submit_blood_donor() {
 		update_post_meta( $post_id, 'donor_ip', tatkhalsa_get_client_ip() );
 		update_post_meta( $post_id, 'registration_time', current_time( 'mysql' ) );
 
-		wp_send_json_success( array( 'message' => 'Thank you for registering as a blood donor! Your assigned Secure Donor ID is: DONOR_' . $post_id ) );
+		$donor_id_string = tatkhalsa_get_or_create_donor_id( $post_id );
+		wp_send_json_success( array( 'message' => 'Thank you for registering as a blood donor! Your assigned Secure Donor ID is: ' . $donor_id_string ) );
 	} else {
 		wp_send_json_error( array( 'message' => 'Failed to register. Please try again.' ) );
 	}
@@ -1588,19 +1601,6 @@ function tatkhalsa_send_donor_newsletter() {
 			$e = trim( $e );
 			if ( is_email( $e ) ) {
 				$emails[] = $e;
-			}
-		}
-	} else {
-		$args = array(
-			'post_type'      => 'blood_donor',
-			'posts_per_page' => -1,
-			'post_status'    => 'publish',
-		);
-		$donors = get_posts( $args );
-		foreach ( $donors as $donor ) {
-			$email = get_post_meta( $donor->ID, 'donor_email', true );
-			if ( ! empty( $email ) && is_email( $email ) ) {
-				$emails[] = $email;
 			}
 		}
 	}
@@ -3333,6 +3333,7 @@ function tatkhalsa_admin_master_data() {
 	foreach ( $donors_posts as $post ) {
 		$donors[] = array(
 			'id'                 => 'DONOR_' . $post->ID,
+			'donorNumber'        => tatkhalsa_get_or_create_donor_id( $post->ID ),
 			'post_id'            => $post->ID,
 			'name'               => get_post_meta( $post->ID, 'donor_name', true ),
 			'bloodGroup'         => get_post_meta( $post->ID, 'blood_group', true ),

@@ -65,6 +65,7 @@ function tatkhalsa_render_newsletter_page() {
                         <td>
                             <textarea id="newsletterTo" name="newsletterTo" style="width: 100%; max-width: 600px; padding: 12px; color: #333; resize: vertical; border: 1px solid #8c8f94;" rows="3"><?php echo esc_textarea( $emails_str ); ?></textarea>
                             <p class="description">You can edit the emails before sending. Separate multiple emails with a comma.</p>
+                            <button type="button" class="button" onclick="document.getElementById('newsletterTo').value = '';" style="margin-top: 5px;">Clear All Emails (for testing)</button>
                             <?php if($count === 0): ?>
                             <p class="description">No verified emails found in directory.</p>
                             <?php endif; ?>

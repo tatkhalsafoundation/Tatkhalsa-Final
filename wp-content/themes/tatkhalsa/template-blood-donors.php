@@ -302,6 +302,7 @@ $donors_query = new WP_Query( $args );
                         </div>
                         <h3 style="color: var(--text-dark); margin-bottom: 5px; padding-right: 40px; font-size: 1.1rem; display: flex; align-items: center; gap: 6px; flex-wrap: wrap; justify-content: flex-start;">
                             <?php echo esc_html( get_post_meta( $post_id, 'donor_name', true ) ); ?>
+                            <span style="font-size: 0.75rem; background: rgba(128,128,128,0.1); padding: 2px 6px; border-radius: 4px; color: var(--text-light); font-weight: normal; margin-left: 5px; white-space: nowrap; border: 1px solid rgba(128,128,128,0.2);"><?php echo esc_html( tatkhalsa_get_or_create_donor_id( $post_id ) ); ?></span>
                         </h3>
                         
                         <!-- Visual Verification Badge for Sevadar status -->
@@ -1979,7 +1980,7 @@ document.addEventListener("DOMContentLoaded", function() {
                                     <td style="padding: 14px 10px; text-align: center; vertical-align: middle;">
                                         <input type="checkbox" class="row-select-checkbox animate-pulse" data-id="${donor.id}" onchange="window.updateSelectedIds()" style="cursor: pointer; transform: scale(1.1);" />
                                     </td>
-                                    <td style="padding: 14px 10px; font-weight: bold; color: #fff;">${donor.name}</td>
+                                    <td style="padding: 14px 10px; font-weight: bold; color: #fff;">${donor.name}<br><span style="font-size: 0.75rem; color: var(--secondary); font-weight: normal;">${donor.donorNumber}</span></td>
                                     <td style="padding: 14px 10px; text-align: center;"><span style="background: #ff334b; color:#fff; font-weight:bold; padding:3px 10px; border-radius:12px; font-size:0.75rem;">${donor.bloodGroup}</span></td>
                                     <td style="padding: 14px 10px;"><a href="mailto:${donor.email}" style="color:var(--secondary); text-decoration:none;">${donor.email}</a></td>
                                     <td style="padding: 14px 10px;">
