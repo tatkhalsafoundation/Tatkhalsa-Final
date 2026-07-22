@@ -1569,6 +1569,74 @@ function tatkhalsa_accept_blood_request() {
 add_action( 'wp_ajax_accept_blood_request', 'tatkhalsa_accept_blood_request' );
 add_action( 'wp_ajax_nopriv_accept_blood_request', 'tatkhalsa_accept_blood_request' );
 
+function tatkhalsa_send_donor_newsletter() {
+	if ( ! isset( $_POST['action'] ) || $_POST['action'] !== 'send_donor_newsletter' ) {
+		wp_send_json_error( array( 'message' => 'Invalid request.' ) );
+	}
+
+	$subject = isset( $_POST['subject'] ) ? sanitize_text_field( wp_unslash( $_POST['subject'] ) ) : '';
+	$message = isset( $_POST['message'] ) ? wp_kses_post( wp_unslash( $_POST['message'] ) ) : '';
+
+	if ( empty( $subject ) || empty( $message ) ) {
+		wp_send_json_error( array( 'message' => 'Subject and Message are required.' ) );
+	}
+
+	$args = array(
+		'post_type'      => 'blood_donor',
+		'posts_per_page' => -1,
+		'post_status'    => 'publish',
+	);
+
+	$donors = get_posts( $args );
+	$emails = array();
+
+	foreach ( $donors as $donor ) {
+		$email = get_post_meta( $donor->ID, 'donor_email', true );
+		if ( ! empty( $email ) && is_email( $email ) ) {
+			$emails[] = $email;
+		}
+	}
+
+	$emails = array_unique( $emails );
+
+	if ( empty( $emails ) ) {
+		wp_send_json_error( array( 'message' => 'No donors with valid email addresses found.' ) );
+	}
+
+	$headers = array(
+		'Content-Type: text/html; charset=UTF-8',
+		'From: Tatkhalsa Foundation <info@tatkhalsa.in>',
+	);
+
+	// Send emails in BCC to protect privacy, in chunks if many
+	$chunks = array_chunk( $emails, 50 );
+	$sent = false;
+
+	foreach ( $chunks as $chunk ) {
+		$chunk_headers = $headers;
+		foreach ( $chunk as $email ) {
+			$chunk_headers[] = 'Bcc: ' . $email;
+		}
+		
+		// Body content with basic HTML structure
+		$html_message = '<html><body>' . nl2br( $message ) . '</body></html>';
+
+		// Send email
+		$result = wp_mail( 'info@tatkhalsa.in', $subject, $html_message, $chunk_headers );
+		if ( $result ) {
+			$sent = true;
+		}
+	}
+
+	if ( $sent ) {
+		wp_send_json_success( array( 'message' => 'Newsletter successfully sent to ' . count( $emails ) . ' registered donors from info@tatkhalsa.in.' ) );
+	} else {
+		wp_send_json_error( array( 'message' => 'Failed to send newsletter emails.' ) );
+	}
+}
+add_action( 'wp_ajax_send_donor_newsletter', 'tatkhalsa_send_donor_newsletter' );
+add_action( 'wp_ajax_nopriv_send_donor_newsletter', 'tatkhalsa_send_donor_newsletter' );
+
 function tatkhalsa_send_pdf_certificate() {
 	if ( ! isset( $_POST['action'] ) || $_POST['action'] !== 'send_pdf_certificate' ) {
 		wp_send_json_error( array( 'message' => 'Invalid request.' ) );

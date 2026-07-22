@@ -2202,17 +2202,21 @@ document.addEventListener("DOMContentLoaded", function() {
         alertBox.style.display = 'none';
 
         try {
-            const response = await fetch('/api/admin/send-newsletter', {
+            const formData = new FormData();
+            formData.append('action', 'send_donor_newsletter');
+            formData.append('subject', subject);
+            formData.append('message', message);
+
+            const response = await fetch("<?php echo esc_url(admin_url('admin-ajax.php')); ?>", {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ subject, message })
+                body: formData
             });
             const data = await response.json();
             
             alertBox.style.display = 'block';
             if (data.success) {
                 alertBox.className = 'alert alert-success';
-                alertBox.innerText = data.message;
+                alertBox.innerText = data.data.message || 'Newsletter sent successfully.';
                 document.getElementById('newsletterForm').reset();
                 setTimeout(() => {
                     document.getElementById('newsletterModal').style.display = 'none';
@@ -2220,7 +2224,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 }, 3000);
             } else {
                 alertBox.className = 'alert alert-danger';
-                alertBox.innerText = data.message || 'Failed to send newsletter.';
+                alertBox.innerText = data.data.message || 'Failed to send newsletter.';
             }
         } catch (err) {
             alertBox.style.display = 'block';
