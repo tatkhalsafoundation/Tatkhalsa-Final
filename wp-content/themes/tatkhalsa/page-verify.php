@@ -3137,23 +3137,23 @@ if ( ! empty( $query_member_id ) ) {
             min-height: 70vh;
         }
         .admin-dashboard h1 {
-            color: #052054;
-            border-bottom: 2px solid #E1A92A;
+            color: #052054 !important;
+            border-bottom: 2px solid #E1A92A !important;
             padding-bottom: 15px;
             margin-bottom: 30px;
             font-weight: 800;
         }
         .admin-form-container {
-            background: #ffffff;
+            background: #ffffff !important;
             padding: 25px 30px;
             border-radius: 8px;
             box-shadow: 0 4px 15px rgba(0,0,0,0.06);
             margin-bottom: 40px;
-            border: 1px solid #eef0f2;
+            border: 1px solid #eef0f2 !important;
         }
         .admin-form-container h3 {
             margin-top: 0;
-            color: #333;
+            color: #333333 !important;
             margin-bottom: 20px;
             font-size: 1.25em;
         }
@@ -3172,7 +3172,7 @@ if ( ! empty( $query_member_id ) ) {
             display: block;
             font-weight: 600;
             margin-bottom: 8px;
-            color: #444;
+            color: #444444 !important;
             font-size: 0.9em;
         }
         .form-group input[type="text"],
@@ -3181,18 +3181,24 @@ if ( ! empty( $query_member_id ) ) {
         .form-group input[type="date"] {
             width: 100%;
             padding: 12px;
-            border: 1px solid #ccc;
+            border: 1px solid #ccc !important;
             border-radius: 6px;
             font-size: 1rem;
             transition: border-color 0.2s;
+            color: #2d3748 !important;
+            background-color: #ffffff !important;
         }
         .form-group input:focus {
             outline: none;
-            border-color: #052054;
+            border-color: #052054 !important;
+        }
+        .form-group select {
+            color: #2d3748 !important;
+            background-color: #ffffff !important;
         }
         .admin-btn {
-            background: #052054;
-            color: #ffffff;
+            background: #052054 !important;
+            color: #ffffff !important;
             padding: 12px 24px;
             border: none;
             border-radius: 6px;
@@ -3203,14 +3209,14 @@ if ( ! empty( $query_member_id ) ) {
             margin-top: 10px;
         }
         .admin-btn:hover {
-            background: #031333;
+            background: #031333 !important;
         }
         .admin-table-container {
             overflow-x: auto;
-            background: #ffffff;
+            background: #ffffff !important;
             border-radius: 8px;
             box-shadow: 0 4px 15px rgba(0,0,0,0.06);
-            border: 1px solid #eef0f2;
+            border: 1px solid #eef0f2 !important;
         }
         .admin-table {
             width: 100%;
@@ -3219,17 +3225,27 @@ if ( ! empty( $query_member_id ) ) {
         .admin-table th, .admin-table td {
             padding: 15px;
             text-align: left;
-            border-bottom: 1px solid #eef0f2;
+            border-bottom: 1px solid #eef0f2 !important;
         }
         .admin-table th {
-            background: #f8f9fa;
-            color: #333;
+            background: #f8f9fa !important;
+            color: #333333 !important;
             font-weight: 700;
             font-size: 0.9em;
             text-transform: uppercase;
         }
-        .admin-table tr:hover {
-            background-color: #fafbfc;
+        .admin-table td {
+            color: #2d3748 !important;
+            background-color: #ffffff !important;
+        }
+        .admin-table td strong {
+            color: #2d3748 !important;
+        }
+        .admin-table tr {
+            background-color: #ffffff !important;
+        }
+        .admin-table tr:hover, .admin-table tr:hover td {
+            background-color: #fafbfc !important;
         }
         .status-badge {
             padding: 6px 12px;
@@ -3239,12 +3255,12 @@ if ( ! empty( $query_member_id ) ) {
             display: inline-block;
         }
         .status-active {
-            background: #d4edda;
-            color: #155724;
+            background: #d4edda !important;
+            color: #155724 !important;
         }
         .status-inactive {
-            background: #f8d7da;
-            color: #721c24;
+            background: #f8d7da !important;
+            color: #721c24 !important;
         }
         .action-td-flex {
             display: flex;
@@ -3256,7 +3272,7 @@ if ( ! empty( $query_member_id ) ) {
             border-radius: 4px;
             cursor: pointer;
             font-size: 0.85em;
-            color: #fff;
+            color: #fff !important;
             font-weight: 700;
             text-decoration: none;
             transition: opacity 0.2s;
@@ -3265,14 +3281,14 @@ if ( ! empty( $query_member_id ) ) {
             opacity: 0.9;
         }
         .btn-toggle {
-            background: #6c757d;
+            background: #6c757d !important;
         }
         .btn-delete {
-            background: #dc3545;
+            background: #dc3545 !important;
         }
         .btn-view {
-            background: #E1A92A;
-            color: #052054;
+            background: #E1A92A !important;
+            color: #052054 !important;
         }
         .admin-notice {
             padding: 15px 20px;
@@ -3281,14 +3297,53 @@ if ( ! empty( $query_member_id ) ) {
             font-weight: 600;
         }
         .notice-success {
-            background: #d4edda;
-            color: #155724;
-            border-left: 5px solid #28a745;
+            background: #d4edda !important;
+            color: #155724 !important;
+            border-left: 5px solid #28a745 !important;
         }
         .notice-error {
-            background: #f8d7da;
-            color: #721c24;
-            border-left: 5px solid #dc3545;
+            background: #f8d7da !important;
+            color: #721c24 !important;
+            border-left: 5px solid #dc3545 !important;
+        }
+        
+        /* Overrides to block theme-specific dark modes in Administration section */
+        .admin-dashboard h3 {
+            color: #333333 !important;
+        }
+        .admin-dashboard label {
+            color: #4a5568 !important;
+        }
+        .admin-dashboard select#sort_by {
+            color: #052054 !important;
+            background-color: #ffffff !important;
+        }
+        
+        /* Send Modal Override Rules */
+        #send-link-modal {
+            color: #2d3748 !important;
+        }
+        #send-link-modal h3 {
+            color: #052054 !important;
+        }
+        #send-link-modal label,
+        #send-link-modal span,
+        #send-link-modal div {
+            color: #4a5568 !important;
+        }
+        #send-link-modal #modal-member-display {
+            color: #1a202c !important;
+            background: #f7fafc !important;
+        }
+        #send-link-modal #modal-registered-email-text {
+            color: #052054 !important;
+        }
+        #send-link-modal input[type="radio"] {
+            accent-color: #052054 !important;
+        }
+        #send-link-modal input[type="email"] {
+            color: #2d3748 !important;
+            background-color: #ffffff !important;
         }
     </style>
 

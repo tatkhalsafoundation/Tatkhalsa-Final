@@ -891,6 +891,30 @@ async function startServer() {
     });
   });
 
+  // Send Newsletter API Route
+  app.post("/api/admin/send-newsletter", (req, res) => {
+    const { subject, message } = req.body || {};
+    if (!subject || !message) {
+      return res.status(400).json({ success: false, message: "Subject and Message are required." });
+    }
+
+    const verifiedDonors = mockDonors.filter(d => d.email && d.email.trim() !== '');
+    if (verifiedDonors.length === 0) {
+      return res.status(400).json({ success: false, message: "No donors with email addresses found." });
+    }
+
+    // In a real environment, you would use Nodemailer or a service like Resend/Sendgrid here
+    // e.g. sendEmailBatch(verifiedDonors.map(d => d.email), subject, message, 'info@tatkhalsa.in')
+    
+    console.log(`[Newsletter Simulation] Sent from info@tatkhalsa.in to ${verifiedDonors.length} donors.`);
+    console.log(`Subject: ${subject}`);
+    
+    return res.json({
+      success: true,
+      message: `Newsletter successfully sent to ${verifiedDonors.length} registered donors from info@tatkhalsa.in.`
+    });
+  });
+
   app.post("/api/admin/delete-donor", (req, res) => {
     const { id, ids } = req.body || {};
     if (!id && (!ids || !Array.isArray(ids))) {
