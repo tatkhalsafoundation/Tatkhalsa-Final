@@ -46,6 +46,79 @@
       </div>
 
       <div class="container">
+        <!-- Newsletter Signup Section -->
+        <div style="background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 12px; padding: 25px 30px; margin-bottom: 40px; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 20px;">
+          <div style="flex: 1; min-width: 250px;">
+            <h4 style="color: var(--secondary); margin-bottom: 8px; font-size: 1.3rem;">Subscribe for Seva Updates</h4>
+            <p style="color: rgba(255, 255, 255, 0.7); font-size: 0.9rem; margin: 0;">Join our newsletter to receive periodic updates on our activities and volunteer opportunities.</p>
+          </div>
+          <div style="flex: 1; min-width: 280px;">
+            <form id="footerNewsletterForm" onsubmit="window.handleFooterNewsletter(event)" style="display: flex; gap: 10px; width: 100%;">
+              <input type="email" id="footerNewsletterEmail" required placeholder="Your email address" style="flex: 1; padding: 12px 15px; border-radius: 6px; border: 1px solid rgba(255,255,255,0.2); background: rgba(0,0,0,0.2); color: #fff; font-size: 0.95rem; outline: none;" />
+              <button type="submit" id="footerNewsletterBtn" class="btn" style="padding: 12px 20px; white-space: nowrap;">Subscribe</button>
+            </form>
+            <div id="footerNewsletterStatus" style="display: none; margin-top: 10px; font-size: 0.85rem; padding: 8px 12px; border-radius: 4px;"></div>
+          </div>
+        </div>
+
+        <script>
+          window.handleFooterNewsletter = async function(e) {
+            e.preventDefault();
+            const form = document.getElementById('footerNewsletterForm');
+            const emailInput = document.getElementById('footerNewsletterEmail');
+            const btn = document.getElementById('footerNewsletterBtn');
+            const statusDiv = document.getElementById('footerNewsletterStatus');
+            
+            const email = emailInput.value.trim();
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            
+            if (!email || !emailRegex.test(email)) {
+                statusDiv.style.display = 'block';
+                statusDiv.style.background = 'rgba(255, 51, 75, 0.1)';
+                statusDiv.style.color = '#ff334b';
+                statusDiv.style.borderLeft = '3px solid #ff334b';
+                statusDiv.innerText = 'Please enter a valid email address.';
+                return;
+            }
+            
+            btn.disabled = true;
+            btn.innerText = 'Subscribing...';
+            statusDiv.style.display = 'none';
+            
+            try {
+                const formData = new FormData();
+                formData.append('action', 'subscribe_newsletter');
+                formData.append('email', email);
+                
+                const res = await fetch("<?php echo esc_url(admin_url('admin-ajax.php')); ?>", {
+                    method: 'POST',
+                    body: formData
+                });
+                const data = await res.json();
+                
+                statusDiv.style.display = 'block';
+                if (data.success) {
+                    statusDiv.style.background = 'rgba(46, 213, 115, 0.1)';
+                    statusDiv.style.color = '#2ced73';
+                    statusDiv.style.borderLeft = '3px solid #2ced73';
+                    statusDiv.innerText = data.data?.message || 'Successfully subscribed!';
+                    form.reset();
+                } else {
+                    throw new Error(data.data?.message || 'Subscription failed.');
+                }
+            } catch (err) {
+                statusDiv.style.display = 'block';
+                statusDiv.style.background = 'rgba(255, 51, 75, 0.1)';
+                statusDiv.style.color = '#ff334b';
+                statusDiv.style.borderLeft = '3px solid #ff334b';
+                statusDiv.innerText = err.message || 'An error occurred. Please try again.';
+            } finally {
+                btn.disabled = false;
+                btn.innerText = 'Subscribe';
+            }
+          };
+        </script>
+
         <div class="footer-grid">
           <!-- Column 1: Identity & Credentials -->
           <div>

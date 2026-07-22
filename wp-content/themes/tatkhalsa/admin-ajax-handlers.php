@@ -102,3 +102,51 @@ function tatkhalsa_admin_purge_settings() {
     wp_send_json_success(['message' => 'Settings saved successfully']);
 }
 add_action('wp_ajax_admin_purge_settings', 'tatkhalsa_admin_purge_settings');
+
+// Footer Newsletter Subscribe
+function tatkhalsa_subscribe_newsletter() {
+    $email = isset($_POST['email']) ? sanitize_email($_POST['email']) : '';
+    if (!is_email($email)) {
+        wp_send_json_error(['message' => 'Invalid email address.']);
+    }
+
+    // You could save this to a custom post type 'subscriber' or an option array
+    // Let's save it to an option array for simplicity or CPT if required.
+    // Given the rest of the architecture, maybe we just save it in options.
+    $subscribers = get_option('tatkhalsa_newsletter_subscribers', []);
+    if (in_array($email, $subscribers)) {
+        wp_send_json_error(['message' => 'You are already subscribed.']);
+    }
+    
+    $subscribers[] = $email;
+    update_option('tatkhalsa_newsletter_subscribers', $subscribers);
+
+    wp_send_json_success(['message' => 'Successfully subscribed to Seva updates!']);
+}
+add_action('wp_ajax_subscribe_newsletter', 'tatkhalsa_subscribe_newsletter');
+add_action('wp_ajax_nopriv_subscribe_newsletter', 'tatkhalsa_subscribe_newsletter');
+
+// Handle Unsubscribe Request
+function tatkhalsa_handle_unsubscribe_request() {
+    if ( isset( $_GET['unsubscribe_email'] ) ) {
+        $email = sanitize_email( $_GET['unsubscribe_email'] );
+        if ( is_email( $email ) ) {
+            // Add to unsubscribed list
+            $unsubscribed = get_option('tatkhalsa_unsubscribed_emails', []);
+            if ( !in_array($email, $unsubscribed) ) {
+                $unsubscribed[] = $email;
+                update_option('tatkhalsa_unsubscribed_emails', $unsubscribed);
+            }
+            
+            // Remove from general subscribers if present
+            $subscribers = get_option('tatkhalsa_newsletter_subscribers', []);
+            if ( in_array( $email, $subscribers ) ) {
+                $subscribers = array_diff( $subscribers, [$email] );
+                update_option('tatkhalsa_newsletter_subscribers', $subscribers);
+            }
+
+            wp_die('<div style="font-family: sans-serif; max-width: 600px; margin: 40px auto; text-align: center; padding: 20px; border: 1px solid #ccc; border-radius: 8px;"><h2>Unsubscribed</h2><p>You have been successfully unsubscribed from the Tatkhalsa newsletter.</p><p>You will no longer receive periodic updates.</p><p><a href="' . esc_url(home_url('/')) . '">Return to homepage</a></p></div>', 'Unsubscribed', ['response' => 200]);
+        }
+    }
+}
+add_action('init', 'tatkhalsa_handle_unsubscribe_request');

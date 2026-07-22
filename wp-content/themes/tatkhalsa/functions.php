@@ -1607,8 +1607,11 @@ function tatkhalsa_send_donor_newsletter() {
 
 	$emails = array_unique( $emails );
 
+	$unsubscribed = get_option('tatkhalsa_unsubscribed_emails', []);
+	$emails = array_diff($emails, $unsubscribed);
+
 	if ( empty( $emails ) ) {
-		wp_send_json_error( array( 'message' => 'No donors with valid email addresses found.' ) );
+		wp_send_json_error( array( 'message' => 'No valid email addresses found after excluding unsubscribed users.' ) );
 	}
 
 	$headers = array(
@@ -1616,28 +1619,22 @@ function tatkhalsa_send_donor_newsletter() {
 		'From: Tatkhalsa Foundation <info@tatkhalsa.in>',
 	);
 
-	// Send emails in BCC to protect privacy, in chunks if many
-	$chunks = array_chunk( $emails, 50 );
 	$sent = false;
+	$count = 0;
 
-	foreach ( $chunks as $chunk ) {
-		$chunk_headers = $headers;
-		foreach ( $chunk as $email ) {
-			$chunk_headers[] = 'Bcc: ' . $email;
-		}
+	foreach ( $emails as $email ) {
+		$unsub_link = home_url( '/?unsubscribe_email=' . urlencode( $email ) );
+		$html_message = '<html><body style="font-family: sans-serif; color: #333;">' . nl2br( $message ) . '<br><br><hr style="border: 0; border-top: 1px solid #eee; margin-top: 20px;"><p style="font-size: 12px; color: #888;">You are receiving this email because you subscribed to our newsletter or registered as a donor. <br>To stop receiving these updates, <a href="' . esc_url($unsub_link) . '" style="color: #0A327D;">unsubscribe here</a>.</p></body></html>';
 		
-		// Body content with basic HTML structure
-		$html_message = '<html><body>' . nl2br( $message ) . '</body></html>';
-
-		// Send email
-		$result = wp_mail( 'info@tatkhalsa.in', $subject, $html_message, $chunk_headers );
+		$result = wp_mail( $email, $subject, $html_message, $headers );
 		if ( $result ) {
 			$sent = true;
+			$count++;
 		}
 	}
 
 	if ( $sent ) {
-		wp_send_json_success( array( 'message' => 'Newsletter successfully sent to ' . count( $emails ) . ' registered donors from info@tatkhalsa.in.' ) );
+		wp_send_json_success( array( 'message' => 'Newsletter successfully sent to ' . $count . ' users.' ) );
 	} else {
 		wp_send_json_error( array( 'message' => 'Failed to send newsletter emails.' ) );
 	}
