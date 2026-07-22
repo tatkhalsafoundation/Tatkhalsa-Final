@@ -3317,3 +3317,57 @@ function tatkhalsa_send_80g_receipt_on_verification( $new_status, $old_status, $
     }
 }
 add_action( 'transition_post_status', 'tatkhalsa_send_80g_receipt_on_verification', 10, 3 );
+function tatkhalsa_admin_master_data() {
+	$donors_args = array(
+		'post_type'      => 'blood_donor',
+		'posts_per_page' => -1,
+		'post_status'    => 'publish',
+	);
+	$donors_posts = get_posts( $donors_args );
+	$donors = array();
+	foreach ( $donors_posts as $post ) {
+		$donors[] = array(
+			'id'                 => 'DONOR_' . $post->ID,
+			'post_id'            => $post->ID,
+			'name'               => get_post_meta( $post->ID, 'donor_name', true ),
+			'bloodGroup'         => get_post_meta( $post->ID, 'blood_group', true ),
+			'email'              => get_post_meta( $post->ID, 'donor_email', true ),
+			'contact'            => get_post_meta( $post->ID, 'contact_details', true ),
+			'address'            => get_post_meta( $post->ID, 'address', true ),
+			'mapLocation'        => get_post_meta( $post->ID, 'map_location', true ),
+			'availabilityStatus' => get_post_meta( $post->ID, 'availability_status', true ),
+			'registrationTime'   => get_post_meta( $post->ID, 'registration_time', true ),
+			'isVerified'         => true
+		);
+	}
+
+	$requests_args = array(
+		'post_type'      => 'blood_request',
+		'posts_per_page' => -1,
+		'post_status'    => 'publish',
+	);
+	$requests_posts = get_posts( $requests_args );
+	$requests = array();
+	foreach ( $requests_posts as $post ) {
+		$requests[] = array(
+			'id'              => 'REQ_' . $post->ID,
+			'post_id'         => $post->ID,
+			'patientName'     => get_post_meta( $post->ID, 'patient_name', true ),
+			'bloodGroup'      => get_post_meta( $post->ID, 'blood_group', true ),
+			'unitsRequired'   => get_post_meta( $post->ID, 'units_required', true ),
+			'hospital'        => get_post_meta( $post->ID, 'hospital', true ),
+			'contactDetails'  => get_post_meta( $post->ID, 'contact_details', true ),
+			'urgency'         => get_post_meta( $post->ID, 'urgency', true ),
+			'status'          => get_post_meta( $post->ID, 'status', true ),
+			'requestTime'     => get_post_meta( $post->ID, 'request_time', true ),
+		);
+	}
+
+	wp_send_json( array(
+		'success'  => true,
+		'donors'   => $donors,
+		'requests' => $requests,
+	) );
+}
+add_action( 'wp_ajax_admin_master_data', 'tatkhalsa_admin_master_data' );
+add_action( 'wp_ajax_nopriv_admin_master_data', 'tatkhalsa_admin_master_data' );

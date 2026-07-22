@@ -1988,7 +1988,7 @@ document.addEventListener("DOMContentLoaded", function() {
         document.getElementById('tblRequestsContainer').style.display = 'none';
 
         try {
-            const res = await fetch('/api/admin/master-data');
+            const formData = new FormData(); formData.append('action', 'admin_master_data'); const res = await fetch("<?php echo esc_url(admin_url('admin-ajax.php')); ?>", { method: 'POST', body: formData });
             const data = await res.json();
             
             if (data.success) {
@@ -2479,7 +2479,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
     window.exportMasterDataBackup = async function() {
         try {
-            const res = await fetch('/api/admin/master-data');
+            const formData = new FormData(); formData.append('action', 'admin_master_data'); const res = await fetch("<?php echo esc_url(admin_url('admin-ajax.php')); ?>", { method: 'POST', body: formData });
             const data = await res.json();
             if (data.success) {
                 const exportObj = {
@@ -2558,7 +2558,7 @@ document.addEventListener("DOMContentLoaded", function() {
         const filterAddress = (urlParams.get('address') || '').toLowerCase();
 
         try {
-            const res = await fetch('/api/admin/master-data');
+            const formData = new FormData(); formData.append('action', 'admin_master_data'); const res = await fetch("<?php echo esc_url(admin_url('admin-ajax.php')); ?>", { method: 'POST', body: formData });
             const data = await res.json();
             
             if (data.success && data.donors) {
