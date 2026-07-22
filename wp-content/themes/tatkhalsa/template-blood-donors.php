@@ -650,6 +650,11 @@ $donors_query = new WP_Query( $args );
       <input type="hidden" id="editDonorId" />
       
       <div style="margin-bottom: 15px;">
+        <label style="display: block; margin-bottom: 6px; color: var(--text-dark); font-weight: bold;">Donor ID (e.g. TKF-DON-1)</label>
+        <input type="text" id="editDonorNumber" style="width: 100%; padding: 12px; border-radius: 6px; border: 1px solid rgba(0,0,0,0.2); background: #fff; color: #333;">
+      </div>
+      
+      <div style="margin-bottom: 15px;">
         <label style="display: block; margin-bottom: 6px; color: var(--text-dark); font-weight: bold;">Full Name *</label>
         <input type="text" id="editDonorName" required style="width: 100%; padding: 12px; border-radius: 6px; border: 1px solid rgba(0,0,0,0.2); background: #fff; color: #333;">
       </div>
@@ -2135,6 +2140,7 @@ document.addEventListener("DOMContentLoaded", function() {
         if (!donor) return;
 
         document.getElementById('editDonorId').value = donor.id;
+        document.getElementById('editDonorNumber').value = donor.donorNumber || '';
         document.getElementById('editDonorName').value = donor.name || '';
         document.getElementById('editDonorBloodGroup').value = donor.bloodGroup || '';
         document.getElementById('editDonorEmail').value = donor.email || '';
@@ -2170,6 +2176,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
         const payload = {
             id: document.getElementById('editDonorId').value,
+            donorNumber: document.getElementById('editDonorNumber').value,
             name: document.getElementById('editDonorName').value,
             bloodGroup: document.getElementById('editDonorBloodGroup').value,
             email: document.getElementById('editDonorEmail').value,

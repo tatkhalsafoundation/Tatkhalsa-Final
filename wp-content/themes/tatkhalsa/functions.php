@@ -1369,7 +1369,7 @@ function tatkhalsa_get_or_create_donor_id( $post_id ) {
 	$donor_id = get_post_meta( $post_id, 'donor_id_number', true );
 	if ( empty( $donor_id ) ) {
 		$next_id = (int) get_option( 'tatkhalsa_next_donor_id', 1 );
-		$donor_id = 'TKF-DON-' . $next_id;
+		$donor_id = 'TKF-DON-' . str_pad($next_id, 2, '0', STR_PAD_LEFT);
 		update_post_meta( $post_id, 'donor_id_number', $donor_id );
 		update_option( 'tatkhalsa_next_donor_id', $next_id + 1 );
 	}
@@ -3379,3 +3379,36 @@ add_action( 'wp_ajax_admin_master_data', 'tatkhalsa_admin_master_data' );
 add_action( 'wp_ajax_nopriv_admin_master_data', 'tatkhalsa_admin_master_data' );
 require_once get_template_directory() . '/admin-newsletter.php';
 require_once get_template_directory() . '/admin-ajax-handlers.php';
+
+// Auto-migrate existing donors to numbered IDs (01 to 69, etc.)
+add_action( 'admin_init', 'tatkhalsa_migrate_existing_donors_to_numbered_ids' );
+function tatkhalsa_migrate_existing_donors_to_numbered_ids() {
+    // Only run this once
+    if ( get_option( 'tatkhalsa_donors_migrated_to_numbered' ) ) {
+        return;
+    }
+
+    $donors = get_posts( array(
+        'post_type'      => 'blood_donor',
+        'posts_per_page' => -1,
+        'post_status'    => 'any',
+        'order'          => 'ASC',
+        'orderby'        => 'date'
+    ) );
+
+    // If there are no donors, just mark as migrated so we don't keep running it
+    if ( empty( $donors ) ) {
+        update_option( 'tatkhalsa_donors_migrated_to_numbered', true );
+        return; 
+    }
+
+    $count = 1;
+    foreach ( $donors as $d ) {
+        $donor_id_str = 'TKF-DON-' . str_pad( $count, 2, '0', STR_PAD_LEFT );
+        update_post_meta( $d->ID, 'donor_id_number', $donor_id_str );
+        $count++;
+    }
+
+    update_option( 'tatkhalsa_next_donor_id', $count );
+    update_option( 'tatkhalsa_donors_migrated_to_numbered', true );
+}
