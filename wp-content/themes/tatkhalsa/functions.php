@@ -3371,3 +3371,4 @@ function tatkhalsa_admin_master_data() {
 }
 add_action( 'wp_ajax_admin_master_data', 'tatkhalsa_admin_master_data' );
 add_action( 'wp_ajax_nopriv_admin_master_data', 'tatkhalsa_admin_master_data' );
+require_once get_template_directory() . '/admin-newsletter.php';

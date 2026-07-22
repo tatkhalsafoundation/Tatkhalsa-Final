@@ -187,26 +187,7 @@ $donors_query = new WP_Query( $args );
             </div>
 
             <!-- API Integrations Box -->
-            <div id="thirdPartyConfigBox" style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); padding: 16px; border-radius: 8px; margin-bottom: 25px; display: flex; flex-wrap: wrap; gap: 20px; align-items: center; justify-content: space-between;">
-                <div style="display: flex; align-items: center; gap: 12px;">
-                    <span style="font-size: 1.4rem;">🔗</span>
-                    <div>
-                        <h4 style="margin: 0; color: var(--secondary); font-size: 0.95rem; font-weight: bold;">API Integrations</h4>
-                        <p style="margin: 3px 0 0 0; color: var(--text-light); font-size: 0.78rem;">Configure external API keys and authorization endpoints.</p>
-                    </div>
-                </div>
-                <div style="display: flex; align-items: center; gap: 15px; flex-wrap: wrap;">
-                    <button onclick="window.openNewsletterModal();" style="background: rgba(230,126,34,0.15); color: #e67e22; border: 1px solid rgba(230,126,34,0.3); padding: 8px 14px; border-radius: 6px; font-weight: bold; cursor: pointer; font-size: 0.8rem; display: flex; align-items: center; gap: 6px; transition: all 0.2s;" onmouseover="this.style.background='#e67e22'; this.style.color='#fff';" onmouseout="this.style.background='rgba(230,126,34,0.15)'; this.style.color='#e67e22';">
-                        ✉️ Send Newsletter to Donors
-                    </button>
-                    <button onclick="alert('WhatsApp API Configuration options are currently set to mock mode.')" style="background: rgba(37,211,102,0.15); color: #25d366; border: 1px solid rgba(37,211,102,0.3); padding: 8px 14px; border-radius: 6px; font-weight: bold; cursor: pointer; font-size: 0.8rem; display: flex; align-items: center; gap: 6px; transition: all 0.2s;" onmouseover="this.style.background='#25d366'; this.style.color='#fff';" onmouseout="this.style.background='rgba(37,211,102,0.15)'; this.style.color='#25d366';">
-                        💬 WhatsApp API Configuration
-                    </button>
-                    <button onclick="alert('OAuth configuration will allow third-party logins.')" style="background: rgba(255,184,0,0.15); color: #FFB800; border: 1px solid rgba(255,184,0,0.3); padding: 8px 14px; border-radius: 6px; font-weight: bold; cursor: pointer; font-size: 0.8rem; display: flex; align-items: center; gap: 6px; transition: all 0.2s;" onmouseover="this.style.background='#FFB800'; this.style.color='#fff';" onmouseout="this.style.background='rgba(255,184,0,0.15)'; this.style.color='#FFB800';">
-                        🔑 OAuth Configuration
-                    </button>
-                </div>
-            </div>
+
 
             <!-- Auto IP Purging Settings Box -->
             <div id="ipPurgeSettingsBox" style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); padding: 16px; border-radius: 8px; margin-bottom: 25px; display: flex; flex-wrap: wrap; gap: 20px; align-items: center; justify-content: space-between;">
@@ -650,35 +631,6 @@ $donors_query = new WP_Query( $args );
       
       <button type="submit" id="donorRegBtn" style="width: 100%; background: linear-gradient(135deg, #ff334b 0%, #ff5d73 100%); color: #fff; border: none; font-size: 1rem; font-weight: bold; padding: 14px; border-radius: 8px; cursor: pointer; box-shadow: 0 5px 15px rgba(255,51,75,0.35);">
         Register Donor
-      </button>
-    </form>
-  </div>
-</div>
-
-<!-- Newsletter Modal -->
-<div class="modal-overlay" id="newsletterModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 10000; align-items: center; justify-content: center;">
-  <div class="modal-content" style="max-height: 90vh; overflow-y: auto; background: var(--bg-light); border-radius: 12px; padding: 25px; width: 90%; max-width: 500px; position: relative;">
-    <button class="modal-close" style="position: absolute; top: 15px; right: 15px; background: none; border: none; font-size: 1.5rem; cursor: pointer; color: var(--text-dark);" onclick="document.getElementById('newsletterModal').style.display='none';">&times;</button>
-    <h3 style="color: var(--primary); margin-top: 0; display: flex; align-items: center; gap: 8px;">✉️ Send Newsletter to Donors</h3>
-    <p style="font-size: 0.9rem; color: var(--text-dark);">Compose a newsletter that will be sent from <strong>info@tatkhalsa.in</strong> to all verified donors in the directory.</p>
-    
-    <div class="alert" id="newsletterAlert" style="display: none;"></div>
-
-    <form id="newsletterForm" onsubmit="window.sendNewsletter(event)">
-      <div class="form-group" style="margin-bottom: 15px;">
-        <label for="newsletterTo">To <span id="newsletterToCount" style="font-size: 0.8em; color: #666; font-weight: normal;">(0 Donors)</span></label>
-        <textarea id="newsletterTo" name="newsletterTo" readonly placeholder="Fetching donor emails..." style="width: 100%; padding: 12px; background: rgba(0,0,0,0.02); border: 1px solid rgba(0,0,0,0.1); border-radius: 8px; font-size: 0.9rem; color: #555; resize: vertical; cursor: not-allowed;" rows="3"></textarea>
-      </div>
-      <div class="form-group">
-        <label for="newsletterSubject">Subject</label>
-        <input type="text" id="newsletterSubject" name="newsletterSubject" required placeholder="Newsletter Subject" style="width: 100%; padding: 12px; border: 1px solid rgba(0,0,0,0.1); border-radius: 8px; font-size: 1rem; color: #000;" />
-      </div>
-      <div class="form-group" style="margin-top: 15px;">
-        <label for="newsletterBody">Message</label>
-        <textarea id="newsletterBody" name="newsletterBody" rows="6" required placeholder="Write your newsletter message here..." style="width: 100%; padding: 12px; border: 1px solid rgba(0,0,0,0.1); border-radius: 8px; font-size: 1rem; color: #000; resize: vertical;"></textarea>
-      </div>
-      <button type="submit" id="newsletterSubmitBtn" style="margin-top: 20px; width: 100%; background: linear-gradient(135deg, #e67e22 0%, #d35400 100%); color: #fff; border: none; font-size: 1rem; font-weight: bold; padding: 14px; border-radius: 8px; cursor: pointer; box-shadow: 0 5px 15px rgba(230,126,34,0.35);">
-        Send to All Donors
       </button>
     </form>
   </div>
@@ -2193,61 +2145,6 @@ document.addEventListener("DOMContentLoaded", function() {
     window.closeEditDonorModal = function() {
         const modal = document.getElementById('editDonorModal');
         if (modal) modal.style.display = 'none';
-    };
-
-    window.openNewsletterModal = function() {
-        document.getElementById('newsletterModal').style.display = 'flex';
-        const verifiedDonors = window.adminDonorsCache ? window.adminDonorsCache.filter(d => d.email && d.email.trim() !== '') : [];
-        const emails = verifiedDonors.map(d => d.email).join(', ');
-        const count = verifiedDonors.length;
-        document.getElementById('newsletterTo').value = emails || 'No verified emails found in directory.';
-        document.getElementById('newsletterToCount').innerText = `(${count} Donor${count !== 1 ? 's' : ''})`;
-    };
-
-    window.sendNewsletter = async function(e) {
-        if (e) e.preventDefault();
-        const btn = document.getElementById('newsletterSubmitBtn');
-        const alertBox = document.getElementById('newsletterAlert');
-        const subject = document.getElementById('newsletterSubject').value;
-        const message = document.getElementById('newsletterBody').value;
-
-        btn.disabled = true;
-        btn.innerText = 'Sending...';
-        alertBox.style.display = 'none';
-
-        try {
-            const formData = new FormData();
-            formData.append('action', 'send_donor_newsletter');
-            formData.append('subject', subject);
-            formData.append('message', message);
-
-            const response = await fetch("<?php echo esc_url(admin_url('admin-ajax.php')); ?>", {
-                method: 'POST',
-                body: formData
-            });
-            const data = await response.json();
-            
-            alertBox.style.display = 'block';
-            if (data.success) {
-                alertBox.className = 'alert alert-success';
-                alertBox.innerText = data.data.message || 'Newsletter sent successfully.';
-                document.getElementById('newsletterForm').reset();
-                setTimeout(() => {
-                    document.getElementById('newsletterModal').style.display = 'none';
-                    alertBox.style.display = 'none';
-                }, 3000);
-            } else {
-                alertBox.className = 'alert alert-danger';
-                alertBox.innerText = data.data.message || 'Failed to send newsletter.';
-            }
-        } catch (err) {
-            alertBox.style.display = 'block';
-            alertBox.className = 'alert alert-danger';
-            alertBox.innerText = 'Network error occurred.';
-        } finally {
-            btn.disabled = false;
-            btn.innerText = 'Send to All Donors';
-        }
     };
 
     window.saveEditedDonor = async function(e) {
