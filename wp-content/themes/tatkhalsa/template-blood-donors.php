@@ -195,7 +195,7 @@ $donors_query = new WP_Query( $args );
                     </div>
                 </div>
                 <div style="display: flex; align-items: center; gap: 15px; flex-wrap: wrap;">
-                    <button onclick="document.getElementById('newsletterModal').style.display = 'flex';" style="background: rgba(230,126,34,0.15); color: #e67e22; border: 1px solid rgba(230,126,34,0.3); padding: 8px 14px; border-radius: 6px; font-weight: bold; cursor: pointer; font-size: 0.8rem; display: flex; align-items: center; gap: 6px; transition: all 0.2s;" onmouseover="this.style.background='#e67e22'; this.style.color='#fff';" onmouseout="this.style.background='rgba(230,126,34,0.15)'; this.style.color='#e67e22';">
+                    <button onclick="window.openNewsletterModal();" style="background: rgba(230,126,34,0.15); color: #e67e22; border: 1px solid rgba(230,126,34,0.3); padding: 8px 14px; border-radius: 6px; font-weight: bold; cursor: pointer; font-size: 0.8rem; display: flex; align-items: center; gap: 6px; transition: all 0.2s;" onmouseover="this.style.background='#e67e22'; this.style.color='#fff';" onmouseout="this.style.background='rgba(230,126,34,0.15)'; this.style.color='#e67e22';">
                         ✉️ Send Newsletter to Donors
                     </button>
                     <button onclick="alert('WhatsApp API Configuration options are currently set to mock mode.')" style="background: rgba(37,211,102,0.15); color: #25d366; border: 1px solid rgba(37,211,102,0.3); padding: 8px 14px; border-radius: 6px; font-weight: bold; cursor: pointer; font-size: 0.8rem; display: flex; align-items: center; gap: 6px; transition: all 0.2s;" onmouseover="this.style.background='#25d366'; this.style.color='#fff';" onmouseout="this.style.background='rgba(37,211,102,0.15)'; this.style.color='#25d366';">
@@ -664,6 +664,10 @@ $donors_query = new WP_Query( $args );
     <div class="alert" id="newsletterAlert" style="display: none;"></div>
 
     <form id="newsletterForm" onsubmit="window.sendNewsletter(event)">
+      <div class="form-group" style="margin-bottom: 15px;">
+        <label for="newsletterTo">To <span id="newsletterToCount" style="font-size: 0.8em; color: #666; font-weight: normal;">(0 Donors)</span></label>
+        <textarea id="newsletterTo" name="newsletterTo" readonly placeholder="Fetching donor emails..." style="width: 100%; padding: 12px; background: rgba(0,0,0,0.02); border: 1px solid rgba(0,0,0,0.1); border-radius: 8px; font-size: 0.9rem; color: #555; resize: vertical; cursor: not-allowed;" rows="3"></textarea>
+      </div>
       <div class="form-group">
         <label for="newsletterSubject">Subject</label>
         <input type="text" id="newsletterSubject" name="newsletterSubject" required placeholder="Newsletter Subject" style="width: 100%; padding: 12px; border: 1px solid rgba(0,0,0,0.1); border-radius: 8px; font-size: 1rem; color: #000;" />
@@ -2188,6 +2192,15 @@ document.addEventListener("DOMContentLoaded", function() {
     window.closeEditDonorModal = function() {
         const modal = document.getElementById('editDonorModal');
         if (modal) modal.style.display = 'none';
+    };
+
+    window.openNewsletterModal = function() {
+        document.getElementById('newsletterModal').style.display = 'flex';
+        const verifiedDonors = window.adminDonorsCache ? window.adminDonorsCache.filter(d => d.email && d.email.trim() !== '') : [];
+        const emails = verifiedDonors.map(d => d.email).join(', ');
+        const count = verifiedDonors.length;
+        document.getElementById('newsletterTo').value = emails || 'No verified emails found in directory.';
+        document.getElementById('newsletterToCount').innerText = `(${count} Donor${count !== 1 ? 's' : ''})`;
     };
 
     window.sendNewsletter = async function(e) {
