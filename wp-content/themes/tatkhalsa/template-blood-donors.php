@@ -1503,6 +1503,12 @@ document.addEventListener("DOMContentLoaded", () => {
                         emailStatus.style.color = "#28a745";
                         emailStatus.innerText = "Certificate sent to your email!";
                         sendEmailBtn.innerHTML = "✉ Sent Successfully";
+                        
+                        setTimeout(() => {
+                            if (typeof window.closeCertificateModal === 'function') {
+                                window.closeCertificateModal();
+                            }
+                        }, 2500);
                     } catch (err) {
                         emailStatus.style.display = "block";
                         emailStatus.style.backgroundColor = "rgba(220, 53, 69, 0.1)";
@@ -1846,7 +1852,7 @@ document.addEventListener("DOMContentLoaded", function() {
             : `Are you sure you want to permanently delete all ${count} selected emergency blood requests?`;
             
         if (confirm(confirmMsg)) {
-            const endpoint = adminTab === 'donors' ? '/api/admin/delete-donor' : '/api/admin/delete-request';
+            const endpoint = adminTab === 'donors' ? "<?php echo esc_url(admin_url('admin-ajax.php?action=admin_delete_donor')); ?>" : "<?php echo esc_url(admin_url('admin-ajax.php?action=admin_delete_request')); ?>";
             try {
                 const res = await fetch(endpoint, {
                     method: 'POST',
@@ -2100,7 +2106,7 @@ document.addEventListener("DOMContentLoaded", function() {
         const tick = document.getElementById('purgeStatusTick');
 
         try {
-            const res = await fetch('/api/admin/purge-settings', {
+            const res = await fetch("<?php echo esc_url(admin_url('admin-ajax.php?action=admin_purge_settings')); ?>", {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ enabled, duration })
@@ -2173,7 +2179,7 @@ document.addEventListener("DOMContentLoaded", function() {
         };
 
         try {
-            const res = await fetch('/api/admin/edit-donor', {
+            const res = await fetch("<?php echo esc_url(admin_url('admin-ajax.php?action=admin_edit_donor')); ?>", {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(payload)
@@ -2259,7 +2265,7 @@ document.addEventListener("DOMContentLoaded", function() {
         };
 
         try {
-            const res = await fetch('/api/admin/edit-request', {
+            const res = await fetch("<?php echo esc_url(admin_url('admin-ajax.php?action=admin_edit_request')); ?>", {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(payload)
@@ -2310,7 +2316,7 @@ document.addEventListener("DOMContentLoaded", function() {
         // Toggle verification in the backend if admin desires
         if (confirm(`Do you want to toggle the verification status for ${name} in the system database?\n\n(Current: ${isVerified ? 'Verified' : 'Unverified'})`)) {
             try {
-                const res = await fetch('/api/admin/verify-donor', {
+                const res = await fetch("<?php echo esc_url(admin_url('admin-ajax.php?action=admin_verify_donor')); ?>", {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ id, isVerified: !isVerified })
@@ -2329,7 +2335,7 @@ document.addEventListener("DOMContentLoaded", function() {
     window.deleteDonor = async function(id) {
         if (confirm('Are you sure you want to permanently delete this donor from directory?')) {
             try {
-                const res = await fetch('/api/admin/delete-donor', {
+                const res = await fetch("<?php echo esc_url(admin_url('admin-ajax.php?action=admin_delete_donor')); ?>", {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ id })
@@ -2346,7 +2352,7 @@ document.addEventListener("DOMContentLoaded", function() {
     window.deleteRequest = async function(id) {
         if (confirm('Are you sure you want to permanently delete this blood request log?')) {
             try {
-                const res = await fetch('/api/admin/delete-request', {
+                const res = await fetch("<?php echo esc_url(admin_url('admin-ajax.php?action=admin_delete_request')); ?>", {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ id })
@@ -2362,7 +2368,7 @@ document.addEventListener("DOMContentLoaded", function() {
     window.fulfillRequest = async function(id) {
         if (confirm('Are you sure you want to mark this blood request as Fulfilled?')) {
             try {
-                const res = await fetch('/api/admin/fulfill-request', {
+                const res = await fetch("<?php echo esc_url(admin_url('admin-ajax.php?action=admin_fulfill_request')); ?>", {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ id })
@@ -2423,7 +2429,7 @@ document.addEventListener("DOMContentLoaded", function() {
                     return;
                 }
 
-                const res = await fetch('/api/admin/import-data', {
+                const res = await fetch("<?php echo esc_url(admin_url('admin-ajax.php?action=admin_import_data')); ?>", {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
@@ -2587,18 +2593,6 @@ document.addEventListener("DOMContentLoaded", function() {
 
             try {
                 let responseData;
-                const isLocalMock = window.location.hostname.includes('localhost') || 
-                                    window.location.hostname.includes('.run.app') || 
-                                    window.location.hostname.includes('aistudio');
-
-                if (isLocalMock) {
-                    const res = await fetch('/api/admin/accept-request', {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ req_id, donor_id })
-                    });
-                    responseData = await res.json();
-                } else {
                     const formData = new FormData();
                     formData.append('action', 'accept_blood_request');
                     formData.append('req_id', req_id);
@@ -2609,7 +2603,6 @@ document.addEventListener("DOMContentLoaded", function() {
                         body: formData
                     });
                     responseData = await res.json();
-                }
 
                 const isSuccess = responseData.success || (responseData.data && responseData.data.success);
                 const isAlreadyAccepted = responseData.already_accepted_by_you || (responseData.data && responseData.data.already_accepted_by_you);

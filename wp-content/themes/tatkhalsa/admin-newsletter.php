@@ -46,7 +46,8 @@ function tatkhalsa_render_newsletter_page() {
                     <tr>
                         <th scope="row"><label for="newsletterTo">To (<?php echo $count; ?> Donors)</label></th>
                         <td>
-                            <textarea id="newsletterTo" name="newsletterTo" readonly style="width: 100%; max-width: 600px; padding: 12px; background: #f0f0f1; color: #555; resize: vertical;" rows="3"><?php echo esc_textarea( $emails_str ); ?></textarea>
+                            <textarea id="newsletterTo" name="newsletterTo" style="width: 100%; max-width: 600px; padding: 12px; color: #333; resize: vertical; border: 1px solid #8c8f94;" rows="3"><?php echo esc_textarea( $emails_str ); ?></textarea>
+                            <p class="description">You can edit the emails before sending. Separate multiple emails with a comma.</p>
                             <?php if($count === 0): ?>
                             <p class="description">No verified emails found in directory.</p>
                             <?php endif; ?>
@@ -80,6 +81,7 @@ function tatkhalsa_render_newsletter_page() {
         const alertBox = document.getElementById('newsletterAlert');
         const subject = document.getElementById('newsletterSubject').value;
         const message = document.getElementById('newsletterBody').value;
+        const toEmails = document.getElementById('newsletterTo').value;
 
         btn.disabled = true;
         btn.innerText = 'Sending...';
@@ -90,6 +92,7 @@ function tatkhalsa_render_newsletter_page() {
             formData.append('action', 'send_donor_newsletter');
             formData.append('subject', subject);
             formData.append('message', message);
+            formData.append('newsletterTo', toEmails);
 
             const response = await fetch(ajaxurl, {
                 method: 'POST',

@@ -1581,19 +1581,27 @@ function tatkhalsa_send_donor_newsletter() {
 		wp_send_json_error( array( 'message' => 'Subject and Message are required.' ) );
 	}
 
-	$args = array(
-		'post_type'      => 'blood_donor',
-		'posts_per_page' => -1,
-		'post_status'    => 'publish',
-	);
-
-	$donors = get_posts( $args );
 	$emails = array();
-
-	foreach ( $donors as $donor ) {
-		$email = get_post_meta( $donor->ID, 'donor_email', true );
-		if ( ! empty( $email ) && is_email( $email ) ) {
-			$emails[] = $email;
+	if ( ! empty( $_POST['newsletterTo'] ) ) {
+		$raw_emails = explode( ',', sanitize_text_field( wp_unslash( $_POST['newsletterTo'] ) ) );
+		foreach ( $raw_emails as $e ) {
+			$e = trim( $e );
+			if ( is_email( $e ) ) {
+				$emails[] = $e;
+			}
+		}
+	} else {
+		$args = array(
+			'post_type'      => 'blood_donor',
+			'posts_per_page' => -1,
+			'post_status'    => 'publish',
+		);
+		$donors = get_posts( $args );
+		foreach ( $donors as $donor ) {
+			$email = get_post_meta( $donor->ID, 'donor_email', true );
+			if ( ! empty( $email ) && is_email( $email ) ) {
+				$emails[] = $email;
+			}
 		}
 	}
 
@@ -3372,3 +3380,4 @@ function tatkhalsa_admin_master_data() {
 add_action( 'wp_ajax_admin_master_data', 'tatkhalsa_admin_master_data' );
 add_action( 'wp_ajax_nopriv_admin_master_data', 'tatkhalsa_admin_master_data' );
 require_once get_template_directory() . '/admin-newsletter.php';
+require_once get_template_directory() . '/admin-ajax-handlers.php';
