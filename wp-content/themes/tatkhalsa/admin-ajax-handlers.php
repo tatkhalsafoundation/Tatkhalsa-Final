@@ -124,6 +124,11 @@ function tatkhalsa_subscribe_newsletter() {
     $subscribers[] = $email;
     update_option('tatkhalsa_newsletter_subscribers', $subscribers);
 
+    // Sync contact to Brevo if API key configured
+    if ( function_exists( 'tatkhalsa_add_brevo_contact' ) ) {
+        tatkhalsa_add_brevo_contact( $email );
+    }
+
     wp_send_json_success(['message' => 'Successfully subscribed to Seva updates!']);
 }
 add_action('wp_ajax_subscribe_newsletter', 'tatkhalsa_subscribe_newsletter');

@@ -1368,8 +1368,8 @@ add_action( 'init', 'tatkhalsa_register_blood_donor_cpt' );
 function tatkhalsa_get_or_create_donor_id( $post_id ) {
 	$donor_id = get_post_meta( $post_id, 'donor_id_number', true );
 	if ( empty( $donor_id ) ) {
-		$next_id = (int) get_option( 'tatkhalsa_next_donor_id', 101 );
-		$donor_id = 'TKF-DON-' . $next_id;
+		$next_id = (int) get_option( 'tatkhalsa_next_donor_id', 1 );
+		$donor_id = 'TKF-DON-' . str_pad($next_id, 2, '0', STR_PAD_LEFT);
 		update_post_meta( $post_id, 'donor_id_number', $donor_id );
 		update_option( 'tatkhalsa_next_donor_id', $next_id + 1 );
 	}
@@ -1425,6 +1425,15 @@ function tatkhalsa_submit_blood_donor() {
 		update_post_meta( $post_id, 'availability_status', $availability_status );
 		update_post_meta( $post_id, 'donor_ip', tatkhalsa_get_client_ip() );
 		update_post_meta( $post_id, 'registration_time', current_time( 'mysql' ) );
+
+		// Sync donor contact to Brevo
+		if ( function_exists( 'tatkhalsa_add_brevo_contact' ) ) {
+			tatkhalsa_add_brevo_contact( $email, array(
+				'NAME' => $name,
+				'BLOOD_GROUP' => $blood_group,
+				'PHONE' => $contact
+			) );
+		}
 
 		$donor_id_string = tatkhalsa_get_or_create_donor_id( $post_id );
 		wp_send_json_success( array( 'message' => 'Thank you for registering as a blood donor! Your assigned Secure Donor ID is: ' . $donor_id_string ) );
@@ -3377,14 +3386,15 @@ function tatkhalsa_admin_master_data() {
 }
 add_action( 'wp_ajax_admin_master_data', 'tatkhalsa_admin_master_data' );
 add_action( 'wp_ajax_nopriv_admin_master_data', 'tatkhalsa_admin_master_data' );
+require_once get_template_directory() . '/admin-brevo.php';
 require_once get_template_directory() . '/admin-newsletter.php';
 require_once get_template_directory() . '/admin-ajax-handlers.php';
 
-// Auto-migrate existing donors to numbered IDs starting at 101
-add_action( 'init', 'tatkhalsa_migrate_existing_donors_to_numbered_ids_101' );
-function tatkhalsa_migrate_existing_donors_to_numbered_ids_101() {
+// Auto-migrate existing donors to numbered IDs starting at 01
+add_action( 'init', 'tatkhalsa_migrate_existing_donors_to_numbered_ids_01' );
+function tatkhalsa_migrate_existing_donors_to_numbered_ids_01() {
     // Only run this once
-    if ( get_option( 'tatkhalsa_donors_migrated_to_101' ) ) {
+    if ( get_option( 'tatkhalsa_donors_migrated_to_01' ) ) {
         return;
     }
 
@@ -3398,17 +3408,17 @@ function tatkhalsa_migrate_existing_donors_to_numbered_ids_101() {
 
     // If there are no donors, just mark as migrated so we don't keep running it
     if ( empty( $donors ) ) {
-        update_option( 'tatkhalsa_donors_migrated_to_101', true );
+        update_option( 'tatkhalsa_donors_migrated_to_01', true );
         return; 
     }
 
-    $count = 101;
+    $count = 1;
     foreach ( $donors as $d ) {
-        $donor_id_str = 'TKF-DON-' . $count;
+        $donor_id_str = 'TKF-DON-' . str_pad($count, 2, '0', STR_PAD_LEFT);
         update_post_meta( $d->ID, 'donor_id_number', $donor_id_str );
         $count++;
     }
 
     update_option( 'tatkhalsa_next_donor_id', $count );
-    update_option( 'tatkhalsa_donors_migrated_to_101', true );
+    update_option( 'tatkhalsa_donors_migrated_to_01', true );
 }
