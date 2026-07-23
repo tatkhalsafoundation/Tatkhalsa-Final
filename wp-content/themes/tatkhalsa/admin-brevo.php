@@ -304,7 +304,7 @@ function tatkhalsa_test_brevo_email_handler() {
 function tatkhalsa_add_brevo_contact( $email, $attributes = array(), $list_ids = array() ) {
     $api_key = get_option( 'tatkhalsa_brevo_api_key', defined('BREVO_API_KEY') ? BREVO_API_KEY : '' );
     if ( empty( $api_key ) || ! is_email( $email ) ) {
-        return false;
+        return 'Missing API key or invalid email';
     }
 
     $payload = array(
@@ -331,7 +331,23 @@ function tatkhalsa_add_brevo_contact( $email, $attributes = array(), $list_ids =
         'timeout' => 10,
     ) );
 
-    return ! is_wp_error( $response ) && wp_remote_retrieve_response_code( $response ) < 300;
+    if ( is_wp_error( $response ) ) {
+        return $response->get_error_message();
+    }
+
+    $code = wp_remote_retrieve_response_code( $response );
+    $body = wp_remote_retrieve_body( $response );
+
+    if ( $code >= 200 && $code < 300 ) {
+        return true;
+    }
+
+    $decoded = json_decode( $body, true );
+    if ( $decoded && isset( $decoded['message'] ) ) {
+        return $decoded['message'];
+    }
+
+    return 'Error ' . $code;
 }
 
 // AJAX handler to sync all donors and newsletter subscribers to Brevo
@@ -347,6 +363,7 @@ function tatkhalsa_sync_all_brevo_contacts_handler() {
     }
 
     $count = 0;
+    $errors = array();
 
     // 1. Sync Blood Donors
     $donors = get_posts( array(
@@ -362,12 +379,16 @@ function tatkhalsa_sync_all_brevo_contacts_handler() {
         $contact = get_post_meta( $d->ID, 'contact_details', true );
 
         if ( is_email( $email ) ) {
-            tatkhalsa_add_brevo_contact( $email, array(
+            $res = tatkhalsa_add_brevo_contact( $email, array(
                 'NAME' => $name,
                 'BLOOD_GROUP' => $blood_group,
                 'PHONE' => $contact
             ) );
-            $count++;
+            if ( $res === true ) {
+                $count++;
+            } else {
+                $errors[] = "$email: $res";
+            }
         }
     }
 
@@ -375,9 +396,17 @@ function tatkhalsa_sync_all_brevo_contacts_handler() {
     $subscribers = get_option('tatkhalsa_newsletter_subscribers', []);
     foreach ( $subscribers as $sub_email ) {
         if ( is_email( $sub_email ) ) {
-            tatkhalsa_add_brevo_contact( $sub_email );
-            $count++;
+            $res = tatkhalsa_add_brevo_contact( $sub_email );
+            if ( $res === true ) {
+                $count++;
+            } else {
+                $errors[] = "$sub_email: $res";
+            }
         }
+    }
+
+    if ( ! empty( $errors ) ) {
+        wp_send_json_error( array( 'message' => "Synced $count records. Errors: " . implode( ', ', array_slice($errors, 0, 3) ) . (count($errors) > 3 ? "..." : "") ) );
     }
 
     wp_send_json_success( array( 'message' => "✓ Successfully synced " . $count . " records (donors & newsletter subscribers) to Brevo!" ) );
