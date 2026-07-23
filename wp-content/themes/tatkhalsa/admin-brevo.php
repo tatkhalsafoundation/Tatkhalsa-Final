@@ -260,16 +260,43 @@ function tatkhalsa_test_brevo_email_handler() {
         wp_send_json_error( array( 'message' => 'Brevo API Key is missing. Please save your Brevo API Key above first.' ) );
     }
 
-    $sent = wp_mail(
-        $test_email,
-        'Test Email from Tatkhalsa Brevo Integration',
-        '<h3>Brevo Connection Test Successful!</h3><p>Your Tatkhalsa Foundation website is now configured to send emails via Brevo.</p><p>All newsletters, blood donor alerts, and receipts will now be delivered reliably through Brevo API.</p>'
+    $sender_email = get_option( 'tatkhalsa_brevo_sender_email', 'info@tatkhalsa.in' );
+    $sender_name  = get_option( 'tatkhalsa_brevo_sender_name', 'Tatkhalsa Foundation' );
+
+    $payload = array(
+        'sender'      => array( 'name' => $sender_name, 'email' => $sender_email ),
+        'to'          => array( array( 'email' => $test_email ) ),
+        'subject'     => 'Test Email from Tatkhalsa Brevo Integration',
+        'htmlContent' => '<h3>Brevo Connection Test Successful!</h3><p>Your Tatkhalsa Foundation website is now configured to send emails via Brevo.</p>',
     );
 
-    if ( $sent ) {
+    $response = wp_remote_post( 'https://api.brevo.com/v3/smtp/email', array(
+        'method'    => 'POST',
+        'headers'   => array(
+            'api-key'      => $api_key,
+            'content-type' => 'application/json',
+            'accept'       => 'application/json',
+        ),
+        'body'      => json_encode( $payload ),
+        'timeout'   => 15,
+    ) );
+
+    if ( is_wp_error( $response ) ) {
+        wp_send_json_error( array( 'message' => 'Network Error: ' . $response->get_error_message() ) );
+    }
+
+    $code = wp_remote_retrieve_response_code( $response );
+    $body = wp_remote_retrieve_body( $response );
+
+    if ( $code >= 200 && $code < 300 ) {
         wp_send_json_success( array( 'message' => '✓ Test email sent successfully via Brevo! Please check your inbox.' ) );
     } else {
-        wp_send_json_error( array( 'message' => 'Failed to send test email via Brevo. Please verify your Brevo API Key and check that your sender email is verified in Brevo.' ) );
+        $error_details = 'Unknown error';
+        $decoded = json_decode( $body, true );
+        if ( $decoded && isset( $decoded['message'] ) ) {
+            $error_details = $decoded['message'];
+        }
+        wp_send_json_error( array( 'message' => 'Failed (' . $code . '): ' . $error_details ) );
     }
 }
 
