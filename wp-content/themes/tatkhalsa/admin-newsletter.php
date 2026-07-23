@@ -80,7 +80,37 @@ function tatkhalsa_render_newsletter_page() {
                     <tr>
                         <th scope="row"><label for="newsletterBody">Message</label></th>
                         <td>
-                            <textarea id="newsletterBody" name="newsletterBody" rows="8" required style="width: 100%; max-width: 600px;"></textarea>
+                                                                                                                <?php
+                            $content = '
+<div style="background-color: #172a4f; padding: 20px; text-align: center; margin-bottom: 30px;">
+    <h2 style="color: #f0a500; margin: 0; font-size: 20px; letter-spacing: 1px;">NIHUNG SANTHIA NEWSLETTER</h2>
+    <p style="color: #ffffff; margin: 10px 0 0 0; font-size: 14px;">ISSUE X</p>
+</div>
+<h3 style="color: #f0a500; text-align: center;">PEHLA PARKASH SRI GURU GRANTH SAHIB JI</h3>
+<p style="text-align: center;">
+    <em>[Insert Image Here]</em>
+</p>
+<p style="text-align: justify;">In this section of the newsletter, we will be sharing sections from various Granths that inspire us in our study of Santhia and Sikhi Jeevan. This passage from Adhyatam Parkash...</p>
+<p><strong>Padh Arth (word by word meaning):</strong> ...</p>
+<p><strong>Arth (meaning):</strong> ...</p>
+
+<div style="background-color: #f0a500; color: #ffffff; padding: 20px; margin-top: 40px; text-align: left;">
+    <p style="margin: 0 0 10px 0;"><strong>12th September</strong> - Pehla Parkash Sri Guru Granth Sahib Ji</p>
+    <p style="margin: 0;"><strong>15th September</strong> - Barsi Singh Sahib Giani Amarjeet Singh Ji (Hazur Sahib)</p>
+</div>
+';
+                            $editor_id = 'newsletterBody';
+                            $settings = array(
+                                'textarea_name' => 'newsletterBody',
+                                'editor_height' => 400,
+                                'media_buttons' => true,
+                                'tinymce'       => array(
+                                    'toolbar1' => 'formatselect,bold,italic,bullist,numlist,blockquote,alignleft,aligncenter,alignright,link,unlink,wp_more,spellchecker,wp_adv',
+                                    'toolbar2' => 'strikethrough,hr,forecolor,pastetext,removeformat,charmap,outdent,indent,undo,redo,wp_help',
+                                ),
+                            );
+                            wp_editor( $content, $editor_id, $settings );
+                            ?>
                         </td>
                     </tr>
                 </tbody>
@@ -98,7 +128,12 @@ function tatkhalsa_render_newsletter_page() {
         const btn = document.getElementById('newsletterSubmitBtn');
         const alertBox = document.getElementById('newsletterAlert');
         const subject = document.getElementById('newsletterSubject').value;
-        const message = document.getElementById('newsletterBody').value;
+                let message = '';
+        if (typeof tinymce !== 'undefined' && tinymce.get('newsletterBody')) {
+            message = tinymce.get('newsletterBody').getContent();
+        } else {
+            message = document.getElementById('newsletterBody').value;
+        }
         const toEmails = document.getElementById('newsletterTo').value;
 
         btn.disabled = true;

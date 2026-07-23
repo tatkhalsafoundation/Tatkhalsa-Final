@@ -26,15 +26,26 @@ function tatkhalsa_admin_edit_donor() {
             $name_parts = explode( ' ', trim( $name ) );
             $firstname = array_shift( $name_parts );
             $lastname = count( $name_parts ) > 0 ? implode( ' ', $name_parts ) : '';
+            $donor_num = isset($payload['donorNumber']) ? sanitize_text_field($payload['donorNumber']) : '';
+            $contact_num = sanitize_text_field($payload['contact']);
 
-            tatkhalsa_add_brevo_contact( $email, array(
-                'FIRSTNAME' => $firstname,
-                'LASTNAME' => $lastname,
-                'NAME' => $name,
-                'DONOR_ID' => isset($payload['donorNumber']) ? sanitize_text_field($payload['donorNumber']) : '',
+            $attrs = array(
+                'FIRSTNAME'   => $firstname,
+                'LASTNAME'    => $lastname,
+                'NAME'        => $name,
+                'DONOR_ID'    => $donor_num,
                 'BLOOD_GROUP' => sanitize_text_field($payload['bloodGroup']),
-                'PHONE' => sanitize_text_field($payload['contact'])
-            ) );
+                'PHONE'       => $contact_num,
+            );
+
+            if ( function_exists( 'tatkhalsa_format_phone_e164' ) ) {
+                $sms_phone = tatkhalsa_format_phone_e164( $contact_num );
+                if ( ! empty( $sms_phone ) ) {
+                    $attrs['SMS'] = $sms_phone;
+                }
+            }
+
+            tatkhalsa_add_brevo_contact( $email, $attrs, array(), $donor_num );
         }
     }
 

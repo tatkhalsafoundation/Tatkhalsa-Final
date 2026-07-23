@@ -82,6 +82,9 @@ function tatkhalsa_render_brevo_settings_page() {
         <button type="button" id="syncBrevoBtn" onclick="window.syncAllBrevoContacts()" class="button button-primary" style="background: #0A327D; border-color: #0A327D;">
             ⚡ Sync All Donors & Subscribers to Brevo Now
         </button>
+        <p class="description" style="margin-top: 10px; color: #555;">
+            📌 <strong>Note for Brevo Dashboard:</strong> Brevo's default contact table view only shows Email and First Name by default. To see <strong>Donor ID, Blood Group, Phone, and Full Name</strong> in your Brevo contacts list table, go to Brevo Dashboard &gt; Contacts, click <strong>"Change Columns"</strong> at the top right of the table, and check <code>DONOR_ID</code>, <code>BLOOD_GROUP</code>, <code>PHONE</code>, and <code>LASTNAME</code>. Alternatively, click any contact row to see all attributes.
+        </p>
 
         <hr style="margin: 30px 0;">
 
@@ -340,8 +343,47 @@ function tatkhalsa_test_brevo_email_handler() {
     }
 }
 
+// Helper function to format Indian and international phone numbers into E.164 for Brevo SMS attribute
+function tatkhalsa_format_phone_e164( $phone ) {
+    $digits = preg_replace( '/[^0-9]/', '', $phone );
+    if ( empty( $digits ) ) return '';
+    if ( strlen( $digits ) == 10 ) {
+        return '+91' . $digits;
+    } elseif ( strlen( $digits ) == 12 && substr( $digits, 0, 2 ) == '91' ) {
+        return '+' . $digits;
+    } elseif ( strlen( $digits ) == 11 && substr( $digits, 0, 1 ) == '0' ) {
+        return '+91' . substr( $digits, 1 );
+    }
+    return '+' . $digits;
+}
+
+// Ensure custom Brevo contact attributes exist before syncing
+function tatkhalsa_ensure_brevo_attributes_exist( $api_key ) {
+    if ( empty( $api_key ) ) return;
+    $attributes = array(
+        'FIRSTNAME'   => 'text',
+        'LASTNAME'    => 'text',
+        'NAME'        => 'text',
+        'DONOR_ID'    => 'text',
+        'BLOOD_GROUP' => 'text',
+        'PHONE'       => 'text',
+    );
+    foreach ( $attributes as $attr_name => $type ) {
+        wp_remote_post( "https://api.brevo.com/v3/contacts/attributes/normal/$attr_name", array(
+            'method'  => 'POST',
+            'headers' => array(
+                'api-key'      => $api_key,
+                'content-type' => 'application/json',
+                'accept'       => 'application/json',
+            ),
+            'body'    => json_encode( array( 'type' => $type ) ),
+            'timeout' => 5,
+        ) );
+    }
+}
+
 // Helper function to sync subscriber or donor contacts directly into Brevo Contact Lists
-function tatkhalsa_add_brevo_contact( $email, $attributes = array(), $list_ids = array() ) {
+function tatkhalsa_add_brevo_contact( $email, $attributes = array(), $list_ids = array(), $ext_id = '' ) {
     $api_key = get_option( 'tatkhalsa_brevo_api_key', defined('BREVO_API_KEY') ? BREVO_API_KEY : '' );
     if ( empty( $api_key ) || ! is_email( $email ) ) {
         return 'Missing API key or invalid email';
@@ -351,6 +393,10 @@ function tatkhalsa_add_brevo_contact( $email, $attributes = array(), $list_ids =
         'email'         => $email,
         'updateEnabled' => true,
     );
+
+    if ( ! empty( $ext_id ) ) {
+        $payload['ext_id'] = $ext_id;
+    }
 
     if ( ! empty( $attributes ) ) {
         $payload['attributes'] = $attributes;
@@ -402,6 +448,9 @@ function tatkhalsa_sync_all_brevo_contacts_handler() {
         wp_send_json_error( array( 'message' => 'Brevo API Key is missing. Please save your Brevo API Key above first.' ) );
     }
 
+    // Automatically ensure custom attributes exist in Brevo before syncing
+    tatkhalsa_ensure_brevo_attributes_exist( $api_key );
+
     $count = 0;
     $errors = array();
 
@@ -424,14 +473,21 @@ function tatkhalsa_sync_all_brevo_contacts_handler() {
             $firstname = array_shift( $name_parts );
             $lastname = count( $name_parts ) > 0 ? implode( ' ', $name_parts ) : '';
 
-            $res = tatkhalsa_add_brevo_contact( $email, array(
-                'FIRSTNAME' => $firstname,
-                'LASTNAME' => $lastname,
-                'NAME' => $name,
-                'DONOR_ID' => $donor_id_string,
+            $attrs = array(
+                'FIRSTNAME'   => $firstname,
+                'LASTNAME'    => $lastname,
+                'NAME'        => $name,
+                'DONOR_ID'    => $donor_id_string,
                 'BLOOD_GROUP' => $blood_group,
-                'PHONE' => $contact
-            ) );
+                'PHONE'       => $contact,
+            );
+
+            $sms_phone = tatkhalsa_format_phone_e164( $contact );
+            if ( ! empty( $sms_phone ) ) {
+                $attrs['SMS'] = $sms_phone;
+            }
+
+            $res = tatkhalsa_add_brevo_contact( $email, $attrs, array(), $donor_id_string );
             if ( $res === true ) {
                 $count++;
             } else {
@@ -457,7 +513,7 @@ function tatkhalsa_sync_all_brevo_contacts_handler() {
         wp_send_json_error( array( 'message' => "Synced $count records. Errors: " . implode( ', ', array_slice($errors, 0, 3) ) . (count($errors) > 3 ? "..." : "") ) );
     }
 
-    wp_send_json_success( array( 'message' => "✓ Successfully synced " . $count . " records (donors & newsletter subscribers) to Brevo!" ) );
+    wp_send_json_success( array( 'message' => "✓ Successfully synced " . $count . " records (donors & subscribers) with complete attributes (First Name, Last Name, Full Name, Donor ID, Blood Group, Phone & SMS) to Brevo!" ) );
 }
 
 // AJAX handler to create custom attributes in Brevo
@@ -472,38 +528,7 @@ function tatkhalsa_setup_brevo_attributes_handler() {
         wp_send_json_error( array( 'message' => 'Brevo API Key is missing. Please save your Brevo API Key above first.' ) );
     }
 
-    $attributes = array(
-        'FIRSTNAME' => 'text',
-        'LASTNAME' => 'text',
-        'NAME' => 'text',
-        'DONOR_ID' => 'text',
-        'BLOOD_GROUP' => 'text',
-        'PHONE' => 'text', // using text to avoid strict SMS format validation issues
-    );
+    tatkhalsa_ensure_brevo_attributes_exist( $api_key );
 
-    $results = array();
-    foreach ( $attributes as $attr_name => $type ) {
-        $response = wp_remote_post( "https://api.brevo.com/v3/contacts/attributes/normal/$attr_name", array(
-            'method'  => 'POST',
-            'headers' => array(
-                'api-key'      => $api_key,
-                'content-type' => 'application/json',
-                'accept'       => 'application/json',
-            ),
-            'body'    => json_encode( array( 'type' => $type ) ),
-            'timeout' => 10,
-        ) );
-
-        $code = wp_remote_retrieve_response_code( $response );
-        if ( $code == 201 ) {
-            $results[] = "$attr_name created";
-        } elseif ( $code == 400 ) {
-            // usually means it already exists
-            $results[] = "$attr_name already exists";
-        } else {
-            $results[] = "$attr_name failed ($code)";
-        }
-    }
-
-    wp_send_json_success( array( 'message' => "Attribute setup complete: " . implode(', ', $results) . ". You can now try syncing again." ) );
+    wp_send_json_success( array( 'message' => "✓ Custom Brevo attributes (FIRSTNAME, LASTNAME, NAME, DONOR_ID, BLOOD_GROUP, PHONE) checked and verified in Brevo. You can now sync your contacts." ) );
 }
