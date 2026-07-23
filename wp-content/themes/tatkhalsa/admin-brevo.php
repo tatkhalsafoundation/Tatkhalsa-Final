@@ -377,10 +377,18 @@ function tatkhalsa_sync_all_brevo_contacts_handler() {
         $name = get_post_meta( $d->ID, 'donor_name', true );
         $blood_group = get_post_meta( $d->ID, 'blood_group', true );
         $contact = get_post_meta( $d->ID, 'contact_details', true );
+        $donor_id_string = function_exists('tatkhalsa_get_or_create_donor_id') ? tatkhalsa_get_or_create_donor_id( $d->ID ) : get_post_meta( $d->ID, 'donor_id_number', true );
 
         if ( is_email( $email ) ) {
+            $name_parts = explode( ' ', trim( $name ) );
+            $firstname = array_shift( $name_parts );
+            $lastname = count( $name_parts ) > 0 ? implode( ' ', $name_parts ) : '';
+
             $res = tatkhalsa_add_brevo_contact( $email, array(
+                'FIRSTNAME' => $firstname,
+                'LASTNAME' => $lastname,
                 'NAME' => $name,
+                'DONOR_ID' => $donor_id_string,
                 'BLOOD_GROUP' => $blood_group,
                 'PHONE' => $contact
             ) );

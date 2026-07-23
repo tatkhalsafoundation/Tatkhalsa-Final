@@ -1426,16 +1426,23 @@ function tatkhalsa_submit_blood_donor() {
 		update_post_meta( $post_id, 'donor_ip', tatkhalsa_get_client_ip() );
 		update_post_meta( $post_id, 'registration_time', current_time( 'mysql' ) );
 
+		$donor_id_string = tatkhalsa_get_or_create_donor_id( $post_id );
+
 		// Sync donor contact to Brevo
 		if ( function_exists( 'tatkhalsa_add_brevo_contact' ) ) {
+			$name_parts = explode( ' ', trim( $name ) );
+			$firstname = array_shift( $name_parts );
+			$lastname = count( $name_parts ) > 0 ? implode( ' ', $name_parts ) : '';
+
 			tatkhalsa_add_brevo_contact( $email, array(
+				'FIRSTNAME' => $firstname,
+				'LASTNAME' => $lastname,
 				'NAME' => $name,
+				'DONOR_ID' => $donor_id_string,
 				'BLOOD_GROUP' => $blood_group,
 				'PHONE' => $contact
 			) );
 		}
-
-		$donor_id_string = tatkhalsa_get_or_create_donor_id( $post_id );
 		wp_send_json_success( array( 'message' => 'Thank you for registering as a blood donor! Your assigned Secure Donor ID is: ' . $donor_id_string ) );
 	} else {
 		wp_send_json_error( array( 'message' => 'Failed to register. Please try again.' ) );

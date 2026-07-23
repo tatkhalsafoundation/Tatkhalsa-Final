@@ -18,6 +18,26 @@ function tatkhalsa_admin_edit_donor() {
     update_post_meta($id, 'address', sanitize_textarea_field($payload['address']));
     update_post_meta($id, 'availability_status', sanitize_text_field($payload['availabilityStatus']));
     
+    // Sync updated donor contact to Brevo
+    if ( function_exists( 'tatkhalsa_add_brevo_contact' ) ) {
+        $name = sanitize_text_field($payload['name']);
+        $email = sanitize_email($payload['email']);
+        if ( is_email( $email ) ) {
+            $name_parts = explode( ' ', trim( $name ) );
+            $firstname = array_shift( $name_parts );
+            $lastname = count( $name_parts ) > 0 ? implode( ' ', $name_parts ) : '';
+
+            tatkhalsa_add_brevo_contact( $email, array(
+                'FIRSTNAME' => $firstname,
+                'LASTNAME' => $lastname,
+                'NAME' => $name,
+                'DONOR_ID' => isset($payload['donorNumber']) ? sanitize_text_field($payload['donorNumber']) : '',
+                'BLOOD_GROUP' => sanitize_text_field($payload['bloodGroup']),
+                'PHONE' => sanitize_text_field($payload['contact'])
+            ) );
+        }
+    }
+
     wp_send_json_success(['message' => 'Donor updated']);
 }
 add_action('wp_ajax_admin_edit_donor', 'tatkhalsa_admin_edit_donor');
