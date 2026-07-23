@@ -97,12 +97,30 @@
                 const data = await res.json();
                 
                 statusDiv.style.display = 'block';
-                if (data.success) {
+                                if (data.success) {
                     statusDiv.style.background = 'rgba(46, 213, 115, 0.1)';
                     statusDiv.style.color = '#2ced73';
                     statusDiv.style.borderLeft = '3px solid #2ced73';
                     statusDiv.innerText = data.data?.message || 'Successfully subscribed!';
                     form.reset();
+                    
+                    // Show toast notification
+                    const toast = document.createElement('div');
+                    toast.className = 'tatkhalsa-toast';
+                    toast.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 8px;"><path d="M22 11.08V12a10 10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg> ${data.data?.message || 'Successfully subscribed!'}`;
+                    document.body.appendChild(toast);
+                    
+                    // Force reflow
+                    void toast.offsetWidth;
+                    
+                    // Fade in
+                    toast.classList.add('show');
+                    
+                    // Remove after 4s
+                    setTimeout(() => {
+                        toast.classList.remove('show');
+                        setTimeout(() => toast.remove(), 300);
+                    }, 4000);
                 } else {
                     throw new Error(data.data?.message || 'Subscription failed.');
                 }

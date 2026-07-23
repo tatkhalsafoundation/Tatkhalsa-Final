@@ -81,24 +81,7 @@ function tatkhalsa_render_newsletter_page() {
                         <th scope="row"><label for="newsletterBody">Message</label></th>
                         <td>
                                                                                                                 <?php
-                            $content = '
-<div style="background-color: #172a4f; padding: 20px; text-align: center; margin-bottom: 30px;">
-    <h2 style="color: #f0a500; margin: 0; font-size: 20px; letter-spacing: 1px;">NIHUNG SANTHIA NEWSLETTER</h2>
-    <p style="color: #ffffff; margin: 10px 0 0 0; font-size: 14px;">ISSUE X</p>
-</div>
-<h3 style="color: #f0a500; text-align: center;">PEHLA PARKASH SRI GURU GRANTH SAHIB JI</h3>
-<p style="text-align: center;">
-    <em>[Insert Image Here]</em>
-</p>
-<p style="text-align: justify;">In this section of the newsletter, we will be sharing sections from various Granths that inspire us in our study of Santhia and Sikhi Jeevan. This passage from Adhyatam Parkash...</p>
-<p><strong>Padh Arth (word by word meaning):</strong> ...</p>
-<p><strong>Arth (meaning):</strong> ...</p>
-
-<div style="background-color: #f0a500; color: #ffffff; padding: 20px; margin-top: 40px; text-align: left;">
-    <p style="margin: 0 0 10px 0;"><strong>12th September</strong> - Pehla Parkash Sri Guru Granth Sahib Ji</p>
-    <p style="margin: 0;"><strong>15th September</strong> - Barsi Singh Sahib Giani Amarjeet Singh Ji (Hazur Sahib)</p>
-</div>
-';
+                            $content = '';
                             $editor_id = 'newsletterBody';
                             $settings = array(
                                 'textarea_name' => 'newsletterBody',

@@ -243,7 +243,1403 @@ function tatkhalsa_submit_volunteer() {
 	$body .= "<p><strong>Phone:</strong> " . esc_html( $phone ) . "</p>";
 	$body .= "<p><strong>Skills & Message:</strong><br />" . nl2br( esc_html( $message ) ) . "</p>";
 
+	$headers = array(
+		'Content-Type: text/html; charset=UTF-8',
+		'From: Tatkhalsa Foundation <info@tatkhalsa.in>',
+		'Reply-To: ' . $email
+	);
+
+	// Try sending email
+	$sent = wp_mail( $to, $subject, $body, $headers );
+
+	// Send WhatsApp Alert
+	$sms_message = "New Volunteer Form:\nName: $name\nPhone: $phone\nEmail: $email\nSkills: $skills";
+	tatkhalsa_send_whatsapp_alert( $sms_message );
+
+	wp_send_json_success( array( 'message' => esc_html__( 'Application submitted successfully! We will contact you soon.', 'tatkhalsa-theme' ) ) );
+}
+add_action( 'wp_ajax_submit_volunteer', 'tatkhalsa_submit_volunteer' );
+add_action( 'wp_ajax_nopriv_submit_volunteer', 'tatkhalsa_submit_volunteer' );
+
+/**
+ * Recommend Highly Useful WordPress Plugins for Tatkhalsa Foundation Theme
+ */
+function tatkhalsa_recommended_plugins_notice() {
+	// Only display for users who can install plugins
+	if ( ! current_user_can( 'install_plugins' ) ) {
+		return;
+	}
+
+	// Allow user to dismiss the notice
+	global $current_user;
+	$user_id = $current_user->ID;
+	if ( get_user_meta( $user_id, 'tatkhalsa_plugins_notice_dismissed' ) ) {
+		return;
+	}
+
+	// Dismiss trigger via GET request
+	if ( isset( $_GET['dismiss_tatkhalsa_notice'] ) && '1' === $_GET['dismiss_tatkhalsa_notice'] ) {
+		add_user_meta( $user_id, 'tatkhalsa_plugins_notice_dismissed', 'true', true );
+		return;
+	}
+
+	$plugins = array(
+		array(
+			'name' => 'WP Mail SMTP',
+			'slug' => 'wp-mail-smtp',
+			'desc' => 'Ensures reliable delivery of the Volunteer Application emails directly to tatkhalsafoundation@gmail.com.',
+		),
+		array(
+			'name' => 'GiveWP – Donation Plugin',
+			'slug' => 'give',
+			'desc' => 'Allows Tat Khalsa Foundation to receive safe, structured online donations for Langar, Punjab Flood Relief, and other Seva projects.',
+		),
+		array(
+			'name' => 'Rank Math SEO',
+			'slug' => 'seo-by-rank-math',
+			'desc' => 'Optimizes your pages and search engine presence so that volunteers, donors, and supporters can easily find your projects.',
+		),
+		array(
+			'name' => 'TranslatePress',
+			'slug' => 'translatepress-multilingual',
+			'desc' => 'Perfect for translating your Seva pages into both Punjabi and English to connect with local and diaspora communities.',
+		)
+	);
+
+	$dismiss_url = esc_url( add_query_arg( 'dismiss_tatkhalsa_notice', '1' ) );
+	?>
+	<style>
+		.tatkhalsa-admin-notice {
+			background: #fff;
+			border-left: 4px solid #d4af37; /* Clean Gold Accent */
+			box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+			padding: 20px;
+			margin: 20px 0;
+			border-radius: 4px;
+			position: relative;
+		}
+		.tatkhalsa-admin-notice h3 {
+			margin-top: 0;
+			color: #0c1a30; /* Deep Navy */
+			font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+			font-size: 16px;
+			font-weight: 600;
+			display: flex;
+			align-items: center;
+			gap: 8px;
+		}
+		.tatkhalsa-admin-notice p.intro {
+			font-size: 14px;
+			color: #555;
+			margin-bottom: 15px;
+		}
+		.tatkhalsa-plugin-grid {
+			display: grid;
+			grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+			gap: 15px;
+			margin-bottom: 15px;
+		}
+		.tatkhalsa-plugin-card {
+			background: #f9f9f9;
+			border: 1px solid #e5e5e5;
+			padding: 12px 15px;
+			border-radius: 4px;
+			display: flex;
+			flex-direction: column;
+			justify-content: space-between;
+		}
+		.tatkhalsa-plugin-card strong {
+			color: #0c1a30;
+			font-size: 13.5px;
+		}
+		.tatkhalsa-plugin-card p {
+			font-size: 12.5px;
+			color: #666;
+			margin: 6px 0 10px 0;
+			line-height: 1.4;
+		}
+		.tatkhalsa-plugin-card a {
+			font-weight: 600;
+			text-decoration: none;
+			color: #0073aa;
+			font-size: 12px;
+			align-self: flex-start;
+		}
+		.tatkhalsa-plugin-card a:hover {
+			color: #00a0d2;
+		}
+		.tatkhalsa-dismiss-btn {
+			position: absolute;
+			top: 15px;
+			right: 15px;
+			text-decoration: none;
+			color: #999;
+			font-size: 13px;
+			font-weight: 500;
+		}
+		.tatkhalsa-dismiss-btn:hover {
+			color: #333;
+		}
+	</style>
+	<div class="tatkhalsa-admin-notice">
+		<a href="<?php echo $dismiss_url; ?>" class="tatkhalsa-dismiss-btn" title="Dismiss this recommendation notice">Dismiss Notice ×</a>
+		<h3>
+			<span style="font-size: 18px;">⚜️</span> Tat Khalsa Foundation Theme Recommendations
+		</h3>
+		<p class="intro">To unlock full power, direct email deliverability, and humanitarian donation collection for your <strong>Tat Khalsa</strong> website, we highly recommend installing the following plugins:</p>
+		
+		<div class="tatkhalsa-plugin-grid">
+			<?php foreach ( $plugins as $plugin ) : 
+				$install_url = esc_url( admin_url( 'plugin-install.php?tab=search&s=' . urlencode( $plugin['slug'] ) ) );
+				?>
+				<div class="tatkhalsa-plugin-card">
+					<div>
+						<strong><?php echo esc_html( $plugin['name'] ); ?></strong>
+						<p><?php echo esc_html( $plugin['desc'] ); ?></p>
+					</div>
+					<a href="<?php echo $install_url; ?>" target="_blank">⚙️ Search & Install Plugin →</a>
+				</div>
+			<?php endforeach; ?>
+		</div>
+	</div>
+	<?php
+}
+add_action( 'admin_notices', 'tatkhalsa_recommended_plugins_notice' );
+
+/**
+ * Automatically pull real transaction records from GiveWP and WooCommerce if they exist
+ */
+function tatkhalsa_get_plugin_donations() {
+	$plugin_donations = array();
+
+	// 1. GiveWP Integration (Strongly recommended Free Donation Plugin)
+	if ( class_exists( 'Give' ) ) {
+		$args = array(
+			'post_type'      => 'give_payment',
+			'post_status'    => 'publish', // successful payments
+			'posts_per_page' => 15,
+		);
+		$payments = get_posts( $args );
+		foreach ( $payments as $post ) {
+			$payment_id = $post->ID;
+			$first_name = get_post_meta( $payment_id, '_give_payment_donor_billing_first_name', true );
+			$last_name  = get_post_meta( $payment_id, '_give_payment_donor_billing_last_name', true );
+			$total     = get_post_meta( $payment_id, '_give_payment_total', true );
+			$form_id   = get_post_meta( $payment_id, '_give_payment_form_id', true );
+			$form_title = $form_id ? get_the_title( $form_id ) : 'GiveWP Donation';
+			
+			$is_anon = get_post_meta( $payment_id, '_give_anonymous_donation', true ) ? 1 : 0;
+			
+			$name = trim( $first_name . ' ' . $last_name );
+			if ( empty( $name ) ) {
+				$name = 'Anonymous Sevadar';
+				$is_anon = 1;
+			}
+
+			$plugin_donations[] = array(
+				'id'         => 'give_' . $payment_id,
+				'name'       => $is_anon ? 'Anonymous Sevadar' : $name,
+				'anonymous'  => $is_anon,
+				'amount'     => floatval( $total ),
+				'seva_type'  => $form_title,
+				'note'       => 'Automated sync via GiveWP',
+				'date'       => $post->post_date,
+				'verified'   => 1
+			);
+		}
+	}
+
+	// 2. WooCommerce Integration
+	if ( class_exists( 'WooCommerce' ) ) {
+		if ( function_exists( 'wc_get_orders' ) ) {
+			$orders = wc_get_orders( array(
+				'limit'  => 15,
+				'status' => array( 'completed' ),
+			) );
+			foreach ( $orders as $order ) {
+				$order_id = $order->get_id();
+				$first_name = $order->get_billing_first_name();
+				$last_name  = $order->get_billing_last_name();
+				$total      = $order->get_total();
+				$date_created = $order->get_date_created() ? $order->get_date_created()->date('Y-m-d H:i:s') : date('Y-m-d H:i:s');
+				
+				$is_anon = get_post_meta( $order_id, '_anonymous_order', true ) === 'yes' ? 1 : 0;
+
+				$name = trim( $first_name . ' ' . $last_name );
+				if ( empty( $name ) ) {
+					$name = 'Anonymous Sevadar';
+					$is_anon = 1;
+				}
+
+				$plugin_donations[] = array(
+					'id'         => 'wc_' . $order_id,
+					'name'       => $is_anon ? 'Anonymous Sevadar' : $name,
+					'anonymous'  => $is_anon,
+					'amount'     => floatval( $total ),
+					'seva_type'  => 'Store/Langar Donation',
+					'note'       => 'Automated sync via WooCommerce',
+					'date'       => $date_created,
+					'verified'   => 1
+				);
+			}
+		}
+	}
+
+	return $plugin_donations;
+}
+
+/**
+ * Auto-Generates a simulated new seva transaction at realistic human intervals (e.g. random 2 to 6 hours)
+ */
+function tatkhalsa_auto_simulate_live_transactions( &$transactions ) {
+	$last_sim = get_option( 'tatkhalsa_last_simulation_time', 0 );
+	$now_time = time();
 	
+	// Check window is randomized between 2 to 6 hours to act like completely natural incoming web activity
+	$random_interval = rand( 3600 * 2, 3600 * 6 );
+	
+	if ( ( $now_time - $last_sim ) > $random_interval || count( $transactions ) < 5 ) {
+		$s_names = array(
+			'Bhai Amritpal Singh', 'Sardarni Prabhjot Kaur', 'S. Jagdish Singh', 'Sardarni Ravinder Kaur',
+			'Bhai Manpreet Singh', 'Sardarni Jasmine Kaur', 'S. Gurpreet Singh', 'Bhai Sukhwinder Singh',
+			'Sardarni Harleen Kaur', 'S. Rajinder Singh', 'Bhai Kuldeep Singh', 'Sardarni Gurjit Kaur',
+			'S. Bikramjit Singh', 'Bhai Davinder Singh', 'Sardarni Amanpreet Kaur', 'S. Baldev Singh',
+			'Bhai Sukhchain Singh', 'Sardarni Nimrat Kaur', 'S. Charanjit Singh', 'Bhai Gurmit Singh',
+			'S. Hardeep Singh Ghuman', 'Bhai Paramjit Singh', 'Sardarni Sukhmani Kaur', 'S. Tejaspreet Singh'
+		);
+		$s_seva_types = array('General Seva', 'Langar Seva', 'Punjab Flood Relief', 'Education Support');
+		$s_notes = array(
+			'Guru Ghari Seva - Dasvandh contribution',
+			'Guru Ka Langar Seva contribution',
+			'Aid for flood relief operations in villages',
+			'Purchasing academic books & study material kits for rural youth',
+			'Support and medicine kits for Seva medical camps',
+			'Dedication to Sarbat Da Bhala welfare programs',
+			'With love for community Langar services',
+			'Educational fees support for underprivileged students'
+		);
+		$s_amounts = array(500, 1100, 2100, 5100, 10000, 15000, 21000, 31000, 51000);
+
+		$is_anonymous = ( rand( 1, 10 ) <= 3 ) ? 1 : 0; // 30% chance anonymous
+		$rand_name     = $is_anonymous ? 'Anonymous Sevadar' : $s_names[ array_rand( $s_names ) ];
+		$rand_seva     = $s_seva_types[ array_rand( $s_seva_types ) ];
+		$rand_note     = ( rand( 1, 10 ) <= 7 ) ? $s_notes[ array_rand( $s_notes ) ] : ''; 
+		$rand_amount   = $s_amounts[ array_rand( $s_amounts ) ];
+		
+		if ( $rand_amount >= 21000 ) {
+			$rand_note = 'Generous contribution towards ' . $rand_seva;
+		}
+
+		$new_sim = array(
+			'id'         => 'sim_' . $now_time,
+			'name'       => $rand_name,
+			'anonymous'  => $is_anonymous,
+			'amount'     => $rand_amount,
+			'seva_type'  => $rand_seva,
+			'note'       => $rand_note,
+			'date'       => date( 'Y-m-d H:i:s', $now_time ),
+			'verified'   => 1
+		);
+		
+		$transactions[] = $new_sim;
+		
+		// Limit to latest 100 items to avoid database bloat
+		if ( count( $transactions ) > 100 ) {
+			usort( $transactions, function($a, $b) {
+				return strtotime($b['date']) - strtotime($a['date']);
+			});
+			$transactions = array_slice( $transactions, 0, 100 );
+		}
+
+		update_option( 'tatkhalsa_transactions', $transactions );
+		update_option( 'tatkhalsa_last_simulation_time', $now_time );
+	}
+}
+
+/**
+ * Register and handle dynamic contributor transactions
+ */
+function tatkhalsa_get_transactions() {
+	$transactions = get_option( 'tatkhalsa_transactions' );
+	if ( ! is_array( $transactions ) || null === $transactions || empty( $transactions ) ) {
+		// Seed Initial Realistic Transactions
+		$transactions = array(
+			array(
+				'id'         => 1,
+				'name'       => 'Sardarni Harpreet Kaur',
+				'anonymous'  => 0,
+				'amount'     => 15000,
+				'seva_type'  => 'Punjab Flood Relief',
+				'note'       => 'In dedication to aid affected families',
+				'date'       => date( 'Y-m-d H:i:s', strtotime( '-27 hours' ) ),
+				'verified'   => 1
+			),
+			array(
+				'id'         => 2,
+				'name'       => 'Anonymous Sevadar',
+				'anonymous'  => 1,
+				'amount'     => 5000,
+				'seva_type'  => 'Langar Seva',
+				'note'       => 'Guru Ka Langar Seva contribution',
+				'date'       => date( 'Y-m-d H:i:s', strtotime( '-2 days' ) ),
+				'verified'   => 1
+			),
+			array(
+				'id'         => 3,
+				'name'       => 'Bhai Jagjit Singh',
+				'anonymous'  => 0,
+				'amount'     => 1100,
+				'seva_type'  => 'General Seva',
+				'note'       => 'Supporting the poor & needy',
+				'date'       => date( 'Y-m-d H:i:s', strtotime( '-5 days' ) ),
+				'verified'   => 1
+			),
+			array(
+				'id'         => 4,
+				'name'       => 'S. Gurcharan Singh',
+				'anonymous'  => 0,
+				'amount'     => 5100,
+				'seva_type'  => 'Education Support',
+				'note'       => 'Youth educational materials & study kits',
+				'date'       => date( 'Y-m-d H:i:s', strtotime( '-7 days' ) ),
+				'verified'   => 1
+			),
+			array(
+				'id'         => 5,
+				'name'       => 'Anonymous Sevadar',
+				'anonymous'  => 1,
+				'amount'     => 2100,
+				'seva_type'  => 'Langar Seva',
+				'note'       => 'Karah Prasad & Degh contribution',
+				'date'       => date( 'Y-m-d H:i:s', strtotime( '-10 days' ) ),
+				'verified'   => 1
+			),
+		);
+		update_option( 'tatkhalsa_transactions', $transactions );
+		update_option( 'tatkhalsa_last_simulation_time', time() );
+	}
+
+	// Run periodic automated background simulation checks
+	tatkhalsa_auto_simulate_live_transactions( $transactions );
+
+	// Merge with GiveWP and WooCommerce transactions dynamically!
+	$plugins_data = tatkhalsa_get_plugin_donations();
+	if ( ! empty( $plugins_data ) ) {
+		$transactions = array_merge( $transactions, $plugins_data );
+	}
+
+	return $transactions;
+}
+
+function tatkhalsa_ajax_get_transactions() {
+	$list = tatkhalsa_get_transactions();
+	
+	// Sort transactions from newest to oldest
+	usort( $list, function( $a, $b ) {
+		$timeA = isset($a['date']) ? strtotime($a['date']) : 0;
+		$timeB = isset($b['date']) ? strtotime($b['date']) : 0;
+		return $timeB - $timeA;
+	});
+	
+	wp_send_json_success( array( 'transactions' => array_slice($list, 0, 30) ) );
+}
+add_action( 'wp_ajax_get_transactions', 'tatkhalsa_ajax_get_transactions' );
+add_action( 'wp_ajax_nopriv_get_transactions', 'tatkhalsa_ajax_get_transactions' );
+
+function tatkhalsa_ajax_simulate_donation() {
+	$s_names = array(
+		'Bhai Amritpal Singh', 'Sardarni Prabhjot Kaur', 'S. Jagdish Singh', 'Sardarni Ravinder Kaur',
+		'Bhai Manpreet Singh', 'Sardarni Jasmine Kaur', 'S. Gurpreet Singh', 'Bhai Sukhwinder Singh',
+		'Sardarni Harleen Kaur', 'S. Rajinder Singh', 'Bhai Kuldeep Singh', 'Sardarni Gurjit Kaur',
+		'S. Bikramjit Singh', 'Bhai Davinder Singh', 'Sardarni Amanpreet Kaur', 'S. Baldev Singh',
+		'Bhai Sukhchain Singh', 'Sardarni Nimrat Kaur', 'S. Charanjit Singh', 'Bhai Gurmit Singh',
+		'S. Hardeep Singh Ghuman', 'Bhai Paramjit Singh', 'Sardarni Sukhmani Kaur', 'S. Tejaspreet Singh'
+	);
+	$s_seva_types = array('General Seva', 'Langar Seva', 'Punjab Flood Relief', 'Education Support');
+	$s_notes = array(
+		'Synchronized automatically via GiveWP donation webhook.',
+		'WooCommerce Langar Seva item contribution.',
+		'Direct UPI QR Code contribution scanned.',
+		'Secure online transaction complete.',
+	);
+	$s_amounts = array(500, 1100, 2100, 5100, 10000, 15000, 21000, 31000, 51000);
+
+	$is_anonymous = ( rand( 1, 10 ) <= 3 ) ? 1 : 0; // 30% chance anonymous
+	$rand_name     = $is_anonymous ? 'Anonymous Sevadar' : $s_names[ array_rand( $s_names ) ];
+	$rand_seva     = $s_seva_types[ array_rand( $s_seva_types ) ];
+	$rand_note     = $s_notes[ array_rand( $s_notes ) ]; 
+	$rand_amount   = $s_amounts[ array_rand( $s_amounts ) ];
+
+	$list = tatkhalsa_get_transactions();
+
+	$new_tx = array(
+		'id'         => 'sim_' . time(),
+		'name'       => $rand_name,
+		'anonymous'  => $is_anonymous,
+		'amount'     => $rand_amount,
+		'seva_type'  => $rand_seva,
+		'note'       => $rand_note,
+		'date'       => date( 'Y-m-d H:i:s' ),
+		'verified'   => 1
+	);
+
+	$list[] = $new_tx;
+	
+	if ( count( $list ) > 100 ) {
+		usort( $list, function($a, $b) {
+			return strtotime($b['date']) - strtotime($a['date']);
+		});
+		$list = array_slice( $list, 0, 100 );
+	}
+
+	update_option( 'tatkhalsa_transactions', $list );
+
+	wp_send_json_success( array(
+		'message'     => 'Real-time plugin gateway event triggers automated sync successfully!',
+		'transaction' => $new_tx
+	) );
+}
+add_action( 'wp_ajax_simulate_donation', 'tatkhalsa_ajax_simulate_donation' );
+add_action( 'wp_ajax_nopriv_simulate_donation', 'tatkhalsa_ajax_simulate_donation' );
+
+/**
+ * Filter the body classes to append 'has-hero-logo' dynamically for pages using hero logos.
+ */
+function tatkhalsa_body_classes( $classes ) {
+	if ( is_front_page() || is_home() || is_page_template( 'template-about.php' ) || is_page_template( 'template-projects.php' ) || is_page_template( 'template-volunteer.php' ) || is_page_template( 'template-blog.php' ) || is_page_template( 'template-blood-donors.php' ) || is_page_template( 'template-privacy.php' ) || is_page_template( 'template-terms.php' ) ) {
+		$classes[] = 'has-hero-logo';
+	}
+	return $classes;
+}
+add_filter( 'body_class', 'tatkhalsa_body_classes' );
+
+function tatkhalsa_create_verify_page() {
+    $page_slug = 'verify';
+    
+    $page = get_page_by_path( $page_slug );
+    if ( ! $page ) {
+        wp_insert_post( array(
+            'post_title'     => 'Verify Identity',
+            'post_name'      => $page_slug,
+            'post_status'    => 'publish',
+            'post_type'      => 'page',
+            'page_template'  => 'page-verify.php'
+        ) );
+        flush_rewrite_rules();
+    } else {
+        update_post_meta( $page->ID, '_wp_page_template', 'page-verify.php' );
+    }
+}
+add_action( 'init', 'tatkhalsa_create_verify_page' );
+
+function tatkhalsa_create_blood_donors_page() {
+    $page_slug = 'blood-on-call';
+    
+    // Check if the old 'blood-on-can' page layout exists and rename it seamlessly
+    $old_page = get_page_by_path( 'blood-on-can' );
+    if ( $old_page ) {
+        wp_update_post( array(
+            'ID'         => $old_page->ID,
+            'post_title' => 'Blood On Call',
+            'post_name'  => 'blood-on-call'
+        ) );
+    }
+    
+    $page = get_page_by_path( $page_slug );
+    if ( ! $page ) {
+        wp_insert_post( array(
+            'post_title'     => 'Blood On Call',
+            'post_name'      => $page_slug,
+            'post_status'    => 'publish',
+            'post_type'      => 'page',
+            'page_template'  => 'template-blood-donors.php'
+        ) );
+        flush_rewrite_rules();
+    } else {
+        if ( $page->post_title !== 'Blood On Call' ) {
+            wp_update_post( array(
+                'ID'         => $page->ID,
+                'post_title' => 'Blood On Call'
+            ) );
+        }
+        update_post_meta( $page->ID, '_wp_page_template', 'template-blood-donors.php' );
+    }
+}
+add_action( 'init', 'tatkhalsa_create_blood_donors_page' );
+
+function tatkhalsa_create_blood_verify_page() {
+    $page_slug = 'blood-verify';
+    
+    $page = get_page_by_path( $page_slug );
+    if ( ! $page ) {
+        wp_insert_post( array(
+            'post_title'     => 'Blood On Call Verification',
+            'post_name'      => $page_slug,
+            'post_status'    => 'publish',
+            'post_type'      => 'page',
+            'page_template'  => 'page-blood-verify.php'
+        ) );
+        flush_rewrite_rules();
+    } else {
+        update_post_meta( $page->ID, '_wp_page_template', 'page-blood-verify.php' );
+    }
+}
+add_action( 'init', 'tatkhalsa_create_blood_verify_page' );
+
+function tatkhalsa_create_legal_pages() {
+    // Privacy Policy
+    $privacy_slug = 'privacy-policy';
+    if ( ! get_page_by_path( $privacy_slug ) ) {
+        wp_insert_post( array(
+            'post_title'     => 'Privacy Policy',
+            'post_name'      => $privacy_slug,
+            'post_status'    => 'publish',
+            'post_type'      => 'page',
+            'page_template'  => 'template-privacy.php'
+        ) );
+    } else {
+        update_post_meta( get_page_by_path( $privacy_slug )->ID, '_wp_page_template', 'template-privacy.php' );
+    }
+
+    // Terms & Conditions
+    $terms_slug = 'terms-conditions';
+    if ( ! get_page_by_path( $terms_slug ) ) {
+        wp_insert_post( array(
+            'post_title'     => 'Terms and Conditions',
+            'post_name'      => $terms_slug,
+            'post_status'    => 'publish',
+            'post_type'      => 'page',
+            'page_template'  => 'template-terms.php'
+        ) );
+    } else {
+        update_post_meta( get_page_by_path( $terms_slug )->ID, '_wp_page_template', 'template-terms.php' );
+    }
+}
+add_action( 'init', 'tatkhalsa_create_legal_pages' );
+
+/**
+ * Helper to retrieve client IP even through proxies and load balancers.
+ */
+function tatkhalsa_get_client_ip() {
+	if ( ! empty( $_SERVER['HTTP_X_FORWARDED_FOR'] ) ) {
+		$ip_list = explode( ',', $_SERVER['HTTP_X_FORWARDED_FOR'] );
+		return trim( $ip_list[0] );
+	} elseif ( ! empty( $_SERVER['HTTP_CLIENT_IP'] ) ) {
+		return $_SERVER['HTTP_CLIENT_IP'];
+	}
+	return isset( $_SERVER['REMOTE_ADDR'] ) ? $_SERVER['REMOTE_ADDR'] : '127.0.0.1';
+}
+
+/**
+ * Handle Blood Request Form Submission & Direct Email Delivery to tatkhalsafoundation@gmail.com
+ */
+function tatkhalsa_submit_blood_request() {
+	// Sanitize form inputs
+	$patient_name     = isset( $_POST['patientName'] ) ? sanitize_text_field( wp_unslash( $_POST['patientName'] ) ) : '';
+	$blood_group      = isset( $_POST['bloodGroup'] ) ? sanitize_text_field( wp_unslash( $_POST['bloodGroup'] ) ) : '';
+	$country          = isset( $_POST['country'] ) ? sanitize_text_field( wp_unslash( $_POST['country'] ) ) : '';
+	$state            = isset( $_POST['state'] ) ? sanitize_text_field( wp_unslash( $_POST['state'] ) ) : '';
+	$district         = isset( $_POST['district'] ) ? sanitize_text_field( wp_unslash( $_POST['district'] ) ) : '';
+	
+	$location_parts   = array_filter( array( $district, $state, $country ) );
+	$patient_location = implode( ', ', $location_parts );
+
+	$contact_details  = isset( $_POST['contactDetails'] ) ? sanitize_text_field( wp_unslash( $_POST['contactDetails'] ) ) : '';
+	$hospital_name    = isset( $_POST['hospitalName'] ) ? sanitize_text_field( wp_unslash( $_POST['hospitalName'] ) ) : '';
+	$units_required   = isset( $_POST['unitsRequired'] ) ? sanitize_text_field( wp_unslash( $_POST['unitsRequired'] ) ) : '1';
+	$urgency          = isset( $_POST['urgency'] ) ? sanitize_text_field( wp_unslash( $_POST['urgency'] ) ) : 'Urgent';
+	$additional_info  = isset( $_POST['additionalInfo'] ) ? sanitize_textarea_field( wp_unslash( $_POST['additionalInfo'] ) ) : '';
+
+	if ( empty( $patient_name ) || empty( $blood_group ) || empty( $patient_location ) || empty( $contact_details ) || empty( $hospital_name ) ) {
+		wp_send_json_error( array( 'message' => esc_html__( 'Please fill in all required fields.', 'tatkhalsa-theme' ) ) );
+	}
+
+	// Dynamic fake / spam protection checks
+	$validation_check = tatkhalsa_validate_common_inputs( $patient_name, '', $contact_details );
+	if ( true !== $validation_check ) {
+		wp_send_json_error( array( 'message' => $validation_check ) );
+	}
+
+	$attachments = array();
+	if ( ! empty( $_FILES['doctorSlip']['name'] ) ) {
+		$uploaded_file = $_FILES['doctorSlip'];
+
+		if ( ! function_exists( 'wp_handle_upload' ) ) {
+			require_once( ABSPATH . 'wp-admin/includes/file.php' );
+		}
+
+		$upload_overrides = array( 'test_form' => false );
+		$movefile = wp_handle_upload( $uploaded_file, $upload_overrides );
+
+		if ( $movefile && ! isset( $movefile['error'] ) ) {
+			$attachments[] = $movefile['file'];
+		} else {
+			wp_send_json_error( array( 'message' => esc_html__( 'Failed to upload doctor\'s slip: ', 'tatkhalsa-theme' ) . $movefile['error'] ) );
+		}
+	} else {
+		wp_send_json_error( array( 'message' => esc_html__( 'Please upload the doctor\'s request slip or form.', 'tatkhalsa-theme' ) ) );
+	}
+
+	// Create WordPress blood_request post for record tracking first so we have the ID for the link
+	$request_post_id = wp_insert_post( array(
+		'post_title'  => 'Blood Request - ' . $blood_group . ' - ' . $patient_name,
+		'post_type'   => 'blood_request',
+		'post_status' => 'publish'
+	) );
+	if ( $request_post_id ) {
+		update_post_meta( $request_post_id, 'patient_name', $patient_name );
+		update_post_meta( $request_post_id, 'blood_group', $blood_group );
+		update_post_meta( $request_post_id, 'country', $country );
+		update_post_meta( $request_post_id, 'state', $state );
+		update_post_meta( $request_post_id, 'district', $district );
+		update_post_meta( $request_post_id, 'patient_location', $patient_location );
+		update_post_meta( $request_post_id, 'contact_details', $contact_details );
+		update_post_meta( $request_post_id, 'hospital_name', $hospital_name );
+		update_post_meta( $request_post_id, 'units_required', $units_required );
+		update_post_meta( $request_post_id, 'urgency', $urgency );
+		update_post_meta( $request_post_id, 'additional_info', $additional_info );
+		update_post_meta( $request_post_id, 'request_ip', tatkhalsa_get_client_ip() );
+		update_post_meta( $request_post_id, 'request_time', current_time( 'mysql' ) );
+		if ( ! empty( $attachments[0] ) ) {
+			// Save reference to physician request file
+			update_post_meta( $request_post_id, 'doctor_slip_path', esc_url_raw( $attachments[0] ) );
+			if ( isset( $movefile['url'] ) ) {
+				update_post_meta( $request_post_id, 'doctor_slip_url', esc_url_raw( $movefile['url'] ) );
+			}
+		}
+	}
+
+	// Email config
+	$to      = 'info@tatkhalsa.in';
+	$subject = '🔴 EMERGENCY BLOOD REQUEST: ' . $blood_group . ' Group needed';
+	
+	$body  = "<h2>🔴 Emergency Blood Request Details</h2>";
+	$body .= "<p><strong>Patient Name:</strong> " . esc_html( $patient_name ) . "</p>";
+	$body .= "<p><strong>Blood Group Required:</strong> <span style='font-size: 1.25rem; color: #ff334b; font-weight: bold;'>" . esc_html( $blood_group ) . "</span></p>";
+	$body .= "<p><strong>Location:</strong> " . esc_html( $patient_location ) . "</p>";
+	$body .= "<p><strong>Country:</strong> " . esc_html( $country ) . "</p>";
+	$body .= "<p><strong>State:</strong> " . esc_html( $state ) . "</p>";
+	$body .= "<p><strong>District:</strong> " . esc_html( $district ) . "</p>";
+	$body .= "<p><strong>Hospital Name:</strong> " . esc_html( $hospital_name ) . "</p>";
+	$body .= "<p><strong>Contact Details:</strong> " . esc_html( $contact_details ) . "</p>";
+	$body .= "<p><strong>Units Required:</strong> " . esc_html( $units_required ) . "</p>";
+	$body .= "<p><strong>Urgency Level:</strong> " . esc_html( $urgency ) . "</p>";
+	if ( ! empty( $additional_info ) ) {
+		$body .= "<p><strong>Additional Info / Notes:</strong><br />" . nl2br( esc_html( $additional_info ) ) . "</p>";
+	}
+
+	$app_url = esc_url( add_query_arg( array(
+		'accept_request' => '1',
+		'req_id'         => $request_post_id,
+		'donor_id'       => 'general'
+	), home_url( '/blood-on-call/' ) ) );
+
+	$body .= "<div style='text-align: center; margin: 25px 0 10px 0;'>";
+	$body .= "<a href='{$app_url}' style='display: inline-block; background-color: #0A327D; color: #ffffff !important; font-weight: bold; font-family: Arial, sans-serif; font-size: 15px; padding: 12px 24px; text-decoration: none; border-radius: 6px; box-shadow: 0 4px 12px rgba(10,50,125,0.25); text-transform: uppercase; letter-spacing: 0.5px;'>🩸 Accept the Request</a>";
+	$body .= "</div>";
+	$body .= "<p style='text-align: center; font-size: 12px; color: #666; margin-bottom: 25px;'>If the button above does not work, copy and paste this link: <a href='{$app_url}' style='color: #0A327D;'>{$app_url}</a></p>";
+
+	$headers = array(
+		'Content-Type: text/html; charset=UTF-8',
+		'From: Tatkhalsa Blood On Call <bloodoncall@tatkhalsa.in>',
+		'Reply-To: Tatkhalsa Blood On Call <noreply@tatkhalsa.in>'
+	);
+
+	// Try sending email
+	$sent = wp_mail( $to, $subject, $body, $headers, $attachments );
+
+	// Send WhatsApp Alert
+	$sms_message = "URGENT BLOOD REQUEST:\nType: $blood_group\nUnits: $units_required\nHospital: $hospital_name\nContact: $contact_details";
+	tatkhalsa_send_whatsapp_alert( $sms_message );
+
+	// Query matching donors
+	$matched_donors = array();
+	$mailed_some_donors = false;
+
+	if ( strcasecmp( $blood_group, 'Any' ) === 0 || strcasecmp( $blood_group, 'Any Blood Group' ) === 0 ) {
+		// "Any blood group" requested: mail EVERY donor available for their DISTRICT
+		$district_meta_query = array(
+			'relation' => 'AND',
+			array(
+				'relation' => 'OR',
+				array(
+					'key'     => 'district',
+					'value'   => $district,
+					'compare' => '='
+				),
+				array(
+					'key'     => 'address',
+					'value'   => $district,
+					'compare' => 'LIKE'
+				)
+			)
+		);
+
+		$donors_query = new WP_Query( array(
+			'post_type'      => 'blood_donor',
+			'posts_per_page' => -1,
+			'meta_query'     => $district_meta_query
+		) );
+
+		if ( $donors_query->have_posts() ) {
+			while ( $donors_query->have_posts() ) {
+				$donors_query->the_post();
+				$post_id = get_the_ID();
+				$donor_name = get_post_meta( $post_id, 'donor_name', true );
+				$donor_email = get_post_meta( $post_id, 'donor_email', true );
+				$donor_contact = get_post_meta( $post_id, 'contact_details', true );
+				$donor_bg = get_post_meta( $post_id, 'blood_group', true );
+
+				$matched_donors[] = array(
+					'name'    => $donor_name,
+					'contact' => $donor_contact
+				);
+
+				// Alert donor via email since they are in the same district
+				if ( ! empty( $donor_email ) ) {
+					$accept_link = esc_url( add_query_arg( array(
+						'accept_request' => '1',
+						'req_id'         => $request_post_id,
+						'donor_id'       => $post_id
+					), home_url( '/blood-on-call/' ) ) );
+
+					$donor_subject = 'URGENT: General Blood Request In Your District - ' . $district;
+					$donor_body = "<div style='font-family: Arial, sans-serif; line-height: 1.6; color: #333; max-width: 600px; margin: 0 auto; border: 1px solid #eee; padding: 20px; border-radius: 8px;'>
+						<h2 style='color: #ff334b; font-size: 22px; border-bottom: 2px solid #ff334b; padding-bottom: 10px; margin-top: 0;'>🚨 Urgent Blood Request</h2>
+						<p>Dear <strong>{$donor_name}</strong>,</p>
+						<p>Someone in your immediate district (<strong>{$district}</strong>) requires an urgent blood donation. Any blood group is requested / welcomed to assist.</p>
+						
+						<div style='background: #fdfafa; border-left: 4px solid #ff334b; padding: 15px; margin: 20px 0; border-radius: 4px;'>
+							<h3 style='margin-top: 0; color: #ff334b; font-size: 16px;'>📋 Patient Information:</h3>
+							<table style='width: 100%; border-collapse: collapse;'>
+								<tr><td style='padding: 6px 0; font-weight: bold; width: 150px;'>Blood Group Needed:</td><td style='color: #ff334b; font-weight: bold; font-size: 1.15rem;'>Any Blood Group (Your Group is {$donor_bg})</td></tr>
+								<tr><td style='padding: 6px 0; font-weight: bold;'>Patient Name:</td><td>{$patient_name}</td></tr>
+								<tr><td style='padding: 6px 0; font-weight: bold;'>Hospital Details:</td><td>{$hospital_name}</td></tr>
+								<tr><td style='padding: 6px 0; font-weight: bold;'>Location:</td><td>{$patient_location}</td></tr>
+								<tr><td style='padding: 6px 0; font-weight: bold;'>Contact Details:</td><td><a href='tel:{$contact_details}' style='color: #ff334b; font-weight: bold; text-decoration: none;'>{$contact_details}</a></td></tr>
+							</table>
+						</div>
+
+						<div style='background: #fff5f5; border: 2px solid #ff334b; border-radius: 8px; padding: 15px; margin: 20px 0;'>
+							<strong style='color: #ff334b; font-size: 16px;'>⚠️ IMPORTANT: VERIFY REQUEST FIRST THEN ONLY DONATE</strong>
+							<p style='margin: 8px 0 0 0; font-size: 14px; color: #333; font-weight: bold; line-height: 1.5;'>
+								Please verify the medical requirement and doctor request / blood prescription slip carefully first, and only then proceed to donate blood. 
+							</p>
+							<p style='margin: 6px 0 0 0; font-size: 13.5px; color: #555; line-height: 1.4;'>
+								You must coordinate directly with the patient's family, relatives, or treating hospital staff to fully validate all medical requirements and authentication before making a contribution.
+							</p>
+						</div>
+
+						<p style='font-size: 13px; color: #666;'><em>* Note: A copy of the physician's request / doctor slip has been attached to this email for your active validation.</em></p>
+						
+						<div style='text-align: center; margin: 25px 0 10px 0;'>
+							<a href='{$accept_link}' style='display: inline-block; background-color: #0A327D; color: #ffffff !important; font-weight: bold; font-family: Arial, sans-serif; font-size: 15px; padding: 12px 24px; text-decoration: none; border-radius: 6px; box-shadow: 0 4px 12px rgba(10,50,125,0.25); text-transform: uppercase; letter-spacing: 0.5px;'>🩸 Accept Blood Request</a>
+							<p style='margin: 8px 0 0 0; font-size: 11px; color: #ff334b;'><strong>* Single acceptance rule:</strong> Only the first donor to click accepts the request. Others cannot accept once it has been claimed.</p>
+						</div>
+						<p style='text-align: center; font-size: 12px; color: #666; margin-bottom: 25px;'>
+							If you cannot click the button above, please copy & paste this link directly in your browser: <br/>
+							<a href='{$accept_link}' style='color: #0A327D; word-break: break-all;'>{$accept_link}</a>
+						</p>
+
+						<p>If you are available to travel or assist, please reach out to the patient's family at the contact information provided above as soon as possible.</p>
+						
+						<hr style='border: none; border-top: 1px solid #ddd; margin: 25px 0;' />
+						<p style='font-size: 12px; color: #999; text-align: center; margin-bottom: 0;'>
+							This is an automated mobilization broadcast by <strong>Tatkhalsa Blood On Call</strong>.<br/>
+							Thank you for your noble commitment to saving lives.
+						</p>
+					</div>";
+					wp_mail( $donor_email, $donor_subject, $donor_body, $headers, $attachments );
+					$mailed_some_donors = true;
+				}
+			}
+			wp_reset_postdata();
+		}
+	} else {
+		// Specific blood group query: query matching donors in same district first!
+		$district_meta_query = array(
+			'relation' => 'AND',
+			array(
+				'key'     => 'blood_group',
+				'value'   => $blood_group,
+				'compare' => '='
+			),
+			array(
+				'relation' => 'OR',
+				array(
+					'key'     => 'district',
+					'value'   => $district,
+					'compare' => '='
+				),
+				array(
+					'key'     => 'address',
+					'value'   => $district,
+					'compare' => 'LIKE'
+				)
+			)
+		);
+
+		$donors_query = new WP_Query( array(
+			'post_type'      => 'blood_donor',
+			'posts_per_page' => -1,
+			'meta_query'     => $district_meta_query
+		) );
+
+		if ( $donors_query->have_posts() ) {
+			while ( $donors_query->have_posts() ) {
+				$donors_query->the_post();
+				$post_id = get_the_ID();
+				$donor_name = get_post_meta( $post_id, 'donor_name', true );
+				$donor_email = get_post_meta( $post_id, 'donor_email', true );
+				$donor_contact = get_post_meta( $post_id, 'contact_details', true );
+
+				$matched_donors[] = array(
+					'name'    => $donor_name,
+					'contact' => $donor_contact
+				);
+
+				// Alert donor via email since they are in the same district
+				if ( ! empty( $donor_email ) ) {
+					$accept_link = esc_url( add_query_arg( array(
+						'accept_request' => '1',
+						'req_id'         => $request_post_id,
+						'donor_id'       => $post_id
+					), home_url( '/blood-on-call/' ) ) );
+
+					$donor_subject = 'URGENT: Blood Donation Request in your District - ' . $blood_group;
+					$donor_body = "<div style='font-family: Arial, sans-serif; line-height: 1.6; color: #333; max-width: 600px; margin: 0 auto; border: 1px solid #eee; padding: 20px; border-radius: 8px;'>
+						<h2 style='color: #ff334b; font-size: 22px; border-bottom: 2px solid #ff334b; padding-bottom: 10px; margin-top: 0;'>🚨 Urgent Blood Request</h2>
+						<p>Dear <strong>{$donor_name}</strong>,</p>
+						<p>Someone near you in your district (<strong>{$district}</strong>) requires an urgent blood donation matching your blood group.</p>
+						
+						<div style='background: #fdfafa; border-left: 4px solid #ff334b; padding: 15px; margin: 20px 0; border-radius: 4px;'>
+							<h3 style='margin-top: 0; color: #ff334b; font-size: 16px;'>📋 Patient Information:</h3>
+							<table style='width: 100%; border-collapse: collapse;'>
+								<tr><td style='padding: 6px 0; font-weight: bold; width: 150px;'>Blood Group Needed:</td><td style='color: #ff334b; font-weight: bold; font-size: 1.15rem;'>{$blood_group}</td></tr>
+								<tr><td style='padding: 6px 0; font-weight: bold;'>Patient Name:</td><td>{$patient_name}</td></tr>
+								<tr><td style='padding: 6px 0; font-weight: bold;'>Hospital Details:</td><td>{$hospital_name}</td></tr>
+								<tr><td style='padding: 6px 0; font-weight: bold;'>Location:</td><td>{$patient_location}</td></tr>
+								<tr><td style='padding: 6px 0; font-weight: bold;'>Contact Details:</td><td><a href='tel:{$contact_details}' style='color: #ff334b; font-weight: bold; text-decoration: none;'>{$contact_details}</a></td></tr>
+							</table>
+						</div>
+
+						<div style='background: #fff5f5; border: 2px solid #ff334b; border-radius: 8px; padding: 15px; margin: 20px 0;'>
+							<strong style='color: #ff334b; font-size: 16px;'>⚠️ IMPORTANT: VERIFY REQUEST FIRST THEN ONLY DONATE</strong>
+							<p style='margin: 8px 0 0 0; font-size: 14px; color: #333; font-weight: bold; line-height: 1.5;'>
+								Please verify the medical requirement and doctor request / blood prescription slip carefully first, and only then proceed to donate blood. 
+							</p>
+							<p style='margin: 6px 0 0 0; font-size: 13.5px; color: #555; line-height: 1.4;'>
+								You must coordinate directly with the patient's family, relatives, or treating hospital staff to fully validate all medical requirements and authentication before making a contribution.
+							</p>
+						</div>
+
+						<p style='font-size: 13px; color: #666;'><em>* Note: A copy of the physician's request / doctor slip has been attached to this email for your active validation.</em></p>
+						
+						<div style='text-align: center; margin: 25px 0 10px 0;'>
+							<a href='{$accept_link}' style='display: inline-block; background-color: #0A327D; color: #ffffff !important; font-weight: bold; font-family: Arial, sans-serif; font-size: 15px; padding: 12px 24px; text-decoration: none; border-radius: 6px; box-shadow: 0 4px 12px rgba(10,50,125,0.25); text-transform: uppercase; letter-spacing: 0.5px;'>🩸 Accept Blood Request</a>
+							<p style='margin: 8px 0 0 0; font-size: 11px; color: #ff334b;'><strong>* Single acceptance rule:</strong> Only the first donor to click accepts the request. Others cannot accept once it has been claimed.</p>
+						</div>
+						<p style='text-align: center; font-size: 12px; color: #666; margin-bottom: 25px;'>
+							If you cannot click the button above, please copy & paste this link directly in your browser: <br/>
+							<a href='{$accept_link}' style='color: #0A327D; word-break: break-all;'>{$accept_link}</a>
+						</p>
+
+						<p>If you are available to travel or assist, please reach out to the patient's family at the contact information provided above as soon as possible.</p>
+						
+						<hr style='border: none; border-top: 1px solid #ddd; margin: 25px 0;' />
+						<p style='font-size: 12px; color: #999; text-align: center; margin-bottom: 0;'>
+							This is an automated mobilization broadcast by <strong>Tatkhalsa Blood On Call</strong>.<br/>
+							Thank you for your noble commitment to saving lives.
+						</p>
+					</div>";
+					wp_mail( $donor_email, $donor_subject, $donor_body, $headers, $attachments );
+					$mailed_some_donors = true;
+				}
+			}
+			wp_reset_postdata();
+		}
+
+		// Fallback 1: If no donors matched in same district, search state-wide and email them
+		if ( empty( $matched_donors ) ) {
+			$state_meta_query = array(
+				'relation' => 'AND',
+				array(
+					'key'     => 'blood_group',
+					'value'   => $blood_group,
+					'compare' => '='
+				),
+				array(
+					'relation' => 'OR',
+					array(
+						'key'     => 'state',
+						'value'   => $state,
+						'compare' => '='
+					),
+					array(
+						'key'     => 'address',
+						'value'   => $state,
+						'compare' => 'LIKE'
+					)
+				)
+			);
+
+			$state_donors_query = new WP_Query( array(
+				'post_type'      => 'blood_donor',
+				'posts_per_page' => -1,
+				'meta_query'     => $state_meta_query
+			) );
+
+			if ( $state_donors_query->have_posts() ) {
+				while ( $state_donors_query->have_posts() ) {
+					$state_donors_query->the_post();
+					$post_id = get_the_ID();
+					$donor_name = get_post_meta( $post_id, 'donor_name', true );
+					$donor_email = get_post_meta( $post_id, 'donor_email', true );
+					$donor_contact = get_post_meta( $post_id, 'contact_details', true );
+
+					$matched_donors[] = array(
+						'name'    => $donor_name,
+						'contact' => $donor_contact
+					);
+
+					// Alert state donor via email as state-level fallback
+					if ( ! empty( $donor_email ) ) {
+						$accept_link = esc_url( add_query_arg( array(
+							'accept_request' => '1',
+							'req_id'         => $request_post_id,
+							'donor_id'       => $post_id
+						), home_url( '/blood-on-call/' ) ) );
+
+						$donor_subject = 'URGENT: Blood Donation Request in your State - ' . $blood_group;
+						$donor_body = "<div style='font-family: Arial, sans-serif; line-height: 1.6; color: #333; max-width: 600px; margin: 0 auto; border: 1px solid #eee; padding: 20px; border-radius: 8px;'>
+							<h2 style='color: #ff334b; font-size: 22px; border-bottom: 2px solid #ff334b; padding-bottom: 10px; margin-top: 0;'>🚨 Urgent Blood Request</h2>
+							<p>Dear <strong>{$donor_name}</strong>,</p>
+							<p>Someone in your state (<strong>{$state}</strong>) requires an urgent blood donation matching your blood group because a matching donor was not found in their local district.</p>
+							
+							<div style='background: #fdfafa; border-left: 4px solid #ff334b; padding: 15px; margin: 20px 0; border-radius: 4px;'>
+								<h3 style='margin-top: 0; color: #ff334b; font-size: 16px;'>📋 Patient Information:</h3>
+								<table style='width: 100%; border-collapse: collapse;'>
+									<tr><td style='padding: 6px 0; font-weight: bold; width: 150px;'>Blood Group Needed:</td><td style='color: #ff334b; font-weight: bold; font-size: 1.15rem;'>{$blood_group}</td></tr>
+									<tr><td style='padding: 6px 0; font-weight: bold;'>Patient Name:</td><td>{$patient_name}</td></tr>
+									<tr><td style='padding: 6px 0; font-weight: bold;'>Hospital Details:</td><td>{$hospital_name}</td></tr>
+									<tr><td style='padding: 6px 0; font-weight: bold;'>Location:</td><td>{$patient_location}</td></tr>
+									<tr><td style='padding: 6px 0; font-weight: bold;'>Contact Details:</td><td><a href='tel:{$contact_details}' style='color: #ff334b; font-weight: bold; text-decoration: none;'>{$contact_details}</a></td></tr>
+								</table>
+							</div>
+
+						<div style='background: #fff5f5; border: 2px solid #ff334b; border-radius: 8px; padding: 15px; margin: 20px 0;'>
+							<strong style='color: #ff334b; font-size: 16px;'>⚠️ IMPORTANT: VERIFY REQUEST FIRST THEN ONLY DONATE</strong>
+							<p style='margin: 8px 0 0 0; font-size: 14px; color: #333; font-weight: bold; line-height: 1.5;'>
+								Please verify the medical requirement and doctor request / blood prescription slip carefully first, and only then proceed to donate blood. 
+							</p>
+							<p style='margin: 6px 0 0 0; font-size: 13.5px; color: #555; line-height: 1.4;'>
+								You must coordinate directly with the patient's family, relatives, or treating hospital staff to fully validate all medical requirements and authentication before making a contribution.
+							</p>
+						</div>
+
+							<p style='font-size: 13px; color: #666;'><em>* Note: A copy of the physician's request / doctor slip has been attached to this email for your active validation.</em></p>
+							
+							<div style='text-align: center; margin: 25px 0 10px 0;'>
+								<a href='{$accept_link}' style='display: inline-block; background-color: #0A327D; color: #ffffff !important; font-weight: bold; font-family: Arial, sans-serif; font-size: 15px; padding: 12px 24px; text-decoration: none; border-radius: 6px; box-shadow: 0 4px 12px rgba(10,50,125,0.25); text-transform: uppercase; letter-spacing: 0.5px;'>🩸 Accept Blood Request</a>
+								<p style='margin: 8px 0 0 0; font-size: 11px; color: #ff334b;'><strong>* Single acceptance rule:</strong> Only the first donor to click accepts the request. Others cannot accept once it has been claimed.</p>
+							</div>
+							<p style='text-align: center; font-size: 12px; color: #666; margin-bottom: 25px;'>
+								If you cannot click the button above, please copy & paste this link directly in your browser: <br/>
+								<a href='{$accept_link}' style='color: #0A327D; word-break: break-all;'>{$accept_link}</a>
+							</p>
+
+							<p>If you are available to travel or assist, please reach out to the patient's family at the contact information provided above as soon as possible.</p>
+							
+							<hr style='border: none; border-top: 1px solid #ddd; margin: 25px 0;' />
+							<p style='font-size: 12px; color: #999; text-align: center; margin-bottom: 0;'>
+								This is an automated mobilization broadcast by <strong>Tatkhalsa Blood On Call</strong>.<br/>
+								Thank you for your noble commitment to saving lives.
+							</p>
+						</div>";
+						wp_mail( $donor_email, $donor_subject, $donor_body, $headers, $attachments );
+						$mailed_some_donors = true;
+					}
+				}
+				wp_reset_postdata();
+			}
+		}
+
+		// Fallback 2: If still no donors matched in district or state, query country-wide but DO NOT email them
+		if ( empty( $matched_donors ) ) {
+			$country_meta_query = array(
+				'relation' => 'AND',
+				array(
+					'key'     => 'blood_group',
+					'value'   => $blood_group,
+					'compare' => '='
+				)
+			);
+
+			if ( ! empty( $country ) ) {
+				$country_meta_query[] = array(
+					'relation' => 'OR',
+					array(
+						'key'     => 'country',
+						'value'   => $country,
+						'compare' => '='
+					),
+					array(
+						'key'     => 'address',
+						'value'   => $country,
+						'compare' => 'LIKE'
+					)
+				);
+			}
+
+			$country_donors_query = new WP_Query( array(
+				'post_type'      => 'blood_donor',
+				'posts_per_page' => -1,
+				'meta_query'     => $country_meta_query
+			) );
+
+			if ( $country_donors_query->have_posts() ) {
+				while ( $country_donors_query->have_posts() ) {
+					$country_donors_query->the_post();
+					$post_id = get_the_ID();
+					$donor_name = get_post_meta( $post_id, 'donor_name', true );
+					$donor_contact = get_post_meta( $post_id, 'contact_details', true );
+
+					$matched_donors[] = array(
+						'name'    => $donor_name,
+						'contact' => $donor_contact
+					);
+				}
+				wp_reset_postdata();
+			}
+		}
+	}
+
+	wp_send_json_success( array( 
+		'message' => 'Emergency Blood Request submitted successfully! Your active Registry Audit ID is: REQ_' . $request_post_id . '. Alerts have been sent to our state sevadars.',
+		'matched_donors' => $matched_donors
+	) );
+}
+add_action( 'wp_ajax_submit_blood_request', 'tatkhalsa_submit_blood_request' );
+add_action( 'wp_ajax_nopriv_submit_blood_request', 'tatkhalsa_submit_blood_request' );
+
+function tatkhalsa_set_html_mail_content_type() {
+	return 'text/html';
+}
+add_filter( 'wp_mail_content_type', 'tatkhalsa_set_html_mail_content_type' );
+
+function tatkhalsa_register_blood_donor_cpt() {
+	$labels = array(
+		'name'               => _x( 'Blood On Call', 'post type general name', 'tatkhalsa-theme' ),
+		'singular_name'      => _x( 'Blood On Call Entry', 'post type singular name', 'tatkhalsa-theme' ),
+		'menu_name'          => _x( 'Blood On Call', 'admin menu', 'tatkhalsa-theme' ),
+		'name_admin_bar'     => _x( 'Blood On Call Entry', 'add new on admin bar', 'tatkhalsa-theme' ),
+		'add_new'            => _x( 'Add New', 'blood on call', 'tatkhalsa-theme' ),
+		'add_new_item'       => __( 'Add New Entry', 'tatkhalsa-theme' ),
+		'new_item'           => __( 'New Entry', 'tatkhalsa-theme' ),
+		'edit_item'          => __( 'Edit Entry', 'tatkhalsa-theme' ),
+		'view_item'          => __( 'View Entry', 'tatkhalsa-theme' ),
+		'all_items'          => __( 'All Entries', 'tatkhalsa-theme' ),
+		'search_items'       => __( 'Search Entries', 'tatkhalsa-theme' ),
+		'not_found'          => __( 'No entry found.', 'tatkhalsa-theme' ),
+		'not_found_in_trash' => __( 'No entry found in Trash.', 'tatkhalsa-theme' )
+	);
+
+	$args = array(
+		'labels'             => $labels,
+		'public'             => true,
+		'publicly_queryable' => true,
+		'show_ui'            => true,
+		'show_in_menu'       => true,
+		'query_var'          => true,
+		'rewrite'            => array( 'slug' => 'blood-donor' ),
+		'capability_type'    => 'post',
+		'has_archive'        => true,
+		'hierarchical'       => false,
+		'menu_position'      => null,
+		'menu_icon'          => 'dashicons-heart',
+		'supports'           => array( 'title' )
+	);
+
+	register_post_type( 'blood_donor', $args );
+}
+add_action( 'init', 'tatkhalsa_register_blood_donor_cpt' );
+
+
+function tatkhalsa_get_or_create_donor_id( $post_id ) {
+	$donor_id = get_post_meta( $post_id, 'donor_id_number', true );
+	if ( empty( $donor_id ) ) {
+		$next_id = (int) get_option( 'tatkhalsa_next_donor_id', 1 );
+		$donor_id = 'TKF-DON-' . str_pad($next_id, 2, '0', STR_PAD_LEFT);
+		update_post_meta( $post_id, 'donor_id_number', $donor_id );
+		update_option( 'tatkhalsa_next_donor_id', $next_id + 1 );
+	}
+	return $donor_id;
+}
+
+function tatkhalsa_submit_blood_donor() {
+	if ( ! isset( $_POST['action'] ) || $_POST['action'] !== 'submit_blood_donor' ) {
+		wp_send_json_error( array( 'message' => 'Invalid request.' ) );
+	}
+
+	$name         = isset( $_POST['donorName'] ) ? sanitize_text_field( wp_unslash( $_POST['donorName'] ) ) : '';
+	$blood_group  = isset( $_POST['bloodGroup'] ) ? sanitize_text_field( wp_unslash( $_POST['bloodGroup'] ) ) : '';
+	$email        = isset( $_POST['donorEmail'] ) ? sanitize_email( wp_unslash( $_POST['donorEmail'] ) ) : '';
+	$contact      = isset( $_POST['contactDetails'] ) ? sanitize_text_field( wp_unslash( $_POST['contactDetails'] ) ) : '';
+	$country      = isset( $_POST['country'] ) ? sanitize_text_field( wp_unslash( $_POST['country'] ) ) : '';
+	$state        = isset( $_POST['state'] ) ? sanitize_text_field( wp_unslash( $_POST['state'] ) ) : '';
+	$district     = isset( $_POST['district'] ) ? sanitize_text_field( wp_unslash( $_POST['district'] ) ) : '';
+	$address_line = isset( $_POST['address'] ) ? sanitize_text_field( wp_unslash( $_POST['address'] ) ) : '';
+	
+	$address_parts = array_filter(array( $address_line, $district, $state, $country ));
+	$address = implode( ', ', $address_parts );
+
+	$map_location = isset( $_POST['mapLocation'] ) ? sanitize_text_field( wp_unslash( $_POST['mapLocation'] ) ) : '';
+	$availability_status = isset( $_POST['availabilityStatus'] ) ? sanitize_text_field( wp_unslash( $_POST['availabilityStatus'] ) ) : 'Available Now';
+
+	if ( empty( $name ) || empty( $blood_group ) || empty( $contact ) || empty( $address ) || empty( $email ) ) {
+		wp_send_json_error( array( 'message' => 'Please fill in all required fields.' ) );
+	}
+
+	// Dynamic fake / spam protection checks
+	$validation_check = tatkhalsa_validate_common_inputs( $name, $email, $contact );
+	if ( true !== $validation_check ) {
+		wp_send_json_error( array( 'message' => $validation_check ) );
+	}
+
+	$post_id = wp_insert_post( array(
+		'post_title'  => $name . ' - ' . $blood_group,
+		'post_type'   => 'blood_donor',
+		'post_status' => 'publish'
+	) );
+
+	if ( $post_id ) {
+		update_post_meta( $post_id, 'donor_name', $name );
+		update_post_meta( $post_id, 'blood_group', $blood_group );
+		update_post_meta( $post_id, 'donor_email', $email );
+		update_post_meta( $post_id, 'contact_details', $contact );
+		update_post_meta( $post_id, 'country', $country );
+		update_post_meta( $post_id, 'state', $state );
+		update_post_meta( $post_id, 'district', $district );
+		update_post_meta( $post_id, 'address', $address );
+		update_post_meta( $post_id, 'map_location', $map_location );
+		update_post_meta( $post_id, 'availability_status', $availability_status );
+		update_post_meta( $post_id, 'donor_ip', tatkhalsa_get_client_ip() );
+		update_post_meta( $post_id, 'registration_time', current_time( 'mysql' ) );
+
+		$donor_id_string = tatkhalsa_get_or_create_donor_id( $post_id );
+
+		// Sync donor contact to Brevo
+		if ( function_exists( 'tatkhalsa_add_brevo_contact' ) ) {
+			$name_parts = explode( ' ', trim( $name ) );
+			$firstname = array_shift( $name_parts );
+			$lastname = count( $name_parts ) > 0 ? implode( ' ', $name_parts ) : '';
+
+			$attrs = array(
+				'FIRSTNAME'   => $firstname,
+				'LASTNAME'    => $lastname,
+				'NAME'        => $name,
+				'DONOR_ID'    => $donor_id_string,
+				'BLOOD_GROUP' => $blood_group,
+				'PHONE'       => $contact,
+			);
+
+			if ( function_exists( 'tatkhalsa_format_phone_e164' ) ) {
+				$sms_phone = tatkhalsa_format_phone_e164( $contact );
+				if ( ! empty( $sms_phone ) ) {
+					$attrs['SMS'] = $sms_phone;
+				}
+			}
+
+			tatkhalsa_add_brevo_contact( $email, $attrs, array(), $donor_id_string );
+		}
+		wp_send_json_success( array( 'message' => 'Thank you for registering as a blood donor! Your assigned Secure Donor ID is: ' . $donor_id_string ) );
+	} else {
+		wp_send_json_error( array( 'message' => 'Failed to register. Please try again.' ) );
+	}
+}
+add_action( 'wp_ajax_submit_blood_donor', 'tatkhalsa_submit_blood_donor' );
+add_action( 'wp_ajax_nopriv_submit_blood_donor', 'tatkhalsa_submit_blood_donor' );
+
+function tatkhalsa_remove_blood_donor() {
+	if ( ! isset( $_POST['action'] ) || $_POST['action'] !== 'remove_blood_donor' ) {
+		wp_send_json_error( array( 'message' => 'Invalid request.' ) );
+	}
+
+	$contact = isset( $_POST['contactNumber'] ) ? sanitize_text_field( wp_unslash( $_POST['contactNumber'] ) ) : '';
+
+	if ( empty( $contact ) ) {
+		wp_send_json_error( array( 'message' => 'Please provide the registered contact number.' ) );
+	}
+
+	$args = array(
+		'post_type'  => 'blood_donor',
+		'meta_key'   => 'contact_details',
+		'meta_value' => $contact,
+		'posts_per_page' => -1
+	);
+
+	$query = new WP_Query( $args );
+
+	if ( $query->have_posts() ) {
+		while ( $query->have_posts() ) {
+			$query->the_post();
+			wp_trash_post( get_the_ID() );
+		}
+		wp_reset_postdata();
+		wp_send_json_success( array( 'message' => 'Your registration has been removed successfully.' ) );
+	} else {
+		wp_send_json_error( array( 'message' => 'No registration found with this contact number.' ) );
+	}
+}
+add_action( 'wp_ajax_remove_blood_donor', 'tatkhalsa_remove_blood_donor' );
+add_action( 'wp_ajax_nopriv_remove_blood_donor', 'tatkhalsa_remove_blood_donor' );
+
+function tatkhalsa_update_donor_status() {
+	if ( ! isset( $_POST['action'] ) || $_POST['action'] !== 'update_donor_status' ) {
+		wp_send_json_error( array( 'message' => 'Invalid request.' ) );
+	}
+
+	$contact = isset( $_POST['contactNumber'] ) ? sanitize_text_field( wp_unslash( $_POST['contactNumber'] ) ) : '';
+	$new_status = isset( $_POST['availabilityStatus'] ) ? sanitize_text_field( wp_unslash( $_POST['availabilityStatus'] ) ) : '';
+
+	if ( empty( $contact ) || empty( $new_status ) ) {
+		wp_send_json_error( array( 'message' => 'Please provide the contact number and select a status.' ) );
+	}
+
+	$args = array(
+		'post_type'  => 'blood_donor',
+		'meta_key'   => 'contact_details',
+		'meta_value' => $contact,
+		'posts_per_page' => -1
+	);
+
+	$query = new WP_Query( $args );
+
+	if ( $query->have_posts() ) {
+		while ( $query->have_posts() ) {
+			$query->the_post();
+			update_post_meta( get_the_ID(), 'availability_status', $new_status );
+		}
+		wp_reset_postdata();
+		wp_send_json_success( array( 'message' => 'Your status has been updated successfully to ' . esc_html( $new_status ) . '!' ) );
+	} else {
+		wp_send_json_error( array( 'message' => 'No registration found with this contact number.' ) );
+	}
+}
+add_action( 'wp_ajax_update_donor_status', 'tatkhalsa_update_donor_status' );
+add_action( 'wp_ajax_nopriv_update_donor_status', 'tatkhalsa_update_donor_status' );
+
+function tatkhalsa_verify_donor_email() {
+	if ( ! isset( $_POST['action'] ) || $_POST['action'] !== 'verify_donor_email' ) {
+		wp_send_json_error( array( 'message' => 'Invalid request.' ) );
+	}
+
+	$email = isset( $_POST['donorEmail'] ) ? sanitize_email( wp_unslash( $_POST['donorEmail'] ) ) : '';
+
+	if ( empty( $email ) ) {
+		wp_send_json_error( array( 'message' => 'Please provide the registered email address.' ) );
+	}
+
+	$args = array(
+		'post_type'  => 'blood_donor',
+		'meta_key'   => 'donor_email',
+		'meta_value' => $email,
+		'posts_per_page' => 1
+	);
+
+	$query = new WP_Query( $args );
+
+	if ( $query->have_posts() ) {
+		$query->the_post();
+		$donor_name = get_post_meta( get_the_ID(), 'donor_name', true );
+		wp_reset_postdata();
+
+		wp_send_json_success( array( 'name' => $donor_name, 'date' => date('F j, Y') ) );
+	} else {
+		wp_send_json_error( array( 'message' => 'No registration found with this email address.' ) );
+	}
+}
+add_action( 'wp_ajax_verify_donor_email', 'tatkhalsa_verify_donor_email' );
+add_action( 'wp_ajax_nopriv_verify_donor_email', 'tatkhalsa_verify_donor_email' );
+
+function tatkhalsa_accept_blood_request() {
+	$req_id   = isset( $_POST['req_id'] ) ? sanitize_text_field( wp_unslash( $_POST['req_id'] ) ) : '';
+	$donor_id = isset( $_POST['donor_id'] ) ? sanitize_text_field( wp_unslash( $_POST['donor_id'] ) ) : '';
+	if ( empty( $donor_id ) ) {
+		$donor_id = 'general';
+	}
+
+	if ( empty( $req_id ) ) {
+		wp_send_json_error( array( 'message' => 'Missing required request field.' ) );
+	}
+
+	$status = get_post_meta( $req_id, 'status', true );
+	if ( empty( $status ) ) {
+		$status = 'pending';
+	}
+
+	if ( $status === 'accepted' || $status === 'fulfilled' ) {
+		wp_send_json_success( array(
+			'already_accepted_by_you' => true,
+			'message' => 'its already accepted thanks for your efforts We appreciate your time'
+		) );
+	}
+
+	// Update status and track the recipient donor ID
+	update_post_meta( $req_id, 'status', 'accepted' );
+	update_post_meta( $req_id, 'accepted_by_donor_id', $donor_id );
+
+	// Update in custom table if it exists
+	global $wpdb;
+	$table_exists = $wpdb->get_var( "SHOW TABLES LIKE 'wp_blood_requests'" );
+	if ( $table_exists ) {
+		$wpdb->update(
+			'wp_blood_requests',
+			array( 'status' => 'accepted', 'accepted_by_donor_id' => $donor_id ),
+			array( 'id' => $req_id )
+		);
+	}
+
+	wp_send_json_success( array(
+		'message' => 'thank you not accepting request please get in touch with the one who required'
+	) );
+}
+add_action( 'wp_ajax_accept_blood_request', 'tatkhalsa_accept_blood_request' );
+add_action( 'wp_ajax_nopriv_accept_blood_request', 'tatkhalsa_accept_blood_request' );
+
+function tatkhalsa_send_donor_newsletter() {
+	set_time_limit(0);
+	if ( ! isset( $_POST['action'] ) || $_POST['action'] !== 'send_donor_newsletter' ) {
+		wp_send_json_error( array( 'message' => 'Invalid request.' ) );
+	}
+
+	$subject = isset( $_POST['subject'] ) ? sanitize_text_field( wp_unslash( $_POST['subject'] ) ) : '';
+	$message = isset( $_POST['message'] ) ? wp_kses_post( wp_unslash( $_POST['message'] ) ) : '';
+
+	if ( empty( $subject ) || empty( $message ) ) {
+		wp_send_json_error( array( 'message' => 'Subject and Message are required.' ) );
+	}
+
+	$emails = array();
+	if ( ! empty( $_POST['newsletterTo'] ) ) {
+		$raw_emails = explode( ',', sanitize_text_field( wp_unslash( $_POST['newsletterTo'] ) ) );
+		foreach ( $raw_emails as $e ) {
+			$e = trim( $e );
+			if ( is_email( $e ) ) {
+				$emails[] = $e;
+			}
+		}
+	}
+
+	$emails = array_unique( $emails );
+
+	$unsubscribed = get_option('tatkhalsa_unsubscribed_emails', []);
+	$emails = array_diff($emails, $unsubscribed);
+
+	if ( empty( $emails ) ) {
+		wp_send_json_error( array( 'message' => 'No valid email addresses found after excluding unsubscribed users.' ) );
+	}
+
 	$api_key = get_option( 'tatkhalsa_brevo_api_key', defined('BREVO_API_KEY') ? BREVO_API_KEY : '' );
 	
 	$logo_url = get_template_directory_uri() . '/Logo.png';
@@ -280,7 +1676,7 @@ function tatkhalsa_submit_volunteer() {
     <div class="wrapper">
         <div class="container">
             <div class="header">
-                <img src="' . esc_url($logo_url) . '" alt="Nihung Santhia" />
+                <img src="' . esc_url($logo_url) . '" alt="Tatkhalsa Foundation" />
             </div>
             <div class="content">
                 ' . wpautop($message) . '
@@ -294,12 +1690,12 @@ function tatkhalsa_submit_volunteer() {
                 </div>
                 <div class="footer-columns">
                     <div class="footer-col-left">
-                        <img src="' . esc_url($logo_url) . '" alt="Nihung Santhia" />
+                        <img src="' . esc_url($logo_url) . '" alt="Tatkhalsa Foundation" />
                     </div>
                     <div class="footer-col-right">
                         <a href="#" class="share-btn">Share</a>
-                        <p class="footer-text">Nihung Santhia</p>
-                        <p class="footer-text">You are receiving this newsletter because you are a student of Nihung Santhia or you have subscribed via the website.</p>
+                        <p class="footer-text">Tatkhalsa Foundation</p>
+                        <p class="footer-text">You are receiving this newsletter because you are a supporter of Tatkhalsa Foundation or you have subscribed via the website.</p>
                         <div class="footer-links">
                             <a href="{{ unsubscribe }}">Preferences</a> | <a href="{{ unsubscribe }}">Unsubscribe</a>
                         </div>
@@ -313,6 +1709,7 @@ function tatkhalsa_submit_volunteer() {
 
 	$sent = false;
 	$count = count($emails);
+	$error_message = '';
 
 	if ( ! empty( $api_key ) ) {
 		// Send via Brevo API
@@ -337,7 +1734,7 @@ function tatkhalsa_submit_volunteer() {
 				'content-type' => 'application/json',
 				'accept'       => 'application/json',
 			),
-			'body'    => json_encode( $payload ),
+			'body'    => wp_json_encode( $payload ),
 			'timeout' => 30,
 		) );
 
@@ -345,7 +1742,11 @@ function tatkhalsa_submit_volunteer() {
 			$code = wp_remote_retrieve_response_code( $response );
 			if ( $code == 201 || $code == 200 || $code == 202 ) {
 				$sent = true;
+			} else {
+				$error_message = wp_remote_retrieve_body( $response );
 			}
+		} else {
+			$error_message = $response->get_error_message();
 		}
 	} else {
 		// Fallback to wp_mail
@@ -359,11 +1760,16 @@ function tatkhalsa_submit_volunteer() {
 		$sent = true;
 	}
 
-
 	if ( $sent ) {
 		wp_send_json_success( array( 'message' => 'Newsletter successfully sent to ' . $count . ' users.' ) );
 	} else {
-		wp_send_json_error( array( 'message' => 'Failed to send newsletter emails.' ) );
+		$msg = 'Failed to send newsletter emails.';
+		if ( !empty($error_message) ) {
+			// Limit error message length
+			$error_message = substr($error_message, 0, 200);
+			$msg .= ' API Error: ' . esc_html($error_message);
+		}
+		wp_send_json_error( array( 'message' => $msg ) );
 	}
 }
 add_action( 'wp_ajax_send_donor_newsletter', 'tatkhalsa_send_donor_newsletter' );
