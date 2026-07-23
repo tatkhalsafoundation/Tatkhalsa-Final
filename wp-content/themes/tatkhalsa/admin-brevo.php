@@ -65,6 +65,15 @@ function tatkhalsa_render_brevo_settings_page() {
             </p>
         </form>
 
+                <hr style="margin: 30px 0;">
+
+        <h2>Setup Custom Attributes in Brevo</h2>
+        <p>If you don't see First Name, Blood Group, Donor ID, or Phone in your Brevo contacts list, you need to create these columns in Brevo first. Click the button below to automatically generate them via API.</p>
+        <div id="setupAttributesAlert" style="display: none; padding: 12px; margin-bottom: 15px; border-left: 4px solid #46b450; background: #fff; box-shadow: 0 1px 1px rgba(0,0,0,.04);"></div>
+        <button type="button" id="setupAttributesBtn" onclick="window.setupBrevoAttributes()" class="button button-secondary">
+            🛠️ Create Custom Attributes in Brevo
+        </button>
+
         <hr style="margin: 30px 0;">
 
         <h2>Bulk Sync All Existing Records to Brevo</h2>
@@ -88,6 +97,37 @@ function tatkhalsa_render_brevo_settings_page() {
     </div>
 
     <script>
+        window.setupBrevoAttributes = async function() {
+        const btn = document.getElementById('setupAttributesBtn');
+        const alertBox = document.getElementById('setupAttributesAlert');
+        btn.disabled = true;
+        btn.innerText = 'Creating attributes...';
+        alertBox.style.display = 'none';
+
+        try {
+            const formData = new FormData();
+            formData.append('action', 'setup_brevo_attributes');
+
+            const res = await fetch(ajaxurl, { method: 'POST', body: formData });
+            const data = await res.json();
+            alertBox.style.display = 'block';
+            if (data.success) {
+                alertBox.style.borderLeftColor = '#46b450';
+                alertBox.innerText = data.data.message;
+            } else {
+                alertBox.style.borderLeftColor = '#dc3232';
+                alertBox.innerText = data.data.message;
+            }
+        } catch (err) {
+            alertBox.style.display = 'block';
+            alertBox.style.borderLeftColor = '#dc3232';
+            alertBox.innerText = 'Request failed.';
+        } finally {
+            btn.disabled = false;
+            btn.innerText = '🛠️ Create Custom Attributes in Brevo';
+        }
+    };
+
     window.syncAllBrevoContacts = async function() {
         const btn = document.getElementById('syncBrevoBtn');
         const alertBox = document.getElementById('syncBrevoAlert');
@@ -418,4 +458,52 @@ function tatkhalsa_sync_all_brevo_contacts_handler() {
     }
 
     wp_send_json_success( array( 'message' => "✓ Successfully synced " . $count . " records (donors & newsletter subscribers) to Brevo!" ) );
+}
+
+// AJAX handler to create custom attributes in Brevo
+add_action( 'wp_ajax_setup_brevo_attributes', 'tatkhalsa_setup_brevo_attributes_handler' );
+function tatkhalsa_setup_brevo_attributes_handler() {
+    if ( ! current_user_can( 'manage_options' ) ) {
+        wp_send_json_error( array( 'message' => 'Unauthorized' ) );
+    }
+
+    $api_key = get_option( 'tatkhalsa_brevo_api_key', defined('BREVO_API_KEY') ? BREVO_API_KEY : '' );
+    if ( empty( $api_key ) ) {
+        wp_send_json_error( array( 'message' => 'Brevo API Key is missing. Please save your Brevo API Key above first.' ) );
+    }
+
+    $attributes = array(
+        'FIRSTNAME' => 'text',
+        'LASTNAME' => 'text',
+        'NAME' => 'text',
+        'DONOR_ID' => 'text',
+        'BLOOD_GROUP' => 'text',
+        'PHONE' => 'text', // using text to avoid strict SMS format validation issues
+    );
+
+    $results = array();
+    foreach ( $attributes as $attr_name => $type ) {
+        $response = wp_remote_post( "https://api.brevo.com/v3/contacts/attributes/normal/$attr_name", array(
+            'method'  => 'POST',
+            'headers' => array(
+                'api-key'      => $api_key,
+                'content-type' => 'application/json',
+                'accept'       => 'application/json',
+            ),
+            'body'    => json_encode( array( 'type' => $type ) ),
+            'timeout' => 10,
+        ) );
+
+        $code = wp_remote_retrieve_response_code( $response );
+        if ( $code == 201 ) {
+            $results[] = "$attr_name created";
+        } elseif ( $code == 400 ) {
+            // usually means it already exists
+            $results[] = "$attr_name already exists";
+        } else {
+            $results[] = "$attr_name failed ($code)";
+        }
+    }
+
+    wp_send_json_success( array( 'message' => "Attribute setup complete: " . implode(', ', $results) . ". You can now try syncing again." ) );
 }
